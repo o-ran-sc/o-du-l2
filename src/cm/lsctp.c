@@ -43,7 +43,7 @@ uint8_t cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy)
 
    if(ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  SCTP : Failed to allocate memory");
+      DU_LOG("ERROR  -->  SCTP : Failed to allocate memory");
       return RFAILED;
    }
 
@@ -56,7 +56,7 @@ uint8_t cmPkSctpNtfy(Pst *pst, CmInetSctpNotification *ntfy)
 
    if (ODU_POST_TASK(pst, mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  SCTP : ODU_POST_TASK failed while sending SCTP notification");
+      DU_LOG("ERROR  -->  SCTP : ODU_POST_TASK failed while sending SCTP notification");
       return RFAILED;
    }
 

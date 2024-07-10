@@ -130,7 +130,7 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
       SCH_ALLOC(dciSlotAlloc, sizeof(DlMsgSchInfo));
       if(!dciSlotAlloc)
       {
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for ded DL msg alloc");
+         DU_LOG("ERROR  -->  SCH : Memory Allocation failed for ded DL msg alloc");
          return false;
       }
       cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId -1] = dciSlotAlloc;
@@ -154,7 +154,7 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
    if((schDlRsrcAllocDlMsg(cell, pdschTime, crnti, accumalatedSize, dciSlotAlloc, startPrb,\
                            pdschStartSymbol, pdschNumSymbols, isRetx, *hqP, pdcchAllocInfo)) != ROK)
    {
-      DU_LOG("\nERROR  --> SCH : Scheduling of DL dedicated message failed");
+      DU_LOG("ERROR  --> SCH : Scheduling of DL dedicated message failed");
 
       /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
       if(!dciSlotAlloc->dlMsgPdschCfg)
@@ -185,7 +185,7 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
       SCH_ALLOC(dciSlotAlloc->dlMsgPdschCfg, sizeof(PdschCfg));
       if(!dciSlotAlloc->dlMsgPdschCfg)
       {
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc->dlMsgPdschCfg");
+         DU_LOG("ERROR  -->  SCH : Memory Allocation failed for dciSlotAlloc->dlMsgPdschCfg");
          SCH_FREE(dciSlotAlloc->dlMsgPdcchCfg, sizeof(PdcchCfg));
          SCH_FREE(dciSlotAlloc, sizeof(DlMsgSchInfo));
          cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1] = NULLP;
@@ -202,7 +202,7 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
          SCH_ALLOC(dlMsgAlloc, sizeof(DlMsgSchInfo));
          if(dlMsgAlloc == NULLP)
          {
-            DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dlMsgAlloc");
+            DU_LOG("ERROR  -->  SCH : Memory Allocation failed for dlMsgAlloc");
             SCH_FREE(dciSlotAlloc->dlMsgPdcchCfg, sizeof(PdcchCfg));
             if(dciSlotAlloc->dlMsgPdschCfg == NULLP)
             {
@@ -237,7 +237,7 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
          }
          SCH_FREE(dlMsgAlloc, sizeof(DlMsgSchInfo));
          cell->schDlSlotInfo[pdschTime.slot]->dlMsgAlloc[ueId-1] = NULLP;
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dlMsgAlloc->dlMsgPdschCfg");
+         DU_LOG("ERROR  -->  SCH : Memory Allocation failed for dlMsgAlloc->dlMsgPdschCfg");
          return false;
       }
    }
@@ -439,7 +439,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
       k0K1InfoTbl = &ueCb->k0K1InfoTbl;
       if(schDlCandidateSelection(ueCb, *pdcchTime, pdcchAllocInfo) == false)
       {
-         DU_LOG("\nDEBUG  --> SCH: DL candidate Selection failed bcz PDCCH is unavailable for this slot");
+         DU_LOG("DEBUG  --> SCH: DL candidate Selection failed bcz PDCCH is unavailable for this slot");
          return false;     
       }
    }
@@ -590,7 +590,7 @@ uint8_t schProcDlPageAlloc(SchCellCb *cell, SlotTimingInfo currTime, Inst schIns
       }
       else
       {
-         DU_LOG("\nERROR  --> SCH: Unable to get any free block for Paging at SFN:%d, SLOT:%d",\
+         DU_LOG("ERROR  --> SCH: Unable to get any free block for Paging at SFN:%d, SLOT:%d",\
                pdschTime.sfn, pdschTime.slot);
          break;
       }
@@ -612,7 +612,7 @@ uint8_t schProcDlPageAlloc(SchCellCb *cell, SlotTimingInfo currTime, Inst schIns
       /*Fill PDSCH*/
       if(schFillPagePdschCfg(cell, &dlPageAlloc.pageDlSch, pdschTime, tbSize, pageInfo->mcs, startPrb) != ROK)
       {
-         DU_LOG("\nERROR  --> SCH: Issue in PDSCH Allocation for Paging at SFN:%d, SLOT:%d",\
+         DU_LOG("ERROR  --> SCH: Issue in PDSCH Allocation for Paging at SFN:%d, SLOT:%d",\
                pdschTime.sfn, pdschTime.slot);
          break;
       }
@@ -624,7 +624,7 @@ uint8_t schProcDlPageAlloc(SchCellCb *cell, SlotTimingInfo currTime, Inst schIns
 
       if(dlPageAlloc.pageDlSch.dlPagePdu == NULLP)
       {
-         DU_LOG("\nERROR  --> SCH: Memory Allocation Failed during Page Resource allocation");
+         DU_LOG("ERROR  --> SCH: Memory Allocation Failed during Page Resource allocation");
          break;
       }
       memcpy(dlPageAlloc.pageDlSch.dlPagePdu, pageInfo->pagePdu, dlPageAlloc.pageDlSch.dlPagePduLen);
@@ -632,7 +632,7 @@ uint8_t schProcDlPageAlloc(SchCellCb *cell, SlotTimingInfo currTime, Inst schIns
       /* Send msg to MAC */
       if(sendDlPageAllocToMac(&dlPageAlloc, schInst) != ROK)
       {
-         DU_LOG("\nERROR  -->  SCH : Sending DL Paging allocation from SCH to MAC failed");
+         DU_LOG("ERROR  -->  SCH : Sending DL Paging allocation from SCH to MAC failed");
          SCH_FREE(dlPageAlloc.pageDlSch.dlPagePdu, sizeof(dlPageAlloc.pageDlSch.dlPagePduLen));
          break;
       }
@@ -678,7 +678,7 @@ uint8_t SchProcSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    cell = schCb[schInst].cells[schInst];
    if(cell == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH : Cell Does not exist");
+      DU_LOG("ERROR  -->  SCH : Cell Does not exist");
       return RFAILED;
    }
    memset(&dlSchedInfo, 0, sizeof(DlSchedInfo));
@@ -703,7 +703,7 @@ uint8_t SchProcSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    {
       if(schBroadcastSsbAlloc(cell, dlSchedInfo.schSlotValue.broadcastTime, dlBrdcstAlloc) != ROK)
       {
-         DU_LOG("\nERROR  -->  SCH : schBroadcastSsbAlloc failed");
+         DU_LOG("ERROR  -->  SCH : schBroadcastSsbAlloc failed");
          dlBrdcstAlloc->ssbTransmissionMode = NO_TRANSMISSION;
       }
       else 
@@ -720,7 +720,7 @@ uint8_t SchProcSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    {
       if(schBroadcastSib1Alloc(cell, dlSchedInfo.schSlotValue.broadcastTime, dlBrdcstAlloc) != ROK)
       {
-         DU_LOG("\nERROR  -->  SCH : schBroadcastSib1Alloc failed");
+         DU_LOG("ERROR  -->  SCH : schBroadcastSib1Alloc failed");
          dlBrdcstAlloc->sib1TransmissionMode = NO_TRANSMISSION;
       }
       else 
@@ -769,7 +769,7 @@ uint8_t SchProcSlotInd(Pst *pst, SlotTimingInfo *slotInd)
    ret = sendDlAllocToMac(&dlSchedInfo, schInst);
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  SCH : Sending DL Broadcast allocation from SCH to MAC failed");
+      DU_LOG("ERROR  -->  SCH : Sending DL Broadcast allocation from SCH to MAC failed");
       return (ret);
    }
 

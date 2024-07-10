@@ -94,7 +94,7 @@ uint8_t packEgtpCfgReq(Pst *pst, EgtpConfig egtpCfg)
 
    if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed to allocate memory");
+      DU_LOG("ERROR  -->  DU_APP : Failed to allocate memory");
       return RFAILED;
    }
    if(egtpCfg.localIp.ipV4Pres)
@@ -190,7 +190,7 @@ uint8_t packEgtpCfgCfm(Pst *pst, CmStatus cfm)
   
    if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  EGTP : Failed to allocate memory");
+      DU_LOG("ERROR  -->  EGTP : Failed to allocate memory");
       return RFAILED;
    }
  
@@ -249,7 +249,7 @@ uint8_t packEgtpSrvOpenReq(Pst *pst)
  
    if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed to allocate memory");
+      DU_LOG("ERROR  -->  DU_APP : Failed to allocate memory");
       return RFAILED;
    }
   
@@ -302,7 +302,7 @@ uint8_t packEgtpSrvOpenCfm(Pst *pst, CmStatus cfm)
  
    if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  EGTP : Failed to allocate memory");
+      DU_LOG("ERROR  -->  EGTP : Failed to allocate memory");
       return RFAILED;
    }
  
@@ -364,7 +364,7 @@ uint8_t packEgtpTnlMgmtReq(Pst *pst, EgtpTnlEvt tnlEvt)
 
    if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed to allocate memory");
+      DU_LOG("ERROR  -->  DU_APP : Failed to allocate memory");
       return RFAILED;
    }
 
@@ -434,7 +434,7 @@ uint8_t packEgtpTnlMgmtCfm(Pst *pst, EgtpTnlEvt tnlEvt)
 
    if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  EGTP : Failed to allocate memory");
+      DU_LOG("ERROR  -->  EGTP : Failed to allocate memory");
       return RFAILED;
    }
     
@@ -504,7 +504,7 @@ uint8_t packEgtpStartPollingReq(Pst *pst)
 
    if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed to allocate memory");
+      DU_LOG("ERROR  -->  DU_APP : Failed to allocate memory");
       return RFAILED;
    }
 

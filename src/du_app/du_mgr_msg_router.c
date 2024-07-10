@@ -403,7 +403,7 @@ void callFlowduActvTsk(Pst *pst)
             break;
          }
    }
-   DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
+   DU_LOG("Call Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
 #endif
 
@@ -443,14 +443,14 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
             {
                case EVTCFG:
                   {
-                     DU_LOG("\n****** Received initial configs at DU APP ******\n");
+                     DU_LOG("****** Received initial configs at DU APP ******\n");
                      duProcCfgComplete();
                      ODU_PUT_MSG_BUF(mBuf);
                      break;
                   }
                default:
                   {
-                     DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTDUAPP");
+                     DU_LOG("ERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTDUAPP");
                      ODU_PUT_MSG_BUF(mBuf);
                      ret = RFAILED;
                   }
@@ -528,7 +528,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                   }
                default:
                   {
-                     DU_LOG("\nERROR  -->  DU_APP : Invalid event %d received at duActvTsk from ENTRLC", \
+                     DU_LOG("ERROR  -->  DU_APP : Invalid event %d received at duActvTsk from ENTRLC", \
                            pst->event);
                      ODU_PUT_MSG_BUF(mBuf);
                      ret = RFAILED;
@@ -648,7 +648,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                   }
                default:
                   {
-                     DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTMAC");
+                     DU_LOG("ERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTMAC");
                      ODU_PUT_MSG_BUF(mBuf);
                      ret = RFAILED;
                   }
@@ -677,7 +677,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                   }
                default:
                   {
-                     DU_LOG("\nERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTSCTP");
+                     DU_LOG("ERROR  -->  DU_APP : Invalid event received at duActvTsk from ENTSCTP");
                      ret = RFAILED;
                   }
 
@@ -706,7 +706,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
                   }
                default:
                   {
-                     DU_LOG("\nERROR  -->  DU_APP : Invalid event[%d] received at duActvTsk from ENTEGTP", pst->event);
+                     DU_LOG("ERROR  -->  DU_APP : Invalid event[%d] received at duActvTsk from ENTEGTP", pst->event);
                      ret = RFAILED;
                   }
             }
@@ -726,7 +726,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
 #endif
                default:
                   {
-                     DU_LOG("\nERROR  -->  DU_APP : Invalid event[%d] received at duActvTsk from ENTEGTP", pst->event);
+                     DU_LOG("ERROR  -->  DU_APP : Invalid event[%d] received at duActvTsk from ENTEGTP", pst->event);
                      ret = RFAILED;
                   }
             }
@@ -735,7 +735,7 @@ uint8_t duActvTsk(Pst *pst, Buffer *mBuf)
          }
       default:
          {
-            DU_LOG("\nERROR  -->  DU_APP : DU APP can not process message from Entity %d", pst->srcEnt);
+            DU_LOG("ERROR  -->  DU_APP : DU APP can not process message from Entity %d", pst->srcEnt);
             ODU_PUT_MSG_BUF(mBuf);
             ret = RFAILED;
          }

@@ -45,7 +45,7 @@ uint8_t packDuNfapiP7UdpCfg(Pst *pst,  NfapiP7UdpCfg *nfapiP7UdpCfg)
     {
        if (ODU_GET_MSG_BUF(pst->region, pst->pool, &mBuf) != ROK)
        {
-          DU_LOG("\nERROR  --> MAC : Memory allocation failed at packDuNfapiP7UdpCfg");
+          DU_LOG("ERROR  --> MAC : Memory allocation failed at packDuNfapiP7UdpCfg");
           return RFAILED;
        }
        /* pack the address of the structure */
@@ -53,7 +53,7 @@ uint8_t packDuNfapiP7UdpCfg(Pst *pst,  NfapiP7UdpCfg *nfapiP7UdpCfg)
     }
     else
     {
-       DU_LOG("\nERROR  -->  MAC: Only LWLC supported for packDuNfapiP7UdpCfg");
+       DU_LOG("ERROR  -->  MAC: Only LWLC supported for packDuNfapiP7UdpCfg");
        return RFAILED;
     }
     return ODU_POST_TASK(pst,mBuf);
@@ -91,7 +91,7 @@ uint8_t unpackDuNfapiP7UdpCfg(DuNfapiP7UdpCfgFunc func, Pst *pst, Buffer *mBuf)
     else
     {
        /* Nothing to do for other selectors */
-       DU_LOG("\nERROR  -->  DU APP : Only LWLC supported for UDP P7 Config Request ");
+       DU_LOG("ERROR  -->  DU APP : Only LWLC supported for UDP P7 Config Request ");
        ODU_PUT_MSG_BUF(mBuf);
     }
 

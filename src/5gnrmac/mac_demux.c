@@ -62,13 +62,13 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
    
    if(rxDataIndPdu == NULLP)
    {
-      DU_LOG("\nERROR --> MAC: Rx Data is empty");
+      DU_LOG("ERROR --> MAC: Rx Data is empty");
       return RFAILED;        
    }
 
    if(macCb.macCell[cellIdx] == NULLP)
    {
-      DU_LOG("\nERROR --> CellId :%d is not created, as CellCB is empty", cellId);
+      DU_LOG("ERROR --> CellId :%d is not created, as CellCB is empty", cellId);
       return RFAILED;
    }
    pduLen = rxDataIndPdu->pduLength;
@@ -99,7 +99,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
                MAC_ALLOC_SHRABL_BUF(pdu, length);
                if(!pdu)
                {
-                  DU_LOG("\nERROR  -->  MAC : UL CCCH PDU memory allocation failed");
+                  DU_LOG("ERROR  -->  MAC : UL CCCH PDU memory allocation failed");
                   return RFAILED;
                }  
                rxPduIdx++;
@@ -117,7 +117,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
 
          case MAC_LCID_MIN ... MAC_LCID_MAX :
             {
-               DU_LOG("\nINFO   -->  MAC : PDU received for LC ID %d", lcId);
+               DU_LOG("INFO   -->  MAC : PDU received for LC ID %d", lcId);
                pduLen--;
                rxPduIdx++;
 
@@ -134,7 +134,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
                MAC_ALLOC_SHRABL_BUF(pdu, length);
                if(!pdu)
                {
-                  DU_LOG("\nERROR  -->  MAC : Memory allocation failed while demuxing Rx Data PDU");
+                  DU_LOG("ERROR  -->  MAC : Memory allocation failed while demuxing Rx Data PDU");
                   return RFAILED;
                }
                pduLen--;
@@ -231,7 +231,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
                      }
                      else
                      {
-                        DU_LOG("\nERROR  -->  MAC: Invalid BsrIdx:%d rcvd for lcgIdx:%d",lcgIdx,rxDataPdu[rxPduIdx]);
+                        DU_LOG("ERROR  -->  MAC: Invalid BsrIdx:%d rcvd for lcgIdx:%d",lcgIdx,rxDataPdu[rxPduIdx]);
                      }
                      /*next byte in PDU*/
                      pduLen--;
@@ -249,7 +249,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
 
          default:
             {
-               DU_LOG("\nERROR  -->  MAC : Invalid LC Id %d", lcId);
+               DU_LOG("ERROR  -->  MAC : Invalid LC Id %d", lcId);
                return RFAILED;
             }
       } /* End of switch */

@@ -85,7 +85,7 @@ uint8_t SchProcCrcInd(Pst *pst, CrcIndInfo *crcInd)
          }
          if (cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList.first == 0)
          {
-            DU_LOG("\nERROR  --> SCH: NULL harq stored in ul hq map at slot %d ue id %d\n",\
+            DU_LOG("ERROR  --> SCH: NULL harq stored in ul hq map at slot %d ue id %d\n",\
                                crcInd->timingInfo.slot, ueId);
             crcCnt++;
             continue;

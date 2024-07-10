@@ -70,7 +70,7 @@ void GenerateTicks()
     * The ratio must be removed once code optimization is complete */
    req.tv_nsec = milisec * 1000000L * ratio;
 
-   DU_LOG("\nPHY_STUB : GenerateTicks : Starting to generate slot indications");
+   DU_LOG("PHY_STUB : GenerateTicks : Starting to generate slot indications");
 
    while(slotIndicationStarted)
    {
@@ -78,12 +78,12 @@ void GenerateTicks()
       /* Send Slot indication indication to lower mac */
       if(l1BuildAndSendSlotIndication() != ROK)
       {
-         DU_LOG("\nERROR  --> PHY_STUB : GenerateTicks(): Failed to build and send Slot Indication");
+         DU_LOG("ERROR  --> PHY_STUB : GenerateTicks(): Failed to build and send Slot Indication");
          return;
       }
    }
 
-   DU_LOG("\nINFO  --> PHY_STUB : Slot indication stopped");
+   DU_LOG("INFO  --> PHY_STUB : Slot indication stopped");
 
    /* Initialize all global variables */
    sfnValue = 0;
@@ -117,7 +117,7 @@ void l1HdlSlotIndicaion(bool stopSlotInd)
 
    if(!stopSlotInd)
    {
-      DU_LOG("\nPHY_STUB: Sending start slot indication event to self");
+      DU_LOG("PHY_STUB: Sending start slot indication event to self");
       memset(&pst, 0, sizeof(Pst));
       FILL_PST_PHY_TO_PHY(pst, EVT_PHY_START_SLOT_IND);
       ODU_GET_MSG_BUF(pst.region, pst.pool, &mBuf);
@@ -167,7 +167,7 @@ void *l1ConsoleHandler(void *args)
             {
                for(drbIdx = 0; drbIdx < NUM_DRB_TO_PUMP_DATA; drbIdx++) //Number of DRB times the loop will run
                {
-                  DU_LOG("\nDEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d] for UEIdx %d\n",drbIdx,ueIdx);
+                  DU_LOG("DEBUG  --> PHY STUB: Sending UL User Data[DrbId:%d] for UEIdx %d\n",drbIdx,ueIdx);
                   l1SendUlUserData(drbIdx,ueIdx);
                   /* TODO :- sleep(1) will be removed once we will be able to
                    * send continuous data packet */
@@ -180,7 +180,7 @@ void *l1ConsoleHandler(void *args)
       else if(ch =='c')
       {
          /* Send Control PDU from PHY stub to DU */
-         DU_LOG("\nDEBUG  --> PHY STUB: Sending Status PDU");
+         DU_LOG("DEBUG  --> PHY STUB: Sending Status PDU");
          l1SendStatusPdu();
       }
       else if(ch == 'b')
@@ -221,7 +221,7 @@ void *l1ConsoleHandler(void *args)
          }
 
       }
-      DU_LOG("\n");
+      DU_LOG("");
       continue;
    }
 }
@@ -265,7 +265,7 @@ void l1StartConsoleHandler()
       
       if(retVal != 0)
       {
-         DU_LOG("\nERROR  -->  PHY STUB : Thread creation failed. Cause %d", retVal);
+         DU_LOG("ERROR  -->  PHY STUB : Thread creation failed. Cause %d", retVal);
       }
    }
    pthread_attr_destroy(&attr);
@@ -295,11 +295,11 @@ void receiveMsgFromPeerL1()
       
       if(read(socket_fd, buffer, 1024)>0)
       {
-         DU_LOG("\n");
+         DU_LOG("");
          DU_LOG("%s\n",buffer);
          if (strncmp("HANDOVER_IN_PROGRESS", buffer, 19) == 0) 
          {
-            DU_LOG("\nINFO  --> PHY_STUB : Communication completed in between the source and destination PHY\n");
+            DU_LOG("INFO  --> PHY_STUB : Communication completed in between the source and destination PHY\n");
             //TODO: Trigger for other handover process in target PHY
          }
       }
@@ -352,12 +352,12 @@ int8_t startL1AsServer(struct sockaddr_in serverPhy, struct sockaddr_in clientPh
 
    if (bind(socket_fd, (struct sockaddr *)&serverPhy, sizeof(struct sockaddr_in))<0)
    {
-      DU_LOG("\nERROR  --> PHY_STUB : bind failed");
+      DU_LOG("ERROR  --> PHY_STUB : bind failed");
       return RFAILED;
    }
    if (listen(socket_fd, 3) < 0)
    {
-      DU_LOG("\nERROR  --> PHY_STUB : listen failed");
+      DU_LOG("ERROR  --> PHY_STUB : listen failed");
       return RFAILED;
    }
    while(true)
@@ -365,11 +365,11 @@ int8_t startL1AsServer(struct sockaddr_in serverPhy, struct sockaddr_in clientPh
       if ((socket_fd = accept(socket_fd, (struct sockaddr *)&clientPhy,
                   (socklen_t*)&addrlen))<0)
       {
-         DU_LOG("\nINFO  --> PHY_STUB : Server is waiting");
+         DU_LOG("INFO  --> PHY_STUB : Server is waiting");
       }
       else
       {
-         DU_LOG("\nINFO  --> PHY_STUB : Server Connected");
+         DU_LOG("INFO  --> PHY_STUB : Server Connected");
          break;
       }
    }
@@ -397,7 +397,7 @@ int8_t startL1AsClient(struct sockaddr_in serverPhy, struct sockaddr_in  destina
 {
    if (bind(socket_fd, (struct sockaddr *)&serverPhy, sizeof(struct sockaddr_in ))<0)
    {
-      DU_LOG("\nERROR  --> PHY_STUB : bind failed");
+      DU_LOG("ERROR  --> PHY_STUB : bind failed");
       return RFAILED;
    }
 
@@ -405,11 +405,11 @@ int8_t startL1AsClient(struct sockaddr_in serverPhy, struct sockaddr_in  destina
    {
       if (connect(socket_fd, (struct sockaddr *)&destinationPhy, sizeof(struct sockaddr_in)) < 0)
       {
-         DU_LOG("\nERROR  --> PHY_STUB : Connection Failed");
+         DU_LOG("ERROR  --> PHY_STUB : Connection Failed");
       }
       else
       {
-         DU_LOG("\nINFO  --> PHY_STUB : Client connected to sever");
+         DU_LOG("INFO  --> PHY_STUB : Client connected to sever");
          break;
       }
    }
@@ -442,7 +442,7 @@ void *establishConnectionWithPeerL1(void *args)
 
    if ((socket_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
    {
-      DU_LOG("\nERROR  --> PHY_STUB : socket failed");
+      DU_LOG("ERROR  --> PHY_STUB : socket failed");
       return ret; 
    }
    
@@ -458,7 +458,7 @@ void *establishConnectionWithPeerL1(void *args)
    {
       if(startL1AsServer(sourcePhy, destinationPhy) != ROK)
       {
-         DU_LOG("\nERROR  --> PHY_STUB : Failed to start server");
+         DU_LOG("ERROR  --> PHY_STUB : Failed to start server");
          return ret;
       }
    }
@@ -466,12 +466,12 @@ void *establishConnectionWithPeerL1(void *args)
    {
       if(startL1AsClient(sourcePhy, destinationPhy) != ROK)
       {
-         DU_LOG("\nERROR  --> PHY_STUB : Failed to start client");
+         DU_LOG("ERROR  --> PHY_STUB : Failed to start client");
          return ret;
       }
    }
 
-   DU_LOG("\nINFO  --> PHY_STUB : Connection established");
+   DU_LOG("INFO  --> PHY_STUB : Connection established");
    receiveMsgFromPeerL1();
    return ROK;
 }

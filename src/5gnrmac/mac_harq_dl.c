@@ -124,7 +124,7 @@ uint8_t updateNewTbInDlHqProcCb(SlotTimingInfo slotInfo, MacUeCb *ueCb, uint32_t
             MAC_ALLOC(tbInfo->tb, tbSize);
             if(!tbInfo->tb)
             {
-               DU_LOG("\nERROR  -->  MAC : Failed to allocate memory for TB in updateTbInDlHqProcCb");
+               DU_LOG("ERROR  -->  MAC : Failed to allocate memory for TB in updateTbInDlHqProcCb");
                return RFAILED;
             }
             memcpy(tbInfo->tb, txPdu, tbSize);

@@ -93,7 +93,7 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
    uint16_t ret = LCM_REASON_NOT_APPL;
    Inst     inst = (dInst - SCH_INST_START);
 
-   DU_LOG("\nDEBUG  -->  SCH : Entered SchInstCfg()");
+   DU_LOG("DEBUG  -->  SCH : Entered SchInstCfg()");
    /* Check if Instance Configuration is done already */
    if (schCb[inst].schInit.cfgDone == TRUE)
    {
@@ -128,7 +128,7 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
    /* Timer Registration request to system services */
    if (ODU_REG_TMR_MT(schCb[inst].schInit.ent, dInst, (int)schCb[inst].schTimersInfo.tmrRes, schActvTmr) != ROK)
    {
-      DU_LOG("\nERROR  -->  SCH : SchInstCfg(): Failed to register timer.");
+      DU_LOG("ERROR  -->  SCH : SchInstCfg(): Failed to register timer.");
       return (LCM_REASON_MEM_NOAVAIL);
    }   
 
@@ -139,7 +139,7 @@ uint8_t SchInstCfg(RgCfg *cfg, Inst  dInst)
 
    /* Set Config done in TskInit */
    schCb[inst].schInit.cfgDone = TRUE;
-   DU_LOG("\nINFO   -->  SCH : Scheduler gen config done");
+   DU_LOG("INFO   -->  SCH : Scheduler gen config done");
    
    schAllApisInit(inst);
    return ret;
@@ -172,12 +172,12 @@ uint8_t SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
 
    if(pst->dstInst < SCH_INST_START)
    {
-      DU_LOG("\nERROR  -->  SCH : Invalid inst ID");
-      DU_LOG("\nERROR  -->  SCH : SchProcGenCfgReq(): "
+      DU_LOG("ERROR  -->  SCH : Invalid inst ID");
+      DU_LOG("ERROR  -->  SCH : SchProcGenCfgReq(): "
 	    "pst->dstInst=%d SCH_INST_START=%d", pst->dstInst,SCH_INST_START); 
       return ROK;
    }
-   DU_LOG("\nINFO   -->  SCH : Received scheduler gen config");
+   DU_LOG("INFO   -->  SCH : Received scheduler gen config");
    /* Fill the post structure for sending the confirmation */
    memset(&cfmPst, 0 , sizeof(Pst));
    SchFillCfmPst(pst, &cfmPst, cfg);
@@ -198,7 +198,7 @@ uint8_t SchProcGenCfgReq(Pst *pst, RgMngmt *cfg)
       default:
 	 ret = LCM_PRIM_NOK;
 	 reason = LCM_REASON_INVALID_ELMNT;
-	 DU_LOG("\nERROR  -->  SCH : Invalid Elmnt=%d", cfg->hdr.elmId.elmnt);
+	 DU_LOG("ERROR  -->  SCH : Invalid Elmnt=%d", cfg->hdr.elmId.elmnt);
 	 break;
    }
 
@@ -277,7 +277,7 @@ uint16_t schGetPeriodicityInMsec(DlUlTxPeriodicity tddPeriod)
       }
       default:
       {
-	 DU_LOG("\nERROR  -->  SCH : Invalid DlUlTxPeriodicity:%d", tddPeriod);
+	 DU_LOG("ERROR  -->  SCH : Invalid DlUlTxPeriodicity:%d", tddPeriod);
       }
    }
 
@@ -371,7 +371,7 @@ void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
                break;
             }
             default:
-               DU_LOG("\nERROR  -->  SCH : Invalid slot Config in schInitTddSlotCfg");
+               DU_LOG("ERROR  -->  SCH : Invalid slot Config in schInitTddSlotCfg");
            }
          continue;
       }
@@ -437,7 +437,7 @@ void fillSsbStartSymb(SchCellCb *cellCb)
          }
          break;
       default:
-         DU_LOG("\nERROR  -->  SCH : SCS %d is currently not supported", scs);
+         DU_LOG("ERROR  -->  SCH : SCS %d is currently not supported", scs);
    }
    memset(cellCb->ssbStartSymbArr, 0, sizeof(SCH_MAX_SSB_BEAM));
    memcpy(cellCb->ssbStartSymbArr, ssbStartSymbArr, SCH_MAX_SSB_BEAM);
@@ -466,7 +466,7 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
    SCH_ALLOC(cell, sizeof(SchCellCb));
    if(!cell)
    {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failed in schInitCellCb");
+      DU_LOG("ERROR  -->  SCH : Memory allocation failed in schInitCellCb");
       return RFAILED;
    }
 
@@ -504,7 +504,7 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
 	 }
 	 break;
       default:
-	 DU_LOG("\nERROR  -->  SCH : Numerology %d not supported", cell->numerology);
+	 DU_LOG("ERROR  -->  SCH : Numerology %d not supported", cell->numerology);
    }
 #ifdef NR_TDD
    schInitTddSlotCfg(cell, schCellCfg);   
@@ -513,14 +513,14 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
    SCH_ALLOC(cell->schDlSlotInfo, cell->numSlots * sizeof(SchDlSlotInfo*));
    if(!cell->schDlSlotInfo)
    {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failed in schInitCellCb for schDlSlotInfo");
+      DU_LOG("ERROR  -->  SCH : Memory allocation failed in schInitCellCb for schDlSlotInfo");
       return RFAILED;
    }
 
    SCH_ALLOC(cell->schUlSlotInfo, cell->numSlots * sizeof(SchUlSlotInfo*));
    if(!cell->schUlSlotInfo)
    {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failed in schInitCellCb for schUlSlotInfo");
+      DU_LOG("ERROR  -->  SCH : Memory allocation failed in schInitCellCb for schUlSlotInfo");
       return RFAILED;
    }
 
@@ -533,7 +533,7 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
       SCH_ALLOC(schDlSlotInfo, sizeof(SchDlSlotInfo));
       if(!schDlSlotInfo)
       {
-         DU_LOG("\nERROR  -->  SCH : Memory allocation failed in schInitCellCb");
+         DU_LOG("ERROR  -->  SCH : Memory allocation failed in schInitCellCb");
          return RFAILED;
       }
 
@@ -541,7 +541,7 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
       SCH_ALLOC(schUlSlotInfo, sizeof(SchUlSlotInfo));
       if(!schUlSlotInfo)
       {
-	 DU_LOG("\nERROR  -->  SCH : Memory allocation failed in schInitCellCb");
+	 DU_LOG("ERROR  -->  SCH : Memory allocation failed in schInitCellCb");
 	 return RFAILED;
       }
 
@@ -561,7 +561,7 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
 #endif   
    schCb[inst].cells[inst] = cell;
 
-   DU_LOG("\nINFO  -->  SCH : Cell init completed for cellId:%d", cell->cellId);
+   DU_LOG("INFO  -->  SCH : Cell init completed for cellId:%d", cell->cellId);
 
    return ROK;   
 }
@@ -643,7 +643,7 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
 	 }
 	 break;
       default:
-	 DU_LOG("\nERROR  -->  SCH : Bandwidth %d not supported", bandwidth);
+	 DU_LOG("ERROR  -->  SCH : Bandwidth %d not supported", bandwidth);
 
    }
    bwp->freqAlloc.startPrb = 0;
@@ -771,7 +771,7 @@ uint8_t SchProcCellCfgReq(Pst *pst, SchCellCfg *schCellCfg)
    
    if(ret != ROK)
    {
-      DU_LOG("\nERROR --> SCH : Failed to fill sib1 configuration");
+      DU_LOG("ERROR --> SCH : Failed to fill sib1 configuration");
       return RFAILED;
    }
    memcpy(&cellCb->cellCfg, schCellCfg, sizeof(SchCellCfg));
@@ -851,7 +851,7 @@ uint8_t SchSendCellDeleteRspToMac(SchCellDeleteReq  *ueDelete, Inst inst, SchMac
    
    SchCellDeleteRsp  delRsp;
 
-   DU_LOG("\nINFO   --> SCH : Filling Cell Delete response");
+   DU_LOG("INFO   --> SCH : Filling Cell Delete response");
    memset(&delRsp, 0, sizeof(SchCellDeleteRsp));
    delRsp.cellId = ueDelete->cellId;
    delRsp.rsp = result;
@@ -863,7 +863,7 @@ uint8_t SchSendCellDeleteRspToMac(SchCellDeleteReq  *ueDelete, Inst inst, SchMac
    ret = MacMessageRouter(&rspPst, (void *)&delRsp);
    if(ret == RFAILED)
    {
-      DU_LOG("\nERROR  -->  SCH : SchSendCellDeleteRspToMac(): failed to send the Cell Delete response");
+      DU_LOG("ERROR  -->  SCH : SchSendCellDeleteRspToMac(): failed to send the Cell Delete response");
       return ret;
    }
    return ret;
@@ -996,14 +996,14 @@ uint8_t SchProcCellDeleteReq(Pst *pst, SchCellDeleteReq  *cellDelete)
    
    if(!cellDelete)
    {
-      DU_LOG("\nERROR  -->  SCH : SchProcCellDeleteReq(): Ue Delete request failed");
+      DU_LOG("ERROR  -->  SCH : SchProcCellDeleteReq(): Ue Delete request failed");
    }
    else
    {
       GET_CELL_IDX(cellDelete->cellId, cellIdx);
       if(schCb[inst].cells[cellIdx] == NULLP)
       { 
-         DU_LOG("\nERROR  -->  SCH : SchProcCellDeleteReq(): cell Id[%d] is not available", cellDelete->cellId);
+         DU_LOG("ERROR  -->  SCH : SchProcCellDeleteReq(): cell Id[%d] is not available", cellDelete->cellId);
          result = RSP_NOK;
       }
       else
@@ -1014,18 +1014,18 @@ uint8_t SchProcCellDeleteReq(Pst *pst, SchCellDeleteReq  *cellDelete)
             result = RSP_OK;
             ret = ROK;
             SCH_FREE(schCb[inst].cells[cellIdx], sizeof(SchCellCb));
-            DU_LOG("\nINFO   -->  SCH : Sending Cell Delete response to MAC");
+            DU_LOG("INFO   -->  SCH : Sending Cell Delete response to MAC");
          }
          else
          {
-            DU_LOG("\nERROR  -->  SCH : SchProcCellDeleteReq(): cell Id[%d] is not available",cellDelete->cellId);
+            DU_LOG("ERROR  -->  SCH : SchProcCellDeleteReq(): cell Id[%d] is not available",cellDelete->cellId);
             result = RSP_NOK;
          }
       }
 
       if(SchSendCellDeleteRspToMac(cellDelete, inst, result)!=ROK)
       {
-         DU_LOG("\nERROR  -->  SCH : SchProcCellDeleteReq(): failed to send Cell Delete response");
+         DU_LOG("ERROR  -->  SCH : SchProcCellDeleteReq(): failed to send Cell Delete response");
          ret =  RFAILED;
       }
    }
@@ -1057,12 +1057,12 @@ uint8_t SchProcDlRlcBoInfo(Pst *pst, DlRlcBoInfo *dlBoInfo)
    SchCellCb *cell = NULLP;
    Inst  inst = pst->dstInst-SCH_INST_START;   
 
-   DU_LOG("\nDEBUG  -->  SCH : Received RLC BO Status indication LCId [%d] BO [%d]", dlBoInfo->lcId, dlBoInfo->dataVolume);
+   DU_LOG("DEBUG  -->  SCH : Received RLC BO Status indication LCId [%d] BO [%d]", dlBoInfo->lcId, dlBoInfo->dataVolume);
    cell = schCb[inst].cells[inst];
 
    if(cell == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH : SchProcDlRlcBoInfo(): Cell does not exists");
+      DU_LOG("ERROR  -->  SCH : SchProcDlRlcBoInfo(): Cell does not exists");
       return RFAILED;
    }
 
@@ -1141,29 +1141,29 @@ uint8_t SchProcBsr(Pst *pst, UlBufferStatusRptInd *bsrInd)
    SchUeCb        *ueCb         = NULLP;
    uint8_t        lcgIdx = 0;
 
-   DU_LOG("\nDEBUG  -->  SCH : Received BSR");
+   DU_LOG("DEBUG  -->  SCH : Received BSR");
    if(bsrInd == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH : BSR Ind is empty");
+      DU_LOG("ERROR  -->  SCH : BSR Ind is empty");
       return RFAILED;
    }
    cellCb = schCb[schInst].cells[schInst];
    if(cellCb == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH : CellCb is empty");
+      DU_LOG("ERROR  -->  SCH : CellCb is empty");
       return RFAILED;
    }
    ueCb = schGetUeCb(cellCb, bsrInd->crnti);
 
    if(ueCb == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH : UeCB is empty");
+      DU_LOG("ERROR  -->  SCH : UeCB is empty");
       return RFAILED;
    }
 
    if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
    {
-      DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
+      DU_LOG("INFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
       return ROK;
    }
    
@@ -1204,18 +1204,18 @@ uint8_t SchProcSrUciInd(Pst *pst, SrUciIndInfo *uciInd)
    SchUeCb   *ueCb; 
    SchCellCb *cellCb = schCb[inst].cells[inst];
 
-   DU_LOG("\nDEBUG  -->  SCH : Received SR");
+   DU_LOG("DEBUG  -->  SCH : Received SR");
 
    ueCb = schGetUeCb(cellCb, uciInd->crnti);
    
    if(ueCb->state == SCH_UE_STATE_INACTIVE)
    {
-      DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", uciInd->crnti);
+      DU_LOG("ERROR  -->  SCH : Crnti %d is inactive", uciInd->crnti);
       return ROK;  
    }
    if(ueCb->ueCfg.dataTransmissionAction == STOP_DATA_TRANSMISSION)
    {
-      DU_LOG("\nINFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
+      DU_LOG("INFO --> SCH: UL Data transmission not allowed for UE %d", ueCb->ueCfg.ueId);
       return ROK;
    }
    if(uciInd->numSrBits)
@@ -1250,13 +1250,13 @@ uint8_t SchProcDlHarqInd(Pst *pst, DlHarqInd *dlHarqInd)
    SchUeCb   *ueCb;
    SchCellCb *cellCb = schCb[inst].cells[inst];
 
-   DU_LOG("\nDEBUG  -->  SCH : Received HARQ");
+   DU_LOG("DEBUG  -->  SCH : Received HARQ");
 
    ueCb = schGetUeCb(cellCb, dlHarqInd->crnti);
 
    if(ueCb->state == SCH_UE_STATE_INACTIVE)
    {
-      DU_LOG("\nERROR  -->  SCH : Crnti %d is inactive", dlHarqInd->crnti);
+      DU_LOG("ERROR  -->  SCH : Crnti %d is inactive", dlHarqInd->crnti);
       return ROK;
    }
 
@@ -1383,7 +1383,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
       freePrbNode = isPrbAvailable(&prbAlloc->freePrbBlockList, *startPrb, numPrb);
       if(!freePrbNode)
       {
-         DU_LOG("\nERROR  -->  SCH: Requested DL PRB unavailable");
+         DU_LOG("ERROR  -->  SCH: Requested DL PRB unavailable");
          return RFAILED;
       }
    }
@@ -1393,7 +1393,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
    {
       if(fillPrbBitmap(prbAlloc->prbBitMap[symbol], *startPrb, numPrb) != ROK)
       {
-         DU_LOG("\nERROR  -->  SCH: fillPrbBitmap() failed for symbol [%d] in DL", symbol);
+         DU_LOG("ERROR  -->  SCH: fillPrbBitmap() failed for symbol [%d] in DL", symbol);
          return RFAILED;
       }
    }
@@ -1442,7 +1442,7 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
 
    if(cell == NULLP)
    {
-      DU_LOG("\nERROR  --> SCH : allocatePrbUl(): Received cellCb is null");
+      DU_LOG("ERROR  --> SCH : allocatePrbUl(): Received cellCb is null");
       return RFAILED;
    }
    
@@ -1520,7 +1520,7 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
       freePrbNode = isPrbAvailable(&prbAlloc->freePrbBlockList, *startPrb, numPrb);
       if(!freePrbNode)
       {
-         DU_LOG("\nERROR  -->  SCH: Requested UL PRB unavailable");
+         DU_LOG("ERROR  -->  SCH: Requested UL PRB unavailable");
          return RFAILED;
       }
    }
@@ -1530,7 +1530,7 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
    {
       if(fillPrbBitmap(prbAlloc->prbBitMap[symbol], *startPrb, numPrb) != ROK)
       {
-         DU_LOG("\nERROR  -->  SCH: fillPrbBitmap() failed for symbol [%d] in UL", symbol);
+         DU_LOG("ERROR  -->  SCH: fillPrbBitmap() failed for symbol [%d] in UL", symbol);
          return RFAILED;
       }
    }
@@ -1626,7 +1626,7 @@ uint16_t searchLargestFreeBlock(SchCellCb *cell, SlotTimingInfo slotTime,uint16_
    }
    else
    {
-      DU_LOG("\nERROR --> SCH: Invalid Direction!");
+      DU_LOG("ERROR --> SCH: Invalid Direction!");
       return (maxFreePRB);
    }
 
@@ -1741,7 +1741,7 @@ uint8_t addSliceCfgInSchDb(CmLListCp *sliceCfgInDb, SchRrmPolicyOfSlice *cfgReq)
    }
    else
    {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failed in addOrModifySliceCfgInSchDb");
+      DU_LOG("ERROR  -->  SCH : Memory allocation failed in addOrModifySliceCfgInSchDb");
       return RFAILED;
    }
    return ROK;
@@ -1789,7 +1789,7 @@ uint8_t fillSliceCfgRsp(Inst inst, CmLListCp *storedSliceCfg, SchCellCb *cellCb,
                }
                else
                {
-                  DU_LOG("\nERROR  --> SCH : Failed to store slice configuration in SchDb");
+                  DU_LOG("ERROR  --> SCH : Failed to store slice configuration in SchDb");
                   schSliceCfgRsp.cause = RESOURCE_UNAVAILABLE;
                   ret = RFAILED;
                }
@@ -1869,7 +1869,7 @@ uint8_t SchProcSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
    uint8_t ret = ROK;
    Inst   inst = pst->dstInst - SCH_INST_START;
 
-   DU_LOG("\nINFO  -->  SCH : Received Slice Cfg request from MAC");
+   DU_LOG("INFO  -->  SCH : Received Slice Cfg request from MAC");
    if(schSliceCfgReq)
    {
       if(schSliceCfgReq->listOfSlices)
@@ -1877,7 +1877,7 @@ uint8_t SchProcSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
          /* filling the slice configuration response of each slice */
          if(fillSliceCfgRsp(inst, &schCb[inst].sliceCfg, schCb[inst].cells[0], schSliceCfgReq) != ROK)
          {
-            DU_LOG("\nERROR  -->  SCH : Failed to fill the slice cfg rsp");
+            DU_LOG("ERROR  -->  SCH : Failed to fill the slice cfg rsp");
             ret = RFAILED;
          }
          freeSchSliceCfgReq(schSliceCfgReq);
@@ -1885,7 +1885,7 @@ uint8_t SchProcSliceCfgReq(Pst *pst, SchSliceCfgReq *schSliceCfgReq)
    }
    else
    {
-      DU_LOG("\nERROR  -->  SCH : Received SchSliceCfgReq is NULL");
+      DU_LOG("ERROR  -->  SCH : Received SchSliceCfgReq is NULL");
       ret = RFAILED;
    }
    return ret;
@@ -1995,7 +1995,7 @@ uint8_t SchProcSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
    uint8_t ret = ROK;
    Inst   inst = pst->dstInst - SCH_INST_START;
 
-   DU_LOG("\nINFO  -->  SCH : Received Slice ReCfg request from MAC");
+   DU_LOG("INFO  -->  SCH : Received Slice ReCfg request from MAC");
    if(schSliceRecfgReq)
    {
       if(schSliceRecfgReq->listOfSlices)
@@ -2003,7 +2003,7 @@ uint8_t SchProcSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
          /* filling the slice configuration response of each slice */
          if(fillSliceRecfgRsp(inst, &schCb[inst].sliceCfg, schSliceRecfgReq) != ROK)
          {
-            DU_LOG("\nERROR  -->  SCH : Failed to fill sch slice cfg response");
+            DU_LOG("ERROR  -->  SCH : Failed to fill sch slice cfg response");
             ret = RFAILED;
          }
          freeSchSliceCfgReq(schSliceRecfgReq);
@@ -2011,7 +2011,7 @@ uint8_t SchProcSliceRecfgReq(Pst *pst, SchSliceRecfgReq *schSliceRecfgReq)
    }
    else
    {
-      DU_LOG("\nERROR  -->  SCH : Received SchSliceRecfgReq is NULL");
+      DU_LOG("ERROR  -->  SCH : Received SchSliceRecfgReq is NULL");
 
    }
    return ret;
@@ -2157,7 +2157,7 @@ uint8_t schAddPagingIndtoList(CmLListCp *storedPageList,void * pageIndInfo)
    SCH_ALLOC(currentNodeInfo, sizeof(CmLList));
    if(!currentNodeInfo)
    {  
-      DU_LOG("\nERROR  --> SCH : schAddPagingIndtoList() : Memory allocation failed");
+      DU_LOG("ERROR  --> SCH : schAddPagingIndtoList() : Memory allocation failed");
       return RFAILED;
    }
    
@@ -2172,7 +2172,7 @@ uint8_t schAddPagingIndtoList(CmLListCp *storedPageList,void * pageIndInfo)
       }
       else if ((recvdNode->pageTxTime.slot == tempNode->pageTxTime.slot))
       {
-         DU_LOG("\nERROR  --> SCH : schAddPagingIndtoList() : Slot[%d] is already present in the list", recvdNode->pageTxTime.slot);
+         DU_LOG("ERROR  --> SCH : schAddPagingIndtoList() : Slot[%d] is already present in the list", recvdNode->pageTxTime.slot);
          return RFAILED;
       }
       else
@@ -2185,7 +2185,7 @@ uint8_t schAddPagingIndtoList(CmLListCp *storedPageList,void * pageIndInfo)
    {
       cmLListAdd2Tail(storedPageList, currentNodeInfo);
    }
-   DU_LOG("\nDEBUG   -->  SCH : Paging information is stored successfully for PF:%d, Slot:%d",\
+   DU_LOG("DEBUG   -->  SCH : Paging information is stored successfully for PF:%d, Slot:%d",\
               recvdNode->pageTxTime.sfn, recvdNode->pageTxTime.slot);
    return ROK;
 }
@@ -2215,7 +2215,7 @@ uint8_t SchProcPagingInd(Pst *pst,  SchPageInd *pageInd)
 
    if(pageInd)
    {
-      DU_LOG("\nDEBUG   -->  SCH : Received paging indication from MAC for cellId[%d]",\
+      DU_LOG("DEBUG   -->  SCH : Received paging indication from MAC for cellId[%d]",\
                   pageInd->cellId);
 
       /* Fetch Cell CB */
@@ -2231,7 +2231,7 @@ uint8_t SchProcPagingInd(Pst *pst,  SchPageInd *pageInd)
       {
          if(pageInd->i_s > cellCb->cellCfg.dlCfgCommon.schPcchCfg.numPO)
          {
-            DU_LOG("\nERROR --> SCH : SchProcPagingInd(): i_s should not be greater than number of paging occasion");
+            DU_LOG("ERROR --> SCH : SchProcPagingInd(): i_s should not be greater than number of paging occasion");
          }
          else
          {
@@ -2248,7 +2248,7 @@ uint8_t SchProcPagingInd(Pst *pst,  SchPageInd *pageInd)
                SCH_ALLOC(pageInfo->pagePdu, pageInfo->msgLen);
                if(!pageInfo->pagePdu)
                {
-                  DU_LOG("\nERROR  --> SCH : SchProcPagingInd(): Failed to allocate memory");
+                  DU_LOG("ERROR  --> SCH : SchProcPagingInd(): Failed to allocate memory");
                }
                else
                {
@@ -2256,26 +2256,26 @@ uint8_t SchProcPagingInd(Pst *pst,  SchPageInd *pageInd)
                   ret = schAddPagingIndtoList(&cellCb->pageCb.pageIndInfoRecord[pageInfo->pageTxTime.sfn], pageInfo);
                   if(ret != ROK)
                   {
-                     DU_LOG("\nERROR  --> SCH : SchProcPagingInd(): Failed to store paging record");
+                     DU_LOG("ERROR  --> SCH : SchProcPagingInd(): Failed to store paging record");
                   }
                }
             }
             else
             {
-               DU_LOG("\nERROR  --> SCH : SchProcPagingInd(): Failed to allocate memory");
+               DU_LOG("ERROR  --> SCH : SchProcPagingInd(): Failed to allocate memory");
             }
          }
       }
       else
       {
-         DU_LOG("\nERROR  -->  SCH : Cell ID [%d] not found", pageInd->cellId);
+         DU_LOG("ERROR  -->  SCH : Cell ID [%d] not found", pageInd->cellId);
       }
       SCH_FREE(pageInd->pagePdu, pageInd->pduLen);
       SCH_FREE(pageInd, sizeof(SchPageInd));
    }
    else
    {
-      DU_LOG("\nERROR  --> SCH : SchProcPagingInd(): Received null pointer");
+      DU_LOG("ERROR  --> SCH : SchProcPagingInd(): Received null pointer");
    }
    return ret;
 }
@@ -2348,7 +2348,7 @@ uint8_t SchProcDlCqiInd(Pst *pst, SchDlCqiInd *dlCqiInd)
 
    if(!dlCqiInd)
    {
-      DU_LOG("\nERROR  -->  SCH : SchProcDlCqiInd(): CQI Ind is empty");
+      DU_LOG("ERROR  -->  SCH : SchProcDlCqiInd(): CQI Ind is empty");
       ret = RFAILED;
    }
    else
@@ -2357,7 +2357,7 @@ uint8_t SchProcDlCqiInd(Pst *pst, SchDlCqiInd *dlCqiInd)
       cell = schCb[inst].cells[cellIdx];
       if(cell == NULLP)
       { 
-         DU_LOG("\nERROR  -->  SCH : SchProcDlCqiInd(): cell Id[%d] not found", dlCqiInd->cellId);
+         DU_LOG("ERROR  -->  SCH : SchProcDlCqiInd(): cell Id[%d] not found", dlCqiInd->cellId);
          ret = RFAILED;
       }
       else
@@ -2368,7 +2368,7 @@ uint8_t SchProcDlCqiInd(Pst *pst, SchDlCqiInd *dlCqiInd)
             ueCb = &cell->ueCb[ueId-1];
             if(ueCb->crnti != dlCqiInd->crnti)
             {
-               DU_LOG("\nERROR  -->  SCH : SchProcDlCqiInd(): UeCb for received crnti[%d] not found", dlCqiInd->crnti);
+               DU_LOG("ERROR  -->  SCH : SchProcDlCqiInd(): UeCb for received crnti[%d] not found", dlCqiInd->crnti);
                ret = RFAILED;
             }
             else
@@ -2378,7 +2378,7 @@ uint8_t SchProcDlCqiInd(Pst *pst, SchDlCqiInd *dlCqiInd)
          }
          else
          {
-            DU_LOG("\nERROR  -->  SCH : SchProcDlCqiInd(): Received cell Id[%d] from MAC is not matching with CellID[%d] in SCH Cb",\
+            DU_LOG("ERROR  -->  SCH : SchProcDlCqiInd(): Received cell Id[%d] from MAC is not matching with CellID[%d] in SCH Cb",\
                     dlCqiInd->cellId, cell->cellId);
             ret = RFAILED;
          }
@@ -2413,7 +2413,7 @@ uint8_t SchProcUlCqiInd(Pst *pst, SchUlCqiInd *ulCqiInd)
 
    if(!ulCqiInd)
    {
-      DU_LOG("\nERROR  -->  SCH : SchProcUlCqiInd(): CQI Ind is empty");
+      DU_LOG("ERROR  -->  SCH : SchProcUlCqiInd(): CQI Ind is empty");
       ret = RFAILED;
    }
    else
@@ -2422,7 +2422,7 @@ uint8_t SchProcUlCqiInd(Pst *pst, SchUlCqiInd *ulCqiInd)
       cell = schCb[inst].cells[cellIdx];
       if(cell == NULLP)
       { 
-         DU_LOG("\nERROR  -->  SCH : SchProcUlCqiInd(): cell Id[%d] not found", ulCqiInd->cellId);
+         DU_LOG("ERROR  -->  SCH : SchProcUlCqiInd(): cell Id[%d] not found", ulCqiInd->cellId);
          ret = RFAILED;
       }
       else
@@ -2433,7 +2433,7 @@ uint8_t SchProcUlCqiInd(Pst *pst, SchUlCqiInd *ulCqiInd)
             ueCb = &cell->ueCb[ueId-1];
             if(ueCb->crnti != ulCqiInd->crnti)
             {
-               DU_LOG("\nERROR  -->  SCH : SchProcUlCqiInd(): UeCb for received crnti[%d] not found",ulCqiInd->crnti);
+               DU_LOG("ERROR  -->  SCH : SchProcUlCqiInd(): UeCb for received crnti[%d] not found",ulCqiInd->crnti);
                ret = RFAILED;
             }
             else
@@ -2443,7 +2443,7 @@ uint8_t SchProcUlCqiInd(Pst *pst, SchUlCqiInd *ulCqiInd)
          }
          else
          {
-            DU_LOG("\nERROR  -->  SCH : SchProcUlCqiInd(): Received cell Id[%d] from MAC is not matching with CellId[%d] in SCH Cb",\
+            DU_LOG("ERROR  -->  SCH : SchProcUlCqiInd(): Received cell Id[%d] from MAC is not matching with CellId[%d] in SCH Cb",\
                     ulCqiInd->cellId, cell->cellId);
             ret = RFAILED;
          }
@@ -2478,7 +2478,7 @@ uint8_t SchProcPhrInd(Pst *pst, SchPwrHeadroomInd *schPhrInd)
 
    if(!schPhrInd)
    {
-      DU_LOG("\nERROR  -->  SCH : SchProcPhrInd(): PHR is empty");
+      DU_LOG("ERROR  -->  SCH : SchProcPhrInd(): PHR is empty");
       ret = RFAILED;
    }
    else
@@ -2487,7 +2487,7 @@ uint8_t SchProcPhrInd(Pst *pst, SchPwrHeadroomInd *schPhrInd)
       cell = schCb[inst].cells[cellIdx];
       if(cell == NULLP)
       { 
-         DU_LOG("\nERROR  -->  SCH : schProcPhrInd(): cell Id[%d] is not found", schPhrInd->cellId);
+         DU_LOG("ERROR  -->  SCH : schProcPhrInd(): cell Id[%d] is not found", schPhrInd->cellId);
          ret = RFAILED;
       }
       else
@@ -2498,7 +2498,7 @@ uint8_t SchProcPhrInd(Pst *pst, SchPwrHeadroomInd *schPhrInd)
             ueCb = &cell->ueCb[ueId-1];
             if(ueCb->crnti != schPhrInd->crnti)
             {
-               DU_LOG("\nERROR  -->  SCH : SchProcPhrInd(): UeCb for received crnti[%d] not found",schPhrInd->crnti);
+               DU_LOG("ERROR  -->  SCH : SchProcPhrInd(): UeCb for received crnti[%d] not found",schPhrInd->crnti);
                ret = RFAILED;
             }
             else
@@ -2508,7 +2508,7 @@ uint8_t SchProcPhrInd(Pst *pst, SchPwrHeadroomInd *schPhrInd)
          }
          else
          {
-            DU_LOG("\nERROR  -->  SCH : SchProcPhrInd(): Mismatch between Received cell Id[%d] from MAC and CellID[%d] in SCH CB ",\
+            DU_LOG("ERROR  -->  SCH : SchProcPhrInd(): Mismatch between Received cell Id[%d] from MAC and CellID[%d] in SCH CB ",\
                     schPhrInd->cellId, cell->cellId);
             ret = RFAILED;
          }
@@ -2538,11 +2538,11 @@ uint8_t SchSendStatsRspToMac(SchStatsRsp *statsRsp)
    uint8_t ret = ROK;
    SchStatsRsp  *schStatsRsp;
 
-   DU_LOG("\nINFO   --> SCH : Filling statistics response");
+   DU_LOG("INFO   --> SCH : Filling statistics response");
    SCH_ALLOC(schStatsRsp, sizeof(SchStatsRsp));
    if(schStatsRsp == NULLP)
    {
-      DU_LOG("\nERROR  --> SCH : Failed to allocate memory in SchSendStatsRspToMac()");
+      DU_LOG("ERROR  --> SCH : Failed to allocate memory in SchSendStatsRspToMac()");
       return RFAILED;
    }
  
@@ -2557,7 +2557,7 @@ uint8_t SchSendStatsRspToMac(SchStatsRsp *statsRsp)
    ret = MacMessageRouter(&rspPst, (void *)schStatsRsp);
    if(ret == RFAILED)
    {
-      DU_LOG("\nERROR  -->  SCH : SchSendStatsRspToMac(): Failed to send Statistics Response");
+      DU_LOG("ERROR  -->  SCH : SchSendStatsRspToMac(): Failed to send Statistics Response");
       return ret;
    }
    return ret;
@@ -2634,7 +2634,7 @@ uint8_t schAddToKpiActiveList(CmLListCp *kpiList, PTR kpiStatsInfo)
       cmLListAdd2Tail(kpiList, node);
       return ROK;
    }
-   DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d",__func__, __LINE__);
+   DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d",__func__, __LINE__);
    return RFAILED;
 }
 
@@ -2689,7 +2689,7 @@ uint8_t schAddToStatsGrpList(Inst inst, struct schStatsRsp *statsRsp, uint64_t s
    SCH_ALLOC(grpInfoDb, sizeof(SchStatsGrp));
    if(grpInfoDb == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d",__func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d",__func__, __LINE__);
       cause = RESOURCE_UNAVAILABLE;
       ret = RFAILED;
    }
@@ -2706,7 +2706,7 @@ uint8_t schAddToStatsGrpList(Inst inst, struct schStatsRsp *statsRsp, uint64_t s
                   SCH_ALLOC(grpInfoDb->kpiStats.dlTotalPrbUsage, sizeof(TotalPrbUsage));
                   if(!grpInfoDb->kpiStats.dlTotalPrbUsage)
                   {
-                     DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d",__func__, __LINE__);
+                     DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d",__func__, __LINE__);
                      measTypeInvalid = true;
                      cause = RESOURCE_UNAVAILABLE;
                      break;
@@ -2719,7 +2719,7 @@ uint8_t schAddToStatsGrpList(Inst inst, struct schStatsRsp *statsRsp, uint64_t s
                   SCH_ALLOC(grpInfoDb->kpiStats.ulTotalPrbUsage, sizeof(TotalPrbUsage));
                   if(!grpInfoDb->kpiStats.ulTotalPrbUsage)
                   {
-                     DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d",__func__, __LINE__);
+                     DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d",__func__, __LINE__);
                      measTypeInvalid = true;
                      cause = RESOURCE_UNAVAILABLE;
                      break;
@@ -2729,7 +2729,7 @@ uint8_t schAddToStatsGrpList(Inst inst, struct schStatsRsp *statsRsp, uint64_t s
 
             default:
                {
-                  DU_LOG("\nERROR  -->  SCH : SchProcStatsReq: Invalid measurement type [%d]", \
+                  DU_LOG("ERROR  -->  SCH : SchProcStatsReq: Invalid measurement type [%d]", \
                         grpInfo->statsList[reqMeasIdx]);
                   measTypeInvalid = true;
                   cause = PARAM_INVALID;
@@ -2751,7 +2751,7 @@ uint8_t schAddToStatsGrpList(Inst inst, struct schStatsRsp *statsRsp, uint64_t s
             /* Step 2.2 */
             if(schAddToKpiActiveList(&schCb[inst].statistics.activeKpiList.dlTotPrbUseList, (PTR)grpInfoDb->kpiStats.dlTotalPrbUsage)!=ROK)
             {
-               DU_LOG("\nERROR  -->  E2AP : KPI addition failed in %s at %d",__func__,__LINE__);
+               DU_LOG("ERROR  -->  E2AP : KPI addition failed in %s at %d",__func__,__LINE__);
                cause = RESOURCE_UNAVAILABLE;
                ret =RFAILED;
                break;
@@ -2763,7 +2763,7 @@ uint8_t schAddToStatsGrpList(Inst inst, struct schStatsRsp *statsRsp, uint64_t s
             /* Step 2.2 */
             if(schAddToKpiActiveList(&schCb[inst].statistics.activeKpiList.ulTotPrbUseList, (PTR)grpInfoDb->kpiStats.ulTotalPrbUsage) != ROK)
             {
-               DU_LOG("\nERROR  -->  E2AP : KPI addition failed in %s at %d",__func__,__LINE__);
+               DU_LOG("ERROR  -->  E2AP : KPI addition failed in %s at %d",__func__,__LINE__);
                cause = RESOURCE_UNAVAILABLE;
                ret =RFAILED;
                break;
@@ -2796,7 +2796,7 @@ uint8_t schAddToStatsGrpList(Inst inst, struct schStatsRsp *statsRsp, uint64_t s
          else
          {
             /* Step 2.5.2 */
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
             cause = RESOURCE_UNAVAILABLE;
             ret  = RFAILED;
             break;
@@ -2857,18 +2857,18 @@ uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq)
    SchStatsRsp schStatsRsp;
    Inst inst = pst->dstInst - SCH_INST_START;
 
-   DU_LOG("\nINFO   -->  SCH : Received Statistics Request from MAC");
+   DU_LOG("INFO   -->  SCH : Received Statistics Request from MAC");
 
    if(statsReq == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH : SchProcStatsReq(): Received Null pointer");
+      DU_LOG("ERROR  -->  SCH : SchProcStatsReq(): Received Null pointer");
       return RFAILED;
    }
 
    /*Step -1*/
    if(schCb[inst].statistics.statsGrpList.count >= MAX_NUM_STATS_GRP)
    {
-      DU_LOG("\nERROR  -->  SCH : SchProcStatsReq: Maximum number of statistics configured. \
+      DU_LOG("ERROR  -->  SCH : SchProcStatsReq: Maximum number of statistics configured. \
             Cannot process new request.");
       SchRejectAllStats(statsReq, RESOURCE_UNAVAILABLE);
       SCH_FREE(statsReq, sizeof(SchStatsReq));
@@ -2893,7 +2893,7 @@ uint8_t SchProcStatsReq(Pst *pst, SchStatsReq *statsReq)
          /*Step -4 */
          if(schAddToStatsGrpList(inst, &schStatsRsp, statsReq->subscriptionId, grpInfo) != ROK)
          {
-            DU_LOG("\nERROR  -->  SCH : SchProcStatsReq(): Failed to fill the stats group list");
+            DU_LOG("ERROR  -->  SCH : SchProcStatsReq(): Failed to fill the stats group list");
             if((schStatsRsp.statsGrpRejectedList[schStatsRsp.numGrpRejected-1].groupId == grpInfo->groupId &&\
                      (schStatsRsp.statsGrpRejectedList[schStatsRsp.numGrpRejected-1].cause == RESOURCE_UNAVAILABLE)))
             { 
@@ -2936,7 +2936,7 @@ uint8_t SchSendStatsIndToMac(Inst inst, SchStatsInd  *statsInd)
    uint8_t ret = ROK;
 
 #ifdef DEBUG_PRINT
-   DU_LOG("\nDEBUG  --> SCH : Filling statistics indication");
+   DU_LOG("DEBUG  --> SCH : Filling statistics indication");
 #endif
 
    /* Filling post structure */
@@ -2947,7 +2947,7 @@ uint8_t SchSendStatsIndToMac(Inst inst, SchStatsInd  *statsInd)
    ret = MacMessageRouter(&pst, (void *)statsInd);
    if(ret == RFAILED)
    {
-      DU_LOG("\nERROR  -->  SCH : SchSendStatsIndToMac(): Failed to send Statistics Indication");
+      DU_LOG("ERROR  -->  SCH : SchSendStatsIndToMac(): Failed to send Statistics Indication");
    }
    return ret;
 }
@@ -3325,11 +3325,11 @@ uint8_t SchProcStatsDeleteReq(Pst *pst, SchStatsDeleteReq *statsDeleteReq)
    SchStatsDeleteRsp  *schStatsDeleteRsp;
    Inst    inst = pst->dstInst - SCH_INST_START;
 
-   DU_LOG("\nINFO   -->  SCH : Received Statistics Delete Request from MAC");
+   DU_LOG("INFO   -->  SCH : Received Statistics Delete Request from MAC");
 
    if(statsDeleteReq == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH : SchProcStatsDeleteReq(): Received Null pointer");
+      DU_LOG("ERROR  -->  SCH : SchProcStatsDeleteReq(): Received Null pointer");
       return RFAILED;
    }
    
@@ -3337,7 +3337,7 @@ uint8_t SchProcStatsDeleteReq(Pst *pst, SchStatsDeleteReq *statsDeleteReq)
    SCH_ALLOC(schStatsDeleteRsp, sizeof(SchStatsDeleteRsp));
    if(schStatsDeleteRsp == NULLP)
    {
-      DU_LOG("\nERROR  --> SCH : Failed to allocate memory in SchProcStatsDeleteReq()");
+      DU_LOG("ERROR  --> SCH : Failed to allocate memory in SchProcStatsDeleteReq()");
       return RFAILED;
    }
    schStatsDeleteRsp->subscriptionId=statsDeleteReq->subscriptionId;
@@ -3350,7 +3350,7 @@ uint8_t SchProcStatsDeleteReq(Pst *pst, SchStatsDeleteReq *statsDeleteReq)
    ret = MacMessageRouter(&rspPst, (void *)schStatsDeleteRsp);
    if(ret == RFAILED)
    {
-      DU_LOG("\nERROR  -->  SCH : SchProcStatsDeleteReq(): Failed to send Statistics Response");
+      DU_LOG("ERROR  -->  SCH : SchProcStatsDeleteReq(): Failed to send Statistics Response");
    }
    SCH_FREE(statsDeleteReq, sizeof(SchStatsDeleteReq));
 
@@ -3379,11 +3379,11 @@ uint8_t SchSendStatsModificationRspToMac(SchStatsModificationRsp *tmpSchStatsMod
    uint8_t ret = ROK;
    SchStatsModificationRsp  *schStatsModificationRsp=NULLP;
 
-   DU_LOG("\nINFO   --> SCH : Filling statistics modification response");
+   DU_LOG("INFO   --> SCH : Filling statistics modification response");
    SCH_ALLOC(schStatsModificationRsp, sizeof(SchStatsModificationRsp));
    if(schStatsModificationRsp == NULLP)
    {
-      DU_LOG("\nERROR  --> SCH : Failed to allocate memory in SchSendStatsModificationRspToMac()");
+      DU_LOG("ERROR  --> SCH : Failed to allocate memory in SchSendStatsModificationRspToMac()");
       return RFAILED;
    }
 
@@ -3398,7 +3398,7 @@ uint8_t SchSendStatsModificationRspToMac(SchStatsModificationRsp *tmpSchStatsMod
    ret = MacMessageRouter(&rspPst, (void *)schStatsModificationRsp);
    if(ret == RFAILED)
    {
-      DU_LOG("\nERROR  -->  SCH : SchSendStatsModificationRspToMac(): Failed to send Statistics Modification Response");
+      DU_LOG("ERROR  -->  SCH : SchSendStatsModificationRspToMac(): Failed to send Statistics Modification Response");
       return ret;
    }
    return ret;
@@ -3491,11 +3491,11 @@ uint8_t SchProcStatsModificationReq(Pst *pst, SchStatsModificationReq *statsModi
 
    inst=pst->dstInst - SCH_INST_START;
 
-   DU_LOG("\nINFO   -->  SCH : Received Statistics modification request from MAC");
+   DU_LOG("INFO   -->  SCH : Received Statistics modification request from MAC");
 
    if(statsModificationReq == NULLP)
    {
-      DU_LOG("\nERROR  -->  SCH : SchProcStatsModificationReq(): Received Null pointer");
+      DU_LOG("ERROR  -->  SCH : SchProcStatsModificationReq(): Received Null pointer");
       return RFAILED;
    }
    memset(&statsModificationRsp, 0, sizeof(SchStatsRsp));
@@ -3538,7 +3538,7 @@ uint8_t SchProcStatsModificationReq(Pst *pst, SchStatsModificationReq *statsModi
                /* [Step - 4.1.2] */
                if(schAddToStatsGrpList(inst, &statsModificationRsp, subscriptionId, &statsGrpToModify) != ROK)
                {
-                  DU_LOG("\nERROR  -->  SCH : SchProcStatsReq(): Failed to fill the stats group list");
+                  DU_LOG("ERROR  -->  SCH : SchProcStatsReq(): Failed to fill the stats group list");
                   if(statsModificationRsp.statsGrpRejectedList[statsModificationRsp.numGrpRejected-1].groupId == statsGrpToModify.groupId)
                   {
                      /* [Step - 4.1.3] */

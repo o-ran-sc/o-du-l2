@@ -331,7 +331,7 @@ uint8_t schAddDrxTimerIntoList(CmLListCp *drxTimerList,void * nodeInfo, CmLList 
    SCH_ALLOC(currentNodeInfo, sizeof(CmLList));
    if(!currentNodeInfo)
    {
-      DU_LOG("\nERROR  --> SCH : schAddDrxTimerIntoList() : Memory allocation failed");
+      DU_LOG("ERROR  --> SCH : schAddDrxTimerIntoList() : Memory allocation failed");
       return RFAILED;
    }
 
@@ -339,7 +339,7 @@ uint8_t schAddDrxTimerIntoList(CmLListCp *drxTimerList,void * nodeInfo, CmLList 
    
    cmLListAdd2Tail(drxTimerList, currentNodeInfo);
    (*drxNodeInfo) = currentNodeInfo;
-   DU_LOG("\nINFO --> SCH : Drx node added into the list");
+   DU_LOG("INFO --> SCH : Drx node added into the list");
    return ROK;
 }
 
@@ -367,7 +367,7 @@ uint8_t schAddDrxNodeIntoHarqTimerList(CmLListCp *drxTimerList,void * nodeInfo, 
    SCH_ALLOC(currentNodeInfo, sizeof(CmLList));
    if(!currentNodeInfo)
    {
-      DU_LOG("\nERROR  --> SCH : schAddDrxTimerIntoList() : Memory allocation failed");
+      DU_LOG("ERROR  --> SCH : schAddDrxTimerIntoList() : Memory allocation failed");
       return RFAILED;
    }
 
@@ -375,7 +375,7 @@ uint8_t schAddDrxNodeIntoHarqTimerList(CmLListCp *drxTimerList,void * nodeInfo, 
    
    cmLListAdd2Tail(drxTimerList, currentNodeInfo);
    (*drxNodeInfo) = currentNodeInfo;
-   DU_LOG("\nINFO --> SCH : Drx node added into the list");
+   DU_LOG("INFO --> SCH : Drx node added into the list");
 
    return ROK;
 }

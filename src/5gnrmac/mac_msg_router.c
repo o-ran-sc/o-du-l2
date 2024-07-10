@@ -545,7 +545,7 @@ void callFlowMacActvTsk(Pst *pst)
             break;
          }
    }
-   DU_LOG("\nCall Flow: %s -> %s : %s\n", sourceTask, destTask, message);
+   DU_LOG("Call Flow: %s -> %s : %s\n", sourceTask, destTask, message);
 }
 #endif
 

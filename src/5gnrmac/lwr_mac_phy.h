@@ -35,7 +35,7 @@ typedef enum
 #ifdef MEM_SIZE_CHECK
 #define WLS_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) \
 {\
-   DU_LOG("\nRLC line = %d, func = %s, _size= %d ", _line, _func, _size); \
+   DU_LOG("RLC line = %d, func = %s, _size= %d ", _line, _func, _size); \
 }
 #else
 #define WLS_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) {}

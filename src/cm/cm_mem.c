@@ -294,7 +294,7 @@ void InsertToT2kMemLeakInfo(uint64_t address, uint32_t size, uint32_t lineNo, ch
 
    if(((uint64_t)(address - regMemLeakInfo.regStartAddr[region]) & regMinBktSzInfo[region].minBktSzMins1) !=0)
    {
-      DU_LOG("\nINFO  --> address in InsertToT2kMemLeakInfo is %ld size = %d file is %s line is %d \n", address, size, fileName, lineNo);
+      DU_LOG("INFO  --> address in InsertToT2kMemLeakInfo is %ld size = %d file is %s line is %d \n", address, size, fileName, lineNo);
    }
 
    leakInfo = (((T2kMeamLeakInfo*)(regMemLeakInfo.gMemLeakInfo[region])) + index1);
@@ -308,7 +308,7 @@ void InsertToT2kMemLeakInfo(uint64_t address, uint32_t size, uint32_t lineNo, ch
       leakInfo->prevRemLineNo = 0;
       leakInfo->prevRemFileName = '\0';
 
-      //DU_LOG("\nINFO  --> InsertToT2kMemLeakInfo  the adress from List  Address = %x, index1 = %d   \
+      //DU_LOG("INFO  --> InsertToT2kMemLeakInfo  the adress from List  Address = %x, index1 = %d   \
       from File=%s, line=%d \n",address,index1,fileName,lineNo);
       if(smallTick++ == 4096)
       {
@@ -318,8 +318,8 @@ void InsertToT2kMemLeakInfo(uint64_t address, uint32_t size, uint32_t lineNo, ch
    }
    else
    {
-         DU_LOG("\nERROR  --> Something is wrong, trying to insert %ld index1 = %d file is %s line is %d \n",address, index1, fileName, lineNo);
-         DU_LOG("\nINFO  --> Address present :%ld, from File:%s, Line:%d, Size:%d, Age:%d",
+         DU_LOG("ERROR  --> Something is wrong, trying to insert %ld index1 = %d file is %s line is %d \n",address, index1, fileName, lineNo);
+         DU_LOG("INFO  --> Address present :%ld, from File:%s, Line:%d, Size:%d, Age:%d",
                leakInfo->address, leakInfo->fileName,
                leakInfo->lineNo, leakInfo->size,
                leakInfo->age);
@@ -340,7 +340,7 @@ void RemoveFromT2kMemLeakInfo(uint64_t address, char *file, uint32_t line,Region
 
    if(index1 >= T2K_MEM_LEAK_INFO_TABLE_SIZE)
    {
-      DU_LOG("\nERROR  --> index1 out of range = %d address is %ld file = %s line = %d. We are going to crash!!!\n",
+      DU_LOG("ERROR  --> index1 out of range = %d address is %ld file = %s line = %d. We are going to crash!!!\n",
               index1,
               address,
               file,
@@ -359,14 +359,14 @@ void RemoveFromT2kMemLeakInfo(uint64_t address, char *file, uint32_t line,Region
    }
    else
    {
-         DU_LOG("\nERROR  --> Something is wrong, trying to remove %ld index1 = %d  from File=%s, line=%d address present is %ld region%d \n",address, index1, file,line,leakInfo->address,region);
+         DU_LOG("ERROR  --> Something is wrong, trying to remove %ld index1 = %d  from File=%s, line=%d address present is %ld region%d \n",address, index1, file,line,leakInfo->address,region);
 
-         DU_LOG("\nINFO  -->  Last Del file %s line %d\n",leakInfo->lastDelFileName,
+         DU_LOG("INFO  -->  Last Del file %s line %d\n",leakInfo->lastDelFileName,
                  leakInfo->lastDelLineNum);
 
          if(leakInfo->prevRemFileName != NULLP)
          {
-             DU_LOG("\nINFO  --> Previous File:%s, Previous Line:%d\n",
+             DU_LOG("INFO  --> Previous File:%s, Previous Line:%d\n",
                   leakInfo->prevRemFileName, leakInfo->prevRemLineNo);
          }
    }
@@ -381,7 +381,7 @@ void DumpT2kMemLeakInfoToFile()
 
    if(fp == NULL)
    {
-      DU_LOG("\nERROR  --> Could not open file for dumping mem leak info\n");
+      DU_LOG("ERROR  --> Could not open file for dumping mem leak info\n");
       return;
    }
    for(reg=0; reg <regMemLeakInfo.numActvRegions; reg++)
@@ -748,7 +748,7 @@ S16 cmMmRegInit(Region region,CmMmRegCb *regCb,CmMmRegCfg  *cfg)
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL2
     /* Initialize the hast list to maintain the SSI memory information for Broadcom */
     offset = (uint16_t)((PTR)(&ptrHdr.ent) - (PTR) &ptrHdr);
-    DU_LOG("\nINFO  --> offset is %d region %d\n", offset, region);
+    DU_LOG("INFO  --> offset is %d region %d\n", offset, region);
     if(cmHashListInit(&regCb->brdcmSsiLstCp, 1000, offset, FALSE, 
        CM_HASH_KEYTYPE_UINT32_MOD, region, 0) != ROK)
     {
@@ -1206,7 +1206,7 @@ Data  **prevptr;
       /* Initialize the elements with 0xAB */
       memset(*ptr, 0xAB, *size);
 #endif
-//      DU_LOG("\nINFO  --> Pointer allocated %8p size %d\n", *ptr, *size);
+//      DU_LOG("INFO  --> Pointer allocated %8p size %d\n", *ptr, *size);
       /* Store this pointer in hash list */
       if ((bkt->nextBlk) && *ptr)
 #elif SS_LIGHT_MEM_LEAK_STS
@@ -1311,7 +1311,7 @@ Data  **prevptr;
                if (g_overused[bktIdx] == 0 && OVERUSED(bkt))
                {
                   g_overused[bktIdx] = 1;
-                  /*DU_LOG("\nINFO  --> cmAlloc: bktIdx %u overused %u numAlloc %u\n", bktIdx, g_overused[bktIdx], bkt->numAlloc); */
+                  /*DU_LOG("INFO  --> cmAlloc: bktIdx %u overused %u numAlloc %u\n", bktIdx, g_overused[bktIdx], bkt->numAlloc); */
                }
             }
 #endif
@@ -1704,13 +1704,13 @@ Size    size
                size(%d) %8p, Bucket Id:%03d\n",
                size, ptrHdr->requestedSize, ptr, regCb->mapTbl[idx].bktIdx);
 #endif
-         DU_LOG("\nERROR  --> Passed size (%d) does not match with allocated \
+         DU_LOG("ERROR  --> Passed size (%d) does not match with allocated \
                size(%d) %8p, Bucket Id:%03d\n",
                size, ptrHdr->requestedSize, ptr, regCb->mapTbl[idx].bktIdx);
          abort();
       }
       /* Validate the tail part to see if there is any over run */
-//      DU_LOG("\nINFO  --> Pointer free request %8p, size %d\n", ptr, size);
+//      DU_LOG("INFO  --> Pointer free request %8p, size %d\n", ptr, size);
 #endif
 
       /* validate the block to be freed for trampling */
@@ -1771,7 +1771,7 @@ Size    size
                 return (RTRAMPLINGNOK);
            }
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-         DU_LOG("\nERROR  --> Memory signature is invalid\n");
+         DU_LOG("ERROR  --> Memory signature is invalid\n");
          abort();
 #endif
       }
@@ -1807,7 +1807,7 @@ Size    size
           (Void) SUnlock(&(bkt->bktLock));
 #endif
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-         DU_LOG("\nERROR  --> Attempt to double deallocate memory at: %8p, Bucket Id:%03d,\
+         DU_LOG("ERROR  --> Attempt to double deallocate memory at: %8p, Bucket Id:%03d,\
                  size %u bytes \n", ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
           abort();
 #endif
@@ -2783,7 +2783,7 @@ Size    size
          sprintf(dbgPrntBuf, "Passed size (%d) does not match with allocated size(%d):%8p, Bucket Id:%03d\n",
                  size, ptrHdr->requestedSize, ptr, regCb->mapTbl[idx].bktIdx);
 #endif
-         DU_LOG("\nERROR  --> Passed size (%d) does not match with allocated size(%d):%8p, Bucket Id:%03d\n",
+         DU_LOG("ERROR  --> Passed size (%d) does not match with allocated size(%d):%8p, Bucket Id:%03d\n",
                  size, ptrHdr->requestedSize, ptr, regCb->mapTbl[idx].bktIdx);
          abort();
       }
@@ -2827,7 +2827,7 @@ Size    size
          }
 #endif
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-         DU_LOG("\nERROR  --> Memory signature is invalid\n");
+         DU_LOG("ERROR  --> Memory signature is invalid\n");
          abort();
 #endif
       }
@@ -2857,7 +2857,7 @@ Size    size
          SDisplay(0, dbgPrntBuf);
 #endif /* DEBUGP */
 #ifdef BRDCM_SSI_MEM_LEAK_DEBUG_LEVEL1
-         DU_LOG("\nERROR  --> Attempt to double deallocate memory at: %8p, Bucket Id:%03d,\
+         DU_LOG("ERROR  --> Attempt to double deallocate memory at: %8p, Bucket Id:%03d,\
                  size %u bytes \n", ptr, regCb->mapTbl[idx].bktIdx, bkt->size);
           abort();
 #endif
@@ -4588,13 +4588,13 @@ Void cmStartStopLeakLog(Void)
 {
    if (FALSE == gmemLkCb.isStarted)
    {
-      DU_LOG("\nINFO  --> leak capturing started\n");
+      DU_LOG("INFO  --> leak capturing started\n");
       gmemLkCb.isStarted = TRUE;
    }
    else
    {
       gmemLkCb.isStarted = FALSE;
-      DU_LOG("\nINFO  --> leak capturing stopped\n");
+      DU_LOG("INFO  --> leak capturing stopped\n");
       cmPrintLeakLog();
    }
    return;
@@ -4621,9 +4621,9 @@ Void cmPrintLeakLog(Void)
    static uint32_t leakCount =0; 
 
 
-   DU_LOG("\nINFO  --> START OF LEAK LOG ");
+   DU_LOG("INFO  --> START OF LEAK LOG ");
    SLock(&gmemLkCb.memLock);
-   DU_LOG("\nINFO  -->  Lock Acquired");
+   DU_LOG("INFO  -->  Lock Acquired");
    for(indx = 0; indx < CM_MAX_ALLOC_ENTERIES; indx++)
    {
       if(gmemLkCb.allocInfo[indx].used == TRUE)
@@ -4640,9 +4640,9 @@ Void cmPrintLeakLog(Void)
       //if(leakCount % 10 == 0)
         // sleep(1);
    }
-   DU_LOG("\nINFO  -->  END OF LEAK LOG ");
+   DU_LOG("INFO  -->  END OF LEAK LOG ");
    SUnlock(&gmemLkCb.memLock);
-   DU_LOG("\nINFO  -->  Lock Released");
+   DU_LOG("INFO  -->  Lock Released");
    leakCount =0; 
    return;
 }
@@ -5931,7 +5931,7 @@ uint8_t   entId    /* Tapa task which free the memory */
    /* If hash list is full then print the error tna continue */
    if(hashListCp->totalNumEntries == (CMM_HIST_MAX_MEM_BIN * CMM_HIST_MAX_MEM_ENTRY_PER_BIN))
    {
-        DU_LOG("\nERROR  --> No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN \n");
+        DU_LOG("ERROR  --> No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN \n");
         return RFAILED;
    } /* End of if */
 
@@ -6005,7 +6005,7 @@ uint8_t    entId
 
    if(hashListCp->totalNumEntries == (CMM_HIST_MAX_MEM_BIN * CMM_HIST_MAX_MEM_ENTRY_PER_BIN))
    {
-        DU_LOG("\nERROR  --> No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN\n");
+        DU_LOG("ERROR  --> No place in the hash list. Increase the value of macro CMM_HIST_MAX_MEM_BIN and CMM_HIST_MAX_MEM_ENTRY_PER_BIN\n");
         return RFAILED;
    } /* End of if */
 
@@ -6174,12 +6174,12 @@ CmMemEntries  **entry
       } /* End of if (numEnt) */
       else
       {
-         DU_LOG("\nERROR  --> Unable to find the entry in hash list\n");
+         DU_LOG("ERROR  --> Unable to find the entry in hash list\n");
          return RFAILED;
       }/* End of else (numEnt) */
    }/* end of for (numBin = 0) */
 
-   DU_LOG("\nERROR  --> Unable to find the entry in the hash list\n");
+   DU_LOG("ERROR  --> Unable to find the entry in the hash list\n");
    return RFAILED;
 } /* end of cmHstGrmFindEntry */
 

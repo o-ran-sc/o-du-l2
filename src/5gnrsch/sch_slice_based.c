@@ -70,7 +70,7 @@ uint8_t schSliceBasedCellCfgReq(SchCellCb *cellCb)
    SCH_ALLOC(schSpcCellCb, sizeof(SchSliceBasedCellCb));
    if(!schSpcCellCb)
    {
-      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schSliceBasedCellCfgReq");
+      DU_LOG("ERROR  -->  SCH: Memory allocation failed in schSliceBasedCellCfgReq");
       return RFAILED;
    }
    cmLListInit(&schSpcCellCb->ueToBeScheduled);
@@ -136,7 +136,7 @@ uint8_t SchSliceBasedAddUeConfigReq(SchUeCb *ueCb)
    SCH_ALLOC(ueSliceBasedCb, sizeof(SchSliceBasedHqCb));
    if(!ueSliceBasedCb)
    {
-      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in SchSliceBasedAddUeConfigReq");
+      DU_LOG("ERROR  -->  SCH: Memory allocation failed in SchSliceBasedAddUeConfigReq");
       return RFAILED;
    }
    
@@ -238,7 +238,7 @@ uint8_t schSliceBasedInitDlHqProcCb(SchDlHqProcCb *hqP)
    SCH_ALLOC(schSpcHqP, sizeof(SchSliceBasedHqProcCb));
    if(!schSpcHqP)
    {
-      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schSliceBasedInitDlHqProcCb");
+      DU_LOG("ERROR  -->  SCH: Memory allocation failed in schSliceBasedInitDlHqProcCb");
       return RFAILED;
    }
 
@@ -296,7 +296,7 @@ uint8_t schSliceBasedInitUlHqProcCb(SchUlHqProcCb *hqP)
    SCH_ALLOC(schSpcHqP, sizeof(SchSliceBasedHqProcCb));
    if(!schSpcHqP)
    {
-      DU_LOG("\nERROR  -->  SCH: Memory allocation failed in schSliceBasedInitUlHqProcCb");
+      DU_LOG("ERROR  -->  SCH: Memory allocation failed in schSliceBasedInitUlHqProcCb");
       return RFAILED;
    }
    cmLListInit(&schSpcHqP->lcCb.dedLcList);
@@ -482,13 +482,13 @@ uint8_t schSliceBasedAddUeToSchedule(SchCellCb *cellCb, uint16_t ueIdToAdd)
    SCH_ALLOC(ueId, sizeof(uint8_t));
    if(!ueId)
    {
-      DU_LOG("\nERROR  -->  SCH : Memory allocation failure in schSliceBasedAddUeToSchedule");
+      DU_LOG("ERROR  -->  SCH : Memory allocation failure in schSliceBasedAddUeToSchedule");
       return RFAILED;
    }
    *ueId = ueIdToAdd;
    if(addNodeToLList(&schSpcCellCb->ueToBeScheduled, ueId, NULLP) != ROK)
    {
-      DU_LOG("\nERROR  --> SCH : Failed to add ueId [%d] to cell->ueToBeScheduled list", *ueId);
+      DU_LOG("ERROR  --> SCH : Failed to add ueId [%d] to cell->ueToBeScheduled list", *ueId);
       return RFAILED;
    }
    return ROK;
@@ -801,7 +801,7 @@ uint8_t schSliceBasedCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uin
       /*[Step2]: Update the reqPRB and Payloadsize for this LC in the appropriate List*/
       if(updateLcListReqPRB(lcLL, lcId, ueCb->bsrInfo[lcgIdx].dataVol) != ROK)
       {
-         DU_LOG("\nERROR  --> SCH: LcgId:%d updation failed",lcId);         
+         DU_LOG("ERROR  --> SCH: LcgId:%d updation failed",lcId);         
          return RFAILED;
       }
    }
@@ -831,7 +831,7 @@ uint8_t schSliceBasedCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uin
       if((schSpcHqP->lcCb.dedLcList.count == 0) || ((maxFreePRB < rsvdDedicatedPRB)))
       {
          schSpcHqP->lcCb.sharedNumPrb = maxFreePRB;
-         DU_LOG("\nDEBUG  -->  SCH : UL Only Default Slice is scheduled, sharedPRB Count:%d",\
+         DU_LOG("DEBUG  -->  SCH : UL Only Default Slice is scheduled, sharedPRB Count:%d",\
                schSpcHqP->lcCb.sharedNumPrb);
 
          /*PRB Alloc for Default LCs*/
@@ -865,12 +865,12 @@ uint8_t schSliceBasedCalculateUlTbs(SchUeCb *ueCb, SlotTimingInfo puschTime, uin
    {
       if(maxFreePRB == 0)
       {
-         DU_LOG("\nERROR  --> SCH : NO FREE PRB!!");
+         DU_LOG("ERROR  --> SCH : NO FREE PRB!!");
       }
       else
       {
          /*Schedule the LC for next slot*/
-         DU_LOG("\nDEBUG  -->  SCH : No LC has been scheduled");
+         DU_LOG("DEBUG  -->  SCH : No LC has been scheduled");
       }      
       return RFAILED;
    }   
@@ -919,7 +919,7 @@ uint8_t schSliceBasedScheduleUlLc(SlotTimingInfo dciTime, SlotTimingInfo puschTi
       SCH_ALLOC(dciInfo, sizeof(DciInfo));
       if(!dciInfo)
       {
-         DU_LOG("\nERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
+         DU_LOG("ERROR  -->  SCH : Memory Allocation failed for dciInfo alloc");
          if(isRetx != TRUE)
          {
             if(schSpcHqProcCb->lcCb.dedLcList.count != 0)
@@ -1026,7 +1026,7 @@ uint32_t schSliceBasedScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdsc
             if(updateLcListReqPRB(lcLL, ueCb->dlInfo.dlLcCtxt[lcIdx].lcId,\
                      (ueCb->dlInfo.dlLcCtxt[lcIdx].bo + MAC_HDR_SIZE)) != ROK)
             {
-               DU_LOG("\nERROR  --> SCH : Updation in LC List Failed");
+               DU_LOG("ERROR  --> SCH : Updation in LC List Failed");
                /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
                if(!dciSlotAlloc->dlMsgPdschCfg)
                {
@@ -1040,7 +1040,7 @@ uint32_t schSliceBasedScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdsc
 
       if ((schSpcHqProcCb->lcCb.defLcList.count == 0) && (schSpcHqProcCb->lcCb.dedLcList.count == 0))
       {
-         DU_LOG("\nDEBUG  -->  SCH : No pending BO for any LC id\n");
+         DU_LOG("DEBUG  -->  SCH : No pending BO for any LC id\n");
          UNSET_ONE_BIT((*hqP)->hqEnt->ue->ueId, (*hqP)->hqEnt->cell->boIndBitMap);
 
          /* Free the dl ded msg info allocated in macSchDlRlcBoInfo */
@@ -1071,7 +1071,7 @@ uint32_t schSliceBasedScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdsc
          if((schSpcHqProcCb->lcCb.dedLcList.count == NULLP) || ((maxFreePRB < rsvdDedicatedPRB)))
          { 
             schSpcHqProcCb->lcCb.sharedNumPrb = maxFreePRB;
-            DU_LOG("\nDEBUG  -->  SCH : DL Only Default Slice is scheduled, sharedPRB Count:%d",\
+            DU_LOG("DEBUG  -->  SCH : DL Only Default Slice is scheduled, sharedPRB Count:%d",\
                   schSpcHqProcCb->lcCb.sharedNumPrb);
 
             /*PRB Alloc for Default LCs*/
@@ -1111,12 +1111,12 @@ uint32_t schSliceBasedScheduleDlLc(SlotTimingInfo pdcchTime, SlotTimingInfo pdsc
    {
       if(maxFreePRB == 0)
       {
-         DU_LOG("\nERROR  --> SCH : NO FREE PRB!!");
+         DU_LOG("ERROR  --> SCH : NO FREE PRB!!");
       }
       else
       {
          /*Schedule the LC for next slot*/
-         DU_LOG("\nDEBUG  -->  SCH : No LC has been scheduled");
+         DU_LOG("DEBUG  -->  SCH : No LC has been scheduled");
       }
       /* Not Freeing dlMsgAlloc as ZERO BO REPORT to be sent to RLC so that
        * Allocation can be done in next slot*/

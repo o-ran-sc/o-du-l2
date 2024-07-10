@@ -76,12 +76,12 @@ uint8_t nfapi_vnf_procPnfReadyIndEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgH
 {
    uint32_t version = 0;
 
-   DU_LOG("\nINFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
+   DU_LOG("INFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
          vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
 
    CMCHKPK(oduUnpackUInt32, &(version), msg);
 
-   DU_LOG("\nINFO   --> NFAPI_VNF: PNF_READY_IND version:%d",version);
+   DU_LOG("INFO   --> NFAPI_VNF: PNF_READY_IND version:%d",version);
 
    sendEventToNfapiVnfFsm(PNF_PARAM_REQ, NULLP, NULLP, NULLP);
    return ROK;
@@ -111,7 +111,7 @@ uint8_t nfapi_vnf_procPnfParamReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgH
    
    if (ODU_GET_MSG_BUF(MAC_MEM_REGION, MAC_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in packPnfParamReq");
+      DU_LOG("ERROR  --> NFAPI_VNF : Memory allocation failed in packPnfParamReq");
       return RFAILED;
    }
    nfapiFillP5Hdr(mBuf);
@@ -144,11 +144,11 @@ uint8_t nfapi_vnf_procPnfParamRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msg
    uint8_t errorCode = 1,idx=0,numtlv=0;
    nFapi_pnf_param_general paramGeneral;
    
-   DU_LOG("\nINFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
+   DU_LOG("INFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
    CMCHKPK(oduUnpackUInt8, &(errorCode), msg);
    if(errorCode != NFAPI_MSG_OK)
    {
-      DU_LOG("\nERROR   -->  NFAPI_VNF: Param response error code is not okay, errCode:%d", errorCode);
+      DU_LOG("ERROR   -->  NFAPI_VNF: Param response error code is not okay, errCode:%d", errorCode);
       return RFAILED;
    }
 
@@ -165,7 +165,7 @@ uint8_t nfapi_vnf_procPnfParamRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msg
    CMCHKPK(oduUnpackUInt16, &paramGeneral.numRfInstances, msg);
    CMCHKPK(oduUnpackUInt16, &paramGeneral.numDfeInstances, msg);
    
-   DU_LOG("\nINFO   --> NFAPI_VNF: PNF_PARAM_RESP errCode:%d, numtlv:%d",errorCode,numtlv);
+   DU_LOG("INFO   --> NFAPI_VNF: PNF_PARAM_RESP errCode:%d, numtlv:%d",errorCode,numtlv);
    sendEventToNfapiVnfFsm(PNF_CONFIG_REQ, NULLP, NULLP, NULLP);
    return ROK;
 }
@@ -195,14 +195,14 @@ uint8_t nfapi_vnf_procPnfConfigReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msg
    {
       if (ODU_GET_MSG_BUF(MAC_MEM_REGION, MAC_POOL, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in packPnfConfigReq");
+         DU_LOG("ERROR  --> NFAPI_VNF : Memory allocation failed in packPnfConfigReq");
          return RFAILED;
       }
       nfapiFillP5Hdr(mBuf);
       nfapiFillMsgHdr(mBuf, NFAPI_P5_PHY_ID, TAG_NFAPI_PNF_CONFIG_REQ, 0);
       CMCHKPK(oduPackPostUInt8, 0, mBuf);
 
-      DU_LOG("\nINFO   -->  NFAPI_VNF: Sending config request");
+      DU_LOG("INFO   -->  NFAPI_VNF: Sending config request");
       FILL_PST_LWR_MAC_TO_DUAPP(pst, EVENT_PNF_DATA);
       return ODU_POST_TASK(&pst, mBuf);
    }
@@ -234,7 +234,7 @@ uint8_t nfapi_vnf_procPnfConfigReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msg
 uint8_t nfapi_vnf_procPnfConfigRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg)
 {
    uint8_t errCode = 0;
-   DU_LOG("\nINFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
+   DU_LOG("INFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
          vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
 
    CMCHKPK(oduUnpackUInt8, &(errCode), msg);
@@ -242,11 +242,11 @@ uint8_t nfapi_vnf_procPnfConfigRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *ms
    if(errCode == NFAPI_MSG_OK)
    {
       vnfDb.pnfStateAtVnf=PNF_STATE_CONFIGURED;
-      DU_LOG("\nINFO   -->  NFAPI_VNF: PNF STATE[%d]",vnfDb.pnfStateAtVnf);
+      DU_LOG("INFO   -->  NFAPI_VNF: PNF STATE[%d]",vnfDb.pnfStateAtVnf);
    }
    else
    {
-      DU_LOG("\nERROR   -->  NFAPI_VNF: Config response error code is not okay, errCode:%d", errCode);
+      DU_LOG("ERROR   -->  NFAPI_VNF: Config response error code is not okay, errCode:%d", errCode);
       return RFAILED;
    }
    sendEventToNfapiVnfFsm(PNF_START_REQ, NULLP, NULLP, NULLP);
@@ -277,10 +277,10 @@ uint8_t nfapi_vnf_procPnfStartReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgH
    
    if(vnfDb.pnfStateAtVnf != PNF_STATE_RUNNING)
    {
-      DU_LOG("\nINFO   -->  NFAPI_VNF: Building the Pnf start request");
+      DU_LOG("INFO   -->  NFAPI_VNF: Building the Pnf start request");
       if (ODU_GET_MSG_BUF(MAC_MEM_REGION, MAC_POOL, &mBuf) != ROK)
       {
-         DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in packPnfStartReq");
+         DU_LOG("ERROR  --> NFAPI_VNF : Memory allocation failed in packPnfStartReq");
          return RFAILED;
       }
       nfapiFillP5Hdr(mBuf);
@@ -320,7 +320,7 @@ uint8_t nfapi_vnf_procPnfStartReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgH
 uint8_t nfapi_vnf_procPnfStartRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg)
 {
    uint8_t errCode = 0;
-   DU_LOG("\nINFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
+   DU_LOG("INFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
          vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
 
    CMCHKPK(oduUnpackUInt8, &(errCode), msg);
@@ -340,7 +340,7 @@ uint8_t nfapi_vnf_procPnfStartRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msg
    }
    else
    {
-      DU_LOG("\nERROR   -->  NFAPI_VNF: Start response error code is not okay, errCode:%d", errCode);
+      DU_LOG("ERROR   -->  NFAPI_VNF: Start response error code is not okay, errCode:%d", errCode);
       return RFAILED;
    }
    return ROK;
@@ -368,10 +368,10 @@ uint8_t nfapi_vnf_procPnfStopReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHd
    Buffer *mBuf = NULLP;
    Pst pst;
 
-   DU_LOG("\nINFO   -->  NFAPI_VNF: Building the Pnf stop request");
+   DU_LOG("INFO   -->  NFAPI_VNF: Building the Pnf stop request");
    if (ODU_GET_MSG_BUF(MAC_MEM_REGION, MAC_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in packPnfStopReq");
+      DU_LOG("ERROR  --> NFAPI_VNF : Memory allocation failed in packPnfStopReq");
       return RFAILED;
    }
    nfapiFillP5Hdr(mBuf);
@@ -405,7 +405,7 @@ uint8_t nfapi_vnf_procPnfStopReqEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHd
 uint8_t nfapi_vnf_procPnfStopRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg)
 {
    uint8_t errCode = 0;
-   DU_LOG("\nINFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
+   DU_LOG("INFO   -->  NFAPI_VNF: Received EVENT[%d] at STATE[%d]",\
          vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
 
    CMCHKPK(oduUnpackUInt8, &(errCode), msg);
@@ -413,11 +413,11 @@ uint8_t nfapi_vnf_procPnfStopRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgH
    if(errCode == NFAPI_MSG_OK)
    {
       vnfDb.pnfStateAtVnf=PNF_STATE_CONFIGURED;
-      DU_LOG("\nINFO   -->  NFAPI_VNF: PNF STATE[%d]",vnfDb.pnfStateAtVnf);
+      DU_LOG("INFO   -->  NFAPI_VNF: PNF STATE[%d]",vnfDb.pnfStateAtVnf);
    }
    else
    {
-      DU_LOG("\nERROR   -->  NFAPI_VNF: Stop response error code is not okay, errCode:%d", errCode);
+      DU_LOG("ERROR   -->  NFAPI_VNF: Stop response error code is not okay, errCode:%d", errCode);
       return RFAILED;
    }
 
@@ -451,7 +451,7 @@ uint8_t nfapi_vnf_procPnfStopRespEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgH
  * ****************************************************************/
 uint8_t TriggerPnfRestartProcedure()
 {
-   DU_LOG("\nINFO   -->  NFAPI_VNF: Build and send PNF Restart procedure");
+   DU_LOG("INFO   -->  NFAPI_VNF: Build and send PNF Restart procedure");
 
    vnfDb.pnfToRestart = true;
    sendEventToNfapiVnfFsm(PNF_STOP_REQ, NULLP, NULLP, NULLP);
@@ -479,7 +479,7 @@ uint8_t TriggerPnfRestartProcedure()
  * ****************************************************************/
 uint8_t TriggerPnfReconfigureProcedure()
 {
-   DU_LOG("\nINFO   -->  NFAPI_VNF: Build and send PNF Recfg procedure");
+   DU_LOG("INFO   -->  NFAPI_VNF: Build and send PNF Recfg procedure");
    
    vnfDb.pnfToReconfigure = true;
    sendEventToNfapiVnfFsm(PNF_STOP_REQ, NULLP, NULLP, NULLP);
@@ -503,7 +503,7 @@ uint8_t TriggerPnfReconfigureProcedure()
  * ****************************************************************/
 uint8_t nfapi_vnf_procInvalidEvt(nFapi_p5_hdr *p5Hdr, nFapi_msg_header *msgHdr, void *msg)
 {
-   DU_LOG("\nINFO   -->  NFAPI_VNF: Invalid Msg received EVENT[%d] at STATE[%d]",\
+   DU_LOG("INFO   -->  NFAPI_VNF: Invalid Msg received EVENT[%d] at STATE[%d]",\
              vnfDb.pnfEvent, vnfDb.pnfStateAtVnf);
    return ROK;
 }
@@ -576,7 +576,7 @@ void sendEventToNfapiVnfFsm(NfapiPnfEvent msgType, nFapi_p5_hdr *p5Hdr, nFapi_ms
    ret = nFapiEvtHdlr[vnfDb.pnfStateAtVnf][vnfDb.pnfEvent](p5Hdr, msgHdr, msg);
    if(ret == RFAILED)
    {
-      DU_LOG("\nERROR  --> NFAPI_VNF: NFAPI_VNF FSM failed");
+      DU_LOG("ERROR  --> NFAPI_VNF: NFAPI_VNF FSM failed");
    }
 }
 

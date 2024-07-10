@@ -271,7 +271,7 @@ DuPagUeRecord* handlePageUeLL(uint16_t pagUeId, uint64_t sTmsi, CmLListCp *pageU
    if((pageUeLL == NULLP) ||
           ((pageUeLL->first == NULLP) && (action != CREATE)))
    {
-      DU_LOG("\nERROR  -->  DU APP: UE Page Record LL is empty");
+      DU_LOG("ERROR  -->  DU APP: UE Page Record LL is empty");
       return NULLP;
    }
    node = pageUeLL->first;
@@ -281,7 +281,7 @@ DuPagUeRecord* handlePageUeLL(uint16_t pagUeId, uint64_t sTmsi, CmLListCp *pageU
       ueRecord = (DuPagUeRecord *)node->node;
       if(action == PRINT)
       {
-         DU_LOG("\n  INFO   -->  DU APP ueId:%d, sTmsi:%lu",\
+         DU_LOG("  INFO   -->  DU APP ueId:%d, sTmsi:%lu",\
                  ueRecord->pagUeId, ueRecord->sTmsi);
       }
       else if(ueRecord && (ueRecord->pagUeId == pagUeId && 
@@ -327,13 +327,13 @@ DuPagUeRecord* handlePageUeLL(uint16_t pagUeId, uint64_t sTmsi, CmLListCp *pageU
             }
             else
             {
-               DU_LOG("\nERROR  -->  DU APP : Allocation of UE Record failed,ueId:%d",pagUeId);
+               DU_LOG("ERROR  -->  DU APP : Allocation of UE Record failed,ueId:%d",pagUeId);
                return NULLP;
             }
 
             if(duAddNodeToLList(pageUeLL, ueRecord, NULLP) == RFAILED)
             {
-               DU_LOG("\nERROR  -->  DU APP : failed to Add Ue Record Node,ueId:%d",pagUeId);
+               DU_LOG("ERROR  -->  DU APP : failed to Add Ue Record Node,ueId:%d",pagUeId);
                DU_FREE(ueRecord, sizeof(DuPagUeRecord));
                return NULLP;
             }
@@ -343,7 +343,7 @@ DuPagUeRecord* handlePageUeLL(uint16_t pagUeId, uint64_t sTmsi, CmLListCp *pageU
          {
             if(!found ||  ueRecord == NULLP)
             {
-               DU_LOG("\nERROR  -->  DU APP: UeId:%d not found; thus Deletion unsuccessful",pagUeId);
+               DU_LOG("ERROR  -->  DU APP: UeId:%d not found; thus Deletion unsuccessful",pagUeId);
             }
             else
             {
@@ -359,7 +359,7 @@ DuPagUeRecord* handlePageUeLL(uint16_t pagUeId, uint64_t sTmsi, CmLListCp *pageU
          }
       default:
          {
-            DU_LOG("\nERROR  -->  DU APP: Incorrect ActionType:%d on UeRecord",action);
+            DU_LOG("ERROR  -->  DU APP: Incorrect ActionType:%d on UeRecord",action);
          }
    }
    return NULLP;
@@ -388,7 +388,7 @@ DuPagUeList* handlePageInfoLL(uint16_t pf, uint8_t i_s, CmLListCp *pagInfoLL, Ac
    if((pagInfoLL == NULLP) || 
          ((pagInfoLL->first == NULLP) && (action != CREATE)))
    {
-      DU_LOG("\nERROR  -->  DU APP: PagInfo LL is empty");
+      DU_LOG("ERROR  -->  DU APP: PagInfo LL is empty");
       return NULLP;
    }
    node = pagInfoLL->first;
@@ -399,7 +399,7 @@ DuPagUeList* handlePageInfoLL(uint16_t pf, uint8_t i_s, CmLListCp *pagInfoLL, Ac
       pagInfo = (DuPagUeList *)node->node;
       if(action == PRINT)
       {
-         DU_LOG("\n INFO   -->  DU APP: Paging Index (i_s):%d",pagInfo->i_s);
+         DU_LOG(" INFO   -->  DU APP: Paging Index (i_s):%d",pagInfo->i_s);
          handlePageUeLL(NULLD, NULLD, &(pagInfo->pagUeList), PRINT);
       }
       else if(action == TRAVERSE_ALL)
@@ -447,13 +447,13 @@ DuPagUeList* handlePageInfoLL(uint16_t pf, uint8_t i_s, CmLListCp *pagInfoLL, Ac
             }
             else
             {
-               DU_LOG("\nERROR  -->  DU APP : Allocation of List failed,i_s:%d",i_s);
+               DU_LOG("ERROR  -->  DU APP : Allocation of List failed,i_s:%d",i_s);
                return NULLP;
             }
 
             if(duAddNodeToLList(pagInfoLL, pagInfo, NULLP) == RFAILED)
             {
-               DU_LOG("\nERROR  -->  DU APP : failed to Add Node,i_s:%d",i_s);
+               DU_LOG("ERROR  -->  DU APP : failed to Add Node,i_s:%d",i_s);
                DU_FREE(pagInfo, sizeof(DuPagUeList));
                return NULLP;
             }
@@ -463,7 +463,7 @@ DuPagUeList* handlePageInfoLL(uint16_t pf, uint8_t i_s, CmLListCp *pagInfoLL, Ac
          {
             if(!found ||  pagInfo == NULLP)
             {
-               DU_LOG("\nERROR  -->  DU APP: i_s:%d not found; thus Deletion unsuccessful",i_s);
+               DU_LOG("ERROR  -->  DU APP: i_s:%d not found; thus Deletion unsuccessful",i_s);
             }
             else
             {
@@ -479,7 +479,7 @@ DuPagUeList* handlePageInfoLL(uint16_t pf, uint8_t i_s, CmLListCp *pagInfoLL, Ac
          }
       default:
          {
-            DU_LOG("\nERROR  -->  DU APP: Incorrect ActionType:%d on PageInfo List",action);
+            DU_LOG("ERROR  -->  DU APP: Incorrect ActionType:%d on PageInfo List",action);
          }
    }
    return NULLP;
@@ -534,7 +534,7 @@ void printPageList(CmHashListCp *pagingInfoMap)
       ret = cmHashListGetNext(pagingInfoMap, (PTR)prevPageInfoLL, (PTR *)&pagInfoLLFromPF);
       if(ret == ROK)
       {
-         DU_LOG("\nDEBUG  --> DUAPP: Page List for PF:%d",pagInfoLLFromPF->pf);
+         DU_LOG("DEBUG  --> DUAPP: Page List for PF:%d",pagInfoLLFromPF->pf);
          handlePageInfoLL(NULLD, NULLD, &(pagInfoLLFromPF->pagInfoList), PRINT);
          prevPageInfoLL = pagInfoLLFromPF;
       }

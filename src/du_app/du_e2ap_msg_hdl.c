@@ -243,13 +243,13 @@ uint8_t BuildAndSendRemovalFailure(uint16_t transId, E2FailureCause failureCause
    E2RemovalFailure_t *e2RemovalFailure=NULLP;
    asn_enc_rval_t    encRetVal;       /* Encoder return value */
 
-   DU_LOG("\nINFO   -->  E2AP : Building E2 Removal Failure Message\n");
+   DU_LOG("INFO   -->  E2AP : Building E2 Removal Failure Message\n");
    do
    {
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
       e2apMsg->present = E2AP_PDU_PR_unsuccessfulOutcome;
@@ -257,7 +257,7 @@ uint8_t BuildAndSendRemovalFailure(uint16_t transId, E2FailureCause failureCause
       DU_ALLOC(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
       if(e2apMsg->choice.unsuccessfulOutcome == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
 
@@ -272,7 +272,7 @@ uint8_t BuildAndSendRemovalFailure(uint16_t transId, E2FailureCause failureCause
       DU_ALLOC(e2RemovalFailure->protocolIEs.list.array, e2RemovalFailure->protocolIEs.list.size);
       if(!e2RemovalFailure->protocolIEs.list.array)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
 
@@ -281,7 +281,7 @@ uint8_t BuildAndSendRemovalFailure(uint16_t transId, E2FailureCause failureCause
          DU_ALLOC(e2RemovalFailure->protocolIEs.list.array[ieIdx], sizeof(E2RemovalFailureIEs_t));
          if(!e2RemovalFailure->protocolIEs.list.array[ieIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
             break;
          }
       }
@@ -308,23 +308,23 @@ uint8_t BuildAndSendRemovalFailure(uint16_t transId, E2FailureCause failureCause
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode E2 removal failure structure (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode E2 removal failure structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2 Removal Failure \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for E2 Removal Failure \n");
          for(int i=0; i< encBufSize; i++)
          {
-            DU_LOG("%x",encBuf[i]);
+            printf("%x",encBuf[i]);
          }
       }
 
       /* Sending msg */
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Removal Failure");
+         DU_LOG("ERROR  -->  E2AP : Failed to send E2 Removal Failure");
          break;
       }
 
@@ -402,13 +402,13 @@ uint8_t BuildAndSendRemovalResponse(uint16_t transId)
    E2RemovalResponse_t *e2RemovalResponse=NULLP;
    asn_enc_rval_t    encRetVal;       /* Encoder return value */
 
-   DU_LOG("\nINFO   -->  E2AP : Building E2 Removal Response Message\n");
+   DU_LOG("INFO   -->  E2AP : Building E2 Removal Response Message\n");
    do
    {
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
       e2apMsg->present = E2AP_PDU_PR_successfulOutcome;
@@ -416,7 +416,7 @@ uint8_t BuildAndSendRemovalResponse(uint16_t transId)
       DU_ALLOC(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
       if(e2apMsg->choice.successfulOutcome == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
 
@@ -431,7 +431,7 @@ uint8_t BuildAndSendRemovalResponse(uint16_t transId)
       DU_ALLOC(e2RemovalResponse->protocolIEs.list.array, e2RemovalResponse->protocolIEs.list.size);
       if(!e2RemovalResponse->protocolIEs.list.array)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
 
@@ -440,7 +440,7 @@ uint8_t BuildAndSendRemovalResponse(uint16_t transId)
          DU_ALLOC(e2RemovalResponse->protocolIEs.list.array[ieIdx], sizeof(E2RemovalResponseIEs_t));
          if(!e2RemovalResponse->protocolIEs.list.array[ieIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
             break;
          }
       }
@@ -460,23 +460,23 @@ uint8_t BuildAndSendRemovalResponse(uint16_t transId)
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode E2 removal response structure (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode E2 removal response structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2 Removal Response \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for E2 Removal Response \n");
          for(int i=0; i< encBufSize; i++)
          {
-            DU_LOG("%x",encBuf[i]);
+            printf("%x",encBuf[i]);
          }
       }
 
       /* Sending msg */
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Removal Response");
+         DU_LOG("ERROR  -->  E2AP : Failed to send E2 Removal Response");
          break;
       }
 
@@ -545,7 +545,7 @@ void procE2RemovalRequest(E2AP_PDU_t  *e2apMsg)
    E2FailureCause failureCause;
    E2RemovalRequest_t *removalReq=NULLP;
 
-   DU_LOG("\nINFO   -->  E2AP : E2 Removal request received");
+   DU_LOG("INFO   -->  E2AP : E2 Removal request received");
    removalReq = &e2apMsg->choice.initiatingMessage->value.choice.E2RemovalRequest;
    
    for(arrIdx=0; arrIdx<removalReq->protocolIEs.list.count; arrIdx++)
@@ -559,7 +559,7 @@ void procE2RemovalRequest(E2AP_PDU_t  *e2apMsg)
             }
          default:
             {
-               DU_LOG("\nERROR  -->  E2AP : Invalid IE recevied [%d]", transId);
+               DU_LOG("ERROR  -->  E2AP : Invalid IE recevied [%d]", transId);
                break;
             }
       }
@@ -569,7 +569,7 @@ void procE2RemovalRequest(E2AP_PDU_t  *e2apMsg)
    {
       if(BuildAndSendRemovalResponse(transId) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to build and send Removal response");
+         DU_LOG("ERROR  -->  E2AP : Failed to build and send Removal response");
       }
    }
    else
@@ -579,7 +579,7 @@ void procE2RemovalRequest(E2AP_PDU_t  *e2apMsg)
 
       if(BuildAndSendRemovalFailure(transId, failureCause) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to build and send Removal response");
+         DU_LOG("ERROR  -->  E2AP : Failed to build and send Removal response");
       }
    }
    freeAperDecodingOfE2RemovalReq(removalReq);
@@ -656,12 +656,12 @@ uint8_t BuildAndSendErrorIndication(uint16_t transId, RicRequestId requestId, ui
 
    while(true)
    {
-      DU_LOG("\nINFO   -->  E2AP : Building Error Indication Message\n");
+      DU_LOG("INFO   -->  E2AP : Building Error Indication Message\n");
 
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed in %s at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for E2AP-PDU failed in %s at line %d",__func__, __LINE__);
          break;
       }
 
@@ -669,7 +669,7 @@ uint8_t BuildAndSendErrorIndication(uint16_t transId, RicRequestId requestId, ui
       DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       if(e2apMsg->choice.initiatingMessage == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed in %s at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for E2AP-PDU failed in %s at line %d",__func__, __LINE__);
          break;
       }
       e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_ErrorIndicationE2;
@@ -693,7 +693,7 @@ uint8_t BuildAndSendErrorIndication(uint16_t transId, RicRequestId requestId, ui
       DU_ALLOC(errorIndicationMsg->protocolIEs.list.array, errorIndicationMsg->protocolIEs.list.size);
       if(errorIndicationMsg->protocolIEs.list.array == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for array elements in %s at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed for array elements in %s at line %d",__func__, __LINE__);
          break;
       }
       
@@ -702,7 +702,7 @@ uint8_t BuildAndSendErrorIndication(uint16_t transId, RicRequestId requestId, ui
          DU_ALLOC(errorIndicationMsg->protocolIEs.list.array[arrIdx], sizeof(ErrorIndicationE2_IEs_t));
          if(errorIndicationMsg->protocolIEs.list.array[arrIdx] == NULLP)
          {
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for array [%d] elements in %s at line %d", arrIdx, __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation failed for array [%d] elements in %s at line %d", arrIdx, __func__, __LINE__);
             break;
          }
       }
@@ -754,13 +754,13 @@ uint8_t BuildAndSendErrorIndication(uint16_t transId, RicRequestId requestId, ui
             encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode Error Indication Message (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode Error Indication Message (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for Error Indication Message \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for Error Indication Message \n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -771,7 +771,7 @@ uint8_t BuildAndSendErrorIndication(uint16_t transId, RicRequestId requestId, ui
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nINFO   -->  E2AP : Sending Error Indication Message");      
+         DU_LOG("INFO   -->  E2AP : Sending Error Indication Message");      
 
       }
       ret = ROK;
@@ -840,7 +840,7 @@ void procE2NodeConfigUpdateFailure(E2AP_PDU_t *e2apMsg)
    uint16_t transId =0;
    E2nodeConfigurationUpdateFailure_t *e2NodeCfgUpdFail=NULL;
 
-   DU_LOG("\nINFO   -->  E2AP : E2 Node Config Update failure received");
+   DU_LOG("INFO   -->  E2AP : E2 Node Config Update failure received");
    e2NodeCfgUpdFail = &e2apMsg->choice.unsuccessfulOutcome->value.choice.E2nodeConfigurationUpdateFailure;
 
    for(arrIdx=0; arrIdx<e2NodeCfgUpdFail->protocolIEs.list.count; arrIdx++)
@@ -857,7 +857,7 @@ void procE2NodeConfigUpdateFailure(E2AP_PDU_t *e2apMsg)
                }
                else
                {
-                  DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
+                  DU_LOG("ERROR  -->  E2AP : Invalid transaction id [%d]", transId);
                }
                break;
          }
@@ -870,7 +870,7 @@ void procE2NodeConfigUpdateFailure(E2AP_PDU_t *e2apMsg)
                }
                else
                {
-                  DU_LOG("\nERROR   -->  E2AP : EVENT_E2_NODE_CONFIG_UPDATE_TMR timer is already running");
+                  DU_LOG("ERROR   -->  E2AP : EVENT_E2_NODE_CONFIG_UPDATE_TMR timer is already running");
                }
                break;
             }
@@ -909,7 +909,7 @@ uint8_t BuildGlobalgNBId(GlobalE2node_gNB_ID_t *gNbId)
    DU_ALLOC(gNbId->global_gNB_ID.plmn_id.buf , gNbId->global_gNB_ID.plmn_id.size);
    if(gNbId->global_gNB_ID.plmn_id.buf == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP: Memory allocation failed for Plmn buffer");
+      DU_LOG("ERROR  -->  E2AP: Memory allocation failed for Plmn buffer");
       ret = RFAILED;
    }
    else
@@ -924,7 +924,7 @@ uint8_t BuildGlobalgNBId(GlobalE2node_gNB_ID_t *gNbId)
             gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.size);
       if(gNbId->global_gNB_ID.gnb_id.choice.gnb_ID.buf == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP: Memory allocation failed for gnb buffer");
+         DU_LOG("ERROR  -->  E2AP: Memory allocation failed for gnb buffer");
          ret = RFAILED;
       }
       else
@@ -937,7 +937,7 @@ uint8_t BuildGlobalgNBId(GlobalE2node_gNB_ID_t *gNbId)
    DU_ALLOC( gNbId->gNB_DU_ID, sizeof(GNB_DU_ID_t));
    if(gNbId->gNB_DU_ID == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP: Memory allocation failed for gNB_DU_ID ");
+      DU_LOG("ERROR  -->  E2AP: Memory allocation failed for gNB_DU_ID ");
       ret = RFAILED;
    }
    else
@@ -950,7 +950,7 @@ uint8_t BuildGlobalgNBId(GlobalE2node_gNB_ID_t *gNbId)
       }
       else
       {
-         DU_LOG("\nERROR  -->  E2AP: Memory allocation failed for gNB_DU_ID buffer");
+         DU_LOG("ERROR  -->  E2AP: Memory allocation failed for gNB_DU_ID buffer");
          ret = RFAILED;
       }
    }
@@ -1016,7 +1016,7 @@ uint8_t fillE2NodeConfig(PTR e2NodeCfg, E2NodeComponent *e2NodeComponentInfo, Co
       }
       default:
       {
-         DU_LOG("\nERROR  --> E2AP : Configuration type %d does not supported ", configType);
+         DU_LOG("ERROR  --> E2AP : Configuration type %d does not supported ", configType);
          return RFAILED;
       }
    }
@@ -1033,7 +1033,7 @@ uint8_t fillE2NodeConfig(PTR e2NodeCfg, E2NodeComponent *e2NodeComponentInfo, Co
       DU_ALLOC(componentID->choice.e2nodeComponentInterfaceTypeF1,sizeof(E2nodeComponentInterfaceF1_t));
       if(componentID->choice.e2nodeComponentInterfaceTypeF1 == NULLP)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at line %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at line %d",__func__,__LINE__);
          return RFAILED;
       }
       componentID->choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.size = sizeof(uint8_t);
@@ -1042,7 +1042,7 @@ uint8_t fillE2NodeConfig(PTR e2NodeCfg, E2NodeComponent *e2NodeComponentInfo, Co
 
       if(componentID->choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf == NULLP)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at line %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at line %d",__func__,__LINE__);
          return RFAILED;
       }
       memcpy(componentID->choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf, &e2NodeComponentInfo->componentId,\
@@ -1064,7 +1064,7 @@ uint8_t fillE2NodeConfig(PTR e2NodeCfg, E2NodeComponent *e2NodeComponentInfo, Co
             configuration->e2nodeComponentRequestPart.size);
       if(configuration->e2nodeComponentRequestPart.buf == NULLP)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at line %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at line %d",__func__,__LINE__);
          return RFAILED;
       }
 
@@ -1074,7 +1074,7 @@ uint8_t fillE2NodeConfig(PTR e2NodeCfg, E2NodeComponent *e2NodeComponentInfo, Co
    }
    else
    {
-      DU_LOG("\nERROR  --> E2AP: componentRequestPart is null ");
+      DU_LOG("ERROR  --> E2AP: componentRequestPart is null ");
       return RFAILED;
    }
 
@@ -1085,7 +1085,7 @@ uint8_t fillE2NodeConfig(PTR e2NodeCfg, E2NodeComponent *e2NodeComponentInfo, Co
       DU_ALLOC(configuration->e2nodeComponentResponsePart.buf, configuration->e2nodeComponentResponsePart.size);
       if(configuration->e2nodeComponentResponsePart.buf == NULLP)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at line %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at line %d",__func__,__LINE__);
          return RFAILED;
       }
       memcpy(configuration->e2nodeComponentResponsePart.buf,  e2NodeConfig->componentResponsePart, configuration->\
@@ -1093,7 +1093,7 @@ uint8_t fillE2NodeConfig(PTR e2NodeCfg, E2NodeComponent *e2NodeComponentInfo, Co
    }
    else
    {
-      DU_LOG("\nERROR  --> E2AP: componentResponsePart is null");
+      DU_LOG("ERROR  --> E2AP: componentResponsePart is null");
       return RFAILED;
    }
    
@@ -1144,7 +1144,7 @@ uint8_t BuildE2NodeConfigAddList(E2nodeComponentConfigAddition_List_t *e2NodeAdd
    DU_ALLOC(e2NodeAddList->list.array, e2NodeAddList->list.size);
    if(e2NodeAddList->list.array == NULLP)
    {
-       DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigAddList %d",__LINE__);
+       DU_LOG("ERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigAddList %d",__LINE__);
        return RFAILED;
    }
 
@@ -1153,7 +1153,7 @@ uint8_t BuildE2NodeConfigAddList(E2nodeComponentConfigAddition_List_t *e2NodeAdd
       DU_ALLOC(e2NodeAddList->list.array[arrIdx], sizeof(E2nodeComponentConfigAddition_ItemIEs_t));
       if(e2NodeAddList->list.array[arrIdx] == NULLP)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigAddList %d",__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigAddList %d",__LINE__);
          return RFAILED;
       }
       
@@ -1170,7 +1170,7 @@ uint8_t BuildE2NodeConfigAddList(E2nodeComponentConfigAddition_List_t *e2NodeAdd
          }
          if(!node)
          {
-            DU_LOG("\nERROR  --> E2AP : E2 node component list node is null");
+            DU_LOG("ERROR  --> E2AP : E2 node component list node is null");
             return RFAILED;
          }
          e2NodeComponentInfo = (E2NodeComponent*)node->node;
@@ -1184,7 +1184,7 @@ uint8_t BuildE2NodeConfigAddList(E2nodeComponentConfigAddition_List_t *e2NodeAdd
       
       if(!e2NodeComponentInfo)
       {
-         DU_LOG("\nERROR  --> E2AP : Received null e2NodeComponentInfo at line number %d",__LINE__);
+         DU_LOG("ERROR  --> E2AP : Received null e2NodeComponentInfo at line number %d",__LINE__);
          return RFAILED;
       }
 
@@ -1195,7 +1195,7 @@ uint8_t BuildE2NodeConfigAddList(E2nodeComponentConfigAddition_List_t *e2NodeAdd
       e2NodeAddItem = &e2NodeAddItemIe->value.choice.E2nodeComponentConfigAddition_Item;
       if(fillE2NodeConfig((PTR)e2NodeAddItem, e2NodeComponentInfo, CONFIG_ADD) != ROK)
       {
-         DU_LOG("\nERROR  --> E2AP : Failed to fill the E2 node configuration");
+         DU_LOG("ERROR  --> E2AP : Failed to fill the E2 node configuration");
          return RFAILED;
       }
    }
@@ -1235,7 +1235,7 @@ uint8_t BuildE2NodeConfigUpdateList(E2nodeComponentConfigUpdate_List_t *e2NodeUp
    DU_ALLOC(e2NodeUpdateList->list.array, e2NodeUpdateList->list.size);
    if(e2NodeUpdateList->list.array == NULLP)
    {
-      DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigUpdateList %d",__LINE__);
+      DU_LOG("ERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigUpdateList %d",__LINE__);
       return RFAILED;
    }
 
@@ -1244,14 +1244,14 @@ uint8_t BuildE2NodeConfigUpdateList(E2nodeComponentConfigUpdate_List_t *e2NodeUp
       DU_ALLOC(e2NodeUpdateList->list.array[arrIdx], sizeof(E2nodeComponentConfigUpdate_ItemIEs_t));
       if(e2NodeUpdateList->list.array[arrIdx] == NULLP)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigUpdateList %d",__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigUpdateList %d",__LINE__);
          return RFAILED;
       }
 
       e2NodeComponentInfo= fetchE2NodeComponentInfo(updateE2Node[arrIdx].interface, updateE2Node[arrIdx].componentId, &node);
       if(!e2NodeComponentInfo)
       {
-         DU_LOG("\nERROR  --> E2AP : Received null e2NodeComponentInfo at line number %d",__LINE__);
+         DU_LOG("ERROR  --> E2AP : Received null e2NodeComponentInfo at line number %d",__LINE__);
          return RFAILED;
       }
 
@@ -1263,7 +1263,7 @@ uint8_t BuildE2NodeConfigUpdateList(E2nodeComponentConfigUpdate_List_t *e2NodeUp
 
       if(fillE2NodeConfig((PTR)e2NodeUpdateItem, e2NodeComponentInfo, CONFIG_MOD) != ROK)
       {
-         DU_LOG("\nERROR  --> E2AP : Failed to fill the E2 node configuration");
+         DU_LOG("ERROR  --> E2AP : Failed to fill the E2 node configuration");
          return RFAILED;
       }
 
@@ -1305,7 +1305,7 @@ uint8_t BuildE2NodeConfigRemoveList(E2nodeComponentConfigRemoval_List_t *e2NodeR
    DU_ALLOC(e2NodeRemoveList->list.array, e2NodeRemoveList->list.size);
    if(e2NodeRemoveList->list.array == NULLP)
    {
-      DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigRemoveList %d",__LINE__);
+      DU_LOG("ERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigRemoveList %d",__LINE__);
       return RFAILED;
    }
 
@@ -1314,14 +1314,14 @@ uint8_t BuildE2NodeConfigRemoveList(E2nodeComponentConfigRemoval_List_t *e2NodeR
       DU_ALLOC(e2NodeRemoveList->list.array[arrIdx], sizeof(E2nodeComponentConfigRemoval_ItemIEs_t));
       if(e2NodeRemoveList->list.array[arrIdx] == NULLP)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigRemoveList %d",__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed for BuildE2NodeConfigRemoveList %d",__LINE__);
          return RFAILED;
       }
 
       e2NodeComponentInfo= fetchE2NodeComponentInfo(updateE2Node[arrIdx].interface,updateE2Node[arrIdx].componentId, &node);
       if(!e2NodeComponentInfo)
       {
-         DU_LOG("\nERROR  --> E2AP : Received null e2NodeComponentInfo at line number %d",__LINE__);
+         DU_LOG("ERROR  --> E2AP : Received null e2NodeComponentInfo at line number %d",__LINE__);
          return RFAILED;
       }
 
@@ -1333,7 +1333,7 @@ uint8_t BuildE2NodeConfigRemoveList(E2nodeComponentConfigRemoval_List_t *e2NodeR
 
       if(fillE2NodeConfig((PTR)e2NodeRemovalItem, e2NodeComponentInfo, CONFIG_DEL) != ROK)
       {
-         DU_LOG("\nERROR  --> E2AP : Failed to fill the E2 node configuration");
+         DU_LOG("ERROR  --> E2AP : Failed to fill the E2 node configuration");
          return RFAILED;
       }
 
@@ -1460,7 +1460,7 @@ uint8_t fillRicReportStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunction_D
    DU_ALLOC(ricReportStyle->list.array, ricReportStyle->list.size);
    if(!ricReportStyle->list.array)
    {
-      DU_LOG("\nERROR  --> E2AP: Memory allocation failed for ranFuncDefinition %d",__LINE__);
+      DU_LOG("ERROR  --> E2AP: Memory allocation failed for ranFuncDefinition %d",__LINE__);
       return RFAILED;
    }
 
@@ -1469,7 +1469,7 @@ uint8_t fillRicReportStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunction_D
       DU_ALLOC(ricReportStyle->list.array[styleIdx], sizeof(RIC_ReportStyle_Item_t));
       if(!ricReportStyle->list.array[styleIdx])
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
          return RFAILED;
       }
       
@@ -1485,7 +1485,7 @@ uint8_t fillRicReportStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunction_D
             ricReportStyle->list.array[styleIdx]->ric_ReportStyle_Name.size);
       if(!ricReportStyle->list.array[styleIdx]->ric_ReportStyle_Name.buf)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
          return RFAILED;
       }
       memcpy(ricReportStyle->list.array[styleIdx]->ric_ReportStyle_Name.buf, ranFuncDb->reportStyleList[styleIdx].reportStyle.name,\
@@ -1512,7 +1512,7 @@ uint8_t fillRicReportStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunction_D
       DU_ALLOC(measInfo->list.array, measInfo->list.size);
       if(!measInfo->list.array)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
          return RFAILED;
       }
 
@@ -1520,21 +1520,21 @@ uint8_t fillRicReportStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunction_D
       {
          if(!node)
          {
-            DU_LOG("\nERROR  --> E2AP: Measurement info node is null");
+            DU_LOG("ERROR  --> E2AP: Measurement info node is null");
             return RFAILED;
          }
 
          DU_ALLOC(measInfo->list.array[measInfoIdx],sizeof(MeasurementInfo_Action_Item_t));  
          if(!measInfo->list.array[measInfoIdx])
          {
-            DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+            DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
             return RFAILED;
          }
          MeasurementInfoForAction *measInfoForAction= (MeasurementInfoForAction*)node->node;
          DU_ALLOC(measInfo->list.array[measInfoIdx]->measID, sizeof(long));
          if(!measInfo->list.array[measInfoIdx]->measID)
          {
-            DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+            DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
             return RFAILED;
          }
          
@@ -1543,7 +1543,7 @@ uint8_t fillRicReportStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunction_D
          DU_ALLOC(measInfo->list.array[measInfoIdx]->measName.buf, measInfo->list.array[measInfoIdx]->measName.size);
          if(!measInfo->list.array[measInfoIdx]->measName.size)
          {
-            DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+            DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
             return RFAILED;
          }
 
@@ -1580,7 +1580,7 @@ uint8_t fillRicEventTriggerStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunc
    DU_ALLOC(ricEventTriggerStyle->list.array, ricEventTriggerStyle->list.size);
    if(!ricEventTriggerStyle->list.array)
    {
-      DU_LOG("\nERROR  --> E2AP: Memory allocation failed for ric_EventTriggerStyle_List %d",__LINE__);
+      DU_LOG("ERROR  --> E2AP: Memory allocation failed for ric_EventTriggerStyle_List %d",__LINE__);
       return RFAILED;
    }
 
@@ -1589,7 +1589,7 @@ uint8_t fillRicEventTriggerStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunc
       DU_ALLOC(ricEventTriggerStyle->list.array[styleIdx], sizeof(RIC_EventTriggerStyle_Item_t ));
       if(!ricEventTriggerStyle->list.array[styleIdx])
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
          return RFAILED;
       }
       ricEventTriggerStyle->list.array[styleIdx]->ric_EventTriggerStyle_Type = ranFuncDb->eventTriggerStyleList[styleIdx].styleType;
@@ -1601,7 +1601,7 @@ uint8_t fillRicEventTriggerStyle(RanFunction *ranFuncDb, struct E2SM_KPM_RANfunc
             ricEventTriggerStyle->list.array[styleIdx]->ric_EventTriggerStyle_Name.size);
       if(!ricEventTriggerStyle->list.array[styleIdx]->ric_EventTriggerStyle_Name.buf)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
          return RFAILED;
       }
       memcpy(ricEventTriggerStyle->list.array[styleIdx]->ric_EventTriggerStyle_Name.buf,ranFuncDb->eventTriggerStyleList[styleIdx].name,\
@@ -1650,7 +1650,7 @@ uint8_t BuildRanFunctionItem(RANfunction_Item_t *ranFuncItem, RanFunction *ranFu
       DU_ALLOC(ranFuncItem->ranFunctionOID.buf, ranFuncItem->ranFunctionOID.size);
       if(!ranFuncItem->ranFunctionOID.buf)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
          break;
       }
       memcpy(ranFuncItem->ranFunctionOID.buf, ranFuncDb->name.serviceModelOID, ranFuncItem->ranFunctionOID.size);
@@ -1659,7 +1659,7 @@ uint8_t BuildRanFunctionItem(RANfunction_Item_t *ranFuncItem, RanFunction *ranFu
       DU_ALLOC(ranFuncDefinition, sizeof(E2SM_KPM_RANfunction_Description_t));
       if(!ranFuncDefinition)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
          break;
       }
 
@@ -1671,7 +1671,7 @@ uint8_t BuildRanFunctionItem(RANfunction_Item_t *ranFuncItem, RanFunction *ranFu
       DU_ALLOC(ranFuncName->ranFunction_ShortName.buf,  ranFuncName->ranFunction_ShortName.size);
       if(!ranFuncName->ranFunction_ShortName.buf)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
          break;
       }
       memcpy(ranFuncName->ranFunction_ShortName.buf, ranFuncDb->name.shortName, strlen(ranFuncDb->name.shortName));
@@ -1681,7 +1681,7 @@ uint8_t BuildRanFunctionItem(RANfunction_Item_t *ranFuncItem, RanFunction *ranFu
       DU_ALLOC(ranFuncName->ranFunction_E2SM_OID.buf, ranFuncName->ranFunction_E2SM_OID.size);
       if(!ranFuncName->ranFunction_E2SM_OID.buf)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
          break;
       }
       memcpy(ranFuncName->ranFunction_E2SM_OID.buf, ranFuncDb->name.serviceModelOID, ranFuncName->ranFunction_E2SM_OID.size);
@@ -1691,7 +1691,7 @@ uint8_t BuildRanFunctionItem(RANfunction_Item_t *ranFuncItem, RanFunction *ranFu
       DU_ALLOC(ranFuncName->ranFunction_Description.buf, ranFuncName->ranFunction_Description.size);
       if(!ranFuncName->ranFunction_Description.buf)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
          break;
       }
       memcpy(ranFuncName->ranFunction_Description.buf, ranFuncDb->name.description, ranFuncName->ranFunction_Description.size);
@@ -1700,13 +1700,13 @@ uint8_t BuildRanFunctionItem(RANfunction_Item_t *ranFuncItem, RanFunction *ranFu
       DU_ALLOC(ranFuncDefinition->ric_EventTriggerStyle_List, sizeof(struct E2SM_KPM_RANfunction_Description__ric_EventTriggerStyle_List));
       if(!ranFuncDefinition->ric_EventTriggerStyle_List)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
          break;
       }
 
       if(fillRicEventTriggerStyle(ranFuncDb, ranFuncDefinition->ric_EventTriggerStyle_List)!=ROK)
       {
-         DU_LOG("\nERROR  --> E2AP: failed to fill ric event trigger style");
+         DU_LOG("ERROR  --> E2AP: failed to fill ric event trigger style");
          break;
       }
 
@@ -1714,12 +1714,12 @@ uint8_t BuildRanFunctionItem(RANfunction_Item_t *ranFuncItem, RanFunction *ranFu
       DU_ALLOC(ranFuncDefinition->ric_ReportStyle_List, sizeof(struct E2SM_KPM_RANfunction_Description__ric_ReportStyle_List));
       if(!ranFuncDefinition->ric_ReportStyle_List)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in function %s at %d",__func__,__LINE__);
          break;
       }
       if(fillRicReportStyle(ranFuncDb, ranFuncDefinition->ric_ReportStyle_List) != ROK)
       {
-         DU_LOG("\nERROR  --> E2AP: failed to fill ric report style");
+         DU_LOG("ERROR  --> E2AP: failed to fill ric report style");
          break;
       }
 
@@ -1733,13 +1733,13 @@ uint8_t BuildRanFunctionItem(RANfunction_Item_t *ranFuncItem, RanFunction *ranFu
       /* Encode results */
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  F1AP : Could not encode RAN function definition  (at %s)\n",\
+         DU_LOG("ERROR  -->  F1AP : Could not encode RAN function definition  (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG   -->  F1AP : Created APER encoded buffer for RAN function definition \n");
+         DU_LOG("DEBUG   -->  F1AP : Created APER encoded buffer for RAN function definition \n");
          for(uint8_t measIeIdx=0; measIeIdx< encBufSize; measIeIdx++)
          {
             printf("%x",encBuf[measIeIdx]);
@@ -1749,7 +1749,7 @@ uint8_t BuildRanFunctionItem(RANfunction_Item_t *ranFuncItem, RanFunction *ranFu
          DU_ALLOC(ranFunctionDefinition->buf, encBufSize);
          if(ranFunctionDefinition->buf == NULLP)
          {
-            DU_LOG("\nERROR  -->  F1AP : Memory allocation failed for RAN function definition buffer");
+            DU_LOG("ERROR  -->  F1AP : Memory allocation failed for RAN function definition buffer");
             break;
          }
          memcpy(ranFunctionDefinition->buf, &encBuf, encBufSize);
@@ -1807,7 +1807,7 @@ uint8_t BuildRanFunctionAddList(RANfunctions_List_t *ranFunctionsList, uint8_t p
    DU_ALLOC(ranFunctionsList->list.array, ranFunctionsList->list.size);
    if(ranFunctionsList->list.array == NULLP)
    {
-      DU_LOG("\nERROR  --> E2AP: Memory allocation failed in %s at %d",__func__, __LINE__);
+      DU_LOG("ERROR  --> E2AP: Memory allocation failed in %s at %d",__func__, __LINE__);
       return RFAILED;
    }
 
@@ -1816,7 +1816,7 @@ uint8_t BuildRanFunctionAddList(RANfunctions_List_t *ranFunctionsList, uint8_t p
       DU_ALLOC(ranFunctionsList->list.array[ranFuncIdx], sizeof(RANfunction_ItemIEs_t));
       if(ranFunctionsList->list.array[ranFuncIdx] == NULLP)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in %s at %d",__func__, __LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in %s at %d",__func__, __LINE__);
          return RFAILED;
       }
       if(procedureCode == ProcedureCodeE2_id_E2setup) 
@@ -1965,7 +1965,7 @@ void FreeE2SetupReq(E2AP_PDU_t *e2apMsg)
                      }
 
                      default:
-                        DU_LOG("\nERROR  --> E2AP: Invalid event at e2SetupRequet %ld ",\
+                        DU_LOG("ERROR  --> E2AP: Invalid event at e2SetupRequet %ld ",\
                               (e2SetupReq->protocolIEs.list.array[arrIdx]->id));
                         break;
                   }
@@ -2004,20 +2004,20 @@ uint8_t BuildAndSendE2SetupReq()
    E2setupRequest_t  *e2SetupReq = NULLP;
    asn_enc_rval_t     encRetVal;       /* Encoder return value */
 
-   DU_LOG("\nINFO   -->  E2AP : Building E2 Setup Request\n");
+   DU_LOG("INFO   -->  E2AP : Building E2 Setup Request\n");
    do
    {
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
          break;
       }
       e2apMsg->present = E2AP_PDU_PR_initiatingMessage;
       DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       if(e2apMsg->choice.initiatingMessage == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
          break;
       }
       e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
@@ -2034,7 +2034,7 @@ uint8_t BuildAndSendE2SetupReq()
             e2SetupReq->protocolIEs.list.size);
       if(e2SetupReq->protocolIEs.list.array == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for array elements");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed for array elements");
          break;
       }
       for(arrIdx = 0; arrIdx < elementCnt; (arrIdx)++)
@@ -2044,7 +2044,7 @@ uint8_t BuildAndSendE2SetupReq()
          if(e2SetupReq->protocolIEs.list.array[arrIdx] == NULLP)
          {
             memAllocFailed = true;
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for arrayarrIdx [%d]", arrIdx);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation failed for arrayarrIdx [%d]", arrIdx);
             break;
          }
       }
@@ -2072,7 +2072,7 @@ uint8_t BuildAndSendE2SetupReq()
       if(e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.\
             GlobalE2node_ID.choice.gNB == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for gNbId");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed for gNbId");
          break;
       }
       else
@@ -2081,7 +2081,7 @@ uint8_t BuildAndSendE2SetupReq()
                choice.GlobalE2node_ID.choice.gNB);
          if(ret != ROK)
          {
-             DU_LOG("\nERROR  -->  E2AP : Failed to build Global Gnb Id");
+             DU_LOG("ERROR  -->  E2AP : Failed to build Global Gnb Id");
              break;
          }
       }
@@ -2093,7 +2093,7 @@ uint8_t BuildAndSendE2SetupReq()
       e2SetupReq->protocolIEs.list.array[arrIdx]->value.present = E2setupRequestIEs__value_PR_RANfunctions_List;
       if(BuildRanFunctionAddList(&(e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.RANfunctions_List), ProcedureCodeE2_id_E2setup, 0, NULL)!=ROK)      
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to create RAN Function");
+         DU_LOG("ERROR  -->  E2AP : Failed to create RAN Function");
          break;
       }
 
@@ -2104,7 +2104,7 @@ uint8_t BuildAndSendE2SetupReq()
       e2SetupReq->protocolIEs.list.array[arrIdx]->value.present = E2setupRequestIEs__value_PR_E2nodeComponentConfigAddition_List;
       if(BuildE2NodeConfigAddList(&(e2SetupReq->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAddition_List), ProcedureCodeE2_id_E2setup, 0, NULL)!=ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to create E2 Node config list");
+         DU_LOG("ERROR  -->  E2AP : Failed to create E2 Node config list");
          break;
       }
 
@@ -2119,13 +2119,13 @@ uint8_t BuildAndSendE2SetupReq()
             encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode E2SetupRequest structure (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode E2SetupRequest structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for E2SetupRequest\n");
+         DU_LOG("DEBUG   -->  E2AP : Created APER encoded buffer for E2SetupRequest\n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -2135,7 +2135,7 @@ uint8_t BuildAndSendE2SetupReq()
       }
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup request failed");
+         DU_LOG("ERROR  -->  E2AP : Sending E2 Setup request failed");
       }
       break;
    }while(true);
@@ -2177,7 +2177,7 @@ uint8_t BuildRicActionAdmitList(RICaction_Admitted_List_t *admitList, PendingSub
    DU_ALLOC(admitList->list.array, admitList->list.size);
    if(admitList->list.array == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -2186,7 +2186,7 @@ uint8_t BuildRicActionAdmitList(RICaction_Admitted_List_t *admitList, PendingSub
       DU_ALLOC(admitList->list.array[idx], sizeof(RICaction_Admitted_ItemIEs_t));
       if(admitList->list.array[idx] == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
          return RFAILED;
       }
 
@@ -2229,7 +2229,7 @@ uint8_t BuildRicActionNotAdmitList(RICaction_NotAdmitted_List_t *notAdmitList, P
    DU_ALLOC(notAdmitList->list.array, notAdmitList->list.size);
    if(notAdmitList->list.array == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -2238,7 +2238,7 @@ uint8_t BuildRicActionNotAdmitList(RICaction_NotAdmitted_List_t *notAdmitList, P
       DU_ALLOC(notAdmitList->list.array[idx], sizeof(RICaction_NotAdmitted_ItemIEs_t));
       if(notAdmitList->list.array[idx] == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
          return RFAILED;
       }
 
@@ -2366,7 +2366,7 @@ uint8_t fillRicSubscriptionRsp(RICsubscriptionResponse_t *ricSubscriptionRsp, Pe
    DU_ALLOC(ricSubscriptionRsp->protocolIEs.list.array, ricSubscriptionRsp->protocolIEs.list.size);
    if(ricSubscriptionRsp->protocolIEs.list.array == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at %s : line %d", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed at %s : line %d", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -2375,7 +2375,7 @@ uint8_t fillRicSubscriptionRsp(RICsubscriptionResponse_t *ricSubscriptionRsp, Pe
       DU_ALLOC(ricSubscriptionRsp->protocolIEs.list.array[ieIdx], sizeof(RICsubscriptionResponse_IEs_t));
       if(ricSubscriptionRsp->protocolIEs.list.array[ieIdx] == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d] : ieIdx [%d]", __func__, __LINE__,ieIdx);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d] : ieIdx [%d]", __func__, __LINE__,ieIdx);
          return RFAILED;
       }
    }
@@ -2405,7 +2405,7 @@ uint8_t fillRicSubscriptionRsp(RICsubscriptionResponse_t *ricSubscriptionRsp, Pe
    subsRspIe->value.present = RICsubscriptionResponse_IEs__value_PR_RICaction_Admitted_List;
    if(BuildRicActionAdmitList(&subsRspIe->value.choice.RICaction_Admitted_List, subsRspInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : Failed to fill RIC Action Admitted List in RIC Subscription Response");
+      DU_LOG("ERROR  -->  E2AP : Failed to fill RIC Action Admitted List in RIC Subscription Response");
       return RFAILED;
    }
 
@@ -2420,7 +2420,7 @@ uint8_t fillRicSubscriptionRsp(RICsubscriptionResponse_t *ricSubscriptionRsp, Pe
       subsRspIe->value.present = RICsubscriptionResponse_IEs__value_PR_RICaction_NotAdmitted_List;
       if(BuildRicActionNotAdmitList(&subsRspIe->value.choice.RICaction_NotAdmitted_List, subsRspInfo) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to fill RIC Action Not Admitted List in RIC Subscription Response");
+         DU_LOG("ERROR  -->  E2AP : Failed to fill RIC Action Not Admitted List in RIC Subscription Response");
          return RFAILED;
       }
    }
@@ -2452,12 +2452,12 @@ uint8_t BuildAndSendRicSubscriptionRsp(PendingSubsRspInfo *subsRspInfo)
 
    while(true)
    {
-      DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Response\n");
+      DU_LOG("INFO   -->  E2AP : Building RIC Subscription Response\n");
 
       DU_ALLOC(e2apRicMsg, sizeof(E2AP_PDU_t)); 
       if(e2apRicMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
          break;
       }
 
@@ -2465,7 +2465,7 @@ uint8_t BuildAndSendRicSubscriptionRsp(PendingSubsRspInfo *subsRspInfo)
       DU_ALLOC(e2apRicMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
       if(e2apRicMsg->choice.successfulOutcome == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for RIC subscription Response failed");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for RIC subscription Response failed");
          break;
       }
 
@@ -2477,7 +2477,7 @@ uint8_t BuildAndSendRicSubscriptionRsp(PendingSubsRspInfo *subsRspInfo)
 
       if(fillRicSubscriptionRsp(ricSubscriptionRsp, subsRspInfo) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for RICsubscriptionResponseIE failed");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for RICsubscriptionResponseIE failed");
          break;
       }
 
@@ -2489,13 +2489,13 @@ uint8_t BuildAndSendRicSubscriptionRsp(PendingSubsRspInfo *subsRspInfo)
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apRicMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Subscription Response structure (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode RIC Subscription Response structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for RIC subscription response \n");
+         DU_LOG("DEBUG   -->  E2AP : Created APER encoded buffer for RIC subscription response \n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -2506,7 +2506,7 @@ uint8_t BuildAndSendRicSubscriptionRsp(PendingSubsRspInfo *subsRspInfo)
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Sending RIC Subscription Response failed");      
+         DU_LOG("ERROR  -->  E2AP : Sending RIC Subscription Response failed");      
          break;
       }
 
@@ -2644,7 +2644,7 @@ void handleE2NodeConfigUpdateAckIes(PTR e2NodeCfg, uint8_t procedureCode)
             e2NodeComponentInfo = fetchE2NodeComponentInfo(F1, e2nodeComponentID->choice.e2nodeComponentInterfaceTypeF1->gNB_DU_ID.buf[0], &node);
             if(!e2NodeComponentInfo)
             {
-               DU_LOG("\nERROR  --> E2AP : Received null e2NodeComponentInfo at line number %d",__LINE__);
+               DU_LOG("ERROR  --> E2AP : Received null e2NodeComponentInfo at line number %d",__LINE__);
                return;
             }
             break;
@@ -2719,7 +2719,7 @@ void procE2SetupRsp(E2AP_PDU_t *e2apMsg)
    E2nodeComponentConfigAdditionAck_List_t *e2NodeCfgAckList=NULL;
    E2nodeComponentConfigAdditionAck_ItemIEs_t *e2NodeAddAckItem=NULL;
 
-   DU_LOG("\nINFO   -->  E2AP : E2 Setup Response received"); 
+   DU_LOG("INFO   -->  E2AP : E2 Setup Response received"); 
    duCb.e2Status = TRUE; //Set E2 status as true
    e2SetRspMsg = &e2apMsg->choice.successfulOutcome->value.choice.E2setupResponse;
 
@@ -2737,7 +2737,7 @@ void procE2SetupRsp(E2AP_PDU_t *e2apMsg)
                }
                else
                {
-                  DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
+                  DU_LOG("ERROR  -->  E2AP : Invalid transaction id [%d]", transId);
                   invalidTransId = true;
                }
                break;
@@ -2772,7 +2772,7 @@ void procE2SetupRsp(E2AP_PDU_t *e2apMsg)
                for(idx =0; idx <ranFuncAcceptedList->list.count; idx++)
                {
                   ranFuncAcceptedItemIe = (RANfunctionID_ItemIEs_t*)ranFuncAcceptedList->list.array[idx];
-                  DU_LOG("\nINFO  --> E2AP : Ran function id [%ld] accepted",ranFuncAcceptedItemIe->value.choice.RANfunctionID_Item.ranFunctionID);
+                  DU_LOG("INFO  --> E2AP : Ran function id [%ld] accepted",ranFuncAcceptedItemIe->value.choice.RANfunctionID_Item.ranFunctionID);
                }
                break;
             }
@@ -2783,13 +2783,13 @@ void procE2SetupRsp(E2AP_PDU_t *e2apMsg)
                for(idx =0; idx <ranFuncRejectedList->list.count; idx++)
                {
                   ranFuncRejectedItemIe = (RANfunctionIDcause_ItemIEs_t*)ranFuncRejectedList->list.array[idx];
-                  DU_LOG("\nINFO  --> E2AP : Ran function id [%ld] rejected",ranFuncRejectedItemIe->value.choice.RANfunctionIDcause_Item.ranFunctionID);
+                  DU_LOG("INFO  --> E2AP : Ran function id [%ld] rejected",ranFuncRejectedItemIe->value.choice.RANfunctionIDcause_Item.ranFunctionID);
                }
                break;
             }
          default:
             {
-               DU_LOG("\nERROR  -->  E2AP : Invalid IE received in E2SetupRsp:%ld",
+               DU_LOG("ERROR  -->  E2AP : Invalid IE received in E2SetupRsp:%ld",
                      e2SetRspMsg->protocolIEs.list.array[arrIdx]->id);
                break;
             }
@@ -2806,7 +2806,7 @@ void procE2SetupRsp(E2AP_PDU_t *e2apMsg)
    {
       if(duSendE2NodeConfigurationUpdate() != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 node config update");
+         DU_LOG("ERROR  -->  E2AP : Failed to send E2 node config update");
       }
    }
 }
@@ -2934,7 +2934,7 @@ uint8_t extractEventTriggerDef(RanFunction *ranFuncDb, RicSubscription *ricSubsc
          ricEventTriggerDef->size, 0, 0);
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
-      DU_LOG("\nERROR  -->  E2AP : ASN decode failed for E2SM-KPM Event Trigger Definition");
+      DU_LOG("ERROR  -->  E2AP : ASN decode failed for E2SM-KPM Event Trigger Definition");
       failureCause->causeType = E2_PROTOCOL; 
       failureCause->cause = E2_ABSTRACT_SYNTAX_ERROR_FALSELY_CONSTRUCTED_MESSAGE;
       return RFAILED;
@@ -3104,7 +3104,7 @@ uint8_t extractMeasInfoList(CmLListCp *measInfoSupportedList, MeasurementInfoLis
 
             default:
                {
-                  DU_LOG("\nERROR  ->  DUAPP: Invalid Measurement-type identifier in \
+                  DU_LOG("ERROR  ->  DUAPP: Invalid Measurement-type identifier in \
                         E2SM-KPM Action Definition Format");
                   break;
                }
@@ -3200,7 +3200,7 @@ uint8_t extractRicActionDef(RanFunction *ranFuncDb, ActionDefinition *actionDefD
          ricActionDef->size, 0, 0);
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
-      DU_LOG("\nERROR  -->  E2AP : ASN decode failed for E2SM-KPM Action Definition");
+      DU_LOG("ERROR  -->  E2AP : ASN decode failed for E2SM-KPM Action Definition");
       failureCause->causeType = E2_PROTOCOL;
       failureCause->cause = E2_ABSTRACT_SYNTAX_ERROR_FALSELY_CONSTRUCTED_MESSAGE;
       return RFAILED;
@@ -3248,7 +3248,7 @@ uint8_t extractRicActionDef(RanFunction *ranFuncDb, ActionDefinition *actionDefD
 
             default :
                {
-                  DU_LOG("\nERROR  ->  DUAPP: Only E2SM-KPM Action Definition Format 1 is supported");
+                  DU_LOG("ERROR  ->  DUAPP: Only E2SM-KPM Action Definition Format 1 is supported");
                   break;
                }
          } /* End of switch for E2SM-KPM Action definition formats */
@@ -3347,7 +3347,7 @@ CmLList *addRicSubsAction(RanFunction *ranFuncDb, PTR ricSubsInfo, CmLListCp *ac
    DU_ALLOC(actionDb, sizeof(ActionInfo));   
    if(actionDb==NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
       return NULLP;
    }
    if(ricActionType== RICactionType_report)
@@ -3368,7 +3368,7 @@ CmLList *addRicSubsAction(RanFunction *ranFuncDb, PTR ricSubsInfo, CmLListCp *ac
       }
       else
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at %d",__func__,__LINE__);
          DU_FREE(actionDb, sizeof(ActionInfo));
          return NULLP;
       }
@@ -3436,7 +3436,7 @@ uint8_t extractRicActionToBeSetup(RanFunction *ranFuncDb, RicSubscription *ricSu
                   break;
                }
             default:
-               DU_LOG("\nERROR  -->  E2AP : Invalid IE received in RicSetupLst:%ld",actionItem->id);
+               DU_LOG("ERROR  -->  E2AP : Invalid IE received in RicSetupLst:%ld",actionItem->id);
                break;
          }
       }
@@ -3482,7 +3482,7 @@ uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
    RicSubscription *ricSubscriptionInfo = NULLP;
    E2FailureCause failureCause;
 
-   DU_LOG("\nINFO   -->  E2AP : RIC Subscription request received"); 
+   DU_LOG("INFO   -->  E2AP : RIC Subscription request received"); 
 
    memset(&failureCause, 0, sizeof(E2FailureCause));
    memset(&ricReqId, 0, sizeof(RicRequestId));
@@ -3528,7 +3528,7 @@ uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
                   DU_ALLOC(ricSubscriptionInfo, sizeof(RicSubscription));
                   if(!ricSubscriptionInfo)
                   {
-                     DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for ricSubscriptionInfo");
+                     DU_LOG("ERROR  -->  E2AP : Memory allocation failed for ricSubscriptionInfo");
                      failureCause.causeType = E2_MISCELLANEOUS;
                      failureCause.cause = E2_MISCELLANEOUS_CAUSE_UNSPECIFIED;
                      ret = RFAILED;
@@ -3568,7 +3568,7 @@ uint8_t procRicSubscriptionRequest(E2AP_PDU_t *e2apMsg)
                break;
 
             default:
-               DU_LOG("\nERROR  -->  E2AP : Invalid IE received in RIC SubsReq:%ld",
+               DU_LOG("ERROR  -->  E2AP : Invalid IE received in RIC SubsReq:%ld",
                      ricSubsReq->protocolIEs.list.array[idx]->id);
                break;
          }
@@ -3679,12 +3679,12 @@ uint8_t BuildAndSendRicSubscriptionFailure(RicRequestId ricReqId, uint16_t ranFu
 
    while(true)
    {
-      DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Failure\n");
+      DU_LOG("INFO   -->  E2AP : Building RIC Subscription Failure\n");
 
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation at [%s] : Line [%d]", __func__, __LINE__); 
+         DU_LOG("ERROR  -->  E2AP : Memory allocation at [%s] : Line [%d]", __func__, __LINE__); 
          break;
       }
 
@@ -3692,7 +3692,7 @@ uint8_t BuildAndSendRicSubscriptionFailure(RicRequestId ricReqId, uint16_t ranFu
       DU_ALLOC(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
       if(e2apMsg->choice.unsuccessfulOutcome == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation at [%s] : Line [%d]", __func__, __LINE__); 
+         DU_LOG("ERROR  -->  E2AP : Memory allocation at [%s] : Line [%d]", __func__, __LINE__); 
          break;
       }
       e2apMsg->choice.unsuccessfulOutcome->procedureCode = ProcedureCodeE2_id_RICsubscription;
@@ -3707,7 +3707,7 @@ uint8_t BuildAndSendRicSubscriptionFailure(RicRequestId ricReqId, uint16_t ranFu
       DU_ALLOC(ricSubscriptionFailure->protocolIEs.list.array, ricSubscriptionFailure->protocolIEs.list.size);
       if(!ricSubscriptionFailure->protocolIEs.list.array)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation at [%s] : Line [%d]", __func__, __LINE__); 
+         DU_LOG("ERROR  -->  E2AP : Memory allocation at [%s] : Line [%d]", __func__, __LINE__); 
          break;
       }
 
@@ -3716,7 +3716,7 @@ uint8_t BuildAndSendRicSubscriptionFailure(RicRequestId ricReqId, uint16_t ranFu
          DU_ALLOC(ricSubscriptionFailure->protocolIEs.list.array[elemIdx], sizeof(RICsubscriptionFailure_IEs_t));
          if(!ricSubscriptionFailure->protocolIEs.list.array[elemIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation at [%s] : Line [%d] for IE at index [%d]", \
+            DU_LOG("ERROR  -->  E2AP : Memory allocation at [%s] : Line [%d] for IE at index [%d]", \
                __func__, __LINE__, elemIdx);
             break;
          }
@@ -3755,13 +3755,13 @@ uint8_t BuildAndSendRicSubscriptionFailure(RicRequestId ricReqId, uint16_t ranFu
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Subscription Failure Message (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode RIC Subscription Failure Message (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Failure Message \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Failure Message \n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -3772,7 +3772,7 @@ uint8_t BuildAndSendRicSubscriptionFailure(RicRequestId ricReqId, uint16_t ranFu
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nINFO   -->  E2AP : Sending RIC Subscription Failure");
+         DU_LOG("INFO   -->  E2AP : Sending RIC Subscription Failure");
 
       }
       ret = ROK;
@@ -4006,7 +4006,7 @@ uint8_t fillMeasRecord(MeasurementRecord_t *measRecord, MeasurementInfo *measInf
    DU_ALLOC(measRecord->list.array, measRecord->list.size);
    if(!measRecord->list.array)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -4015,7 +4015,7 @@ uint8_t fillMeasRecord(MeasurementRecord_t *measRecord, MeasurementInfo *measInf
       DU_ALLOC(measRecord->list.array[measRecIdx], sizeof(MeasurementRecordItem_t));
       if(!measRecord->list.array[measRecIdx])
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
          return RFAILED;
       }
    }
@@ -4074,7 +4074,7 @@ uint8_t fillMeasData(MeasurementData_t *measData, CmLListCp *measInfoListDb)
   DU_ALLOC(measData->list.array, measData->list.size);
   if(!measData->list.array)
   {
-     DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+     DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
      return RFAILED;
   }
 
@@ -4088,14 +4088,14 @@ uint8_t fillMeasData(MeasurementData_t *measData, CmLListCp *measInfoListDb)
         DU_ALLOC(measData->list.array[measIdx], sizeof(MeasurementDataItem_t));
         if(!measData->list.array[measIdx])
         {
-           DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+           DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
            return RFAILED;
         }
 
         measRecord = &measData->list.array[measIdx]->measRecord;
         if(fillMeasRecord(measRecord, measInfoDb) != ROK)
         {
-           DU_LOG("\nERROR  -->  E2AP : Failed to fill measurement record");
+           DU_LOG("ERROR  -->  E2AP : Failed to fill measurement record");
            return RFAILED;
         }
         measIdx++;
@@ -4136,7 +4136,7 @@ uint8_t fillMeasInfoList(MeasurementInfoList_t *measInfoList, CmLListCp *measInf
    DU_ALLOC(measInfoList->list.array, measInfoList->list.size);
    if(!measInfoList->list.array)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -4147,7 +4147,7 @@ uint8_t fillMeasInfoList(MeasurementInfoList_t *measInfoList, CmLListCp *measInf
       DU_ALLOC(measInfoList->list.array[measInfoIdx], sizeof(MeasurementInfoItem_t));
       if(!measInfoList->list.array[measInfoIdx])
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
          return RFAILED;
       }
 
@@ -4162,7 +4162,7 @@ uint8_t fillMeasInfoList(MeasurementInfoList_t *measInfoList, CmLListCp *measInf
          DU_ALLOC(measInfoItem->measType.choice.measName.buf, measInfoItem->measType.choice.measName.size);
          if(!measInfoItem->measType.choice.measName.buf)
          {
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
             return RFAILED;
          }
 
@@ -4199,7 +4199,7 @@ uint8_t fillE2smKpmIndMsgFormat1(E2SM_KPM_IndicationMessage_Format1_t *format1Ms
   /* Measurement Data */
   if(fillMeasData(&format1Msg->measData, &format1->measurementInfoList) != ROK)
   {
-     DU_LOG("\nERROR  -->  E2AP : Failed to fill measurement data");
+     DU_LOG("ERROR  -->  E2AP : Failed to fill measurement data");
      return RFAILED;
   }
 
@@ -4207,13 +4207,13 @@ uint8_t fillE2smKpmIndMsgFormat1(E2SM_KPM_IndicationMessage_Format1_t *format1Ms
   DU_ALLOC(format1Msg->measInfoList, sizeof(MeasurementInfoList_t));
   if(!format1Msg->measInfoList)
   {
-     DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+     DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
      return RFAILED;
   }
 
   if(fillMeasInfoList(format1Msg->measInfoList, &format1->measurementInfoList) != ROK)
   {
-     DU_LOG("\nERROR  -->  E2AP : Failed to fill measurement information list");
+     DU_LOG("ERROR  -->  E2AP : Failed to fill measurement information list");
      return RFAILED;
   }
 
@@ -4221,7 +4221,7 @@ uint8_t fillE2smKpmIndMsgFormat1(E2SM_KPM_IndicationMessage_Format1_t *format1Ms
   DU_ALLOC(format1Msg->granulPeriod, sizeof(GranularityPeriod_t));
   if(!format1Msg->granulPeriod)
   {
-     DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+     DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
      return RFAILED;
   }
   *(format1Msg->granulPeriod) = format1->granularityPeriod;
@@ -4268,7 +4268,7 @@ uint8_t fillRicIndMsgBuf(RICindicationMessage_t *ricIndMsgBuf, ActionInfo *actio
                      sizeof(E2SM_KPM_IndicationMessage_Format1_t));
                if(!e2smKpmIndMsg.indicationMessage_formats.choice.indicationMessage_Format1)
                {
-                  DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+                  DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
                   failedInFormat = true;
                   break;
                }
@@ -4276,7 +4276,7 @@ uint8_t fillRicIndMsgBuf(RICindicationMessage_t *ricIndMsgBuf, ActionInfo *actio
                if(fillE2smKpmIndMsgFormat1(e2smKpmIndMsg.indicationMessage_formats.choice.indicationMessage_Format1, \
                   &actionInfo->definition.choice.format1) != ROK)
                {
-                  DU_LOG("\nERROR  -->  E2AP : Failed to fill E2SM-KPM Indication message format 1");
+                  DU_LOG("ERROR  -->  E2AP : Failed to fill E2SM-KPM Indication message format 1");
                   failedInFormat = true;
                   break;
                }
@@ -4287,7 +4287,7 @@ uint8_t fillRicIndMsgBuf(RICindicationMessage_t *ricIndMsgBuf, ActionInfo *actio
          case E2SM_KPM_IndicationMessage__indicationMessage_formats_PR_indicationMessage_Format2:
          default:
             {
-               DU_LOG("\nERROR  -->  E2AP : fillRicIndMsgBuf: Only Format 1 supported");
+               DU_LOG("ERROR  -->  E2AP : fillRicIndMsgBuf: Only Format 1 supported");
                failedInFormat = true;
                break;
             }
@@ -4303,13 +4303,13 @@ uint8_t fillRicIndMsgBuf(RICindicationMessage_t *ricIndMsgBuf, ActionInfo *actio
       encRetVal = aper_encode(&asn_DEF_E2SM_KPM_IndicationMessage, 0, &e2smKpmIndMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode E2SM-KPM Indication Message (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode E2SM-KPM Indication Message (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2SM-KPM Indication Message \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for E2SM-KPM Indication Message \n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -4323,7 +4323,7 @@ uint8_t fillRicIndMsgBuf(RICindicationMessage_t *ricIndMsgBuf, ActionInfo *actio
       DU_ALLOC(ricIndMsgBuf->buf, ricIndMsgBuf->size);
       if(!ricIndMsgBuf->buf)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
          break;
       }
       memset(ricIndMsgBuf->buf, 0, ricIndMsgBuf->size);
@@ -4413,7 +4413,7 @@ uint8_t fillRicIndHeader(RICindicationHeader_t *ricIndHdr, RicSubscription *ricS
       ranFunc = fetchRanFuncFromRanFuncId(ricSubsInfo->ranFuncId);
       if(ranFunc == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : RAN Function ID [%d] not found", ricSubsInfo->ranFuncId);
+         DU_LOG("ERROR  -->  E2AP : RAN Function ID [%d] not found", ricSubsInfo->ranFuncId);
          break;
       }
 
@@ -4428,7 +4428,7 @@ uint8_t fillRicIndHeader(RICindicationHeader_t *ricIndHdr, RicSubscription *ricS
                      sizeof(E2SM_KPM_IndicationHeader_Format1_t));
                if(!e2smKpmIndHdr.indicationHeader_formats.choice.indicationHeader_Format1)
                {
-                  DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+                  DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
                   formatFailure = true;
                   break;
                }
@@ -4447,7 +4447,7 @@ uint8_t fillRicIndHeader(RICindicationHeader_t *ricIndHdr, RicSubscription *ricS
                DU_ALLOC(format1->colletStartTime.buf, format1->colletStartTime.size);
                if(!format1->colletStartTime.buf)
                {
-                  DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+                  DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
                   formatFailure = true;
                   break;
                }
@@ -4475,7 +4475,7 @@ uint8_t fillRicIndHeader(RICindicationHeader_t *ricIndHdr, RicSubscription *ricS
          case E2SM_KPM_IndicationHeader__indicationHeader_formats_PR_NOTHING:
          default:
          {
-             DU_LOG("\nERROR  -->  E2AP : Only E2SM-KPM Indication Header Format 1 supported");
+             DU_LOG("ERROR  -->  E2AP : Only E2SM-KPM Indication Header Format 1 supported");
              formatFailure = true;
              break;
          }
@@ -4491,13 +4491,13 @@ uint8_t fillRicIndHeader(RICindicationHeader_t *ricIndHdr, RicSubscription *ricS
       encRetVal = aper_encode(&asn_DEF_E2SM_KPM_IndicationHeader, 0, &e2smKpmIndHdr, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode E2SM-KPM Indication Header (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode E2SM-KPM Indication Header (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2SM-KPM Indication Header \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for E2SM-KPM Indication Header \n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -4511,7 +4511,7 @@ uint8_t fillRicIndHeader(RICindicationHeader_t *ricIndHdr, RicSubscription *ricS
       DU_ALLOC(ricIndHdr->buf, ricIndHdr->size);
       if(!ricIndHdr->buf)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
          break;
       }
       memset(ricIndHdr->buf, 0, ricIndHdr->size);
@@ -4557,7 +4557,7 @@ uint8_t fillRicIndication(RICindication_t *ricIndicationMsg, RicSubscription *ri
    DU_ALLOC(ricIndicationMsg->protocolIEs.list.array, ricIndicationMsg->protocolIEs.list.size);
    if(ricIndicationMsg->protocolIEs.list.array == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -4566,7 +4566,7 @@ uint8_t fillRicIndication(RICindication_t *ricIndicationMsg, RicSubscription *ri
       DU_ALLOC(ricIndicationMsg->protocolIEs.list.array[idx], sizeof(RICindication_IEs_t));
       if(ricIndicationMsg->protocolIEs.list.array[idx] == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation in [%s] at line [%d]", __func__, __LINE__);
          return RFAILED;
       }
    }
@@ -4610,7 +4610,7 @@ uint8_t fillRicIndication(RICindication_t *ricIndicationMsg, RicSubscription *ri
    if(fillRicIndHeader(&ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationHeader, \
       ricSubscriptionInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : Failed to fill RIC Indication header");
+      DU_LOG("ERROR  -->  E2AP : Failed to fill RIC Indication header");
       return RFAILED;
    }
 
@@ -4622,7 +4622,7 @@ uint8_t fillRicIndication(RICindication_t *ricIndicationMsg, RicSubscription *ri
    if(fillRicIndMsgBuf(&ricIndicationMsg->protocolIEs.list.array[idx]->value.choice.RICindicationMessage, \
       actionInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : Failed to fill RIC Indication Message");
+      DU_LOG("ERROR  -->  E2AP : Failed to fill RIC Indication Message");
       return RFAILED;
    }
 
@@ -4653,12 +4653,12 @@ uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo, ActionIn
 
    while(true)
    {
-      DU_LOG("\nINFO   -->  E2AP : Building RIC Indication Message\n");
+      DU_LOG("INFO   -->  E2AP : Building RIC Indication Message\n");
 
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
          break;
       }
 
@@ -4666,7 +4666,7 @@ uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo, ActionIn
       DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       if(e2apMsg->choice.initiatingMessage == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
          break;
       }
       e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_RICindication;
@@ -4677,7 +4677,7 @@ uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo, ActionIn
 
       if(fillRicIndication(ricIndicationMsg, ricSubscriptionInfo, actionInfo) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to fill RIC Indication message");
+         DU_LOG("ERROR  -->  E2AP : Failed to fill RIC Indication message");
          break;
       }
 
@@ -4689,13 +4689,13 @@ uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo, ActionIn
             encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Indication Message (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode RIC Indication Message (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC Indication Message \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for RIC Indication Message \n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -4706,7 +4706,7 @@ uint8_t BuildAndSendRicIndication(RicSubscription *ricSubscriptionInfo, ActionIn
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nINFO   -->  E2AP : Sending RIC Indication Message");      
+         DU_LOG("INFO   -->  E2AP : Sending RIC Indication Message");      
 
       }
       ret = ROK;
@@ -4906,13 +4906,13 @@ uint8_t BuildAndSendE2NodeConfigUpdate(E2NodeConfigList *e2NodeList)
    asn_enc_rval_t     encRetVal;       /* Encoder return value */
    E2nodeConfigurationUpdate_t *e2NodeConfigUpdate = NULLP;
 
-   DU_LOG("\nINFO   -->  E2AP : Building E2 Node config update\n");
+   DU_LOG("INFO   -->  E2AP : Building E2 Node config update\n");
    do
    {
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
          break;
       }
 
@@ -4920,7 +4920,7 @@ uint8_t BuildAndSendE2NodeConfigUpdate(E2NodeConfigList *e2NodeList)
       DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       if(e2apMsg->choice.initiatingMessage == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
          break;
       }
       e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
@@ -4942,7 +4942,7 @@ uint8_t BuildAndSendE2NodeConfigUpdate(E2NodeConfigList *e2NodeList)
       DU_ALLOC(e2NodeConfigUpdate->protocolIEs.list.array, e2NodeConfigUpdate->protocolIEs.list.size);
       if(e2NodeConfigUpdate->protocolIEs.list.array == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for e2NodeConfigUpdate failed");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for e2NodeConfigUpdate failed");
          break;
       }
       
@@ -4952,7 +4952,7 @@ uint8_t BuildAndSendE2NodeConfigUpdate(E2NodeConfigList *e2NodeList)
          if(e2NodeConfigUpdate->protocolIEs.list.array[arrIdx] == NULLP)
          {
             
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation for e2NodeConfigUpdate failed");
+            DU_LOG("ERROR  -->  E2AP : Memory allocation for e2NodeConfigUpdate failed");
             break;
          }
       }
@@ -4976,7 +4976,7 @@ uint8_t BuildAndSendE2NodeConfigUpdate(E2NodeConfigList *e2NodeList)
          if(BuildE2NodeConfigAddList(&(e2NodeConfigUpdate->protocolIEs.list.array[arrIdx]->value.choice.E2nodeComponentConfigAddition_List),\
          ProcedureCodeE2_id_E2nodeConfigurationUpdate, e2NodeList->addE2NodeCount, e2NodeList->addE2Node)!=ROK)
          {
-            DU_LOG("\nERROR  -->  E2AP : Failed to create E2 Node config list");
+            DU_LOG("ERROR  -->  E2AP : Failed to create E2 Node config list");
             break;
          }
       }
@@ -4991,7 +4991,7 @@ uint8_t BuildAndSendE2NodeConfigUpdate(E2NodeConfigList *e2NodeList)
          e2NodeList->updateE2NodeCount, e2NodeList->updateE2Node) != ROK)
          {
 
-            DU_LOG("\nERROR  -->  E2AP : Failed to update the E2 node configuration");
+            DU_LOG("ERROR  -->  E2AP : Failed to update the E2 node configuration");
             break;
          }
       }
@@ -5006,7 +5006,7 @@ uint8_t BuildAndSendE2NodeConfigUpdate(E2NodeConfigList *e2NodeList)
          e2NodeList->removeE2NodeCount, e2NodeList->removeE2Node) != ROK)
          {
 
-            DU_LOG("\nERROR  -->  E2AP : Failed to remove the E2 node configuration");
+            DU_LOG("ERROR  -->  E2AP : Failed to remove the E2 node configuration");
             break;
          }
       }
@@ -5019,13 +5019,13 @@ uint8_t BuildAndSendE2NodeConfigUpdate(E2NodeConfigList *e2NodeList)
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode E2nodeConfigurationUpdate structure (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode E2nodeConfigurationUpdate structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for E2nodeConfigurationUpdate\n");
+         DU_LOG("DEBUG   -->  E2AP : Created APER encoded buffer for E2nodeConfigurationUpdate\n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -5035,7 +5035,7 @@ uint8_t BuildAndSendE2NodeConfigUpdate(E2NodeConfigList *e2NodeList)
       }
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize))
       {
-         DU_LOG("\nERROR  -->  E2AP : Sending E2 node config update failed");
+         DU_LOG("ERROR  -->  E2AP : Sending E2 node config update failed");
          break;
       }
 
@@ -5116,14 +5116,14 @@ uint8_t BuildAndSendE2ResetRequest(E2FailureCause resetCause)
    ResetRequestE2_t  *resetReq = NULLP;
    asn_enc_rval_t     encRetVal;       /* Encoder return value */
 
-   DU_LOG("\nINFO   -->  E2AP : Building E2 Reset Request\n");
+   DU_LOG("INFO   -->  E2AP : Building E2 Reset Request\n");
 
    do
    {
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : BuildAndSendE2ResetRequest(): Memory allocation for E2AP-PDU failed");
+         DU_LOG("ERROR  -->  E2AP : BuildAndSendE2ResetRequest(): Memory allocation for E2AP-PDU failed");
          break;
       }
 
@@ -5131,7 +5131,7 @@ uint8_t BuildAndSendE2ResetRequest(E2FailureCause resetCause)
       DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       if(e2apMsg->choice.initiatingMessage == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : BuildAndSendE2ResetRequest(): Memory allocation for initiatingMessage");
+         DU_LOG("ERROR  -->  E2AP : BuildAndSendE2ResetRequest(): Memory allocation for initiatingMessage");
          break;
       }
 
@@ -5147,7 +5147,7 @@ uint8_t BuildAndSendE2ResetRequest(E2FailureCause resetCause)
       DU_ALLOC(resetReq->protocolIEs.list.array, resetReq->protocolIEs.list.size);
       if(!resetReq->protocolIEs.list.array)
       {
-         DU_LOG("\nERROR  -->  E2AP : BuildAndSendE2ResetRequest(): Memory allocation failed for \
+         DU_LOG("ERROR  -->  E2AP : BuildAndSendE2ResetRequest(): Memory allocation failed for \
             Reset Request IE array");
          break;
       }
@@ -5157,7 +5157,7 @@ uint8_t BuildAndSendE2ResetRequest(E2FailureCause resetCause)
          DU_ALLOC(resetReq->protocolIEs.list.array[ieIdx], sizeof(ResetRequestIEs_t));
          if(!resetReq->protocolIEs.list.array[ieIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : BuildAndSendE2ResetRequest(): Memory allocation failed for \
+            DU_LOG("ERROR  -->  E2AP : BuildAndSendE2ResetRequest(): Memory allocation failed for \
             Reset Request IE array element");
             break;
          }
@@ -5189,13 +5189,13 @@ uint8_t BuildAndSendE2ResetRequest(E2FailureCause resetCause)
             encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode reset request structure (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode reset request structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for reset request\n");
+         DU_LOG("DEBUG   -->  E2AP : Created APER encoded buffer for reset request\n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -5205,7 +5205,7 @@ uint8_t BuildAndSendE2ResetRequest(E2FailureCause resetCause)
       }
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup request failed");
+         DU_LOG("ERROR  -->  E2AP : Sending E2 Setup request failed");
          break;
       }
 
@@ -5288,7 +5288,7 @@ void procResetResponse(E2AP_PDU_t *e2apMsg)
    uint16_t ranFuncIdx=0;
    ResetResponseE2_t *resetResponse =NULLP;
 
-   DU_LOG("\nINFO   -->  E2AP : E2 Reset Response received");
+   DU_LOG("INFO   -->  E2AP : E2 Reset Response received");
    resetResponse = &e2apMsg->choice.successfulOutcome->value.choice.ResetResponseE2;;
 
    for(ieIdx=0; ieIdx < resetResponse->protocolIEs.list.count; ieIdx++)
@@ -5305,7 +5305,7 @@ void procResetResponse(E2AP_PDU_t *e2apMsg)
                }
                else
                {
-                  DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
+                  DU_LOG("ERROR  -->  E2AP : Invalid transaction id [%d]", transId);
                   invalidTransId = true;
                }
                break;
@@ -5324,7 +5324,7 @@ void procResetResponse(E2AP_PDU_t *e2apMsg)
             }
          default:
             {
-               DU_LOG("\nERROR  -->  E2AP : Invalid IE received in E2 Reset Response : %ld",
+               DU_LOG("ERROR  -->  E2AP : Invalid IE received in E2 Reset Response : %ld",
                      resetResponse->protocolIEs.list.array[ieIdx]->id);
                break;
             }
@@ -5394,7 +5394,7 @@ void procE2SetupFailure(E2AP_PDU_t *e2apMsg)
    uint8_t arrIdx =0, timerValue=0; 
    E2setupFailure_t *e2SetupFailure;
 
-   DU_LOG("\nINFO   -->  E2AP : E2 Setup failure received"); 
+   DU_LOG("INFO   -->  E2AP : E2 Setup failure received"); 
    e2SetupFailure = &e2apMsg->choice.unsuccessfulOutcome->value.choice.E2setupFailure;
 
    for(arrIdx=0; arrIdx<e2SetupFailure->protocolIEs.list.count; arrIdx++)
@@ -5411,7 +5411,7 @@ void procE2SetupFailure(E2AP_PDU_t *e2apMsg)
             }
             else
             {
-               DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
+               DU_LOG("ERROR  -->  E2AP : Invalid transaction id [%d]", transId);
                return ;
             }
             break;
@@ -5425,7 +5425,7 @@ void procE2SetupFailure(E2AP_PDU_t *e2apMsg)
                }
                else
                {
-                  DU_LOG("\nERROR   -->  E2AP : EVENT_E2_SETUP_TMR timer is already running");
+                  DU_LOG("ERROR   -->  E2AP : EVENT_E2_SETUP_TMR timer is already running");
                   return;
                }
                break; 
@@ -5521,7 +5521,7 @@ uint8_t BuildRanFunctionDeleteList(RANfunctionsID_List_t *deleteList, uint8_t co
       DU_ALLOC(deleteList->list.array, deleteList->list.size);
       if(deleteList->list.array == NULLP)
       {
-         DU_LOG("\nERROR  --> E2AP: Memory allocation failed in %s at %d",__func__, __LINE__);
+         DU_LOG("ERROR  --> E2AP: Memory allocation failed in %s at %d",__func__, __LINE__);
          return RFAILED;
       }
       for(ranFuncIdx = 0; ranFuncIdx< deleteList->list.count; ranFuncIdx++)
@@ -5529,7 +5529,7 @@ uint8_t BuildRanFunctionDeleteList(RANfunctionsID_List_t *deleteList, uint8_t co
          DU_ALLOC(deleteList->list.array[ranFuncIdx], sizeof(RANfunctionID_ItemIEs_t));
          if(deleteList->list.array[ranFuncIdx] == NULLP)
          {
-            DU_LOG("\nERROR  --> E2AP: Memory allocation failed in %s at %d",__func__, __LINE__);
+            DU_LOG("ERROR  --> E2AP: Memory allocation failed in %s at %d",__func__, __LINE__);
             return RFAILED;
          }
          delRanFuncItem= (RANfunctionID_ItemIEs_t *) deleteList->list.array[ranFuncIdx];
@@ -5621,7 +5621,7 @@ void FreeRicServiceUpdate(E2AP_PDU_t *e2apMsg)
                            break;
                         }
                      default:
-                        DU_LOG("\nERROR  --> E2AP: Invalid event at ricServiceUpdate %ld ",\
+                        DU_LOG("ERROR  --> E2AP: Invalid event at ricServiceUpdate %ld ",\
                               (ricServiceUpdate->protocolIEs.list.array[arrIdx]->id));
                         break;
                   }
@@ -5660,20 +5660,20 @@ uint8_t BuildAndSendRicServiceUpdate(RicServiceUpdate serviceUpdate)
    RICserviceUpdate_t  *ricServiceUpdate = NULLP;
    asn_enc_rval_t     encRetVal;       /* Encoder return value */
 
-   DU_LOG("\nINFO   -->  E2AP : Building Ric Service Update\n");
+   DU_LOG("INFO   -->  E2AP : Building Ric Service Update\n");
    do
    {
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
          break;
       }
       e2apMsg->present = E2AP_PDU_PR_initiatingMessage;
       DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       if(e2apMsg->choice.initiatingMessage == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation for E2AP-PDU failed");
          break;
       }
       e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
@@ -5699,7 +5699,7 @@ uint8_t BuildAndSendRicServiceUpdate(RicServiceUpdate serviceUpdate)
       DU_ALLOC(ricServiceUpdate->protocolIEs.list.array, ricServiceUpdate->protocolIEs.list.size);
       if(ricServiceUpdate->protocolIEs.list.array == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for array elements");
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed for array elements");
          break;
       }
       
@@ -5709,7 +5709,7 @@ uint8_t BuildAndSendRicServiceUpdate(RicServiceUpdate serviceUpdate)
          if(ricServiceUpdate->protocolIEs.list.array[arrIdx] == NULLP)
          {
             memAllocFailed = true;
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed for arrayIdx [%d]", arrIdx);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation failed for arrayIdx [%d]", arrIdx);
             break;
          }
       }
@@ -5774,13 +5774,13 @@ uint8_t BuildAndSendRicServiceUpdate(RicServiceUpdate serviceUpdate)
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode RicServiceUpdateuest structure (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode RicServiceUpdateuest structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for RicServiceUpdateuest\n");
+         DU_LOG("DEBUG   -->  E2AP : Created APER encoded buffer for RicServiceUpdateuest\n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -5790,7 +5790,7 @@ uint8_t BuildAndSendRicServiceUpdate(RicServiceUpdate serviceUpdate)
       }
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Sending E2 Setup request failed");
+         DU_LOG("ERROR  -->  E2AP : Sending E2 Setup request failed");
          break;
       }
       ret = ROK;
@@ -5843,7 +5843,7 @@ void procRicServiceQuery(E2AP_PDU_t *e2apMsg)
    RANfunctionID_ItemIEs_t *ranFuncAddedItemIe;
    RANfunctionsID_List_t *ranFuncAddedList;
 
-   DU_LOG("\nINFO   -->  E2AP : RIC Service Query received");
+   DU_LOG("INFO   -->  E2AP : RIC Service Query received");
    memset(&ricUpdate, 0, sizeof(RicServiceUpdate));
    ricUpdate.dir = RIC_INITIATED;
    ricServiceQuery = &e2apMsg->choice.initiatingMessage->value.choice.RICserviceQuery;
@@ -5921,7 +5921,7 @@ void procRicServiceQuery(E2AP_PDU_t *e2apMsg)
 
    if(BuildAndSendRicServiceUpdate(ricUpdate)!= ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : Failed to build and send ric service update message");
+      DU_LOG("ERROR  -->  E2AP : Failed to build and send ric service update message");
    }
 
    freeAperDecodingOfRicServiceQuery(ricServiceQuery);
@@ -6009,7 +6009,7 @@ void procRicServiceUpdateAck(E2AP_PDU_t *e2apMsg)
    RICserviceUpdateAcknowledge_t *ricServiceAck=NULL;
    RANfunctionIDcause_ItemIEs_t *ranFuncRejectedItemIe=NULL;
    
-   DU_LOG("\nINFO   -->  E2AP : RIC service update ack received"); 
+   DU_LOG("INFO   -->  E2AP : RIC service update ack received"); 
    memset(&serviceUpdate, 0, sizeof(RicServiceUpdate));
    ricServiceAck = &e2apMsg->choice.successfulOutcome->value.choice.RICserviceUpdateAcknowledge;
    
@@ -6032,7 +6032,7 @@ void procRicServiceUpdateAck(E2AP_PDU_t *e2apMsg)
             }
             else
             {
-               DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
+               DU_LOG("ERROR  -->  E2AP : Invalid transaction id [%d]", transId);
                return ;
             }
             break;
@@ -6128,7 +6128,7 @@ void procRicServiceUpdateFailure(E2AP_PDU_t *e2apMsg)
    uint8_t arrIdx =0, timerValue=0; 
    RICserviceUpdateFailure_t *ricServiceFailure=NULL;
 
-   DU_LOG("\nINFO   -->  E2AP : RIC service update failure received"); 
+   DU_LOG("INFO   -->  E2AP : RIC service update failure received"); 
    ricServiceFailure = &e2apMsg->choice.unsuccessfulOutcome->value.choice.RICserviceUpdateFailure;
 
    for(arrIdx=0; arrIdx<ricServiceFailure->protocolIEs.list.count; arrIdx++)
@@ -6148,7 +6148,7 @@ void procRicServiceUpdateFailure(E2AP_PDU_t *e2apMsg)
                }
                else
                {
-                  DU_LOG("\nERROR   -->  E2AP : EVENT_RIC_SERVICE_UPDATE_TMR  timer is already running");
+                  DU_LOG("ERROR   -->  E2AP : EVENT_RIC_SERVICE_UPDATE_TMR  timer is already running");
                   return;
                }
                break; 
@@ -6216,7 +6216,7 @@ uint8_t duSendE2NodeConfigurationUpdate()
 
    if(BuildAndSendE2NodeConfigUpdate(&e2NodeList) !=ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : Failed to build and send e2 node config update message to RIC_stub");
+      DU_LOG("ERROR  -->  E2AP : Failed to build and send e2 node config update message to RIC_stub");
       return RFAILED;
    }
    return ROK;
@@ -6339,7 +6339,7 @@ uint8_t FillActionReqdToBeModList(RICactions_RequiredToBeModified_List_t *action
    DU_ALLOC(actionToBeModList->list.array, actionToBeModList->list.size);
    if(!actionToBeModList->list.array)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -6353,7 +6353,7 @@ uint8_t FillActionReqdToBeModList(RICactions_RequiredToBeModified_List_t *action
          DU_ALLOC(actionToBeModList->list.array[arrIdx], sizeof(RICaction_RequiredToBeModified_ItemIEs_t));
          if(!actionToBeModList->list.array[arrIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
             return RFAILED;
          }
          actionToBeMod = (RICaction_RequiredToBeModified_ItemIEs_t *)actionToBeModList->list.array[arrIdx];
@@ -6403,7 +6403,7 @@ uint8_t FillActionReqdToBeRmvList(RICactions_RequiredToBeRemoved_List_t *actionT
    DU_ALLOC(actionToBeRmvList->list.array, actionToBeRmvList->list.size);
    if(!actionToBeRmvList->list.array)
    {
-      DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed at line %d", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed at line %d", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -6417,7 +6417,7 @@ uint8_t FillActionReqdToBeRmvList(RICactions_RequiredToBeRemoved_List_t *actionT
          DU_ALLOC(actionToBeRmvList->list.array[arrIdx], sizeof(RICaction_RequiredToBeRemoved_ItemIEs_t));
          if(!actionToBeRmvList->list.array[arrIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed at line %d", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed at line %d", __func__, __LINE__);
             return RFAILED;
          }
          actionToBeRmv = (RICaction_RequiredToBeRemoved_ItemIEs_t *)actionToBeRmvList->list.array[arrIdx];
@@ -6489,7 +6489,7 @@ uint8_t FillRicSubsModRequired(RICsubscriptionModificationRequired_t *ricSubsMod
    DU_ALLOC(ricSubsModReqd->protocolIEs.list.array, ricSubsModReqd->protocolIEs.list.size);
    if(!ricSubsModReqd->protocolIEs.list.array)
    {
-      DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed at line %d", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed at line %d", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -6498,7 +6498,7 @@ uint8_t FillRicSubsModRequired(RICsubscriptionModificationRequired_t *ricSubsMod
       DU_ALLOC(ricSubsModReqd->protocolIEs.list.array[ieIdx], sizeof(RICsubscriptionModificationRequired_IEs_t));
       if(!ricSubsModReqd->protocolIEs.list.array[ieIdx])
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed at line %d", __func__, __LINE__);
          return RFAILED;
       }
    }
@@ -6539,7 +6539,7 @@ uint8_t FillRicSubsModRequired(RICsubscriptionModificationRequired_t *ricSubsMod
 
       if(FillActionReqdToBeModList(actionToBeModList, numActionsMod, ricSubscription) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Failed to fill actions required to be modified list", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: Failed to fill actions required to be modified list", __func__);
          return RFAILED;
       }
    }
@@ -6558,7 +6558,7 @@ uint8_t FillRicSubsModRequired(RICsubscriptionModificationRequired_t *ricSubsMod
 
       if(FillActionReqdToBeRmvList(actionToBeRmvList, numActionsRmv, ricSubscription) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Failed to fill actions required to be removed list", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: Failed to fill actions required to be removed list", __func__);
          return RFAILED;
       }
    }
@@ -6590,13 +6590,13 @@ uint8_t BuildAndSendRicSubsModRequired(RicSubscription *ricSubscription)
    RICsubscriptionModificationRequired_t  *ricSubsModReqd = NULLP;
    asn_enc_rval_t     encRetVal;       /* Encoder return value */
 
-   DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Modification Required \n");
+   DU_LOG("INFO   -->  E2AP : Building RIC Subscription Modification Required \n");
    while(true)
    {
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed at line %d", __func__, __LINE__);
          break;
       }
 
@@ -6604,7 +6604,7 @@ uint8_t BuildAndSendRicSubsModRequired(RicSubscription *ricSubscription)
       DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       if(e2apMsg->choice.initiatingMessage == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed at line %d", __func__, __LINE__);
          break;
       }
       e2apMsg->choice.initiatingMessage->criticality = CriticalityE2_reject;
@@ -6615,7 +6615,7 @@ uint8_t BuildAndSendRicSubsModRequired(RicSubscription *ricSubscription)
 
       if(FillRicSubsModRequired(ricSubsModReqd, ricSubscription) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Failed to fill RIC Subscription Modification Required IEs", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: Failed to fill RIC Subscription Modification Required IEs", __func__);
          break;
       }
       
@@ -6627,13 +6627,13 @@ uint8_t BuildAndSendRicSubsModRequired(RicSubscription *ricSubscription)
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Subscription Modifiction Required structure (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode RIC Subscription Modifiction Required structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for RIC Subscription Modification Required \n");
+         DU_LOG("DEBUG   -->  E2AP : Created APER encoded buffer for RIC Subscription Modification Required \n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -6643,7 +6643,7 @@ uint8_t BuildAndSendRicSubsModRequired(RicSubscription *ricSubscription)
       }
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Sending RIC Subscription Modification Required failed");
+         DU_LOG("ERROR  -->  E2AP : Sending RIC Subscription Modification Required failed");
       }
 
       ret = ROK;
@@ -6809,25 +6809,25 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
    RICactions_RefusedToBeRemoved_List_t *rmvFailList = NULLP;
    RICaction_RefusedToBeRemoved_ItemIEs_t *rmvFailListItem = NULLP;
 
-   DU_LOG("\nINFO   -->  E2AP : %s: Received RIC Subscription Modification Confirm", __func__);
+   DU_LOG("INFO   -->  E2AP : %s: Received RIC Subscription Modification Confirm", __func__);
 
    do{
       if(!e2apMsg)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: E2AP Message is NULL", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: E2AP Message is NULL", __func__);
          break;
       }
 
       if(!e2apMsg->choice.successfulOutcome)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Successful Outcome in E2AP message is NULL", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: Successful Outcome in E2AP message is NULL", __func__);
          break;
       }
 
       ricSubsModCfm = &e2apMsg->choice.successfulOutcome->value.choice.RICsubscriptionModificationConfirm;
       if(!ricSubsModCfm->protocolIEs.list.array)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Array conatining E2AP message IEs is null", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: Array conatining E2AP message IEs is null", __func__);
          break;
       }
 
@@ -6835,7 +6835,7 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
       {
          if(!ricSubsModCfm->protocolIEs.list.array[ieIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : %s: IE at index [%d] in E2AP message IEs list is null", __func__, ieIdx);
+            DU_LOG("ERROR  -->  E2AP : %s: IE at index [%d] in E2AP message IEs list is null", __func__, ieIdx);
             break;
          }
 
@@ -6856,7 +6856,7 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
                   ranFuncDb = fetchRanFuncFromRanFuncId(ranFuncId);
                   if(!ranFuncDb)
                   {
-                     DU_LOG("\nERROR  -->  E2AP : %s: RAN Function ID [%d] not found", __func__, ranFuncId);
+                     DU_LOG("ERROR  -->  E2AP : %s: RAN Function ID [%d] not found", __func__, ranFuncId);
                      procFailure = true;
                      break;
                   }
@@ -6864,7 +6864,7 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
                   ricSubsDb = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode); 
                   if(!ricSubsDb)
                   {
-                     DU_LOG("\nERROR  -->  E2AP : %s: RIC Subscription not found for Requestor_ID [%d] Instance_ID [%d]",\
+                     DU_LOG("ERROR  -->  E2AP : %s: RIC Subscription not found for Requestor_ID [%d] Instance_ID [%d]",\
                            __func__, ricReqId.requestorId, ricReqId.instanceId);
                      procFailure = true;
                      break;
@@ -6890,7 +6890,7 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
                      actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb, &actionNode, CONFIG_UNKNOWN);
                      if(!actionDb)
                      {
-                        DU_LOG("\nERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
+                        DU_LOG("ERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
                      }
                      else
                      {
@@ -6913,7 +6913,7 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
                     actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb, &actionNode, CONFIG_UNKNOWN);
                     if(!actionDb)
                     {
-                       DU_LOG("\nERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
+                       DU_LOG("ERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
                     }
                     else
                     {
@@ -6938,7 +6938,7 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
                      actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb, &actionNode, CONFIG_UNKNOWN);
                      if(!actionDb)
                      {
-                        DU_LOG("\nERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
+                        DU_LOG("ERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
                      }
                      else
                      {
@@ -6964,7 +6964,7 @@ void procRicSubscriptionModificationConfirm(E2AP_PDU_t *e2apMsg)
                      actionDb = fetchActionInfoFromActionId(actionId, ricSubsDb,  &actionNode, CONFIG_UNKNOWN);
                      if(!actionDb)
                      {
-                        DU_LOG("\nERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
+                        DU_LOG("ERROR  -->  E2AP : %s: Action ID [%d] not found", __func__, actionId);
                      }
                      else
                      {
@@ -7057,13 +7057,13 @@ uint8_t BuildAndSendResetResponse(uint16_t transId)
    ResetResponseE2_t *resetResponse;
    asn_enc_rval_t    encRetVal;       /* Encoder return value */
 
-   DU_LOG("\nINFO   -->  E2AP : Building E2 Reset Response Message\n");
+   DU_LOG("INFO   -->  E2AP : Building E2 Reset Response Message\n");
    do
    {
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : BuildAndSendResetResponse(): Memory allocation for E2AP-PDU failed");
+         DU_LOG("ERROR  -->  E2AP : BuildAndSendResetResponse(): Memory allocation for E2AP-PDU failed");
          break;
       }
       e2apMsg->present = E2AP_PDU_PR_successfulOutcome;
@@ -7071,7 +7071,7 @@ uint8_t BuildAndSendResetResponse(uint16_t transId)
       DU_ALLOC(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
       if(e2apMsg->choice.successfulOutcome == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : BuildAndSendResetResponse: Memory allocation failed for successfulOutcome");
+         DU_LOG("ERROR  -->  E2AP : BuildAndSendResetResponse: Memory allocation failed for successfulOutcome");
          break;
       }
 
@@ -7086,7 +7086,7 @@ uint8_t BuildAndSendResetResponse(uint16_t transId)
       DU_ALLOC(resetResponse->protocolIEs.list.array, resetResponse->protocolIEs.list.size);
       if(!resetResponse->protocolIEs.list.array)
       {
-         DU_LOG("\nERROR  -->  E2AP : BuildAndSendResetResponse: Memory allocation failed for protocol IE array");
+         DU_LOG("ERROR  -->  E2AP : BuildAndSendResetResponse: Memory allocation failed for protocol IE array");
          break;
       }
 
@@ -7095,7 +7095,7 @@ uint8_t BuildAndSendResetResponse(uint16_t transId)
          DU_ALLOC(resetResponse->protocolIEs.list.array[ieIdx], sizeof(ResetResponseIEs_t));
          if(!resetResponse->protocolIEs.list.array[ieIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : BuildAndSendResetResponse: Memory allocation failed for protocol IE array element");
+            DU_LOG("ERROR  -->  E2AP : BuildAndSendResetResponse: Memory allocation failed for protocol IE array element");
             break;
          }
       }
@@ -7115,23 +7115,23 @@ uint8_t BuildAndSendResetResponse(uint16_t transId)
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode E2 reset response structure (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode E2 reset response structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2 Reset Response \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for E2 Reset Response \n");
          for(int i=0; i< encBufSize; i++)
          {
-            DU_LOG("%x",encBuf[i]);
+            printf("%x",encBuf[i]);
          }
       }
 
       /* Sending msg */
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Reset Response");
+         DU_LOG("ERROR  -->  E2AP : Failed to send E2 Reset Response");
          break;
       }
 
@@ -7200,7 +7200,7 @@ void procE2ResetRequest(E2AP_PDU_t  *e2apMsg)
    uint16_t ranFuncIdx=0;
    ResetRequestE2_t *resetReq;
 
-   DU_LOG("\nINFO   -->  E2AP : E2 Reset request received");
+   DU_LOG("INFO   -->  E2AP : E2 Reset request received");
    resetReq = &e2apMsg->choice.initiatingMessage->value.choice.ResetRequestE2;
 
    for(arrIdx=0; arrIdx<resetReq->protocolIEs.list.count; arrIdx++)
@@ -7229,7 +7229,7 @@ void procE2ResetRequest(E2AP_PDU_t  *e2apMsg)
    }
    if(BuildAndSendResetResponse(transId) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : Failed to build and send reset response");
+      DU_LOG("ERROR  -->  E2AP : Failed to build and send reset response");
    }
    freeAperDecodingOfE2ResetReq(resetReq);
 }
@@ -7293,25 +7293,25 @@ void procRicSubscriptionModificationRefuse(E2AP_PDU_t *e2apMsg)
    RICsubscriptionModificationRefuse_IEs_t *ricSubsModRefuseIe = NULLP;
    CauseE2_t *cause = NULLP;
 
-   DU_LOG("\nINFO   -->  E2AP : %s: Received RIC Subscription Modification Refuse", __func__);
+   DU_LOG("INFO   -->  E2AP : %s: Received RIC Subscription Modification Refuse", __func__);
 
    do{
       if(!e2apMsg)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: E2AP Message is NULL", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: E2AP Message is NULL", __func__);
          break;
       }
 
       if(!e2apMsg->choice.unsuccessfulOutcome)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Unsuccessful Outcome in E2AP message is NULL", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: Unsuccessful Outcome in E2AP message is NULL", __func__);
          break;
       }
 
       ricSubsModRefuse = &e2apMsg->choice.unsuccessfulOutcome->value.choice.RICsubscriptionModificationRefuse;
       if(!ricSubsModRefuse->protocolIEs.list.array)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Array conatining E2AP message IEs is null", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: Array conatining E2AP message IEs is null", __func__);
          break;
       }
 
@@ -7319,7 +7319,7 @@ void procRicSubscriptionModificationRefuse(E2AP_PDU_t *e2apMsg)
       {
          if(!ricSubsModRefuse->protocolIEs.list.array[ieIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : %s: IE at index [%d] in E2AP message IEs list is null", __func__, ieIdx);
+            DU_LOG("ERROR  -->  E2AP : %s: IE at index [%d] in E2AP message IEs list is null", __func__, ieIdx);
             break;
          }
 
@@ -7342,7 +7342,7 @@ void procRicSubscriptionModificationRefuse(E2AP_PDU_t *e2apMsg)
 
             case ProtocolIE_IDE2_id_CauseE2:
                {
-                  DU_LOG("\nDEBUG  -->  E2AP : %s: RIC subscriptiom modification refused for RIC_Requestor_ID [%d] \
+                  DU_LOG("DEBUG  -->  E2AP : %s: RIC subscriptiom modification refused for RIC_Requestor_ID [%d] \
                         RIC_Instance_ID [%d] RAN_Function_ID [%d] ", __func__, ricReqId.requestorId, \
                         ricReqId.instanceId, ranFuncId);
 
@@ -7463,7 +7463,7 @@ uint8_t fillRicSubsListWithCause(RICsubscription_List_withCause_t *ricSubsList, 
    DU_ALLOC(ricSubsList->list.array, ricSubsList->list.size);
    if(!ricSubsList->list.array)
    {
-      DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
       return RFAILED;
    }
 
@@ -7474,7 +7474,7 @@ uint8_t fillRicSubsListWithCause(RICsubscription_List_withCause_t *ricSubsList, 
       DU_ALLOC(ricSubsList->list.array[ieIdx], sizeof(RICsubscription_withCause_ItemIEs_t));
       if(!ricSubsList->list.array[ieIdx])
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
          return RFAILED;
       }
 
@@ -7543,16 +7543,16 @@ uint8_t BuildAndSendRicSubscriptionDeleteRequired()
       fetchRicSubsToBeDeleted(&ricSubsToBeDelList);
       if(ricSubsToBeDelList.count == 0)
       {
-         DU_LOG("\nDEBUG  -->  E2AP : %s: No RIC subscriptions are required to be deleted", __func__);
+         DU_LOG("DEBUG  -->  E2AP : %s: No RIC subscriptions are required to be deleted", __func__);
          return ROK;
       }
 
-      DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Delete Required Message\n");
+      DU_LOG("INFO   -->  E2AP : Building RIC Subscription Delete Required Message\n");
 
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
          break;
       }
 
@@ -7560,7 +7560,7 @@ uint8_t BuildAndSendRicSubscriptionDeleteRequired()
       DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       if(e2apMsg->choice.initiatingMessage == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
          break;
       }
       e2apMsg->choice.initiatingMessage->procedureCode = ProcedureCodeE2_id_RICsubscriptionDeleteRequired;
@@ -7576,7 +7576,7 @@ uint8_t BuildAndSendRicSubscriptionDeleteRequired()
       DU_ALLOC(ricSubsDelRqd->protocolIEs.list.array, ricSubsDelRqd->protocolIEs.list.size);
       if(ricSubsDelRqd->protocolIEs.list.array == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed for array elements at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed for array elements at line %d",__func__, __LINE__);
          break;
       }
       
@@ -7585,7 +7585,7 @@ uint8_t BuildAndSendRicSubscriptionDeleteRequired()
          DU_ALLOC(ricSubsDelRqd->protocolIEs.list.array[ieIdx], sizeof(RICsubscriptionDeleteRequired_IEs_t));
          if(ricSubsDelRqd->protocolIEs.list.array[ieIdx] == NULLP)
          {
-            DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed for index [%d] at line %d", \
+            DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed for index [%d] at line %d", \
                __func__, ieIdx, __LINE__);
             break;
          }
@@ -7601,7 +7601,7 @@ uint8_t BuildAndSendRicSubscriptionDeleteRequired()
       if(fillRicSubsListWithCause(&ricSubsDelRqdIe->value.choice.RICsubscription_List_withCause, ricSubsToBeDelList)\
             != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Failed to fill RIC Subscription list with cause", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: Failed to fill RIC Subscription list with cause", __func__);
          break;
       }
 
@@ -7612,13 +7612,13 @@ uint8_t BuildAndSendRicSubscriptionDeleteRequired()
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Subscription Delete Required Message (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode RIC Subscription Delete Required Message (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Delete Required Message \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Delete Required Message \n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -7629,7 +7629,7 @@ uint8_t BuildAndSendRicSubscriptionDeleteRequired()
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR   -->  E2AP : Failed to send RIC Susbcription Delete Required Message");      
+         DU_LOG("ERROR   -->  E2AP : Failed to send RIC Susbcription Delete Required Message");      
 
       }
       ret = ROK;
@@ -7706,12 +7706,12 @@ uint8_t BuildAndSendRicSubscriptionDeleteFailure(uint16_t ranFuncId,  RicRequest
 
    while(true)
    {
-      DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Delete Failure Message\n");
+      DU_LOG("INFO   -->  E2AP : Building RIC Subscription Delete Failure Message\n");
 
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
          break;
       }
 
@@ -7719,7 +7719,7 @@ uint8_t BuildAndSendRicSubscriptionDeleteFailure(uint16_t ranFuncId,  RicRequest
       DU_ALLOC(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
       if(e2apMsg->choice.unsuccessfulOutcome == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
          break;
       }
       e2apMsg->choice.unsuccessfulOutcome->procedureCode = ProcedureCodeE2_id_RICsubscriptionDelete;
@@ -7736,7 +7736,7 @@ uint8_t BuildAndSendRicSubscriptionDeleteFailure(uint16_t ranFuncId,  RicRequest
       DU_ALLOC(ricSubsDelFailure->protocolIEs.list.array, ricSubsDelFailure->protocolIEs.list.size);
       if(ricSubsDelFailure->protocolIEs.list.array == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed for array elements at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed for array elements at line %d",__func__, __LINE__);
          break;
       }
 
@@ -7745,7 +7745,7 @@ uint8_t BuildAndSendRicSubscriptionDeleteFailure(uint16_t ranFuncId,  RicRequest
          DU_ALLOC(ricSubsDelFailure->protocolIEs.list.array[ieIdx], sizeof(RICsubscriptionDeleteFailure_IEs_t));
          if(ricSubsDelFailure->protocolIEs.list.array[ieIdx] == NULLP)
          {
-            DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed for index [%d] at line %d", \
+            DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed for index [%d] at line %d", \
                   __func__, ieIdx, __LINE__);
             break;
          }
@@ -7782,13 +7782,13 @@ uint8_t BuildAndSendRicSubscriptionDeleteFailure(uint16_t ranFuncId,  RicRequest
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Subscription Delete Failure Message (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode RIC Subscription Delete Failure Message (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Delete Failure Message \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Delete Failure Message \n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -7799,7 +7799,7 @@ uint8_t BuildAndSendRicSubscriptionDeleteFailure(uint16_t ranFuncId,  RicRequest
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR   -->  E2AP : Failed to send RIC Susbcription Delete Failure Message");
+         DU_LOG("ERROR   -->  E2AP : Failed to send RIC Susbcription Delete Failure Message");
          break;
       }
 
@@ -7877,12 +7877,12 @@ uint8_t BuildAndSendRicSubscriptionDeleteResponse(uint16_t ranFuncId,  RicReques
 
    while(true)
    {
-      DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Delete Response Message\n");
+      DU_LOG("INFO   -->  E2AP : Building RIC Subscription Delete Response Message\n");
 
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
          break;
       }
 
@@ -7890,7 +7890,7 @@ uint8_t BuildAndSendRicSubscriptionDeleteResponse(uint16_t ranFuncId,  RicReques
       DU_ALLOC(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
       if(e2apMsg->choice.successfulOutcome == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
          break;
       }
       e2apMsg->choice.successfulOutcome->procedureCode = ProcedureCodeE2_id_RICsubscriptionDelete;
@@ -7907,7 +7907,7 @@ uint8_t BuildAndSendRicSubscriptionDeleteResponse(uint16_t ranFuncId,  RicReques
       DU_ALLOC(ricSubsDelRsp->protocolIEs.list.array, ricSubsDelRsp->protocolIEs.list.size);
       if(ricSubsDelRsp->protocolIEs.list.array == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed for array elements at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed for array elements at line %d",__func__, __LINE__);
          break;
       }
 
@@ -7916,7 +7916,7 @@ uint8_t BuildAndSendRicSubscriptionDeleteResponse(uint16_t ranFuncId,  RicReques
          DU_ALLOC(ricSubsDelRsp->protocolIEs.list.array[ieIdx], sizeof(RICsubscriptionDeleteResponse_IEs_t));
          if(ricSubsDelRsp->protocolIEs.list.array[ieIdx] == NULLP)
          {
-            DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed for index [%d] at line %d", \
+            DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed for index [%d] at line %d", \
                   __func__, ieIdx, __LINE__);
             break;
          }
@@ -7946,13 +7946,13 @@ uint8_t BuildAndSendRicSubscriptionDeleteResponse(uint16_t ranFuncId,  RicReques
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Subscription Delete Response Message (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode RIC Subscription Delete Response Message (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Delete Response Message \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Delete Response Message \n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -7963,7 +7963,7 @@ uint8_t BuildAndSendRicSubscriptionDeleteResponse(uint16_t ranFuncId,  RicReques
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR   -->  E2AP : Failed to send RIC Susbcription Delete Response Message");
+         DU_LOG("ERROR   -->  E2AP : Failed to send RIC Susbcription Delete Response Message");
          break;
       }
 
@@ -8043,25 +8043,25 @@ void procRicSubscriptionDeleteRequest(E2AP_PDU_t *e2apMsg)
    RICsubscriptionDeleteRequest_t *ricSubsDelReq = NULLP;
    RICsubscriptionDeleteRequest_IEs_t *ricSubsDelReqIe = NULLP;
 
-   DU_LOG("\nINFO   -->  E2AP : %s: Received RIC Subscription Delete Request", __func__);
+   DU_LOG("INFO   -->  E2AP : %s: Received RIC Subscription Delete Request", __func__);
 
    do{
       if(!e2apMsg)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: E2AP Message is NULL", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: E2AP Message is NULL", __func__);
          break;
       }
 
       if(!e2apMsg->choice.initiatingMessage)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Initiating Message in E2AP PDU is NULL", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: Initiating Message in E2AP PDU is NULL", __func__);
          break;
       }
 
       ricSubsDelReq = &e2apMsg->choice.initiatingMessage->value.choice.RICsubscriptionDeleteRequest;
       if(!ricSubsDelReq->protocolIEs.list.array)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Array conatining E2AP message IEs is null", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: Array conatining E2AP message IEs is null", __func__);
          break;
       }
 
@@ -8069,7 +8069,7 @@ void procRicSubscriptionDeleteRequest(E2AP_PDU_t *e2apMsg)
       {
          if(!ricSubsDelReq->protocolIEs.list.array[ieIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : %s: IE at index [%d] in E2AP message IEs list is null", __func__, ieIdx);
+            DU_LOG("ERROR  -->  E2AP : %s: IE at index [%d] in E2AP message IEs list is null", __func__, ieIdx);
             break;
          }
 
@@ -8090,7 +8090,7 @@ void procRicSubscriptionDeleteRequest(E2AP_PDU_t *e2apMsg)
                   ranFuncDb = fetchRanFuncFromRanFuncId(ranFuncId);
                   if(!ranFuncDb)
                   {
-                     DU_LOG("\nERROR  -->  E2AP : %s: RAN Function ID [%d] not found", __func__, ranFuncId);
+                     DU_LOG("ERROR  -->  E2AP : %s: RAN Function ID [%d] not found", __func__, ranFuncId);
                      procFailure = true;
                      break;
                   }
@@ -8098,7 +8098,7 @@ void procRicSubscriptionDeleteRequest(E2AP_PDU_t *e2apMsg)
                   ricSubsDb = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode); 
                   if(!ricSubsDb)
                   {
-                     DU_LOG("\nERROR  -->  E2AP : %s: RIC Subscription not found for Requestor_ID [%d] Instance_ID [%d]",\
+                     DU_LOG("ERROR  -->  E2AP : %s: RIC Subscription not found for Requestor_ID [%d] Instance_ID [%d]",\
                            __func__, ricReqId.requestorId, ricReqId.instanceId);
                      procFailure = true;
                      break;
@@ -8106,7 +8106,7 @@ void procRicSubscriptionDeleteRequest(E2AP_PDU_t *e2apMsg)
 
                   if(BuildAndSendStatsDeleteReq(ricSubsDb, true) != ROK)
                   {
-                     DU_LOG("\nERROR  -->  E2AP : Failed to build and send ric subscription delete req to du layers");
+                     DU_LOG("ERROR  -->  E2AP : Failed to build and send ric subscription delete req to du layers");
                   }
                   break;
                }
@@ -8413,14 +8413,14 @@ uint8_t BuildAndSendRemovalRequest()
    E2RemovalRequest_t  *removalReq = NULLP;
    asn_enc_rval_t     encRetVal;       /* Encoder return value */
 
-   DU_LOG("\nINFO   -->  E2AP : Building Removal Request\n");
+   DU_LOG("INFO   -->  E2AP : Building Removal Request\n");
 
    do
    {
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
 
@@ -8428,7 +8428,7 @@ uint8_t BuildAndSendRemovalRequest()
       DU_ALLOC(e2apMsg->choice.initiatingMessage, sizeof(InitiatingMessageE2_t));
       if(e2apMsg->choice.initiatingMessage == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
 
@@ -8444,7 +8444,7 @@ uint8_t BuildAndSendRemovalRequest()
       DU_ALLOC(removalReq->protocolIEs.list.array, removalReq->protocolIEs.list.size);
       if(!removalReq->protocolIEs.list.array)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
 
@@ -8453,7 +8453,7 @@ uint8_t BuildAndSendRemovalRequest()
          DU_ALLOC(removalReq->protocolIEs.list.array[ieIdx], sizeof(E2RemovalRequestIEs_t));
          if(!removalReq->protocolIEs.list.array[ieIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
             break;
          }
       }
@@ -8478,13 +8478,13 @@ uint8_t BuildAndSendRemovalRequest()
             encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode removal request structure (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode removal request structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG   -->  E2AP : Created APER encoded buffer for removal request\n");
+         DU_LOG("DEBUG   -->  E2AP : Created APER encoded buffer for removal request\n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -8494,7 +8494,7 @@ uint8_t BuildAndSendRemovalRequest()
       }
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Sending removal request failed");
+         DU_LOG("ERROR  -->  E2AP : Sending removal request failed");
          break;
       }
 
@@ -8574,7 +8574,7 @@ void ProcE2RemovalFailure(E2AP_PDU_t *e2apMsg)
 
    if(!e2RemovalFailure->protocolIEs.list.array)      
    {
-      DU_LOG("\nERROR  -->  E2AP : e2RemovalFailure array pointer is null");
+      DU_LOG("ERROR  -->  E2AP : e2RemovalFailure array pointer is null");
       return;
    }
    
@@ -8594,7 +8594,7 @@ void ProcE2RemovalFailure(E2AP_PDU_t *e2apMsg)
                   }
                   else
                   {
-                     DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
+                     DU_LOG("ERROR  -->  E2AP : Invalid transaction id [%d]", transId);
                   }
                   break;
                }
@@ -8606,7 +8606,7 @@ void ProcE2RemovalFailure(E2AP_PDU_t *e2apMsg)
                }
             default:
                {
-                  DU_LOG("\nERROR  -->  E2AP : Received Invalid Ie [%ld]", e2RemovalFailure->protocolIEs.list.array[ieIdx]->id);
+                  DU_LOG("ERROR  -->  E2AP : Received Invalid Ie [%ld]", e2RemovalFailure->protocolIEs.list.array[ieIdx]->id);
                   break;
                }
          }
@@ -8677,7 +8677,7 @@ void ProcE2RemovalResponse(E2AP_PDU_t *e2apMsg)
 
    if(!removalRsp->protocolIEs.list.array)      
    {
-      DU_LOG("\nERROR  -->  E2AP : removalRsp array pointer is null");
+      DU_LOG("ERROR  -->  E2AP : removalRsp array pointer is null");
       return;
    }
 
@@ -8693,20 +8693,20 @@ void ProcE2RemovalResponse(E2AP_PDU_t *e2apMsg)
                   if((duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].transactionId == transId) &&\
                         (duCb.e2apDb.e2TransInfo.e2InitTransaction[transId].procedureCode == e2apMsg->choice.unsuccessfulOutcome->procedureCode))
                   {
-                     DU_LOG("\nINFO  -->  E2AP : Sending request to close the sctp connection");
+                     DU_LOG("INFO  -->  E2AP : Sending request to close the sctp connection");
                      cmInetClose(&ricParams.sockFd);
                      memset(&duCb.e2apDb.e2TransInfo.e2InitTransaction[transId], 0, sizeof(E2TransInfo));
                      removeE2NodeInformation();
                   }
                   else
                   {
-                     DU_LOG("\nERROR  -->  E2AP : Invalid transaction id [%d]", transId);
+                     DU_LOG("ERROR  -->  E2AP : Invalid transaction id [%d]", transId);
                   }
                   break;
                }
             default:
                {
-                  DU_LOG("\nERROR  -->  E2AP : Received Invalid Ie [%ld]", removalRsp->protocolIEs.list.array[ieIdx]->id);
+                  DU_LOG("ERROR  -->  E2AP : Received Invalid Ie [%ld]", removalRsp->protocolIEs.list.array[ieIdx]->id);
                   break;
                }
          }
@@ -8782,13 +8782,13 @@ uint8_t BuildAndSendE2ConnectionUpdateFailure(uint16_t transId, E2FailureCause f
    E2connectionUpdateFailure_t *e2ConnectionUpdateFailure=NULLP;
    asn_enc_rval_t    encRetVal;       /* Encoder return value */
 
-   DU_LOG("\nINFO   -->  E2AP : Building E2 Connection Update Failure Message\n");
+   DU_LOG("INFO   -->  E2AP : Building E2 Connection Update Failure Message\n");
    do
    {
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
       e2apMsg->present = E2AP_PDU_PR_unsuccessfulOutcome;
@@ -8796,7 +8796,7 @@ uint8_t BuildAndSendE2ConnectionUpdateFailure(uint16_t transId, E2FailureCause f
       DU_ALLOC(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
       if(e2apMsg->choice.unsuccessfulOutcome == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
 
@@ -8811,7 +8811,7 @@ uint8_t BuildAndSendE2ConnectionUpdateFailure(uint16_t transId, E2FailureCause f
       DU_ALLOC(e2ConnectionUpdateFailure->protocolIEs.list.array, e2ConnectionUpdateFailure->protocolIEs.list.size);
       if(!e2ConnectionUpdateFailure->protocolIEs.list.array)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
 
@@ -8820,7 +8820,7 @@ uint8_t BuildAndSendE2ConnectionUpdateFailure(uint16_t transId, E2FailureCause f
          DU_ALLOC(e2ConnectionUpdateFailure->protocolIEs.list.array[ieIdx], sizeof(E2connectionUpdateFailure_IEs_t));
          if(!e2ConnectionUpdateFailure->protocolIEs.list.array[ieIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
             break;
          }
       }
@@ -8847,23 +8847,23 @@ uint8_t BuildAndSendE2ConnectionUpdateFailure(uint16_t transId, E2FailureCause f
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode E2 connection update failure structure (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode E2 connection update failure structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2 Connection Update Failure \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for E2 Connection Update Failure \n");
          for(int i=0; i< encBufSize; i++)
          {
-            DU_LOG("%x",encBuf[i]);
+            printf("%x",encBuf[i]);
          }
       }
 
       /* Sending msg */
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Connection Update Failure");
+         DU_LOG("ERROR  -->  E2AP : Failed to send E2 Connection Update Failure");
          break;
       }
 
@@ -8928,7 +8928,7 @@ uint8_t fillE2connectionUpdateItem(PTR connectionInfo, uint8_t protocolId, uint3
    DU_ALLOC(tnlInformation->tnlAddress.buf, tnlInformation->tnlAddress.size);
    if(!tnlInformation->tnlAddress.buf)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -8994,7 +8994,7 @@ uint8_t BuildE2ConnectionUpdateList(E2connectionUpdate_List_t *connectionSetupLi
          DU_ALLOC(connectionSetupList->list.array[arrIdx], sizeof(E2connectionUpdate_ItemIEs_t));
          if(connectionSetupList->list.array[arrIdx] == NULLP)
          {
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
             return RFAILED;
          }
          connectionSetupItem = (E2connectionUpdate_ItemIEs_t*)connectionSetupList->list.array[arrIdx];
@@ -9004,7 +9004,7 @@ uint8_t BuildE2ConnectionUpdateList(E2connectionUpdate_List_t *connectionSetupLi
          if(fillE2connectionUpdateItem((PTR)&connectionSetupItem->value.choice.E2connectionUpdate_Item, ProtocolIE_IDE2_id_E2connectionUpdate_Item,\
           tmpConnectionList[arrIdx].ipV4Addr, tmpConnectionList[arrIdx].usage) != ROK)
          {
-            DU_LOG("\nERROR  -->  E2AP : Failed to fill E2 connection update item");
+            DU_LOG("ERROR  -->  E2AP : Failed to fill E2 connection update item");
             return RFAILED;
          }
 
@@ -9012,7 +9012,7 @@ uint8_t BuildE2ConnectionUpdateList(E2connectionUpdate_List_t *connectionSetupLi
    }
    else
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
       return RFAILED;
    }
    return ROK;
@@ -9053,7 +9053,7 @@ uint8_t BuildE2ConnectionSetupFailedList(E2connectionSetupFailed_List_t *setupFa
          DU_ALLOC(setupFailedList->list.array[arrIdx], sizeof(E2connectionSetupFailed_ItemIEs_t));
          if(setupFailedList->list.array[arrIdx] == NULLP)
          {
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
             return RFAILED;
          }
          setupFailedItem = (E2connectionSetupFailed_ItemIEs_t*)setupFailedList->list.array[arrIdx];
@@ -9063,7 +9063,7 @@ uint8_t BuildE2ConnectionSetupFailedList(E2connectionSetupFailed_List_t *setupFa
          if(fillE2connectionUpdateItem((PTR)&setupFailedItem->value.choice.E2connectionSetupFailed_Item, ProtocolIE_IDE2_id_E2connectionSetupFailed_Item,\
           tmpConnectionList[arrIdx].ipV4Addr, tmpConnectionList[arrIdx].usage) != ROK)
          {
-            DU_LOG("\nERROR  -->  E2AP : Failed to fill E2 connection failed to update item");
+            DU_LOG("ERROR  -->  E2AP : Failed to fill E2 connection failed to update item");
             return RFAILED;
          }
 
@@ -9071,7 +9071,7 @@ uint8_t BuildE2ConnectionSetupFailedList(E2connectionSetupFailed_List_t *setupFa
    }
    else
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
       return RFAILED;
    }
    return ROK;
@@ -9184,13 +9184,13 @@ uint8_t BuildAndSendE2ConnectionUpdateAcknowledge(uint16_t transId,  E2Connectio
    asn_enc_rval_t    encRetVal;       
    E2connectionUpdateAcknowledge_t *e2ConnectionUpdateAcknowledge=NULLP;
 
-   DU_LOG("\nINFO   -->  E2AP : Building E2 Connection Update Acknowledge Message\n");
+   DU_LOG("INFO   -->  E2AP : Building E2 Connection Update Acknowledge Message\n");
    do
    {
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
       e2apMsg->present = E2AP_PDU_PR_successfulOutcome;
@@ -9198,7 +9198,7 @@ uint8_t BuildAndSendE2ConnectionUpdateAcknowledge(uint16_t transId,  E2Connectio
       DU_ALLOC(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
       if(e2apMsg->choice.successfulOutcome == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
 
@@ -9218,7 +9218,7 @@ uint8_t BuildAndSendE2ConnectionUpdateAcknowledge(uint16_t transId,  E2Connectio
       DU_ALLOC(e2ConnectionUpdateAcknowledge->protocolIEs.list.array, e2ConnectionUpdateAcknowledge->protocolIEs.list.size);
       if(!e2ConnectionUpdateAcknowledge->protocolIEs.list.array)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
          break;
       }
 
@@ -9227,7 +9227,7 @@ uint8_t BuildAndSendE2ConnectionUpdateAcknowledge(uint16_t transId,  E2Connectio
          DU_ALLOC(e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx], sizeof(E2connectionUpdateAck_IEs_t));
          if(!e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation failed in %s at line %d", __func__, __LINE__);
             break;
          }
       }
@@ -9249,7 +9249,7 @@ uint8_t BuildAndSendE2ConnectionUpdateAcknowledge(uint16_t transId,  E2Connectio
          if(BuildE2ConnectionUpdateList(&e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->value.choice.E2connectionUpdate_List, \
                   connectionInfoList.numOfE2ConnectionSetup, connectionInfoList.setupE2Connection) != ROK)
          {
-            DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Connection setup list");
+            DU_LOG("ERROR  -->  E2AP : Failed to send E2 Connection setup list");
             break;
          }
       }
@@ -9263,7 +9263,7 @@ uint8_t BuildAndSendE2ConnectionUpdateAcknowledge(uint16_t transId,  E2Connectio
          if(BuildE2ConnectionSetupFailedList(&e2ConnectionUpdateAcknowledge->protocolIEs.list.array[ieIdx]->value.choice.E2connectionSetupFailed_List, \
                connectionInfoList.numOfE2ConnectionFailedToSetup, connectionInfoList.failedToSetupE2Connection) != ROK) 
          {
-            DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Connection failed to setup list");
+            DU_LOG("ERROR  -->  E2AP : Failed to send E2 Connection failed to setup list");
             break;
          }
       }
@@ -9275,23 +9275,23 @@ uint8_t BuildAndSendE2ConnectionUpdateAcknowledge(uint16_t transId,  E2Connectio
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode E2 connection update acknowledge failure structure (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode E2 connection update acknowledge failure structure (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for E2 Connection Update Acknowledge \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for E2 Connection Update Acknowledge \n");
          for(int i=0; i< encBufSize; i++)
          {
-            DU_LOG("%x",encBuf[i]);
+            printf("%x",encBuf[i]);
          }
       }
 
       /* Sending msg */
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to send E2 Connection Update Acknowledge");
+         DU_LOG("ERROR  -->  E2AP : Failed to send E2 Connection Update Acknowledge");
          break;
       }
 
@@ -9500,7 +9500,7 @@ void procE2ConnectionUpdate(E2AP_PDU_t  *e2apMsg)
    E2ConnectionList connectionInfoList;
    E2connectionUpdate_t *connectionUpdate=NULLP;
 
-   DU_LOG("\nINFO   -->  E2AP : E2 connection update received");
+   DU_LOG("INFO   -->  E2AP : E2 connection update received");
    connectionUpdate = &e2apMsg->choice.initiatingMessage->value.choice.E2connectionUpdate;
    
    memset(&connectionInfoList, 0, sizeof(E2ConnectionList));
@@ -9542,7 +9542,7 @@ void procE2ConnectionUpdate(E2AP_PDU_t  *e2apMsg)
 
          default:
             {
-               DU_LOG("\nERROR  -->  E2AP : Invalid IE received[%ld]",connectionUpdate->protocolIEs.list.array[arrIdx]->id);
+               DU_LOG("ERROR  -->  E2AP : Invalid IE received[%ld]",connectionUpdate->protocolIEs.list.array[arrIdx]->id);
                break;
             }
       }
@@ -9555,14 +9555,14 @@ void procE2ConnectionUpdate(E2AP_PDU_t  *e2apMsg)
    {
       if(BuildAndSendE2ConnectionUpdateFailure(transId, failureCause) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to build and send E2 connection update failure");
+         DU_LOG("ERROR  -->  E2AP : Failed to build and send E2 connection update failure");
       }
    }
    else
    {
       if(BuildAndSendE2ConnectionUpdateAcknowledge(transId, connectionInfoList) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : Failed to build and send E2 connection update ack");
+         DU_LOG("ERROR  -->  E2AP : Failed to build and send E2 connection update ack");
       }
    }
 
@@ -9730,7 +9730,7 @@ void freeAperDecodingOfRicSubsModificationReq(E2AP_PDU_t *e2apRicMsg)
                   }
                default:
                   {
-                     DU_LOG("\nERROR  -->  E2AP : Received Invalid Ie [%ld]", ricSubscriptionModReq->protocolIEs.list.array[idx]->id);
+                     DU_LOG("ERROR  -->  E2AP : Received Invalid Ie [%ld]", ricSubscriptionModReq->protocolIEs.list.array[idx]->id);
                      break;
                   }
 
@@ -9813,7 +9813,7 @@ uint8_t extractRicActionToBeAddedForModification(RanFunction *ranFuncDb, RicSubs
                   break;
                }
             default:
-               DU_LOG("\nERROR  -->  E2AP : Invalid IE received in RicAddedForModificationLst:%ld",actionItem->id);
+               DU_LOG("ERROR  -->  E2AP : Invalid IE received in RicAddedForModificationLst:%ld",actionItem->id);
                break;
          }
       }
@@ -9928,7 +9928,7 @@ uint8_t extractRicActionToBeModifiedForModification(RanFunction *ranFuncDb, RicS
                   break;
                }
             default:
-               DU_LOG("\nERROR  -->  E2AP : Invalid IE received in RicModifiedForModificationLst:%ld",actionItem->id);
+               DU_LOG("ERROR  -->  E2AP : Invalid IE received in RicModifiedForModificationLst:%ld",actionItem->id);
                break;
          }
       }
@@ -10013,7 +10013,7 @@ uint8_t extractRicActionToBeRemovedForModification(RanFunction *ranFuncDb, RicSu
                   break;
                }
             default:
-               DU_LOG("\nERROR  -->  E2AP : Invalid IE received in RicRemovedForModificationLst:%ld",actionItem->id);
+               DU_LOG("ERROR  -->  E2AP : Invalid IE received in RicRemovedForModificationLst:%ld",actionItem->id);
                break;
          }
       }
@@ -10056,18 +10056,18 @@ void procRicSubscriptionModificationRequest(E2AP_PDU_t *e2apMsg)
    RICsubscriptionModificationRequest_t *ricSubsModifyReq = NULLP;
    RICsubscriptionModificationRequest_IEs_t *ricSubsModifyReqIe = NULLP;
    
-   DU_LOG("\nINFO   -->  E2AP : %s: Received RIC Subscription Modification Request", __func__);
+   DU_LOG("INFO   -->  E2AP : %s: Received RIC Subscription Modification Request", __func__);
 
    do{
       if(!e2apMsg)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: E2AP Message is NULL", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: E2AP Message is NULL", __func__);
          break;
       }
 
       if(!e2apMsg->choice.initiatingMessage)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Initiating Message in E2AP PDU is NULL", __func__);
+         DU_LOG("ERROR  -->  E2AP : %s: Initiating Message in E2AP PDU is NULL", __func__);
          break;
       }
 
@@ -10076,7 +10076,7 @@ void procRicSubscriptionModificationRequest(E2AP_PDU_t *e2apMsg)
       {
          if(!ricSubsModifyReq->protocolIEs.list.array[ieIdx])
          {
-            DU_LOG("\nERROR  -->  E2AP : %s: IE at index [%d] in E2AP message IEs list is null", __func__, ieIdx);
+            DU_LOG("ERROR  -->  E2AP : %s: IE at index [%d] in E2AP message IEs list is null", __func__, ieIdx);
             break;
          }
 
@@ -10097,7 +10097,7 @@ void procRicSubscriptionModificationRequest(E2AP_PDU_t *e2apMsg)
                   ranFuncDb = fetchRanFuncFromRanFuncId(ranFuncId);
                   if(!ranFuncDb)
                   {
-                     DU_LOG("\nERROR  -->  E2AP : %s: RAN Function ID [%d] not found", __func__, ranFuncId);
+                     DU_LOG("ERROR  -->  E2AP : %s: RAN Function ID [%d] not found", __func__, ranFuncId);
                      procFailure = true;
                      break;
                   }
@@ -10105,7 +10105,7 @@ void procRicSubscriptionModificationRequest(E2AP_PDU_t *e2apMsg)
                   ricSubsDb = fetchSubsInfoFromRicReqId(ricReqId, ranFuncDb, &ricSubsNode);
                   if(!ricSubsDb)
                   {
-                     DU_LOG("\nERROR  -->  E2AP : %s: RIC Subscription not found for Requestor_ID [%d] Instance_ID [%d]",\
+                     DU_LOG("ERROR  -->  E2AP : %s: RIC Subscription not found for Requestor_ID [%d] Instance_ID [%d]",\
                            __func__, ricReqId.requestorId, ricReqId.instanceId);
                      procFailure = true;
                      break;
@@ -10275,12 +10275,12 @@ uint8_t BuildAndSendRicSubscriptionModificationFailure(uint16_t ranFuncId,  RicR
 
    while(true)
    {
-      DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Modification Failure Message\n");
+      DU_LOG("INFO   -->  E2AP : Building RIC Subscription Modification Failure Message\n");
 
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
          break;
       }
 
@@ -10288,7 +10288,7 @@ uint8_t BuildAndSendRicSubscriptionModificationFailure(uint16_t ranFuncId,  RicR
       DU_ALLOC(e2apMsg->choice.unsuccessfulOutcome, sizeof(UnsuccessfulOutcomeE2_t));
       if(e2apMsg->choice.unsuccessfulOutcome == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
          break;
       }
       e2apMsg->choice.unsuccessfulOutcome->procedureCode = ProcedureCodeE2_id_RICsubscriptionModification;
@@ -10305,7 +10305,7 @@ uint8_t BuildAndSendRicSubscriptionModificationFailure(uint16_t ranFuncId,  RicR
       DU_ALLOC(ricSubsModFailure->protocolIEs.list.array, ricSubsModFailure->protocolIEs.list.size);
       if(ricSubsModFailure->protocolIEs.list.array == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed for array elements at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed for array elements at line %d",__func__, __LINE__);
          break;
       }
 
@@ -10314,7 +10314,7 @@ uint8_t BuildAndSendRicSubscriptionModificationFailure(uint16_t ranFuncId,  RicR
          DU_ALLOC(ricSubsModFailure->protocolIEs.list.array[ieIdx], sizeof(RICsubscriptionModificationFailure_IEs_t));
          if(ricSubsModFailure->protocolIEs.list.array[ieIdx] == NULLP)
          {
-            DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation failed for index [%d] at line %d", \
+            DU_LOG("ERROR  -->  E2AP : %s: Memory allocation failed for index [%d] at line %d", \
                   __func__, ieIdx, __LINE__);
             break;
          }
@@ -10351,13 +10351,13 @@ uint8_t BuildAndSendRicSubscriptionModificationFailure(uint16_t ranFuncId,  RicR
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Subscription Modification Failure Message (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode RIC Subscription Modification Failure Message (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Modification Failure Message \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Modification Failure Message \n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -10368,7 +10368,7 @@ uint8_t BuildAndSendRicSubscriptionModificationFailure(uint16_t ranFuncId,  RicR
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR   -->  E2AP : Failed to send RIC Susbcription Modification Failure Message");
+         DU_LOG("ERROR   -->  E2AP : Failed to send RIC Susbcription Modification Failure Message");
          break;
       }
 
@@ -10542,7 +10542,7 @@ uint8_t BuildActionRemovedList(RICactions_RemovedForModification_List_t *removed
    DU_ALLOC(removedActionList->list.array, removedActionList->list.size);
    if(!removedActionList->list.array)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -10551,7 +10551,7 @@ uint8_t BuildActionRemovedList(RICactions_RemovedForModification_List_t *removed
       DU_ALLOC(removedActionList->list.array[arrIdx], sizeof(RICaction_RemovedForModification_ItemIEs_t));
       if(!removedActionList->list.array[arrIdx])
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
          return RFAILED;
       }
       removedActionItemIe = (RICaction_RemovedForModification_ItemIEs_t*)removedActionList->list.array[arrIdx];
@@ -10593,7 +10593,7 @@ uint8_t BuildActionAddedList(RICactions_AddedForModification_List_t *addedAction
    DU_ALLOC(addedActionList->list.array, addedActionList->list.size);
    if(!addedActionList->list.array)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -10602,7 +10602,7 @@ uint8_t BuildActionAddedList(RICactions_AddedForModification_List_t *addedAction
       DU_ALLOC(addedActionList->list.array[arrIdx], sizeof(RICaction_AddedForModification_ItemIEs_t));
       if(!addedActionList->list.array[arrIdx])
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
          return RFAILED;
       }
       addedActionItemIe = (RICaction_AddedForModification_ItemIEs_t*)addedActionList->list.array[arrIdx];
@@ -10644,7 +10644,7 @@ uint8_t BuildActionModifiedList(RICactions_ModifiedForModification_List_t *modif
    DU_ALLOC(modifiedActionList->list.array, modifiedActionList->list.size);
    if(!modifiedActionList->list.array)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -10653,7 +10653,7 @@ uint8_t BuildActionModifiedList(RICactions_ModifiedForModification_List_t *modif
       DU_ALLOC(modifiedActionList->list.array[arrIdx], sizeof(RICaction_ModifiedForModification_ItemIEs_t));
       if(!modifiedActionList->list.array[arrIdx])
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
          return RFAILED;
       }
       modifiedActionItemIe = (RICaction_ModifiedForModification_ItemIEs_t*)modifiedActionList->list.array[arrIdx];
@@ -10696,7 +10696,7 @@ uint8_t numOfActionFailedToBeRemoved, RejectedAction *actionFailedToBeRemoved)
    DU_ALLOC(failedToBeRemovedActionList->list.array, failedToBeRemovedActionList->list.size);
    if(!failedToBeRemovedActionList->list.array)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -10705,7 +10705,7 @@ uint8_t numOfActionFailedToBeRemoved, RejectedAction *actionFailedToBeRemoved)
       DU_ALLOC(failedToBeRemovedActionList->list.array[arrIdx], sizeof(RICaction_FailedToBeRemovedForModification_ItemIEs_t));
       if(!failedToBeRemovedActionList->list.array[arrIdx])
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
          return RFAILED;
       }
       failedToBeRemovedActionItemIe = (RICaction_FailedToBeRemovedForModification_ItemIEs_t*)failedToBeRemovedActionList->list.array[arrIdx];
@@ -10749,7 +10749,7 @@ uint8_t numOfActionFailedToBeModified, RejectedAction *actionFailedToBeModified)
    DU_ALLOC(failedToBeModifiedActionList->list.array, failedToBeModifiedActionList->list.size);
    if(!failedToBeModifiedActionList->list.array)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -10758,7 +10758,7 @@ uint8_t numOfActionFailedToBeModified, RejectedAction *actionFailedToBeModified)
       DU_ALLOC(failedToBeModifiedActionList->list.array[arrIdx], sizeof(RICaction_FailedToBeModifiedForModification_ItemIEs_t));
       if(!failedToBeModifiedActionList->list.array[arrIdx])
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
          return RFAILED;
       }
       failedToBeModifiedActionItemIe = (RICaction_FailedToBeModifiedForModification_ItemIEs_t*)failedToBeModifiedActionList->list.array[arrIdx];
@@ -10801,7 +10801,7 @@ uint8_t BuildActionFailedToBeAddedList(RICactions_FailedToBeAddedForModification
    DU_ALLOC(failedToBeAddedActionList->list.array, failedToBeAddedActionList->list.size);
    if(!failedToBeAddedActionList->list.array)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
       return RFAILED;
    }
 
@@ -10810,7 +10810,7 @@ uint8_t BuildActionFailedToBeAddedList(RICactions_FailedToBeAddedForModification
       DU_ALLOC(failedToBeAddedActionList->list.array[arrIdx], sizeof(RICaction_FailedToBeAddedForModification_ItemIEs_t));
       if(!failedToBeAddedActionList->list.array[arrIdx])
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
          return RFAILED;
       }
       failedToBeAddedActionItemIe = (RICaction_FailedToBeAddedForModification_ItemIEs_t*)failedToBeAddedActionList->list.array[arrIdx];
@@ -10849,12 +10849,12 @@ uint8_t BuildAndSendRicSubscriptionModificationResponse(PendingSubsModRspInfo *p
 
    while(true)
    {
-      DU_LOG("\nINFO   -->  E2AP : Building RIC Subscription Modification Response Message\n");
+      DU_LOG("INFO   -->  E2AP : Building RIC Subscription Modification Response Message\n");
 
       DU_ALLOC(e2apMsg, sizeof(E2AP_PDU_t));
       if(e2apMsg == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
          break;
       }
 
@@ -10862,7 +10862,7 @@ uint8_t BuildAndSendRicSubscriptionModificationResponse(PendingSubsModRspInfo *p
       DU_ALLOC(e2apMsg->choice.successfulOutcome, sizeof(SuccessfulOutcomeE2_t));
       if(e2apMsg->choice.successfulOutcome == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
          break;
       }
       e2apMsg->choice.successfulOutcome->procedureCode = ProcedureCodeE2_id_RICsubscriptionModification;
@@ -10892,7 +10892,7 @@ uint8_t BuildAndSendRicSubscriptionModificationResponse(PendingSubsModRspInfo *p
       DU_ALLOC(ricSubsModResponse->protocolIEs.list.array, ricSubsModResponse->protocolIEs.list.size);
       if(ricSubsModResponse->protocolIEs.list.array == NULLP)
       {
-         DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+         DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
          break;
       }
 
@@ -10901,7 +10901,7 @@ uint8_t BuildAndSendRicSubscriptionModificationResponse(PendingSubsModRspInfo *p
          DU_ALLOC(ricSubsModResponse->protocolIEs.list.array[ieIdx], sizeof(RICsubscriptionModificationResponse_IEs_t));
          if(ricSubsModResponse->protocolIEs.list.array[ieIdx] == NULLP)
          {
-            DU_LOG("\nERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : Memory allocation failed at [%s] : line [%d]", __func__, __LINE__);
             break;
          }
       }
@@ -10933,7 +10933,7 @@ uint8_t BuildAndSendRicSubscriptionModificationResponse(PendingSubsModRspInfo *p
          if(BuildActionRemovedList(&ricSubsModResponseIe->value.choice.RICactions_RemovedForModification_List,\
          pendingSubsModRsp->removeActionStatus.numOfAcceptedActions, pendingSubsModRsp->removeActionStatus.acceptedActionList) != ROK)
          {
-            DU_LOG("\nERROR  -->  E2AP : failed at [%s] : line [%d]", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : failed at [%s] : line [%d]", __func__, __LINE__);
             break;
          }
       }
@@ -10948,7 +10948,7 @@ uint8_t BuildAndSendRicSubscriptionModificationResponse(PendingSubsModRspInfo *p
          if(BuildActionFailedToBeRemovedList(&ricSubsModResponseIe->value.choice.RICactions_FailedToBeRemovedForModification_List,\
          pendingSubsModRsp->removeActionStatus.numOfRejectedActions, pendingSubsModRsp->removeActionStatus.rejectedActionList) != ROK)
          {
-            DU_LOG("\nERROR  -->  E2AP : failed at [%s] : line [%d]", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : failed at [%s] : line [%d]", __func__, __LINE__);
             break;
          }
       }
@@ -10963,7 +10963,7 @@ uint8_t BuildAndSendRicSubscriptionModificationResponse(PendingSubsModRspInfo *p
          if(BuildActionModifiedList(&ricSubsModResponseIe->value.choice.RICactions_ModifiedForModification_List,\
          pendingSubsModRsp->modActionStatus.numOfAcceptedActions, pendingSubsModRsp->modActionStatus.acceptedActionList) != ROK)
          {
-            DU_LOG("\nERROR  -->  E2AP : failed at [%s] : line [%d]", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : failed at [%s] : line [%d]", __func__, __LINE__);
             break;
          }
       }
@@ -10978,7 +10978,7 @@ uint8_t BuildAndSendRicSubscriptionModificationResponse(PendingSubsModRspInfo *p
          if(BuildActionFailedToBeModifiedList(&ricSubsModResponseIe->value.choice.RICactions_FailedToBeModifiedForModification_List,\
          pendingSubsModRsp->modActionStatus.numOfRejectedActions, pendingSubsModRsp->modActionStatus.rejectedActionList) != ROK)
          {
-            DU_LOG("\nERROR  -->  E2AP : failed at [%s] : line [%d]", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : failed at [%s] : line [%d]", __func__, __LINE__);
             break;
          }
       }
@@ -10993,7 +10993,7 @@ uint8_t BuildAndSendRicSubscriptionModificationResponse(PendingSubsModRspInfo *p
          if(BuildActionAddedList(&ricSubsModResponseIe->value.choice.RICactions_AddedForModification_List,\
          pendingSubsModRsp->addActionStatus.numOfAcceptedActions, pendingSubsModRsp->addActionStatus.acceptedActionList) != ROK)
          {
-            DU_LOG("\nERROR  -->  E2AP : failed at [%s] : line [%d]", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : failed at [%s] : line [%d]", __func__, __LINE__);
             break;
          }
       }
@@ -11008,7 +11008,7 @@ uint8_t BuildAndSendRicSubscriptionModificationResponse(PendingSubsModRspInfo *p
          if(BuildActionFailedToBeAddedList(&ricSubsModResponseIe->value.choice.RICactions_FailedToBeAddedForModification_List,\
          pendingSubsModRsp->addActionStatus.numOfRejectedActions, pendingSubsModRsp->addActionStatus.rejectedActionList) != ROK)
          {
-            DU_LOG("\nERROR  -->  E2AP : failed at [%s] : line [%d]", __func__, __LINE__);
+            DU_LOG("ERROR  -->  E2AP : failed at [%s] : line [%d]", __func__, __LINE__);
             break;
          }
       }
@@ -11020,13 +11020,13 @@ uint8_t BuildAndSendRicSubscriptionModificationResponse(PendingSubsModRspInfo *p
       encRetVal = aper_encode(&asn_DEF_E2AP_PDU, 0, e2apMsg, PrepFinalEncBuf, encBuf);
       if(encRetVal.encoded == ENCODE_FAIL)
       {
-         DU_LOG("\nERROR  -->  E2AP : Could not encode RIC Subscription Modification Response Message (at %s)\n",\
+         DU_LOG("ERROR  -->  E2AP : Could not encode RIC Subscription Modification Response Message (at %s)\n",\
                encRetVal.failed_type ? encRetVal.failed_type->name : "unknown");
          break;
       }
       else
       {
-         DU_LOG("\nDEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Modification Response Message \n");
+         DU_LOG("DEBUG  -->  E2AP : Created APER encoded buffer for RIC Subscription Modification Response Message \n");
 #ifdef DEBUG_ASN_PRINT
          for(int i=0; i< encBufSize; i++)
          {
@@ -11037,7 +11037,7 @@ uint8_t BuildAndSendRicSubscriptionModificationResponse(PendingSubsModRspInfo *p
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL, encBuf, encBufSize) != ROK)
       {
-         DU_LOG("\nERROR   -->  E2AP : Failed to send RIC Susbcription Modification Response Message");
+         DU_LOG("ERROR   -->  E2AP : Failed to send RIC Susbcription Modification Response Message");
          break;
       }
 
@@ -11076,7 +11076,7 @@ void E2APMsgHdlr(Buffer *mBuf)
    asn_dec_rval_t rval ={0}; /* Decoder return value */
    E2AP_PDU_t e2apasnmsg={0} ;
 
-   DU_LOG("\nDEBUG   -->  E2AP : Received E2AP message buffer");
+   DU_LOG("DEBUG   -->  E2AP : Received E2AP message buffer");
    ODU_PRINT_MSG(mBuf, 0,0);
 
    /* Copy mBuf into char array to decode it */
@@ -11085,12 +11085,12 @@ void E2APMsgHdlr(Buffer *mBuf)
 
    if(recvBuf == NULLP)
    {
-      DU_LOG("\nERROR  -->  E2AP : Memory allocation failed");
+      DU_LOG("ERROR  -->  E2AP : Memory allocation failed");
       return;
    }
    if(ODU_COPY_MSG_TO_FIX_BUF(mBuf, 0, recvBufLen, (Data *)recvBuf, &copyCnt) != ROK)
    {
-      DU_LOG("\nERROR  -->  E2AP : Failed while copying %d", copyCnt);
+      DU_LOG("ERROR  -->  E2AP : Failed while copying %d", copyCnt);
       return;
    }
 
@@ -11111,7 +11111,7 @@ void E2APMsgHdlr(Buffer *mBuf)
 
    if(rval.code == RC_FAIL || rval.code == RC_WMORE)
    {
-      DU_LOG("\nERROR  -->  E2AP : ASN decode failed");
+      DU_LOG("ERROR  -->  E2AP : ASN decode failed");
       return;
    }
    printf("\n");
@@ -11150,7 +11150,7 @@ void E2APMsgHdlr(Buffer *mBuf)
                   }
                default:
                   {
-                     DU_LOG("\nERROR  -->  E2AP : Invalid type of E2AP_PDU_PR_unsuccessfulOutcome  [%d]",\
+                     DU_LOG("ERROR  -->  E2AP : Invalid type of E2AP_PDU_PR_unsuccessfulOutcome  [%d]",\
                            e2apMsg->choice.unsuccessfulOutcome->value.present);
                      return;
                   }
@@ -11197,7 +11197,7 @@ void E2APMsgHdlr(Buffer *mBuf)
                   }
                default:
                   {
-                     DU_LOG("\nERROR  -->  E2AP : Invalid type of E2AP_PDU_PR_successfulOutcome  [%d]",\
+                     DU_LOG("ERROR  -->  E2AP : Invalid type of E2AP_PDU_PR_successfulOutcome  [%d]",\
                            e2apMsg->choice.successfulOutcome->value.present);
                      return;
                   }
@@ -11222,42 +11222,42 @@ void E2APMsgHdlr(Buffer *mBuf)
                   }
                case InitiatingMessageE2__value_PR_ErrorIndicationE2:
                   {
-                     DU_LOG("\nINFO  -->  E2AP : Error indication received");
+                     DU_LOG("INFO  -->  E2AP : Error indication received");
                      break;
                   }
                case InitiatingMessageE2__value_PR_ResetRequestE2:
                   {
-                     DU_LOG("\nINFO  -->  E2AP : Reset request received");
+                     DU_LOG("INFO  -->  E2AP : Reset request received");
                      procE2ResetRequest(e2apMsg);
                      break;
                   }
                case InitiatingMessageE2__value_PR_RICsubscriptionDeleteRequest:
                   {
-                     DU_LOG("\nINFO  -->  E2AP : RIC Subscription Delete Request received");
+                     DU_LOG("INFO  -->  E2AP : RIC Subscription Delete Request received");
                      procRicSubscriptionDeleteRequest(e2apMsg);
                      break;
                   }
                case InitiatingMessageE2__value_PR_E2RemovalRequest:
                   {
-                     DU_LOG("\nINFO  -->  E2AP : E2 Removal request received");
+                     DU_LOG("INFO  -->  E2AP : E2 Removal request received");
                      procE2RemovalRequest(e2apMsg);
                      break;
                   }
                case InitiatingMessageE2__value_PR_E2connectionUpdate:
                   {
-                     DU_LOG("\nINFO  -->  E2AP : E2 coneection update received");
+                     DU_LOG("INFO  -->  E2AP : E2 coneection update received");
                      procE2ConnectionUpdate(e2apMsg);
                      break;
                   }
                case InitiatingMessageE2__value_PR_RICsubscriptionModificationRequest:
                   {
-                     DU_LOG("\nINFO  -->  E2AP : RIC Subscription Modification Request received");
+                     DU_LOG("INFO  -->  E2AP : RIC Subscription Modification Request received");
                      procRicSubscriptionModificationRequest(e2apMsg);
                      break;
                   }
                default:
                   {
-                     DU_LOG("\nERROR  -->  E2AP : Invalid type of E2AP_PDU_PR_initiatingMessage [%d]",\
+                     DU_LOG("ERROR  -->  E2AP : Invalid type of E2AP_PDU_PR_initiatingMessage [%d]",\
                            e2apMsg->choice.initiatingMessage->value.present);
                      return;
                   }
@@ -11267,7 +11267,7 @@ void E2APMsgHdlr(Buffer *mBuf)
          }
       default:
 	 {
-	    DU_LOG("\nERROR  -->  E2AP : Invalid type of e2apMsg->present [%d]",e2apMsg->present);
+	    DU_LOG("ERROR  -->  E2AP : Invalid type of e2apMsg->present [%d]",e2apMsg->present);
 	    return;
 	 }
 	 free(e2apMsg);

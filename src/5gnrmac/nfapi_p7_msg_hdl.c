@@ -53,7 +53,7 @@ uint8_t nfapiBuildAndSendDlNodeSync()
    
    if(ODU_GET_MSG_BUF(MAC_MEM_REGION, MAC_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in packPnfParamReq");
+      DU_LOG("ERROR  --> NFAPI_VNF : Memory allocation failed in packPnfParamReq");
       return RFAILED;
    }
   
@@ -90,17 +90,17 @@ uint8_t nfapiBuildAndSendDlNodeSync()
  * ****************************************************************/
 uint8_t nfapiValidatingT1(uint32_t ulNodeSyncT1)
 {
-   DU_LOG("\nDEBUG  --> NFAPI_VNF: t1@VNF:%u, t1_from_pnf:%u",\
+   DU_LOG("DEBUG  --> NFAPI_VNF: t1@VNF:%u, t1_from_pnf:%u",\
             vnfDb.vnfP7Info.p7SyncInfo.prev_t1, ulNodeSyncT1);
    
    if(vnfDb.vnfP7Info.p7SyncInfo.prev_t1 == ulNodeSyncT1)
    {
-      DU_LOG("\nINFO   --> NFAPI_VNF: T1 matching so this UL Node Sync can be processed");
+      DU_LOG("INFO   --> NFAPI_VNF: T1 matching so this UL Node Sync can be processed");
       return ROK;
    }
    else
    {
-      DU_LOG("\nERROR  --> NFAPI_VNF: Mismatch T1");
+      DU_LOG("ERROR  --> NFAPI_VNF: Mismatch T1");
       return RFAILED;
    }
 }
@@ -153,23 +153,23 @@ uint8_t nfapiP7ProcUlNodeSync(Buffer *mBuf)
          vnfDb.vnfP7Info.p7SyncInfo.inSync = FALSE;
          if(cmpStatus == -1)
          { /*PNF is ahead.*/
-            DU_LOG("\nINFO   --> NFAPI_VNF: PNF is ahead.");
+            DU_LOG("INFO   --> NFAPI_VNF: PNF is ahead.");
             CALC_TIME_DIFF(t3_sfnSlot, vnfDb.vnfP7Info.p7SyncInfo.frameInfo, numSlotDiff);
          }
          else if(cmpStatus == 1)
          {
-            DU_LOG("\nINFO   --> NFAPI_VNF: VNF is ahead.");
+            DU_LOG("INFO   --> NFAPI_VNF: VNF is ahead.");
             CALC_TIME_DIFF(vnfDb.vnfP7Info.p7SyncInfo.frameInfo, t3_sfnSlot, numSlotDiff);
          }
          vnfDb.vnfP7Info.p7SyncInfo.delta_sfn_slot = cmpStatus * numSlotDiff;
          ret = nfapiBuildAndSendDlNodeSync();
       }
-      DU_LOG("\nDEBUG  --> NFAPI_VNF: delta:%d insyn:%d", vnfDb.vnfP7Info.p7SyncInfo.delta_sfn_slot, vnfDb.vnfP7Info.p7SyncInfo.inSync);
+      DU_LOG("DEBUG  --> NFAPI_VNF: delta:%d insyn:%d", vnfDb.vnfP7Info.p7SyncInfo.delta_sfn_slot, vnfDb.vnfP7Info.p7SyncInfo.inSync);
       return ret;
    }
    else
    {
-      DU_LOG("\nERROR  --> NFAPI_VNF: T1 Validation failed");
+      DU_LOG("ERROR  --> NFAPI_VNF: T1 Validation failed");
       return RFAILED;
    }
    return ret;
@@ -205,14 +205,14 @@ uint8_t  nfapiP7MsgHandler(Buffer *mBuf)
    {
       case TAG_NFAPI_UL_NODE_SYNC:
       {
-         DU_LOG("\nINFO  --> NFAPI_VNF: Received UL Node Synch");
+         DU_LOG("INFO  --> NFAPI_VNF: Received UL Node Synch");
          nfapiP7ProcUlNodeSync(mBuf);
          break;
       }
 
       default:
       {
-         DU_LOG("\nERROR --> NFAPI_VNF: Wrong MsgId:%d", msgHdr.msg_id);
+         DU_LOG("ERROR --> NFAPI_VNF: Wrong MsgId:%d", msgHdr.msg_id);
          return RFAILED;
       }
    }

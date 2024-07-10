@@ -283,7 +283,7 @@ uint32_t macHeader[2];
   ssGetDBufOfSize(mInfo->region,_size, &_padBuf); \
   if (_padBuf == NULLP) \
   { \
-    DU_LOG("\nERROR  -->  MAC : RGERR_MUX_BLD_CEHDR_FAIL");\
+    DU_LOG("ERROR  -->  MAC : RGERR_MUX_BLD_CEHDR_FAIL");\
     return RFAILED;\
   } \
   if (mInfo->endptr == NULLP) { \
@@ -374,13 +374,13 @@ toFill.slot = (RG_NUM_SUB_FRAMES_5G + crntTime.slot - (dcr)) % (RG_NUM_SUB_FRAME
 #define RG_NULL_CHECK(_inst, _ptr )     \
    if((_ptr) == NULLP)  \
    {                                               \
-      DU_LOG("\nERROR  -->  MAC : Null Pointer detected");\
+      DU_LOG("ERROR  -->  MAC : Null Pointer detected");\
       SExit();\
    }
 #define RG_ARRAY_BOUND_CHECK(_inst, _array, _idxVal)     \
    if((_idxVal) >= (sizeof(_array)/sizeof(_array[0]))) \
    {                                               \
-      DU_LOG("\nERROR  -->  MAC : Array Bound Check Failed");\
+      DU_LOG("ERROR  -->  MAC : Array Bound Check Failed");\
       SExit();\
    }
 #else

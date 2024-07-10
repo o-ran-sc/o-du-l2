@@ -50,7 +50,7 @@
 #ifdef MEM_SIZE_CHECK
 #define DU_APP_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) \
 {\
-   DU_LOG("\n DUAPP line = %d, func = %s, _size= %d ", _line, _func, _size); \
+   DU_LOG(" DUAPP line = %d, func = %s, _size= %d ", _line, _func, _size); \
 }
 #else
 #define DU_APP_MEMORY_ALLOC_SIZE_LOG(_line, _func, _size) {}

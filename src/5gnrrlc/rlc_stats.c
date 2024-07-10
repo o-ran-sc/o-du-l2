@@ -83,7 +83,7 @@ Void TSL2AllocStatsMem(Inst inst)
          RLC_ALLOC(gCb, l2CellStats[cnt], (Size)sizeof (TSL2CellStatsCb));
          if(l2CellStats[cnt] == NULL)
          {
-            DU_LOG("\nERROR  -->  RLC : STATS Unexpected MEM Alloc Failure\n");
+            DU_LOG("ERROR  -->  RLC : STATS Unexpected MEM Alloc Failure\n");
          }
       }
       memset(l2CellStats[cnt], 0x00, sizeof(TSL2CellStatsCb));
@@ -97,7 +97,7 @@ Void TSL2AllocStatsMem(Inst inst)
          RLC_ALLOC(gCb, statsCb, (Size)sizeof (TSL2UeStatsCb));
          if(NULL == statsCb)        
          {
-            DU_LOG("\nERROR  -->   RLC : STATS Unexpected MEM Alloc Failure at %d\n", (int)cnt);
+            DU_LOG("ERROR  -->   RLC : STATS Unexpected MEM Alloc Failure at %d\n", (int)cnt);
          }
       }
       memset(statsCb, 0x00, sizeof(TSL2UeStatsCb));
@@ -129,7 +129,7 @@ TSL2UeStatsCb* TSL2AllocUeStatsBlk (uint16_t rnti)
    tmp = freeL2UeStatsLst.first;
    if (tmp == NULLP)
    {
-      DU_LOG("\nERROR  -->  RLC :  STATS Unexpected Mem BLK unavailable for UE %d\n", rnti);
+      DU_LOG("ERROR  -->  RLC :  STATS Unexpected Mem BLK unavailable for UE %d\n", rnti);
    }
    cmLListDelFrm(&freeL2UeStatsLst, tmp);
    statsCb = (TSL2UeStatsCb *)(tmp->node);
@@ -179,7 +179,7 @@ TSL2CellStatsCb* TSL2AllocCellStatsBlk(uint32_t cellId)
 {
    if (cellId != 1)
    {
-      DU_LOG("\nERROR  -->  RLC : STATS Unexpected CellID = %d\n", (int)cellId);
+      DU_LOG("ERROR  -->  RLC : STATS Unexpected CellID = %d\n", (int)cellId);
    }
 
    return (l2CellStats[cellId-1]);

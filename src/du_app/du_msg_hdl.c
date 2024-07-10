@@ -203,7 +203,7 @@ uint8_t duBuildRlcCfg(Inst inst)
    pst.srcProcId = DU_PROC;
    pst.region    = duCb.init.region;
 
-   DU_LOG("\nDEBUG   -->  DU_APP : RLC Gen Cfg Req sent for inst %d", inst);
+   DU_LOG("DEBUG   -->  DU_APP : RLC Gen Cfg Req sent for inst %d", inst);
 
    /* Send the request to RLC */
    packRlcConfigReq(&pst, &rlcMngmt);
@@ -269,7 +269,7 @@ uint8_t duBuildRlcLsapCfg(Ent ent, Inst inst, uint8_t lsapInst)
       lSap->sapId       = lsapInst;      /* SapId will be stored as suId in MAC */
       lSap->selector    = (inst == RLC_UL_INST) ? ODU_SELECTOR_LWLC : ODU_SELECTOR_TC;
       rlcMngmt.hdr.elmId.elmnt  = STRGUSAP;
-      DU_LOG("\nDEBUG   -->  DU_APP : RLC MAC Lower Sap Cfg Req sent for inst %d", inst);
+      DU_LOG("DEBUG   -->  DU_APP : RLC MAC Lower Sap Cfg Req sent for inst %d", inst);
 
    }
    else
@@ -281,7 +281,7 @@ uint8_t duBuildRlcLsapCfg(Ent ent, Inst inst, uint8_t lsapInst)
       lSap->sapId       = 0;
       lSap->selector = ODU_SELECTOR_LC;
       rlcMngmt.hdr.elmId.elmnt  = STUDXSAP;
-      DU_LOG("\nDEBUG   -->  DU_APP : RLC DL/UL Lower Sap Cfg Req sent for inst %d", inst);
+      DU_LOG("DEBUG   -->  DU_APP : RLC DL/UL Lower Sap Cfg Req sent for inst %d", inst);
    }
 
    packRlcConfigReq(&pst, &rlcMngmt);
@@ -348,7 +348,7 @@ uint8_t duBuildRlcUsapCfg(uint8_t elemId, Ent ent, Inst inst)
    pst.srcProcId = DU_PROC;
    pst.region = duCb.init.region;
 
-   DU_LOG("\nDEBUG   -->  DU_APP : RLC Kwu Upper Sap Cfg Req sent for inst %d", inst);
+   DU_LOG("DEBUG   -->  DU_APP : RLC Kwu Upper Sap Cfg Req sent for inst %d", inst);
    packRlcConfigReq(&pst, &rlcMngmt);
 
    return ROK;
@@ -380,7 +380,7 @@ uint8_t duProcCfgComplete()
       DU_ALLOC(cell, sizeof(DuCellCb));
       if(cell == NULLP)
       {
-         DU_LOG("\nERROR  -->  DU_APP : Memory Allocation failed in duProcCfgComplete");
+         DU_LOG("ERROR  -->  DU_APP : Memory Allocation failed in duProcCfgComplete");
          ret = RFAILED;
       }
       else
@@ -541,7 +541,7 @@ uint8_t duHdlRlcCntrlCfgComplete(Pst *pst, RlcMngmt *cntrl)
 	    {
 	       if (pst->srcInst == RLC_DL_INST)
 	       {
-		  DU_LOG("\nDEBUG   -->  DU_APP : BIND OF RLC DL TO MAC (RGU) SAP SUCCESSFUL");
+		  DU_LOG("DEBUG   -->  DU_APP : BIND OF RLC DL TO MAC (RGU) SAP SUCCESSFUL");
 		  macCfgInst++;
 		  if(macCfgInst < DEFAULT_CELLS)
 		  {
@@ -555,7 +555,7 @@ uint8_t duHdlRlcCntrlCfgComplete(Pst *pst, RlcMngmt *cntrl)
 	       }
 	       else
 	       {
-		  DU_LOG("\nDEBUG   -->  DU_APP : BIND OF RLC UL TO MAC (RGU) SAP SUCCESSFUL");
+		  DU_LOG("DEBUG   -->  DU_APP : BIND OF RLC UL TO MAC (RGU) SAP SUCCESSFUL");
 		  macCfgInst++;
 		  if(macCfgInst < DEFAULT_CELLS)
 		  {
@@ -593,7 +593,7 @@ uint8_t duProcRlcUlCfgComplete(Pst *pst, RlcMngmt *cfm)
 {
    uint8_t ret;
 
-   DU_LOG("\nDEBUG   -->  DU_APP : RLC UL Cfg Status %d", cfm->cfm.status);
+   DU_LOG("DEBUG   -->  DU_APP : RLC UL Cfg Status %d", cfm->cfm.status);
    if (cfm->cfm.status == LCM_PRIM_OK)
    {
       switch(cfm->hdr.elmId.elmnt)
@@ -622,7 +622,7 @@ uint8_t duProcRlcUlCfgComplete(Pst *pst, RlcMngmt *cfm)
 	 default:
 	    break;
       }
-      DU_LOG("\nDEBUG   -->  DU_APP : RLC UL Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
+      DU_LOG("DEBUG   -->  DU_APP : RLC UL Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
       if(rlcUlCfg == DU_RLC_UL_CONFIGURED)
       {
 	 rlcUlCfg = 0;
@@ -634,7 +634,7 @@ uint8_t duProcRlcUlCfgComplete(Pst *pst, RlcMngmt *cfm)
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP : Config confirm NOK from RLC UL");
+      DU_LOG("ERROR  -->  DU_APP : Config confirm NOK from RLC UL");
       ret = RFAILED;
    }
    return ret;
@@ -658,7 +658,7 @@ uint8_t duProcRlcUlCfgComplete(Pst *pst, RlcMngmt *cfm)
  ***************************************************************************/
 uint8_t duProcRlcDlCfgComplete(Pst *pst, RlcMngmt *cfm)
 {
-   DU_LOG("\nDEBUG   -->  DU_APP : RLC DL Cfg Status %d", cfm->cfm.status);
+   DU_LOG("DEBUG   -->  DU_APP : RLC DL Cfg Status %d", cfm->cfm.status);
    if (cfm->cfm.status == LCM_PRIM_OK)
    {
       switch(cfm->hdr.elmId.elmnt)
@@ -688,7 +688,7 @@ uint8_t duProcRlcDlCfgComplete(Pst *pst, RlcMngmt *cfm)
 	    break;
 
       }
-      DU_LOG("\nDEBUG   -->  DU_APP : RLC DL Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
+      DU_LOG("DEBUG   -->  DU_APP : RLC DL Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
       if(rlcDlCfg == DU_RLC_DL_CONFIGURED)
       {
 	 rlcDlCfg = 0;
@@ -699,7 +699,7 @@ uint8_t duProcRlcDlCfgComplete(Pst *pst, RlcMngmt *cfm)
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP : Config confirm NOK from RLC DL");
+      DU_LOG("ERROR  -->  DU_APP : Config confirm NOK from RLC DL");
    }
    return ROK;
 }
@@ -797,7 +797,7 @@ uint8_t duBuildMacGenCfg()
    pst.srcProcId = DU_PROC;
    pst.region = duCb.init.region;
 
-   DU_LOG("\nDEBUG   -->  DU_APP : MAC Gen Cfg Req sent");
+   DU_LOG("DEBUG   -->  DU_APP : MAC Gen Cfg Req sent");
 
    /* Send the request to MAC */
    cmPkLrgCfgReq(&pst, &rgMngmt);
@@ -859,7 +859,7 @@ uint8_t duBuildMacUsapCfg(SpId sapId)
    pst.srcProcId = DU_PROC;
    pst.region    = duCb.init.region;
 
-   DU_LOG("\nDEBUG  -->  DU_APP : MAC Rgu USap Cfg Req sent");
+   DU_LOG("DEBUG  -->  DU_APP : MAC Rgu USap Cfg Req sent");
 
    /* Send the request to MAC */
    cmPkLrgCfgReq(&pst, &rgMngmt);
@@ -905,11 +905,11 @@ uint8_t duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm)
 	 default:
 	    break;
       }
-      DU_LOG("\nDEBUG   -->  DU_APP : MAC Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
+      DU_LOG("DEBUG   -->  DU_APP : MAC Cfg Cfm received for the element %d ",cfm->hdr.elmId.elmnt);
       if(macCfg == MAC_CONFIGURED && numRlcMacSaps == MAX_MAC_SAP)
       {
 	 macCfg = 0;
-	 DU_LOG("\nDEBUG   -->  DU_APP : Completed sending Configs");
+	 DU_LOG("DEBUG   -->  DU_APP : Completed sending Configs");
 	 macCfgInst = 0;
 	 duBindUnbindRlcToMacSap(RLC_DL_INST, ABND);
       }
@@ -917,7 +917,7 @@ uint8_t duHdlMacCfgComplete(Pst *pst, RgMngmt *cfm)
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP : Config confirm NOK from MAC");
+      DU_LOG("ERROR  -->  DU_APP : Config confirm NOK from MAC");
       ret = RFAILED;
    }
    return ret;
@@ -951,11 +951,11 @@ uint8_t duBindUnbindRlcToMacSap(uint8_t inst, uint8_t action)
 
    if (action == ABND)
    {
-      DU_LOG("\nDEBUG   -->  DU_APP : Cntrl Req to RLC inst %d to bind MAC sap", inst);
+      DU_LOG("DEBUG   -->  DU_APP : Cntrl Req to RLC inst %d to bind MAC sap", inst);
    }
    else
    {
-      DU_LOG("\nDEBUG   -->  DU_APP : Cntrl Req to RLC inst %d to unbind MAC sap", inst);
+      DU_LOG("DEBUG   -->  DU_APP : Cntrl Req to RLC inst %d to unbind MAC sap", inst);
    }
    cntrl = &(rlcMngmt.t.cntrl);
 
@@ -1020,7 +1020,7 @@ uint8_t duSctpNtfyHdl(Buffer *mBuf, CmInetSctpNotification *ntfy)
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP : Invalid assocId %d received", ntfy->u.assocChange.assocId);
+      DU_LOG("ERROR  -->  DU_APP : Invalid assocId %d received", ntfy->u.assocChange.assocId);
       return RFAILED;
    }
    return ROK;
@@ -1081,7 +1081,7 @@ uint8_t duBuildEgtpCfgReq()
    Pst pst;
    EgtpConfig egtpCfg;
 
-   DU_LOG("\nDEBUG   -->  DU_APP : Sending EGTP config request");
+   DU_LOG("DEBUG   -->  DU_APP : Sending EGTP config request");
 
    memset(&egtpCfg, 0, sizeof(EgtpConfig));
    memcpy(&egtpCfg, &duCfgParam.egtpParams, sizeof(EgtpConfig));
@@ -1114,12 +1114,12 @@ uint8_t duHdlEgtpCfgComplete(CmStatus cfm)
 
    if(cfm.status == LCM_PRIM_OK)
    {
-      DU_LOG("\nDEBUG   -->  DU_APP : EGTP configuraton complete");
+      DU_LOG("DEBUG   -->  DU_APP : EGTP configuraton complete");
       duSendEgtpSrvOpenReq();
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP : EGTP configuraton failed");
+      DU_LOG("ERROR  -->  DU_APP : EGTP configuraton failed");
       ret = RFAILED;
    }
 
@@ -1147,7 +1147,7 @@ uint8_t duSendEgtpSrvOpenReq()
 {
    Pst pst;
 
-   DU_LOG("\nDEBUG   -->  DU_APP : Sending EGTP server open request");
+   DU_LOG("DEBUG   -->  DU_APP : Sending EGTP server open request");
 
    duFillEgtpPst(&pst, EVTSRVOPENREQ);
    packEgtpSrvOpenReq(&pst);
@@ -1178,11 +1178,11 @@ uint8_t duHdlEgtpSrvOpenComplete(CmStatus cfm)
 
    if(cfm.status == LCM_PRIM_OK)
    {
-      DU_LOG("\nDEBUG   -->  DU_APP : EGTP server opened successfully");
+      DU_LOG("DEBUG   -->  DU_APP : EGTP server opened successfully");
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP : EGTP server opening failed");
+      DU_LOG("ERROR  -->  DU_APP : EGTP server opening failed");
       ret = RFAILED;
    }
 
@@ -1214,7 +1214,7 @@ uint8_t duSendEgtpTnlMgmtReq(uint8_t action, uint32_t teIdTobeMod, GtpTnlCfg *ue
    Pst pst;
    EgtpTnlEvt tnlEvt;
 
-   DU_LOG("\nDEBUG   -->  DU_APP : Sending EGTP tunnel management request for teId [%d]", ueCbTnlCfg->teId);
+   DU_LOG("DEBUG   -->  DU_APP : Sending EGTP tunnel management request for teId [%d]", ueCbTnlCfg->teId);
 
    /* ADD/MOD/DEL per tunnel */
    tnlEvt.action = action;
@@ -1254,11 +1254,11 @@ uint8_t duHdlEgtpTnlMgmtCfm(EgtpTnlEvt tnlEvtCfm)
 
    if(tnlEvtCfm.cfmStatus.status == LCM_PRIM_OK)
    {
-      DU_LOG("\nDEBUG  -->  DU_APP: Tunnel management confirm OK");
+      DU_LOG("DEBUG  -->  DU_APP: Tunnel management confirm OK");
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP: Tunnel management failed");
+      DU_LOG("ERROR  -->  DU_APP: Tunnel management failed");
       ret = RFAILED;
    }
 
@@ -1368,7 +1368,7 @@ uint8_t duSendSchCfg()
    pst.region    = duCb.init.region;
    pst.event    = (Event) EVTMACSCHGENCFGREQ;
 
-   DU_LOG("\nDEBUG   -->  DU_APP : MAC Sch Cfg sent");
+   DU_LOG("DEBUG   -->  DU_APP : MAC Sch Cfg sent");
 
    /* Send the request to MAC */
    cmPkLrgSchCfgReq(&pst, &rgMngmt);
@@ -1398,27 +1398,27 @@ uint8_t duLayerConfigComplete()
 {
    uint8_t ret = ROK;
 
-   DU_LOG("\nINFO   -->  DU_APP : Configuring all Layer is complete");
+   DU_LOG("INFO   -->  DU_APP : Configuring all Layer is complete");
 
    if((ret = duSctpCfgReq(duCfgParam.sctpParams)) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed configuring Sctp Params");
+      DU_LOG("ERROR  -->  DU_APP : Failed configuring Sctp Params");
       ret = RFAILED;
    }
    if((ret = duSctpAssocReq(F1_INTERFACE)) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed to send AssocReq F1");
+      DU_LOG("ERROR  -->  DU_APP : Failed to send AssocReq F1");
       ret = RFAILED;
    }
    if((ret = duSctpAssocReq(E2_INTERFACE)) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed to send AssocReq E2");
+      DU_LOG("ERROR  -->  DU_APP : Failed to send AssocReq E2");
       ret = RFAILED;
    }
 #ifdef NFAPI_ENABLED
    if((ret = duSctpAssocReq(PNF_P5_INTERFACE)) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed to send AssocReq PNF P5");
+      DU_LOG("ERROR  -->  DU_APP : Failed to send AssocReq PNF P5");
       ret = RFAILED;
    }
 #endif
@@ -1449,7 +1449,7 @@ uint8_t duHdlSchCfgComplete(Pst *pst, RgMngmt *cfm)
       {
 	 case STSCHINST:
 	    {
-	       DU_LOG("\nDEBUG   -->  DU_APP : Received SCH CFG CFM at DU APP");
+	       DU_LOG("DEBUG   -->  DU_APP : Received SCH CFG CFM at DU APP");
 	       break;
 	    }
 	 default:
@@ -1546,7 +1546,7 @@ uint8_t  duHandleMacCellCfgCfm(Pst *pst, MacCellCfgCfm *macCellCfgCfm)
       /* TODO : Action to be taken if cell configuration fails. 
        * Should CU be informed? */
 
-      DU_LOG("\nERROR  -->  DU_APP : Mac cell cfg failed");
+      DU_LOG("ERROR  -->  DU_APP : Mac cell cfg failed");
       ret = RFAILED;
    }
    return ret;
@@ -1573,13 +1573,13 @@ uint8_t duBuildAndSendMacCellStart()
    Pst pst;
    CellStartInfo *cellStart = NULL;
 
-   DU_LOG("\nINFO   -->  DU APP : Building and Sending cell start request to MAC");
+   DU_LOG("INFO   -->  DU APP : Building and Sending cell start request to MAC");
 
    /* Send Cell Start Request to MAC */
    DU_ALLOC_SHRABL_BUF(cellStart, sizeof(CellStartInfo));
    if(!cellStart)
    {
-      DU_LOG("\nERROR  -->  DU APP : Memory alloc failed while building cell start request");
+      DU_LOG("ERROR  -->  DU APP : Memory alloc failed while building cell start request");
       return RFAILED;
    }
 
@@ -1620,7 +1620,7 @@ uint8_t duBuildAndSendMacCellStop(uint16_t cellId)
    uint16_t cellIdx=0;
    CellStopInfo *cellStop = NULL;
 
-   DU_LOG("\nINFO   -->  DU APP : Building and Sending cell stop request to MAC");
+   DU_LOG("INFO   -->  DU APP : Building and Sending cell stop request to MAC");
 
    GET_CELL_IDX(cellId, cellIdx);
    if(duCb.actvCellLst[cellIdx] != NULLP)
@@ -1629,7 +1629,7 @@ uint8_t duBuildAndSendMacCellStop(uint16_t cellId)
       DU_ALLOC_SHRABL_BUF(cellStop, sizeof(CellStopInfo));
       if(!cellStop)
       {
-         DU_LOG("\nERROR  -->  DU APP : Memory alloc failed while building cell stop request");
+         DU_LOG("ERROR  -->  DU APP : Memory alloc failed while building cell stop request");
          return RFAILED;
       }
       memset(cellStop, 0, sizeof(CellStopInfo));
@@ -1642,7 +1642,7 @@ uint8_t duBuildAndSendMacCellStop(uint16_t cellId)
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU APP : duBuildAndSendMacCellStop(): cellId[%d] doesnot exists", cellId);
+      DU_LOG("ERROR  -->  DU APP : duBuildAndSendMacCellStop(): cellId[%d] doesnot exists", cellId);
       return RFAILED;
    }
    return ROK;
@@ -1670,7 +1670,7 @@ uint8_t duHandleStopInd(Pst *pst, OduCellId *cellId)
 
    if(cellId->cellId <=0 || cellId->cellId > MAX_NUM_CELL)
    {
-      DU_LOG("\nERROR  -->  DU APP : Invalid Cell Id %d in duHandleStopInd()", cellId->cellId);
+      DU_LOG("ERROR  -->  DU APP : Invalid Cell Id %d in duHandleStopInd()", cellId->cellId);
    }
 
    if(duGetCellCb(cellId->cellId, &cellCb) != ROK)
@@ -1678,17 +1678,17 @@ uint8_t duHandleStopInd(Pst *pst, OduCellId *cellId)
 
    if((cellCb->cellStatus == ACTIVATED) || (cellCb->cellStatus == DELETION_IN_PROGRESS))
    {
-      DU_LOG("\nINFO   -->  DU APP : 5G-NR Cell %d is DOWN", cellId->cellId);
+      DU_LOG("INFO   -->  DU APP : 5G-NR Cell %d is DOWN", cellId->cellId);
       if(sendCellDeleteReqToMac(cellId->cellId) == RFAILED)
       {
-         DU_LOG("\nERROR  -->  DU APP : duHandleStopInd(): Failed to send Cell delete req to MAC for\
+         DU_LOG("ERROR  -->  DU APP : duHandleStopInd(): Failed to send Cell delete req to MAC for\
                cellId[%d]", cellId->cellId);
          return RFAILED;
       }
 
 
 #ifdef O1_ENABLE
-      DU_LOG("\nINFO   -->  DU APP : Raise cell down alarm for cell id=%d", cellId->cellId);
+      DU_LOG("INFO   -->  DU APP : Raise cell down alarm for cell id=%d", cellId->cellId);
       raiseCellAlrm(CELL_DOWN_ALARM_ID, cellId->cellId);
       setCellOpState(cellId->cellId, DISABLED, INACTIVE);
 #endif
@@ -1723,7 +1723,7 @@ uint8_t duHandleStopInd(Pst *pst, OduCellId *cellId)
 uint8_t duHandleUlCcchInd(Pst *pst, UlCcchIndInfo *ulCcchIndInfo)
 {
 
-   DU_LOG("\nINFO  -->  DU APP : UL CCCH Indication received");
+   DU_LOG("INFO  -->  DU APP : UL CCCH Indication received");
 
    return (duProcUlCcchInd(ulCcchIndInfo));
 }
@@ -1772,31 +1772,31 @@ uint8_t DuProcRlcUlRrcMsgTrans(Pst *pst, RlcUlRrcMsgInfo *ulRrcMsgInfo)
                memset(&ueCb->cfraResource, 0, sizeof(MacCfraResource));
                if(duBuildAndSendRachRsrcRelToMac(ulRrcMsgInfo->cellId, ueCb) != ROK)
                {
-                  DU_LOG("\nERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : Failed to send RACH resource release to MAC");
+                  DU_LOG("ERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : Failed to send RACH resource release to MAC");
                }
             }
 
             if(BuildAndSendULRRCMessageTransfer(ueCb, ulRrcMsgInfo->lcId, ulRrcMsgInfo->msgLen, ulRrcMsgInfo->rrcMsg) != ROK)
             {
-               DU_LOG("\nERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : Failed to build and send UL RRC Message Transfer");
+               DU_LOG("ERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : Failed to build and send UL RRC Message Transfer");
                ret = RFAILED;
             }
          }
          else
          {
-            DU_LOG("\nERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : UE ID [%d] not found", ulRrcMsgInfo->ueId);
+            DU_LOG("ERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : UE ID [%d] not found", ulRrcMsgInfo->ueId);
             ret = RFAILED;
          }
       }
       else
       {
-         DU_LOG("\nERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : Invalid UE ID [%d]", ulRrcMsgInfo->ueId);
+         DU_LOG("ERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : Invalid UE ID [%d]", ulRrcMsgInfo->ueId);
          ret = RFAILED;
       }
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : Cell ID [%d] not found", ulRrcMsgInfo->cellId);
+      DU_LOG("ERROR  -->  DU_APP : DuProcRlcUlRrcMsgTrans() : Cell ID [%d] not found", ulRrcMsgInfo->cellId);
       ret = RFAILED;
    }
 
@@ -1859,7 +1859,7 @@ uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData)
    EgtpMsg  egtpMsg;
    Buffer   *mBuf;
 
-   DU_LOG("\nDEBUG  -->  DU APP : Received UL user data");
+   DU_LOG("DEBUG  -->  DU APP : Received UL user data");
 
    /* Fill EGTP header */
    egtpMsg.msgHdr.msgType = EGTPU_MSG_GPDU;
@@ -1885,7 +1885,7 @@ uint8_t DuProcRlcUlUserDataTrans(Pst *pst, RlcUlUserDatInfo *ulUserData)
 
    if (ODU_GET_MSG_BUF(DU_APP_MEM_REGION, DU_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU APP : Failed to allocated buffer memory in DuProcRlcUlUserDataTrans");
+      DU_LOG("ERROR  -->  DU APP : Failed to allocated buffer memory in DuProcRlcUlUserDataTrans");
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulUserData->userData, ulUserData->msgLen);
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, ulUserData, sizeof(RlcUlUserDatInfo));
       return RFAILED;
@@ -1923,11 +1923,11 @@ uint8_t DuProcMacSliceCfgRsp(Pst *pst,  MacSliceCfgRsp *cfgRsp)
        if(cfgRsp->rsp ==  MAC_DU_APP_RSP_OK)
        {
           duCb.sliceState = SLICE_CONFIGURED;
-          DU_LOG("\nINFO  -->  DU_APP : Slice configured successfully ");
+          DU_LOG("INFO  -->  DU_APP : Slice configured successfully ");
        }
        else
        {
-          DU_LOG("\nERROR  -->  DU_APP : Slice not available");
+          DU_LOG("ERROR  -->  DU_APP : Slice not available");
        }
        DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, cfgRsp, sizeof(MacSliceCfgRsp));
     }
@@ -1960,7 +1960,7 @@ uint8_t BuildAndSendSliceConfigReq()
    DU_ALLOC_SHRABL_BUF(sliceCfgReq, sizeof(MacSliceCfgReq));
    if(sliceCfgReq == NULLP)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in BuildAndSendSliceConfigReq");
+      DU_LOG("ERROR  -->  DU_APP : Memory allocation failed in BuildAndSendSliceConfigReq");
       return RFAILED;
    }
    else
@@ -1968,10 +1968,10 @@ uint8_t BuildAndSendSliceConfigReq()
       memcpy(sliceCfgReq,  &duCfgParam.tempSliceCfg, sizeof(MacSliceCfgReq));
       FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_SLICE_CFG_REQ);
 
-      DU_LOG("\nDEBUG  -->  DU_APP : Sending Slice Cfg Request to MAC ");
+      DU_LOG("DEBUG  -->  DU_APP : Sending Slice Cfg Request to MAC ");
       if((*packMacSliceCfgReqOpts[pst.selector])(&pst, sliceCfgReq) == RFAILED)
       {
-         DU_LOG("\nERROR  -->  DU_APP : Failed to send Slice Cfg Req to MAC");
+         DU_LOG("ERROR  -->  DU_APP : Failed to send Slice Cfg Req to MAC");
          DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, sliceCfgReq, sizeof(MacSliceCfgReq));
       }
    }
@@ -2000,12 +2000,12 @@ uint8_t BuildAndSendSliceRecfgReq()
    Pst pst;
    MacSliceRecfgReq *sliceRecfgReq = NULLP;
    
-   DU_LOG("\nINFO  --> DU_APP : Slice ReConfiguration Request received");
+   DU_LOG("INFO  --> DU_APP : Slice ReConfiguration Request received");
 
    DU_ALLOC_SHRABL_BUF(sliceRecfgReq, sizeof(MacSliceRecfgReq));
    if(sliceRecfgReq == NULLP)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed to BuildAndSendSliceRecfgReq");
+      DU_LOG("ERROR  -->  DU_APP : Memory allocation failed to BuildAndSendSliceRecfgReq");
       return RFAILED;
    }
    else
@@ -2014,10 +2014,10 @@ uint8_t BuildAndSendSliceRecfgReq()
       
       FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_SLICE_RECFG_REQ);
 
-      DU_LOG("\nDEBUG  -->  DU_APP: Sending Slice ReCfg Request to MAC ");
+      DU_LOG("DEBUG  -->  DU_APP: Sending Slice ReCfg Request to MAC ");
       if( (*packMacSliceRecfgReqOpts[pst.selector])(&pst, sliceRecfgReq) == RFAILED)
       {
-         DU_LOG("\nERROR  -->  DU_APP: Failed to send Slice ReCfg Req to MAC");
+         DU_LOG("ERROR  -->  DU_APP: Failed to send Slice ReCfg Req to MAC");
          DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, sliceRecfgReq, sizeof(MacSliceRecfgReq));
       }
    }
@@ -2046,11 +2046,11 @@ uint8_t DuProcMacSliceRecfgRsp(Pst *pst,  MacSliceRecfgRsp *recfgRsp)
       if(recfgRsp->rsp == MAC_DU_APP_RSP_OK)
       {
          duCb.sliceState = SLICE_RECONFIGURED; 
-          DU_LOG("\nINFO  -->  DU_APP : Slice Reconfigured successfully ");
+          DU_LOG("INFO  -->  DU_APP : Slice Reconfigured successfully ");
       }
       else
       {
-         DU_LOG("\nERROR  -->  DU_APP : Slice not available");
+         DU_LOG("ERROR  -->  DU_APP : Slice not available");
       }
       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, recfgRsp, sizeof(MacSliceCfgRsp));
    }
@@ -2079,16 +2079,16 @@ uint8_t DuProcRlcSliceMetrics(Pst *pst, SlicePmList *sliceStats)
 {
     uint8_t sliceRecord = 0;
 
-    DU_LOG("\nDEBUG  -->  DU APP : Received Slice Metrics");
+    DU_LOG("DEBUG  -->  DU APP : Received Slice Metrics");
     if(sliceStats == NULLP)
     {
-       DU_LOG("\nERROR  -->  DU APP : Empty Metrics");
+       DU_LOG("ERROR  -->  DU APP : Empty Metrics");
        return RFAILED;
     }
     
     for(sliceRecord = 0; sliceRecord < sliceStats->numSlice; sliceRecord++)
     {
-       DU_LOG("\nINFO   -->  DU_APP: SliceId[SST-SD]:%d-%d, DlTput %.5lf, UlTput:%.5lf", sliceStats->sliceRecord[sliceRecord].networkSliceIdentifier.sst,\
+       DU_LOG("INFO   -->  DU_APP: SliceId[SST-SD]:%d-%d, DlTput %.5lf, UlTput:%.5lf", sliceStats->sliceRecord[sliceRecord].networkSliceIdentifier.sst,\
                         sliceStats->sliceRecord[sliceRecord].networkSliceIdentifier.sd,sliceStats->sliceRecord[sliceRecord].ThpDl,\
                         sliceStats->sliceRecord[sliceRecord].ThpUl);
     }
@@ -2131,23 +2131,23 @@ uint8_t BuildAndSendStatsReqToMac(RicSubscription *ricSubscriptionInfo)
    DU_ALLOC_SHRABL_BUF(macStatsReq, sizeof(MacStatsReq));
    if(macStatsReq == NULLP)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed for macStatsReq in BuildAndSendStatsReqToMac");
+      DU_LOG("ERROR  -->  DU_APP : Memory allocation failed for macStatsReq in BuildAndSendStatsReqToMac");
       return RFAILED;
    }
 
    /* Fill E2 Subscription Info in MAC Statistics Request and send to MAC */
    if(fillRicSubsInMacStatsReq(macStatsReq, ricSubscriptionInfo) == ROK)
    {
-      DU_LOG("\nDEBUG  -->  DU_APP: Sending Statistics Request to MAC ");
+      DU_LOG("DEBUG  -->  DU_APP: Sending Statistics Request to MAC ");
       FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_STATISTICS_REQ);
 
       if( (*packMacStatsReqOpts[pst.selector])(&pst, macStatsReq) == ROK)
          return ROK;
 
-      DU_LOG("\nERROR  -->  DU_APP: Failed to send Statistics Request to MAC");
+      DU_LOG("ERROR  -->  DU_APP: Failed to send Statistics Request to MAC");
    }
 
-   DU_LOG("\nERROR  -->  DU_APP: No Statistics group found valid. Hence statistics request is not sent to MAC");
+   DU_LOG("ERROR  -->  DU_APP: No Statistics group found valid. Hence statistics request is not sent to MAC");
    DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macStatsReq, sizeof(MacStatsReq));
    return RFAILED;
 }
@@ -2175,7 +2175,7 @@ uint8_t BuildAndSendStatsReq(RicSubscription *ricSubscriptionInfo)
    /* Build and sent subscription information to MAC in Statistics Request */
    if(BuildAndSendStatsReqToMac(ricSubscriptionInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsReqToMac()");
+      DU_LOG("ERROR  -->  DU_APP : Failed at BuildAndSendStatsReqToMac()");
       return RFAILED;   
    }
 
@@ -2184,7 +2184,7 @@ uint8_t BuildAndSendStatsReq(RicSubscription *ricSubscriptionInfo)
 #if 0
    if(BuildAndSendStatsReqToRlc() != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsReqToRlc()");
+      DU_LOG("ERROR  -->  DU_APP : Failed at BuildAndSendStatsReqToRlc()");
       return RFAILED;
    }
 #endif
@@ -2214,24 +2214,24 @@ uint8_t BuildAndSendStatsReq(RicSubscription *ricSubscriptionInfo)
 uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
 {
    uint8_t ret = RFAILED;
-   DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsRsp: Received Statistics Response from MAC");
+   DU_LOG("INFO  -->  DU_APP : DuProcMacStatsRsp: Received Statistics Response from MAC");
 
    if(statsRsp)
    {
 #ifdef DEBUG_PRINT   
       uint8_t idx = 0;
-      DU_LOG("\n  Subscription Id [%ld]", statsRsp->subscriptionId);
+      DU_LOG("  Subscription Id [%ld]", statsRsp->subscriptionId);
 
-      DU_LOG("\n  Number of Accepted Groups [%d]", statsRsp->numGrpAccepted);
+      DU_LOG("  Number of Accepted Groups [%d]", statsRsp->numGrpAccepted);
       for(idx=0; idx<statsRsp->numGrpAccepted; idx++)
       {
-         DU_LOG("\n    Group Id [%d]", statsRsp->statsGrpAcceptedList[idx]);
+         DU_LOG("    Group Id [%d]", statsRsp->statsGrpAcceptedList[idx]);
       }
 
-      DU_LOG("\n  Number of Rejected Groups [%d]", statsRsp->numGrpRejected);
+      DU_LOG("  Number of Rejected Groups [%d]", statsRsp->numGrpRejected);
       for(idx=0; idx<statsRsp->numGrpRejected; idx++)
       {
-         DU_LOG("\n    Group Id [%d]", statsRsp->statsGrpRejectedList[idx].groupId);
+         DU_LOG("    Group Id [%d]", statsRsp->statsGrpRejectedList[idx].groupId);
       }
 #endif      
 
@@ -2239,14 +2239,14 @@ uint8_t DuProcMacStatsRsp(Pst *pst, MacStatsRsp *statsRsp)
        * Ric subscription response/failure accordingly */
       if((ret = e2ProcStatsRsp(statsRsp)) != ROK)
       {
-         DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsRsp: Failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  DU_APP : DuProcMacStatsRsp: Failed in %s at line %d", __func__, __LINE__);
       }
 
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsRsp, sizeof(MacStatsRsp));
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsRsp: Received NULL Pointer");
+      DU_LOG("ERROR  -->  DU_APP : DuProcMacStatsRsp: Received NULL Pointer");
    }
    return ret;
 }
@@ -2274,12 +2274,12 @@ uint8_t DuProcMacStatsInd(Pst *pst, MacStatsInd *statsInd)
    if(statsInd)
    {
 #ifdef DEBUG_PRINT   
-      DU_LOG("\nDEBUG  -->  DU_APP : DuProcMacStatsInd: Received Statistics Indication");
-      DU_LOG("\n  Subscription Id [%ld]", statsInd->subscriptionId);
-      DU_LOG("\n  Group Id [%d]", statsInd->groupId);
+      DU_LOG("DEBUG  -->  DU_APP : DuProcMacStatsInd: Received Statistics Indication");
+      DU_LOG("  Subscription Id [%ld]", statsInd->subscriptionId);
+      DU_LOG("  Group Id [%d]", statsInd->groupId);
       for(int idx = 0; idx < statsInd->numStats; idx++)
       {
-         DU_LOG("\n  Meas type [%d] Meas Value [%lf]", statsInd->measuredStatsList[idx].type,\
+         DU_LOG("  Meas type [%d] Meas Value [%lf]", statsInd->measuredStatsList[idx].type,\
             statsInd->measuredStatsList[idx].value);
       }
 #endif      
@@ -2287,7 +2287,7 @@ uint8_t DuProcMacStatsInd(Pst *pst, MacStatsInd *statsInd)
       /* Extract statistics from statistics indication message and store in E2 DB */
       if((ret = e2ProcStatsInd(statsInd)) != ROK)
       {
-          DU_LOG("\nINFO  -->  DU_APP : Failed in %s at line %d", __func__, __LINE__);
+          DU_LOG("INFO  -->  DU_APP : Failed in %s at line %d", __func__, __LINE__);
       }
 
       /* Free statistics indication */
@@ -2295,7 +2295,7 @@ uint8_t DuProcMacStatsInd(Pst *pst, MacStatsInd *statsInd)
    }
    else
    {
-      DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsInd: Received NULL Pointer");
+      DU_LOG("INFO  -->  DU_APP : DuProcMacStatsInd: Received NULL Pointer");
    }
    return ret;
 }
@@ -2323,7 +2323,7 @@ uint8_t DuProcMacStatsInd(Pst *pst, MacStatsInd *statsInd)
 uint8_t DuProcMacStatsDeleteRsp(Pst *pst, MacStatsDeleteRsp *statsDeleteRsp)
 {
    uint8_t ret = RFAILED;
-   DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsDeleteRsp: Received Statistics Response from MAC");
+   DU_LOG("INFO  -->  DU_APP : DuProcMacStatsDeleteRsp: Received Statistics Response from MAC");
 
    if(statsDeleteRsp)
    {
@@ -2334,21 +2334,21 @@ uint8_t DuProcMacStatsDeleteRsp(Pst *pst, MacStatsDeleteRsp *statsDeleteRsp)
       {
          if((ret = e2ProcStatsDeleteRsp(statsDeleteRsp)) != ROK)
          {
-            DU_LOG("\nINFO  -->  DU_APP : Failed in %s at line %d", __func__, __LINE__);
+            DU_LOG("INFO  -->  DU_APP : Failed in %s at line %d", __func__, __LINE__);
          }
       }
       else
       {
          if((ret = e2ProcActionDeleteRsp(statsDeleteRsp)) != ROK)
          {
-            DU_LOG("\nINFO  -->  DU_APP : Failed in %s at line %d", __func__, __LINE__);
+            DU_LOG("INFO  -->  DU_APP : Failed in %s at line %d", __func__, __LINE__);
          }
       }
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsDeleteRsp, sizeof(MacStatsDeleteRsp));
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsDeleteRsp: Received NULL Pointer");
+      DU_LOG("ERROR  -->  DU_APP : DuProcMacStatsDeleteRsp: Received NULL Pointer");
    }
    return ret;
 }
@@ -2383,13 +2383,13 @@ uint8_t BuildAndSendStatsDeleteReqToMac(RicSubscription *ricSubscriptionInfo, bo
    DU_ALLOC_SHRABL_BUF(macStatsDelete, sizeof(MacStatsDeleteReq));
    if(macStatsDelete == NULLP)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed for macStatsDelete in BuildAndSendStatsDeleteReqToMac");
+      DU_LOG("ERROR  -->  DU_APP : Memory allocation failed for macStatsDelete in BuildAndSendStatsDeleteReqToMac");
       failureCause.causeType = E2_MISCELLANEOUS;
       failureCause.cause = E2_MISCELLANEOUS_CAUSE_UNSPECIFIED;
 
       if(BuildAndSendRicSubscriptionDeleteFailure(ricSubscriptionInfo->ranFuncId, ricSubscriptionInfo->requestId, failureCause) != ROK)
       {
-         DU_LOG("\nERROR  -->  E2AP : e2ProcStatsDeleteRsp: failed to build and send ric subs delete failure");
+         DU_LOG("ERROR  -->  E2AP : e2ProcStatsDeleteRsp: failed to build and send ric subs delete failure");
          return RFAILED;
       }
       return RFAILED;
@@ -2419,12 +2419,12 @@ uint8_t BuildAndSendStatsDeleteReqToMac(RicSubscription *ricSubscriptionInfo, bo
       macStatsDelete->numStatsGroupToBeDeleted=actionIdx;
    }
 
-   DU_LOG("\nDEBUG  -->  DU_APP: Sending Statistics delete req to MAC ");
+   DU_LOG("DEBUG  -->  DU_APP: Sending Statistics delete req to MAC ");
    FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_STATS_DELETE_REQ);
    
    if( (*packMacStatsDeleteReqOpts[pst.selector])(&pst, macStatsDelete) != ROK)
    { 
-      DU_LOG("\nERROR  -->  DU_APP: Failed to send Statistics delete req to MAC");
+      DU_LOG("ERROR  -->  DU_APP: Failed to send Statistics delete req to MAC");
       DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macStatsDelete, sizeof(MacStatsDeleteReq));
       return RFAILED;
    }
@@ -2456,7 +2456,7 @@ uint8_t BuildAndSendStatsDeleteReq(RicSubscription *ricSubscriptionInfo, bool de
    /* Build and sent subscription information to MAC in Statistics delete */
    if(BuildAndSendStatsDeleteReqToMac(ricSubscriptionInfo, deleteAllStats) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsDeleteReqToMac()");
+      DU_LOG("ERROR  -->  DU_APP : Failed at BuildAndSendStatsDeleteReqToMac()");
       return RFAILED;
    }
    return ROK;
@@ -2487,23 +2487,23 @@ uint8_t BuildAndSendStatsModificationReqToMac(RicSubscription *ricSubscriptionIn
    DU_ALLOC_SHRABL_BUF(macStatsModificationReq, sizeof(MacStatsModificationReq));
    if(macStatsModificationReq == NULLP)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed for macStatsModificationReq in BuildAndSendStatsModificationReqToMac");
+      DU_LOG("ERROR  -->  DU_APP : Memory allocation failed for macStatsModificationReq in BuildAndSendStatsModificationReqToMac");
       return RFAILED;
    }
 
    /* Fill E2 Subscription Info in MAC Statistics Modification Request and send to MAC */
    if(fillRicSubsInMacStatsModificationReq(macStatsModificationReq, ricSubscriptionInfo) == ROK)
    {
-      DU_LOG("\nDEBUG  -->  DU_APP: Sending Statistics Modification Request to MAC ");
+      DU_LOG("DEBUG  -->  DU_APP: Sending Statistics Modification Request to MAC ");
       FILL_PST_DUAPP_TO_MAC(pst, EVENT_MAC_STATISTICS_MODIFY_REQ);
 
       if( (*packMacStatsModificationReqOpts[pst.selector])(&pst, macStatsModificationReq) == ROK)
          return ROK;
 
-      DU_LOG("\nERROR  -->  DU_APP: Failed to send Statistics Modification Request to MAC");
+      DU_LOG("ERROR  -->  DU_APP: Failed to send Statistics Modification Request to MAC");
    }
 
-   DU_LOG("\nERROR  -->  DU_APP: No Statistics group found valid. Hence statistics Modification request is not sent to MAC");
+   DU_LOG("ERROR  -->  DU_APP: No Statistics group found valid. Hence statistics Modification request is not sent to MAC");
    DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, macStatsModificationReq, sizeof(MacStatsModificationReq));
    return RFAILED;
 }
@@ -2531,7 +2531,7 @@ uint8_t BuildAndSendStatsModificationReq(RicSubscription *ricSubscriptionInfo)
    /* Build and sent subscription information to MAC in Statistics Modification Request */
    if(BuildAndSendStatsModificationReqToMac(ricSubscriptionInfo) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed at BuildAndSendStatsModificationReqToMac()");
+      DU_LOG("ERROR  -->  DU_APP : Failed at BuildAndSendStatsModificationReqToMac()");
       return RFAILED;
    }
 
@@ -2562,35 +2562,35 @@ uint8_t BuildAndSendStatsModificationReq(RicSubscription *ricSubscriptionInfo)
 uint8_t DuProcMacStatsModificationRsp(Pst *pst, MacStatsModificationRsp *statsModificationRsp)
 {
    uint8_t ret = RFAILED;
-   DU_LOG("\nINFO  -->  DU_APP : DuProcMacStatsModificationRsp: Received Statistics Modification Response from MAC");
+   DU_LOG("INFO  -->  DU_APP : DuProcMacStatsModificationRsp: Received Statistics Modification Response from MAC");
 
    if(statsModificationRsp)
    {
 #ifdef DEBUG_PRINT
       uint8_t idx = 0;
-      DU_LOG("\n  Subscription Id [%ld]", statsModificationRsp->subscriptionId);
+      DU_LOG("  Subscription Id [%ld]", statsModificationRsp->subscriptionId);
 
-      DU_LOG("\n  Number of Accepted Groups [%d]", statsModificationRsp->numGrpAccepted);
+      DU_LOG("  Number of Accepted Groups [%d]", statsModificationRsp->numGrpAccepted);
       for(idx=0; idx<statsModificationRsp->numGrpAccepted; idx++)
       {
-         DU_LOG("\n    Group Id [%d]", statsModificationRsp->statsGrpAcceptedList[idx]);
+         DU_LOG("    Group Id [%d]", statsModificationRsp->statsGrpAcceptedList[idx]);
       }
 
-      DU_LOG("\n  Number of Rejected Groups [%d]", statsModificationRsp->numGrpRejected);
+      DU_LOG("  Number of Rejected Groups [%d]", statsModificationRsp->numGrpRejected);
       for(idx=0; idx<statsModificationRsp->numGrpRejected; idx++)
       {
-         DU_LOG("\n    Group Id [%d]", statsModificationRsp->statsGrpRejectedList[idx].groupId);
+         DU_LOG("    Group Id [%d]", statsModificationRsp->statsGrpRejectedList[idx].groupId);
       }
 #endif
       if((ret = e2ProcStatsModificationRsp(statsModificationRsp)) != ROK)
       {
-         DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsModificationRsp: Failed in %s at line %d", __func__, __LINE__);
+         DU_LOG("ERROR  -->  DU_APP : DuProcMacStatsModificationRsp: Failed in %s at line %d", __func__, __LINE__);
       }
       DU_FREE_SHRABL_BUF(pst->region, pst->pool, statsModificationRsp, sizeof(MacStatsModificationRsp));
    }
    else
    {
-      DU_LOG("\nERROR  -->  DU_APP : DuProcMacStatsModificationRsp: Received NULL Pointer");
+      DU_LOG("ERROR  -->  DU_APP : DuProcMacStatsModificationRsp: Received NULL Pointer");
    }
    return ret;
 }
@@ -2620,7 +2620,7 @@ uint8_t BuildAndSendNfapiP7UdpConfig()
    DU_ALLOC_SHRABL_BUF(p7UdpCfg, sizeof(NfapiP7UdpCfg));
    if(p7UdpCfg == NULLP)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Memory allocation failed in BuildAndSendNfapiP7UdpConfig");
+      DU_LOG("ERROR  -->  DU_APP : Memory allocation failed in BuildAndSendNfapiP7UdpConfig");
       return RFAILED;
    }
    else
@@ -2628,10 +2628,10 @@ uint8_t BuildAndSendNfapiP7UdpConfig()
       memcpy(p7UdpCfg,  &duCfgParam.tempNFapiP7UdpCfg, sizeof(NfapiP7UdpCfg));
       FILL_PST_DUAPP_TO_NFAPIUDPP7(pst, EVENT_NFAPI_P7_UDP_CFG);
 
-      DU_LOG("\nDEBUG  -->  DU_APP : Sending NFAPI P7 UDP Cfg to NFAPI P7 (VNF)");
+      DU_LOG("DEBUG  -->  DU_APP : Sending NFAPI P7 UDP Cfg to NFAPI P7 (VNF)");
       if((*packNfapiP7UdpCfgOpts[pst.selector])(&pst, p7UdpCfg) == RFAILED)
       {
-         DU_LOG("\nERROR  -->  DU_APP : Failed to send NFAPI P7 UDP Cfg to NFAPI P7");
+         DU_LOG("ERROR  -->  DU_APP : Failed to send NFAPI P7 UDP Cfg to NFAPI P7");
          DU_FREE_SHRABL_BUF(DU_APP_MEM_REGION, DU_POOL, p7UdpCfg, sizeof(NfapiP7UdpCfg));
          return RFAILED;
       }

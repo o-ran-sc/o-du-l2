@@ -88,7 +88,7 @@ uint8_t udpP7ActvTsk(Pst *pst, Buffer *mBuf)
             }
             default:
             {
-                DU_LOG("\nERROR  -> NFAPI_VNF: UDP Act task received Incorrect event:%d",\
+                DU_LOG("ERROR  -> NFAPI_VNF: UDP Act task received Incorrect event:%d",\
                                                                   pst->event);
                 ret = RFAILED;
                 break;
@@ -102,14 +102,14 @@ uint8_t udpP7ActvTsk(Pst *pst, Buffer *mBuf)
            {
               case EVTSTARTNFAPIP7POLL:
               {
-                 DU_LOG("\nINFO   --> VNF_NFAPI:Start Polling");
+                 DU_LOG("INFO   --> VNF_NFAPI:Start Polling");
                  nfapiP7UdpRecvMsg();
                  ODU_PUT_MSG_BUF(mBuf);
                  break;
               }
               default:
               {
-                 DU_LOG("\nERROR  -> NFAPI_VNF: UDP Act task received Incorrect event:%d",\
+                 DU_LOG("ERROR  -> NFAPI_VNF: UDP Act task received Incorrect event:%d",\
                                                                   pst->event);
                  ret = RFAILED;
                  break;
@@ -119,7 +119,7 @@ uint8_t udpP7ActvTsk(Pst *pst, Buffer *mBuf)
         }
        default:
        {
-          DU_LOG("\nERROR  --> NFAPI_VNF: UDP Act task received from wrong Entity:%d",\
+          DU_LOG("ERROR  --> NFAPI_VNF: UDP Act task received from wrong Entity:%d",\
                                                                   pst->srcEnt);
           ret = RFAILED;
           break;
@@ -170,7 +170,7 @@ uint8_t NfapiProcP7UdpCfg(Pst *pst, NfapiP7UdpCfg *nfapiP7UdpCfg)
    }
    else
    {
-      DU_LOG("\nINFO  -->  MAC : Received NfapiP7UdpCfg is NULL");
+      DU_LOG("INFO  -->  MAC : Received NfapiP7UdpCfg is NULL");
       ret =  RFAILED;
    }
    return ret;
@@ -199,13 +199,13 @@ uint8_t nfapiP7UdpCliOpenPrc(uint8_t sockType)
    ret = cmInetSocket(sockType, &(vnfDb.p7TransInfo.sockFd), CM_INET_PROTO_UDP); 
 	if(ret != ROK)
    {  
-      DU_LOG("\nERROR  -->  NFAPI_VNF : Failed to open UDP socket");
+      DU_LOG("ERROR  -->  NFAPI_VNF : Failed to open UDP socket");
       return ret;
    }
    ret = cmInetBind(&(vnfDb.p7TransInfo.sockFd), &(vnfDb.p7TransInfo.srcIpNetAddr));  
    if(ret != ROK)
    {  
-      DU_LOG("\nERROR  -->  NFAPI_VNF : Failed to bind socket");
+      DU_LOG("ERROR  -->  NFAPI_VNF : Failed to bind socket");
       return ret;
    }
    
@@ -234,7 +234,7 @@ uint8_t packNfapiP7UdpStartPollingReq(Pst *pst)
 
    if(ODU_GET_MSG_BUF(DFLT_REGION, pst->pool, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  -->  NFAPI_VNF : Failed to allocate memory");
+      DU_LOG("ERROR  -->  NFAPI_VNF : Failed to allocate memory");
       return RFAILED;
    }
 
@@ -265,18 +265,18 @@ uint8_t nfapiP7UdpOpenReq()
    Pst      nfapiP7Pst;   /* Self post */
    uint8_t  sockType;  /* Socket type */
 
-   DU_LOG("\nDEBUG  -->  NFAPI_VNF : Received NFAPI P7's UDP open Client request");
+   DU_LOG("DEBUG  -->  NFAPI_VNF : Received NFAPI P7's UDP open Client request");
  
    sockType = CM_INET_DGRAM;
    ret = nfapiP7UdpCliOpenPrc(sockType);
    /* Opening and Binding receiver socket */
    if(ret != ROK)
    {
-      DU_LOG("\nERROR  -->  NFAPI_VNF : Failed while opening receiver transport server");
+      DU_LOG("ERROR  -->  NFAPI_VNF : Failed while opening receiver transport server");
       return ret;
    }
 
-   DU_LOG("\nDEBUG  -->  NFAPI_VNF : Socket [%d] is open", vnfDb.p7TransInfo.sockFd.fd);
+   DU_LOG("DEBUG  -->  NFAPI_VNF : Socket [%d] is open", vnfDb.p7TransInfo.sockFd.fd);
 
    /* Start Socket polling */
    memset(&nfapiP7Pst, 0, sizeof(nfapiP7Pst));
@@ -292,7 +292,7 @@ uint8_t nfapiP7UdpOpenReq()
    packNfapiP7UdpStartPollingReq(&nfapiP7Pst);
 
    /*Trigger P7 Clock as well */
-   DU_LOG("\nDEBUG  -->  NFAPI_VNF : Triggering Clock");
+   DU_LOG("DEBUG  -->  NFAPI_VNF : Triggering Clock");
    nfapiTriggerP7Clock();
    return ret;
 }
@@ -331,7 +331,7 @@ uint8_t nfapiP7UdpRecvMsg()
       ret = cmInetRecvMsg(&vnfDb.p7TransInfo.sockFd, &vnfDb.p7TransInfo.destIpNetAddr, &memInfo, &recvBuf, (int16_t *)&bufLen, CM_INET_NO_FLAG);
       if(ret == ROK && recvBuf != NULLP)
       {
-         DU_LOG("\nDEBUG  -->  NFAPI_VNF : Received P7 Message\n");
+         DU_LOG("DEBUG  -->  NFAPI_VNF : Received P7 Message\n");
   
          nfapiP7MsgHandler(recvBuf);
          ODU_PUT_MSG_BUF(recvBuf);
@@ -367,16 +367,16 @@ uint8_t nfapiP7UdpSendMsg(Buffer *mBuf)
    info.region = NFAPI_UDP_P7_MEM_REGION;
    info.pool = NFAPI_UDP_P7_POOL;
 
-   DU_LOG("\n udp sending: add:0x%x, port:%d",  vnfDb.p7TransInfo.destIpNetAddr.address,  vnfDb.p7TransInfo.destIpNetAddr.port );
+   DU_LOG(" udp sending: add:0x%x, port:%d",  vnfDb.p7TransInfo.destIpNetAddr.address,  vnfDb.p7TransInfo.destIpNetAddr.port );
    ret = cmInetSendMsg(&vnfDb.p7TransInfo.sockFd, &vnfDb.p7TransInfo.destIpNetAddr, &info, mBuf, (int16_t *)&txLen, CM_INET_NO_FLAG);
    if(ret != ROK && ret != RWOULDBLOCK)
    {
-      DU_LOG("\nERROR  -->  NFAPI_VNF : Failed sending the message");
+      DU_LOG("ERROR  -->  NFAPI_VNF : Failed sending the message");
       return RFAILED;
    }
    else
    {
-      DU_LOG("\nDEBUG -->  NFAPI_VNF : Sent NFAPI P7 Message [%ld]", numDataSent+1);
+      DU_LOG("DEBUG -->  NFAPI_VNF : Sent NFAPI P7 Message [%ld]", numDataSent+1);
       numDataSent++;
    }
 
