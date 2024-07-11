@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76d4a5b0_7982cac7",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-11T11:55:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1fe0347_70529ada",
+      "revId": "cbf3b2609285277aeadcb198b4edca4dccdbee0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f3b11e5_78875b75",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8ca2098_92128143",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-11T11:55:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f3b11e5_78875b75",
+      "revId": "cbf3b2609285277aeadcb198b4edca4dccdbee0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e509759_07c05550",
@@ -48,6 +84,30 @@
       "writtenOn": "2024-07-11T10:52:34Z",
       "side": 1,
       "message": "as per fapi spec nPDUs is of uint8_t size?",
+      "range": {
+        "startLine": 174,
+        "startChar": 11,
+        "endLine": 174,
+        "endChar": 26
+      },
+      "revId": "cbf3b2609285277aeadcb198b4edca4dccdbee0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b13ac93_8ad55efd",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-11T11:55:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e509759_07c05550",
       "range": {
         "startLine": 174,
         "startChar": 11,
