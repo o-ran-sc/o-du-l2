@@ -156,6 +156,28 @@ uint8_t pnfDlNodeSyncHandler(Buffer *mBuf)
 
 /*********************************************************************************
  *
+ * @Function Name: pnfDlTtiReq
+ *
+ *
+ * @Functionality: 
+ *    Handles the P7 DL TTI REQ by unpacking the MsgBuffer received
+ *
+ * @Params [IN]: Message Buffer received at UDP NFAPI P7 Interface
+ *
+ * *******************************************************************************/
+uint8_t pnfDlTtiReq(Buffer *mBuf)
+{
+   fapi_dl_tti_req_msg_body fapiMsgBody;
+
+   CMCHKPK(oduUnpackUInt16, &fapiMsgBody.sfn, mBuf);
+   CMCHKPK(oduUnpackUInt16, &fapiMsgBody.slot, mBuf);
+   CMCHKPK(oduUnpackUInt16, &fapiMsgBody.nPdus, mBuf);
+   DU_LOG("INFO   --> NFAPI_PNF: DL_TTI_REQ SFN/SLOT:%d/%d, nPdu:%d",fapiMsgBody.sfn, fapiMsgBody.slot, fapiMsgBody.nPdus);
+   return ROK;
+}
+
+/*********************************************************************************
+ *
  * @Function Name: pnfP7MsgHandler
  *
  *
@@ -182,6 +204,13 @@ uint8_t  pnfP7MsgHandler(Buffer *mBuf)
             ret = pnfDlNodeSyncHandler(mBuf);
             break;
          }
+
+         case FAPI_DL_TTI_REQUEST:
+         {
+            DU_LOG("\nINFO   --> NFAPI_PNF: DL_TTI_REQ recevied.");
+            ret = pnfDlTtiReq(mBuf);
+            break;
+         }
       default:
       {
          DU_LOG("ERROR  --> NFAPI_PNF: Wrong MSGID of NFAPI P7 Message:%d",msgHdr.msg_id);
@@ -190,10 +219,6 @@ uint8_t  pnfP7MsgHandler(Buffer *mBuf)
       }
    }
 
-   if(ret == RFAILED)
-   {
-      return RFAILED;
-   }
    return ret;
 }
 

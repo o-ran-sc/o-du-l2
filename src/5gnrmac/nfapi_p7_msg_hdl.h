@@ -23,5 +23,6 @@
 
 uint8_t nfapiBuildAndSendDlNodeSync();
 uint8_t nfapiP7MsgHandler(Buffer *mBuf);
+uint8_t nfapiFillAndSendP7TransMsg(uint8_t msgType, uint32_t msgLen, void *fapiP7Msg);
 
 #endif

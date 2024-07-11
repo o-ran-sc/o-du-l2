@@ -179,7 +179,7 @@ void nfapiGenerateTicks()
       
          vnfDb.vnfP7Info.p7SyncInfo.frameInfo.sfn++;
          vnfDb.vnfP7Info.p7SyncInfo.frameInfo.slot++;
-         DU_LOG("INFO  --> VNF_NFAPI : Starting to generate slot indications t_ref:%llu, slotDur:%f, perTTi:%u, slotsPerFrame:%d, nanoSec:%d",\
+         DU_LOG("INFO  --> NFAPI_VNF : Starting to generate slot indications t_ref:%llu, slotDur:%f, perTTi:%u, slotsPerFrame:%d, nanoSec:%d",\
                vnfDb.vnfP7Info.t_ref_ns, slotDur_ms, PER_TTI_TIME_USEC, NUM_SLOTS_PER_SUBFRAME, tti_req.tv_nsec);
          nfapiBuildAndSendDlNodeSync(); 
       }
@@ -187,14 +187,14 @@ void nfapiGenerateTicks()
       {
          CALC_NEXT_SFN_SLOT(vnfDb.vnfP7Info.p7SyncInfo.frameInfo);
       }
-#if 0
-      /*TODO: To enable when P5 messages are all done and implemented*/
-      if(nfapiSendSlotIndToMac() != ROK)
+      if(vnfDb.vnfP7Info.p7SyncInfo.inSync == TRUE)
       {
-         DU_LOG("ERROR  -> NFAPI_VNF: Memory Corruption issue while sending SLOT IND to MAC");
-         break;
+         if(nfapiSendSlotIndToMac() != ROK)
+         {
+            DU_LOG("ERROR  -> NFAPI_VNF: Memory Corruption issue while sending SLOT IND to MAC");
+            break;
+         }
       }
-#endif
 
 #ifdef ODU_SLOT_IND_DEBUG_LOG
       DU_LOG("VNF_NFAPI -->  DEBUG:  SFN/Slot:%d,%d",\
