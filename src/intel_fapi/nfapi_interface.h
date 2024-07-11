@@ -320,7 +320,6 @@ typedef struct fapi_dl_tti_req_msg_body_t{
    uint16_t slot;
    uint8_t nPdus;
    uint8_t nGroup;
-   uint8_t pad[2];
    fapi_dl_tti_req_pdu_t pdus[FAPI_MAX_PDUS_PER_SLOT]; // 5G FAPI Table 3-35
    fapi_ue_info_t ue_grp_info[FAPI_MAX_NUMBER_OF_GROUPS_PER_TTI];
 }fapi_dl_tti_req_msg_body;

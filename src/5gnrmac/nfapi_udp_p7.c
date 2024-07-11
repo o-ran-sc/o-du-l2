@@ -379,6 +379,7 @@ uint8_t nfapiP7UdpSendMsg(Buffer *mBuf)
       DU_LOG("DEBUG -->  NFAPI_VNF : Sent NFAPI P7 Message [%ld]", numDataSent+1);
       numDataSent++;
    }
+   ODU_PUT_MSG_BUF(mBuf);
 
    return ROK;
 }
