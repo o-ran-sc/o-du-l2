@@ -29,6 +29,15 @@
 #define CORESET_TYPE2 2
 #define CORESET_TYPE3 3
 
+#define MIB_SFN_BITMASK 0xFC
+#define PDCCH_PDU_TYPE 0
+#define PDSCH_PDU_TYPE 1
+#define SSB_PDU_TYPE 3
+#define PRACH_PDU_TYPE 0
+#define PUSCH_PDU_TYPE 1
+#define PUCCH_PDU_TYPE 2
+#define PDU_PRESENT 1
+
 #ifdef INTEL_WLS_MEM
 #define WLS_MEM_FREE_PRD       10        /* Free memory after 10 slot ind */
 #endif

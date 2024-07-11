@@ -37,6 +37,9 @@
 #ifdef INTEL_WLS_MEM
 #include "wls_lib.h"
 #endif
+#ifdef NFAPI_ENABLED
+#include "nfapi_p7_msg_hdl.h"
+#endif
 
 #ifdef INTEL_WLS_MEM
 CmLListCp wlsBlockToFreeList[WLS_MEM_FREE_PRD];
@@ -275,10 +278,8 @@ uint8_t LwrMacSendToL1(void *msg)
 {
    uint8_t ret = ROK;
 #ifdef INTEL_FAPI
-#ifndef NFAPI_ENABLED
    uint32_t msgLen =0;
     p_fapi_api_queue_elem_t currMsg = NULLP;
-#endif
 
 #ifdef CALL_FLOW_DEBUG_LOG   
    char message[100];
@@ -375,7 +376,6 @@ uint8_t LwrMacSendToL1(void *msg)
       }
    }
 #else
-#ifndef NFAPI_ENABLED
    p_fapi_api_queue_elem_t nextMsg = NULLP;
 
    /* FAPI header and vendor specific msgs are freed here. Only 
@@ -388,7 +388,11 @@ uint8_t LwrMacSendToL1(void *msg)
       if((currMsg->msg_type != FAPI_VENDOR_MSG_HEADER_IND) && \
             (currMsg->msg_type != FAPI_VENDOR_MESSAGE))
       {
+#ifndef NFAPI_ENABLED
          l1ProcessFapiRequest(currMsg->msg_type, msgLen, currMsg);
+#else
+         nfapiFillAndSendP7TransMsg(currMsg->msg_type, msgLen, currMsg);
+#endif
       }
       else
       {
@@ -396,7 +400,6 @@ uint8_t LwrMacSendToL1(void *msg)
       }
       currMsg = nextMsg;
    }
-#endif
 #endif
 #endif
    return ret;
