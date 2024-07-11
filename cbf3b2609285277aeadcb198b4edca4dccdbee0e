@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1fe0347_70529ada",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-11T10:52:34Z",
+      "side": 1,
+      "message": "can we move this as well in .h file",
+      "revId": "cbf3b2609285277aeadcb198b4edca4dccdbee0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f3b11e5_78875b75",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-11T10:52:34Z",
+      "side": 1,
+      "message": "uint16?",
+      "revId": "cbf3b2609285277aeadcb198b4edca4dccdbee0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e509759_07c05550",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-11T10:52:34Z",
+      "side": 1,
+      "message": "as per fapi spec nPDUs is of uint8_t size?",
+      "range": {
+        "startLine": 174,
+        "startChar": 11,
+        "endLine": 174,
+        "endChar": 26
+      },
+      "revId": "cbf3b2609285277aeadcb198b4edca4dccdbee0e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
