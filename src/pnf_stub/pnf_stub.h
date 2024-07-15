@@ -67,6 +67,21 @@
 
 #define NUMEROLOGY 0
 
+/*UE Ids for RACH IND*/
+#define UE_IDX_0     0
+#define UE_IDX_1     1
+#define UE_IDX_2     2
+
+/* Default RA Preamble index to be used when Rach Indication is triggered from
+  PHY stub */
+#define CB_RA_PREAMBLE_IDX 3  /* For contention based RA */
+#define CF_RA_PREAMBLE_IDX 8  /* For contention free RA */
+
+#define NR_PCI 1
+#define PRACH_PDU_TYPE 0
+#define PUSCH_PDU_TYPE 1
+#define PUCCH_PDU_TYPE 2
+
 uint32_t PER_TTI_TIME_USEC;
 uint8_t  NUM_SLOTS_PER_SUBFRAME;
 
@@ -97,12 +112,33 @@ typedef struct pnfP7Info
    uint32_t t_ref_ns;
 }PnfP7Info;
 
+typedef struct pnfUeCb
+{
+   uint8_t  ueId;
+   uint16_t crnti;
+   bool     rachIndSent;
+   bool     isCFRA;
+   bool     msg3Sent;
+   bool     msg5ShortBsrSent;
+   bool     msg5Sent;
+   bool     dlDedMsg;
+   bool     msgNasAuthenticationComp;
+   bool     msgNasSecurityModeComp;
+   bool     msgRrcSecurityModeComp;
+   bool     msgRrcReconfigComp;
+   bool     msgRegistrationComp;
+   uint8_t  rlcSnForSrb1;           /* Sequence number of PDU at RLC for AM mode */
+   uint8_t  pdcpSn;                 /* Sequence number of PDU at PDCP */
+}PnfUeCb;
+
 typedef struct pnfGlobalCb
 {
    PnfCfgParams pnfCfgParams;
    PnfSlotInfo  pnfSlotInfo;
    PnfP7Info    pnfP7Info;
    uint8_t      numDu;
+   uint8_t      numActiveUe;
+   PnfUeCb      pnfUeCb[MAX_NUM_UE];
    //DuDb         duInfo[MAX_DU_SUPPORTED]; /*TODO: VNF Database can be added*/
 }PnfGlobalCb;
 

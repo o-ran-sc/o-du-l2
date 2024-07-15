@@ -344,7 +344,6 @@ typedef struct fapi_ul_tti_req_msg_body_t{
    uint8_t nUlsch;
    uint8_t nUlcch;
    uint8_t nGroup;
-   uint8_t pad[3];
    fapi_ul_tti_req_pdu_t pdus[FAPI_MAX_NUMBER_UL_PDUS_PER_TTI];    // 5G FAPI Table 3-44
    fapi_ue_info_t ueGrpInfo[FAPI_MAX_NUMBER_OF_GROUPS_PER_TTI];
 }fapi_ul_tti_req_msg_body;
@@ -443,7 +442,6 @@ typedef struct fapi_rach_ind_msg_body_t{
    uint16_t sfn;
    uint16_t slot;
    uint8_t numPdus;
-   uint8_t pad[3];
    fapi_rach_pdu_t rachPdu[FAPI_MAX_NUMBER_RACH_PDUS_PER_SLOT];    // 5G FAPI Table 3-74
 }fapi_rach_ind_msg_body;
 
