@@ -23,7 +23,9 @@
 #include "common_def.h"
 #include "mac_utils.h"
 #include "lwr_mac.h"
+#include "lwr_mac_utils.h"
 #include "lwr_mac_fsm.h"
+#include "lwr_mac_upr_inf.h"
 #include "fapi_vendor_extension.h"
 #include "nfapi_interface.h"
 #include "nfapi_common.h"
@@ -37,7 +39,7 @@ extern NfapiVnfDb vnfDb;
  *
  * @details
  *
- *    Function : nfapiFillPrecodingBeamform
+ *    Function : nfapiFillDlPrecodingBeamform
  *
  *    Functionality:
  *       Pack parameters of Precoding and Beamforming and fill it in MsgBuffer
@@ -48,7 +50,7 @@ extern NfapiVnfDb vnfDb;
  *
  * ********************************************************************/
 
-void nfapiFillPrecodingBeamform(fapi_precoding_bmform_t *preCodingAndBeamforming, Buffer *mBuf)
+void nfapiFillDlPrecodingBeamform(fapi_precoding_bmform_t *preCodingAndBeamforming, Buffer *mBuf)
 {
    CMCHKPK(oduPackPostUInt16, preCodingAndBeamforming->numPrgs, mBuf);
    CMCHKPK(oduPackPostUInt16, preCodingAndBeamforming->prgSize, mBuf);
@@ -99,7 +101,7 @@ uint8_t nfapiBuildAndSendDlTtiReq(void *fapiMsg, uint32_t msgLen)
    
    if(ODU_GET_MSG_BUF(MAC_MEM_REGION, MAC_POOL, &mBuf) != ROK)
    {
-      DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in packPnfParamReq");
+      DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in nfapiBuildAndSendDlTtiReq");
       return RFAILED;
    }
   
@@ -144,7 +146,7 @@ uint8_t nfapiBuildAndSendDlTtiReq(void *fapiMsg, uint32_t msgLen)
                CMCHKPK(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].cceIndex, mBuf);
                CMCHKPK(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].aggregationLevel, mBuf);
                
-               nfapiFillPrecodingBeamform(&dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].pc_and_bform, mBuf);
+               nfapiFillDlPrecodingBeamform(&dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].pc_and_bform, mBuf);
                
                CMCHKPK(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].beta_pdcch_1_0, mBuf);
                CMCHKPK(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].powerControlOffsetSS, mBuf);
@@ -214,7 +216,7 @@ uint8_t nfapiBuildAndSendDlTtiReq(void *fapiMsg, uint32_t msgLen)
             CMCHKPK(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.ptrsReOffset, mBuf);
             CMCHKPK(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.nEpreRatioOfPdschToPtrs, mBuf);
             
-            nfapiFillPrecodingBeamform(&dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.preCodingAndBeamforming, mBuf);
+            nfapiFillDlPrecodingBeamform(&dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.preCodingAndBeamforming, mBuf);
             
             CMCHKPK(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.powerControlOffset, mBuf);
             CMCHKPK(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.powerControlOffsetSS, mBuf);
@@ -241,7 +243,7 @@ uint8_t nfapiBuildAndSendDlTtiReq(void *fapiMsg, uint32_t msgLen)
             CMCHKPK(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.ssb_pdu.bchPayload.phyMibPdu.cellBarred, mBuf);
             CMCHKPK(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.ssb_pdu.bchPayload.phyMibPdu.intraFreqReselection, mBuf);
     
-            nfapiFillPrecodingBeamform(&dlTtiReq->pdus[pduIdx].pdu.ssb_pdu.preCodingAndBeamforming, mBuf);
+            nfapiFillDlPrecodingBeamform(&dlTtiReq->pdus[pduIdx].pdu.ssb_pdu.preCodingAndBeamforming, mBuf);
             
             break;
          }
@@ -273,6 +275,257 @@ uint8_t nfapiBuildAndSendDlTtiReq(void *fapiMsg, uint32_t msgLen)
 
 /***********************************************************************
  *
+ * @brief Pack parameters of UL Precoding and Beamforming
+ *
+ * @details
+ *
+ *    Function : nfapiFillUlPrecodingBeamform
+ *
+ *    Functionality:
+ *       Pack parameters of Precoding and Beamforming and fill it in MsgBuffer
+ *       of NFAPI
+ *
+ * @params[in] Buffer *mBuf, preCodingAndBeamforming
+ * @return void
+ *
+ * ********************************************************************/
+
+void nfapiFillUlRxBeamforming(fapi_ul_rx_bmform_pdu_t *ulBmform, Buffer *mBuf)
+{
+   CMCHKPK(oduPackPostUInt16, ulBmform->numPrgs, mBuf);
+   CMCHKPK(oduPackPostUInt16, ulBmform->prgSize, mBuf);
+   CMCHKPK(oduPackPostUInt8, ulBmform->digBfInterface, mBuf);
+   for(uint8_t padIdx = 0; padIdx < 3; padIdx++)
+   {
+      CMCHKPK(oduPackPostUInt8, ulBmform->pad[padIdx], mBuf);
+   }
+   for(uint8_t prgIdx = 0; prgIdx < ulBmform->numPrgs; prgIdx++)
+   {
+      for(uint8_t digBfIdx = 0; digBfIdx < ulBmform->digBfInterface; digBfIdx++)
+      {
+         CMCHKPK(oduPackPostUInt16, ulBmform->rx_bfi[prgIdx].beamIdx[digBfIdx].beamidx, mBuf);
+      }
+   }
+}
+
+/***********************************************************************
+ *
+ * @brief Fill P7 UL TTI REQ and send via UDP
+ *
+ * @details
+ *
+ *    Function : nfapiBuildAndSendUlTtiReq
+ *
+ *    Functionality:
+ *       Fill P7 UL TTI REQ by packing each element of FAPI_UL_TTI_REQ 
+ *
+ * @params[in] FapiMsgBody, MsgLength
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ********************************************************************/
+
+uint8_t nfapiBuildAndSendUlTtiReq(void *fapiMsg, uint32_t msgLen)
+{
+   Buffer  *mBuf = NULLP;
+   uint8_t pduIdx = 0, ueGrpIdx = 0;
+   uint8_t ret = ROK;
+
+   p_fapi_api_queue_elem_t ulTtiElem = (p_fapi_api_queue_elem_t)fapiMsg;
+   fapi_ul_tti_req_t *ulTtiReq = (fapi_ul_tti_req_t *)(ulTtiElem +1);
+   
+   if(ODU_GET_MSG_BUF(MAC_MEM_REGION, MAC_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("\nERROR  --> NFAPI_VNF : Memory allocation failed in nfapiBuildAndSendUlTtiReq");
+      return RFAILED;
+   }
+  
+   nfapiFillP7Hdr(mBuf,(sizeof(fapi_ul_tti_req_msg_body) + sizeof(nFapi_msg_header)), 0, 0);
+   nfapiFillMsgHdr(mBuf, vnfDb.vnfP7Info.p7SyncInfo.phyId, FAPI_UL_TTI_REQUEST, sizeof(fapi_ul_tti_req_msg_body));
+  
+   CMCHKPK(oduPackPostUInt16, ulTtiReq->sfn, mBuf);
+   CMCHKPK(oduPackPostUInt16, ulTtiReq->slot, mBuf);
+   CMCHKPK(oduPackPostUInt8, ulTtiReq->nPdus, mBuf);
+   CMCHKPK(oduPackPostUInt8, ulTtiReq->rachPresent, mBuf);
+   CMCHKPK(oduPackPostUInt8, ulTtiReq->nUlsch, mBuf);
+   CMCHKPK(oduPackPostUInt8, ulTtiReq->nUlcch, mBuf);
+   CMCHKPK(oduPackPostUInt8, ulTtiReq->nGroup, mBuf);
+   
+   for(pduIdx = 0; pduIdx < ulTtiReq->nPdus; pduIdx++)
+   {
+       CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pduType, mBuf); 
+       CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pduSize, mBuf); 
+       switch(ulTtiReq->pdus[pduIdx].pduType)
+       {
+          case PRACH_PDU_TYPE:
+          {
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.prach_pdu.physCellId, mBuf); 
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.prach_pdu.numPrachOcas, mBuf); 
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.prach_pdu.prachFormat, mBuf); 
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.prach_pdu.numRa, mBuf); 
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.prach_pdu.prachStartSymbol, mBuf); 
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.prach_pdu.numCs, mBuf);
+             nfapiFillUlRxBeamforming(&ulTtiReq->pdus[pduIdx].pdu.prach_pdu.beamforming, mBuf);
+             break;
+          }
+          case PUSCH_PDU_TYPE:
+          {
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.rnti, mBuf);
+             CMCHKPK(oduPackPostUInt32, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.handle, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.bwpSize, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.bwpStart, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.subCarrierSpacing, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.cyclicPrefix, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.mcsIndex, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.mcsTable, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.targetCodeRate, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.qamModOrder, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.transformPrecoding, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dataScramblingId, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.nrOfLayers, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dmrsConfigType, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.ulDmrsSymbPos, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.ulDmrsScramblingId, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.scid, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.numDmrsCdmGrpsNoData, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dmrsPorts, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.nTpPuschId, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.tpPi2Bpsk, mBuf);
+             for(uint8_t rbBitMapIdx = 0; rbBitMapIdx < 36; rbBitMapIdx++)
+             {
+                CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.rbBitmap[rbBitMapIdx], mBuf);
+             }
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.rbStart, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.rbSize, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.vrbToPrbMapping, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.frequencyHopping, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.txDirectCurrentLocation, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.resourceAlloc, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.uplinkFrequencyShift7p5khz, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.startSymbIndex, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.nrOfSymbols, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.mappingType, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.nrOfDmrsSymbols, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dmrsAddPos, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pad, mBuf);
+
+             //Fill fapi_pusch_data_t
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.rvIndex, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.harqProcessId, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.newDataIndicator, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.pad, mBuf);
+             CMCHKPK(oduPackPostUInt32, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.tbSize, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.numCb, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.cbPresentAndPosition[0], mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.cbPresentAndPosition[1], mBuf);
+
+             //Fill fapi_pusch_uci_t
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.harqAckBitLength, mBuf);  
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.csiPart1BitLength, mBuf);  
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.csiPart2BitLength, mBuf);  
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.alphaScaling, mBuf);  
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.betaOffsetHarqAck, mBuf);  
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.betaOffsetCsi1, mBuf);  
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.betaOffsetCsi2, mBuf);  
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.pad[0], mBuf);  
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.pad[1], mBuf);
+
+             //Fill fapi_pusch_ptrs_t
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.numPtrsPorts, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.ptrsTimeDensity, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.ptrsFreqDensity, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.ulPtrsPower, mBuf);
+             for(uint8_t portIdx = 0; portIdx < ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.numPtrsPorts; portIdx++)
+             {
+                CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.ptrsInfo[portIdx].ptrsPortIndex, mBuf);
+                CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.ptrsInfo[portIdx].ptrsDmrsPort, mBuf);
+                CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.ptrsInfo[portIdx].ptrsReOffset, mBuf);
+             }
+
+             //Fill fapi_dfts_ofdm_t
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dftsOfdm.lowPaprSequenceNumber, mBuf); 
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dftsOfdm.lowPaprGroupNumber, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dftsOfdm.ulPtrsSampleDensity, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dftsOfdm.ulPtrsTimeDensityTransformPrecoding, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dftsOfdm.pad, mBuf);
+
+             //Fill fapi_ul_rx_bmform_pdu_t
+             nfapiFillUlRxBeamforming(&ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.beamforming, mBuf);
+             break;
+          }
+          case PUCCH_PDU_TYPE:
+          {
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.rnti, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.pad1[0], mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.pad1[1], mBuf);
+             CMCHKPK(oduPackPostUInt32, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.handle, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.bwpSize, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.bwpStart, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.subCarrierSpacing, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.cyclicPrefix, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.formatType, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.multiSlotTxIndicator, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.pi2Bpsk, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.pad2, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.prbStart, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.prbSize, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.startSymbolIndex, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.nrOfSymbols, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.freqHopFlag, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.groupHopFlag, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.sequenceHopFlag, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.pad3, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.secondHopPrb, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.hoppingId, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.initialCyclicShift, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.dataScramblingId, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.timeDomainOccIdx, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.preDftOccIdx, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.preDftOccLen, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.addDmrsFlag, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.dmrsScramblingId, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.dmrsCyclicShift, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.srFlag, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.bitLenHarq, mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.pad4[0], mBuf);
+             CMCHKPK(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.pad4[1], mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.bitLenCsiPart1, mBuf);
+             CMCHKPK(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.bitLenCsiPart2, mBuf);
+             
+             //Fill fapi_ul_rx_bmform_pdu_t
+             nfapiFillUlRxBeamforming(&ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.beamforming, mBuf);
+             
+             break;
+          }
+          default:
+          {
+             DU_LOG("ERROR  --> NFAPI_VNF: Incorrect PDUTYPE:%d",ulTtiReq->pdus[pduIdx].pduType);
+             ODU_PUT_MSG_BUF(mBuf);
+             return RFAILED;
+          }
+       }
+   }
+   for(ueGrpIdx = 0; ueGrpIdx < ulTtiReq->nGroup; ueGrpIdx++)
+   {
+      CMCHKPK(oduPackPostUInt8, ulTtiReq->ueGrpInfo[ueGrpIdx].nUe, mBuf);
+      for(uint8_t padIdx = 0; padIdx < 3; padIdx++)
+      {
+         CMCHKPK(oduPackPostUInt8, ulTtiReq->ueGrpInfo[ueGrpIdx].pad[padIdx], mBuf);
+      }
+      for(uint8_t ueIdx = 0; ueIdx < ulTtiReq->ueGrpInfo[ueGrpIdx].nUe; ueIdx++)
+      {
+         CMCHKPK(oduPackPostUInt8, ulTtiReq->ueGrpInfo[ueGrpIdx].pduIdx[ueIdx], mBuf); 
+      }
+   }
+   
+   ret = nfapiP7UdpSendMsg(mBuf);
+
+   return ret;
+}
+
+/***********************************************************************
+ *
  * @brief Fill P7 Transparent Msgs and Build NFAPI msg and send via UDP
  *
  * @details
@@ -290,22 +543,31 @@ uint8_t nfapiBuildAndSendDlTtiReq(void *fapiMsg, uint32_t msgLen)
 
 uint8_t nfapiFillAndSendP7TransMsg(uint8_t msgType, uint32_t msgLen, void *fapiP7Msg)
 {
+   uint8_t ret = ROK;
+
    switch(msgType)
    {
       case FAPI_DL_TTI_REQUEST:
       {
          DU_LOG("\nINFO   --> NFAPI_VNF:DL_TTI_REQ received from LWR_MAC as FAPI_MSG_BODY");
-         nfapiBuildAndSendDlTtiReq(fapiP7Msg, msgLen);
+         ret = nfapiBuildAndSendDlTtiReq(fapiP7Msg, msgLen);
+         break;
+      }
+      case FAPI_UL_TTI_REQUEST:
+      {
+         DU_LOG("\nINFO   --> NFAPI_VNF:UL_TTI_REQ received from LWR_MAC as FAPI_MSG_BODY");
+         ret = nfapiBuildAndSendUlTtiReq(fapiP7Msg, msgLen);
          break;
       }
       default:
       {
          DU_LOG("\nERROR  --> NFAPI_VNF: Incorrect MsgType:%d",msgType);
+         ret = RFAILED;
          break;
       }
    }
    LWR_MAC_FREE(fapiP7Msg, msgLen);   
-   return ROK;
+   return ret;
 }
 
 /*******************************************************************
@@ -464,6 +726,114 @@ uint8_t nfapiP7ProcUlNodeSync(Buffer *mBuf)
 
 /*******************************************************************
  *
+ * @brief Build and Sends EVENT_RACH_IND to MAC
+ *
+ * @details
+ *
+ *    Function  nfapiSendRachIndToMac
+ *
+ *    Functionality:
+ *           Build and Posts RACH_IND event to MAC
+ *
+ * @params[in] fapi_rach_ind_msg_body(received from PNF) 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t nfapiSendRachIndToMac(fapi_rach_ind_msg_body *nfapiRachInd)
+{
+   Pst          pst;
+   uint8_t      pduIdx = 0, ret = ROK;
+   uint8_t      prmbleIdx;
+   RachPduInfo  *rachPdu = NULLP;
+   RachInd      *rachInd = NULLP;
+
+   MAC_ALLOC_SHRABL_BUF(rachInd, sizeof(RachInd));
+   if(!rachInd)
+   {
+      DU_LOG("ERROR  -->  NFAPI_VNF : Memory Allocation failed in nfapiSendRachIndToMac");
+      return RFAILED;
+   }
+   rachInd->cellId = vnfDb.cellId;
+   rachInd->timingInfo.sfn = nfapiRachInd->sfn;
+   rachInd->timingInfo.slot = nfapiRachInd->slot;
+   rachInd->numPdu = nfapiRachInd->numPdus;
+   for(pduIdx=0; pduIdx < rachInd->numPdu; pduIdx++)
+   {
+      rachPdu = &rachInd->rachPdu[pduIdx];
+      rachPdu->pci = nfapiRachInd->rachPdu[pduIdx].phyCellId;
+      rachPdu->symbolIdx = nfapiRachInd->rachPdu[pduIdx].symbolIndex;
+      rachPdu->slotIdx = nfapiRachInd->rachPdu[pduIdx].slotIndex;
+      rachPdu->freqIdx = nfapiRachInd->rachPdu[pduIdx].freqIndex;
+      rachPdu->numPream = nfapiRachInd->rachPdu[pduIdx].numPreamble; 
+      for(prmbleIdx=0; prmbleIdx < rachPdu->numPream; prmbleIdx++)
+      {
+	      rachPdu->preamInfo[prmbleIdx].preamIdx = \
+	       nfapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].preambleIndex;
+	      rachPdu->preamInfo[prmbleIdx].timingAdv = \
+	       nfapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].timingAdvance;
+      }
+   }
+   /* Fill post and sent to MAC */
+   FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_RACH_IND_TO_MAC);
+   pst.selector = ODU_SELECTOR_LWLC;
+   ret = packRachInd(&pst, rachInd);
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Process FAPI_RACH_IND from PNF
+ *
+ * @details
+ *
+ *    Function : nfapiP7ProcRachInd
+ *
+ *    Functionality:
+ *           Processes FAPI_RACH_IND received from PNF
+ *           Parametes can be referred from SCF222v2222.10.03, Sec 3.4.11
+ *
+ * @params[in] UDP Buffer 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t nfapiP7ProcRachInd(Buffer *mBuf)
+{
+    uint8_t pduCnt = 0, preambleCnt = 0, ret = ROK;
+    fapi_rach_ind_msg_body  nfapiRachInd;
+
+    CMCHKPK(oduUnpackUInt16, &(nfapiRachInd.sfn), mBuf); 
+    CMCHKPK(oduUnpackUInt16, &(nfapiRachInd.slot), mBuf); 
+    CMCHKPK(oduUnpackUInt8, &(nfapiRachInd.numPdus), mBuf);
+
+    //Extract fapi_rach_pdu_t
+    for(pduCnt = 0; pduCnt < nfapiRachInd.numPdus; pduCnt++)
+    {
+       CMCHKPK(oduUnpackUInt16, &(nfapiRachInd.rachPdu[pduCnt].phyCellId), mBuf);
+       CMCHKPK(oduUnpackUInt8, &(nfapiRachInd.rachPdu[pduCnt].symbolIndex), mBuf);
+       CMCHKPK(oduUnpackUInt8, &(nfapiRachInd.rachPdu[pduCnt].slotIndex), mBuf);
+       CMCHKPK(oduUnpackUInt8, &(nfapiRachInd.rachPdu[pduCnt].freqIndex), mBuf);
+       CMCHKPK(oduUnpackUInt8, &(nfapiRachInd.rachPdu[pduCnt].avgRssi), mBuf);
+       CMCHKPK(oduUnpackUInt8, &(nfapiRachInd.rachPdu[pduCnt].avgSnr), mBuf);
+       CMCHKPK(oduUnpackUInt8, &(nfapiRachInd.rachPdu[pduCnt].numPreamble), mBuf);
+       for(preambleCnt = 0; preambleCnt < nfapiRachInd.rachPdu[pduCnt].numPreamble; preambleCnt++)
+       {
+          CMCHKPK(oduUnpackUInt8, &(nfapiRachInd.rachPdu[pduCnt].preambleInfo[preambleCnt].preambleIndex), mBuf);
+          CMCHKPK(oduUnpackUInt8, &(nfapiRachInd.rachPdu[pduCnt].preambleInfo[preambleCnt].pad), mBuf);
+          CMCHKPK(oduUnpackUInt16, &(nfapiRachInd.rachPdu[pduCnt].preambleInfo[preambleCnt].timingAdvance), mBuf);
+          CMCHKPK(oduUnpackUInt32, &(nfapiRachInd.rachPdu[pduCnt].preambleInfo[preambleCnt].preamblePwr), mBuf);
+       }
+    }
+    
+    ret = nfapiSendRachIndToMac(&nfapiRachInd);
+    return ret;
+}
+
+/*******************************************************************
+ *
  * @brief Processed the NFAPI P7 message from UDP socket 
  *
  * @details
@@ -480,7 +850,7 @@ uint8_t nfapiP7ProcUlNodeSync(Buffer *mBuf)
  *         RFAILED - failure
  *
  * ****************************************************************/
-uint8_t  nfapiP7MsgHandler(Buffer *mBuf)
+uint8_t nfapiP7MsgHandler(Buffer *mBuf)
 {
    nFapi_p7_hdr p7Hdr;
    nFapi_msg_header msgHdr;
@@ -496,7 +866,12 @@ uint8_t  nfapiP7MsgHandler(Buffer *mBuf)
          nfapiP7ProcUlNodeSync(mBuf);
          break;
       }
-
+      case FAPI_RACH_INDICATION:
+      {
+         DU_LOG("INFO  --> NFAPI_VNF: Received RACH INDICATIOn");
+         nfapiP7ProcRachInd(mBuf);
+         break;
+      }
       default:
       {
          DU_LOG("ERROR --> NFAPI_VNF: Wrong MsgId:%d", msgHdr.msg_id);

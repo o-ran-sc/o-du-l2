@@ -17,8 +17,19 @@
 ################################################################################
 *******************************************************************************/
 
+#ifndef _PNF_STUB_P7_MSG_HDL_H_
+#define _PNF_STUB_P7_MSG_HDL_H_
+
+#define PDCCH_PDU_TYPE 0
+#define PDSCH_PDU_TYPE 1
+#define SSB_PDU_TYPE 3
+#define PRACH_PDU_TYPE 0
+#define PUSCH_PDU_TYPE 1
+#define PUCCH_PDU_TYPE 2
+
 uint8_t  pnfP7MsgHandler(Buffer *mBuf);
 
+#endif
 /**********************************************************************
 End of file
 **********************************************************************/
