@@ -92,6 +92,18 @@ typedef enum
    PNF_RUNNING
 }PnfState;
 
+typedef enum
+{
+   MSG_TYPE_MSG3,
+   MSG_TYPE_SHORT_BSR,
+   MSG_TYPE_MSG5,
+   MSG_TYPE_NAS_AUTHENTICATION_COMPLETE,
+   MSG_TYPE_NAS_SECURITY_MODE_COMPLETE,
+   MSG_TYPE_RRC_SECURITY_MODE_COMPLETE,
+   MSG_TYPE_REGISTRATION_COMPLETE,
+   MSG_TYPE_RRC_RECONFIG_COMPLETE
+}PnfMsgType;
+
 typedef struct pnfCfgParams
 {
    PnfState          pnfState;
@@ -143,6 +155,7 @@ typedef struct pnfGlobalCb
 }PnfGlobalCb;
 
 PnfGlobalCb pnfCb;
+
 uint8_t p5MsgHandlerAtPnf(Buffer *mBuf);
 void nfapiFillP5Hdr(Buffer *mBuf);
 void nfapiFillMsgHdr(Buffer *mBuf, uint8_t phyId, uint16_t msgId, uint32_t msgLen);

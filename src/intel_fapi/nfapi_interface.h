@@ -358,7 +358,6 @@ typedef struct fapi_ul_dci_req_msg_body_t{
    uint16_t sfn;
    uint16_t slot;
    uint8_t numPdus;
-   uint8_t pad[3];
    fapi_dci_pdu_t pdus[FAPI_MAX_NUMBER_UCI_PDUS_PER_SLOT]; // 5G FAPI Table 3-54
 }fapi_ul_dci_req_msg_body;
 
@@ -372,7 +371,6 @@ typedef struct fapi_tx_data_req_msg_body_t{
    uint16_t sfn;
    uint16_t slot;
    uint16_t num_pdus;
-   uint8_t pad[2];
    fapi_tx_pdu_desc_t pdu_desc[FAPI_MAX_NUMBER_DL_PDUS_PER_TTI];   // 5G FAPI Table 3-58
 }fapi_tx_data_req_msg_body;
 
@@ -386,7 +384,6 @@ typedef struct fapi_rx_data_ind_msg_body_t{
    uint16_t sfn;
    uint16_t slot;
    uint16_t numPdus;
-   uint8_t pad[2];
    fapi_pdu_ind_info_t pdus[FAPI_MAX_NUMBER_OF_ULSCH_PDUS_PER_SLOT];   // 5G FAPI Table 3-61
 }fapi_rx_data_ind_msg_body;
 
@@ -400,7 +397,6 @@ typedef struct fapi_crc_ind_msg_body_t{
    uint16_t sfn;
    uint16_t slot;
    uint16_t numCrcs;
-   uint8_t pad[2];
    fapi_crc_ind_info_t crc[FAPI_MAX_NUMBER_OF_CRCS_PER_SLOT];  // 5G FAPI Table 3-62
 }fapi_crc_ind_msg_body;
 
@@ -414,7 +410,6 @@ typedef struct fapi_uci_ind_msg_body_t{
    uint16_t sfn;
    uint16_t slot;
    uint16_t numUcis;       // 5G FAPI Table 3-63
-   uint8_t pad[2];
    fapi_uci_pdu_info_t uciPdu[FAPI_MAX_NUMBER_UCI_PDUS_PER_SLOT];
 }fapi_uci_ind_msg_body;
 
@@ -428,7 +423,6 @@ typedef struct fapi_srs_ind_msg_body_t{
    uint16_t sfn;
    uint16_t slot;
    uint8_t numPdus;
-   uint8_t pad[3];
    fapi_srs_pdu_t srsPdus[FAPI_MAX_NUMBER_SRS_PDUS_PER_SLOT];  // 5G FAPI Table 3-73
 }fapi_srs_ind_msg_body;
 
