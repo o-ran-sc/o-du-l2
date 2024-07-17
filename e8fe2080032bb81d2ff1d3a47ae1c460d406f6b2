@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b114ff49_b22cc7cb",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-17T07:37:38Z",
+      "side": 1,
+      "message": "uint16",
+      "revId": "e8fe2080032bb81d2ff1d3a47ae1c460d406f6b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b110397f_1ca3e0e7",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-17T07:37:38Z",
+      "side": 1,
+      "message": "uint16",
+      "revId": "e8fe2080032bb81d2ff1d3a47ae1c460d406f6b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11474d6f_2588302a",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-17T07:37:38Z",
+      "side": 1,
+      "message": "uint16?",
+      "range": {
+        "startLine": 204,
+        "startChar": 17,
+        "endLine": 204,
+        "endChar": 31
+      },
+      "revId": "e8fe2080032bb81d2ff1d3a47ae1c460d406f6b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f48a6c54_b73be370",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-17T07:37:38Z",
+      "side": 1,
+      "message": "suggestion: rather than static value, we can fill the values in rach_indication structure, and then we can fill each parameter with the help of rach_indication variable.",
+      "range": {
+        "startLine": 250,
+        "startChar": 39,
+        "endLine": 250,
+        "endChar": 40
+      },
+      "revId": "e8fe2080032bb81d2ff1d3a47ae1c460d406f6b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be00eb54_6abe1cee",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-17T07:37:38Z",
+      "side": 1,
+      "message": "uint16?",
+      "revId": "e8fe2080032bb81d2ff1d3a47ae1c460d406f6b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "442afb3e_57b4e729",
+        "filename": "src/intel_fapi/nfapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-17T07:37:38Z",
+      "side": 0,
+      "message": "why this padding is removed?\nif we don\u0027t need padding then we can remove the padding from other msgs as well.",
+      "range": {
+        "startLine": 347,
+        "startChar": 3,
+        "endLine": 347,
+        "endChar": 10
+      },
+      "revId": "b4288f335897726a8aebf951a80089dbb6d16a04",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
