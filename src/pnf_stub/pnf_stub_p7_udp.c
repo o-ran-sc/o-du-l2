@@ -157,10 +157,12 @@ S16 pnfP7UdpSendMsg(Buffer *mBuf)
    if(ret != ROK && ret != RWOULDBLOCK)
    {
       DU_LOG("ERROR  -->  P7_UDP : Message send failure");
+      ODU_PUT_MSG_BUF(mBuf); 
       return RFAILED;
    }
    
    DU_LOG("DEBUG  -->  P7_UDP : Message Sent");
- 
+
+   ODU_PUT_MSG_BUF(mBuf); 
    return ROK;
 }

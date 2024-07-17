@@ -386,7 +386,6 @@ typedef struct fapi_rx_data_ind_msg_body_t{
    uint16_t sfn;
    uint16_t slot;
    uint16_t numPdus;
-   uint8_t pad[2];
    fapi_pdu_ind_info_t pdus[FAPI_MAX_NUMBER_OF_ULSCH_PDUS_PER_SLOT];   // 5G FAPI Table 3-61
 }fapi_rx_data_ind_msg_body;
 
@@ -400,7 +399,6 @@ typedef struct fapi_crc_ind_msg_body_t{
    uint16_t sfn;
    uint16_t slot;
    uint16_t numCrcs;
-   uint8_t pad[2];
    fapi_crc_ind_info_t crc[FAPI_MAX_NUMBER_OF_CRCS_PER_SLOT];  // 5G FAPI Table 3-62
 }fapi_crc_ind_msg_body;
 

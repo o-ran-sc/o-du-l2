@@ -259,6 +259,434 @@ uint8_t pnfBuildAndSendRachInd(uint16_t slot, uint16_t sfn, uint8_t raPreambleId
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Build and Send CRC Indication
+ *
+ * @details
+ *
+ *    Function : pnfBuildAndSendCrcInd
+ *
+ *    Functionality:
+ *      Build and Send CRC Indication
+ *
+ * @params[in] Slot
+ *             SFN 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t pnfBuildAndSendCrcInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t puschPdu)
+{
+   Buffer *mBuf       = NULLP;
+   uint8_t ret        = ROK;
+   static uint8_t ind = 0;
+
+   uint8_t result[]={0,//MSG3
+                     0,//BSR
+                     0,//MSG5 RRC Setup Complete
+                     0,//Security Mode Complete
+                     0,//Registraion Complete
+                     0,//RRC Reconfiguration Complete
+                     0,//UL DATA -1
+                     0,//UL DATA -2
+                     0,//UL DATA -3
+                     0,//UL DATA -4
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+   if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("ERROR  --> NFAPI_PNF : Memory allocation failed in start response");
+      return RFAILED;
+   }
+   nfapiFillP7Hdr(mBuf, (sizeof(fapi_crc_ind_msg_body) + sizeof(nFapi_msg_header)), 0, 0);
+   nfapiFillMsgHdr(mBuf, 1, FAPI_CRC_INDICATION, sizeof(fapi_crc_ind_msg_body));
+
+   //Fill fapi_crc_ind_msg_body
+   CMCHKPK(oduPackPostUInt16, sfn, mBuf);
+   CMCHKPK(oduPackPostUInt16, slot, mBuf);
+   CMCHKPK(oduPackPostUInt16, 1, mBuf); //numCrcs
+
+   //Fill fapi_crc_ind_info_t
+   CMCHKPK(oduPackPostUInt32, puschPdu.handle, mBuf); //handle
+   CMCHKPK(oduPackPostUInt16, puschPdu.rnti, mBuf); //rnti
+   CMCHKPK(oduPackPostUInt8, puschPdu.puschData.harqProcessId, mBuf); //rnti
+   CMCHKPK(oduPackPostUInt8, 0, mBuf); //tbCrcStatus
+   CMCHKPK(oduPackPostUInt8, 0, mBuf); //ul_cqi
+   CMCHKPK(oduPackPostUInt8, 0, mBuf); //pad
+   CMCHKPK(oduPackPostUInt16, 1, mBuf); //numCb
+   CMCHKPK(oduPackPostUInt16, 0, mBuf); //timingAdvance
+   CMCHKPK(oduPackPostUInt16, 0, mBuf); //rssi
+   
+   //cbCrcStatus[0]
+   CMCHKPK(oduPackPostUInt8, result[ind%50], mBuf);
+
+   ret = (result[ind%50] == 0) ? ROK:RFAILED;
+   ind++;
+
+   /* Sending CRC indication to VNF */
+   DU_LOG("INFO   -->  NFAPI_PNF: Sending CRC Indication to VNF");
+   if(pnfP7UdpSendMsg(mBuf) != ROK)
+   { 
+      return RFAILED;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Build and send Rx data indication
+ *
+ * @details
+ *
+ *    Function : pnfBuildAndSendRxDataInd
+ *
+ *    Functionality:
+ *       Build and send Rx data indication
+ *
+ * @params[in] SFN
+ *             Slot
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint16_t pnfBuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t puschPdu)
+{
+   uint8_t idx = 0, ueId = 0;
+   fapi_rx_data_indication_t *rxDataInd =NULLP;
+   fapi_pdu_ind_info_t       *pduInfo =NULLP;
+   uint8_t  *pdu = NULLP;
+   uint16_t byteIdx = 0;
+   PnfMsgType type = 0;
+   Buffer *mBuf = NULLP;
+
+   GET_UE_ID(puschPdu.rnti, ueId);
+   if(pnfCb.pnfUeCb[ueId-1].isCFRA)
+   {
+      if(!pnfCb.pnfUeCb[ueId-1].msgRrcReconfigComp)
+      {
+         /* In CF-RA in case of handover, RRC Reconfiguration Complete is sent
+          * by UE once RAR is received from DU */
+         pnfCb.pnfUeCb[ueId-1].ueId = ueId;
+         pnfCb.pnfUeCb[ueId-1].crnti = puschPdu.rnti;
+         pnfCb.pnfUeCb[ueId-1].msgRrcReconfigComp = true;
+         type = MSG_TYPE_RRC_RECONFIG_COMPLETE;
+      }
+      else
+         return ROK; 
+   }
+   else
+   {
+      if(!pnfCb.pnfUeCb[ueId-1].msg3Sent)
+      {
+         pnfCb.pnfUeCb[ueId-1].ueId = ueId;
+         pnfCb.pnfUeCb[ueId-1].crnti = puschPdu.rnti;
+         pnfCb.pnfUeCb[ueId-1].msg3Sent = true;
+         type = MSG_TYPE_MSG3;
+         sleep(1);
+      }
+      else if(!pnfCb.pnfUeCb[ueId-1].msg5ShortBsrSent)
+      {
+         pnfCb.pnfUeCb[ueId-1].msg5ShortBsrSent = true;
+         type = MSG_TYPE_SHORT_BSR;
+      }
+      else if(!pnfCb.pnfUeCb[ueId-1].msg5Sent)
+      {
+         pnfCb.pnfUeCb[ueId-1].msg5Sent = true;
+         type = MSG_TYPE_MSG5;
+      }
+      else if(!pnfCb.pnfUeCb[ueId-1].msgNasAuthenticationComp)
+      {
+        pnfCb.pnfUeCb[ueId-1].msgNasAuthenticationComp = true;
+        type = MSG_TYPE_NAS_AUTHENTICATION_COMPLETE;
+      }
+      else if(!pnfCb.pnfUeCb[ueId-1].msgNasSecurityModeComp)
+      {
+         pnfCb.pnfUeCb[ueId-1].msgNasSecurityModeComp = true;
+         type = MSG_TYPE_NAS_SECURITY_MODE_COMPLETE;
+      }
+      else if(!pnfCb.pnfUeCb[ueId-1].msgRrcSecurityModeComp)
+      {
+         pnfCb.pnfUeCb[ueId-1].msgRrcSecurityModeComp = true;
+         type = MSG_TYPE_RRC_SECURITY_MODE_COMPLETE;
+      }
+      else if(!pnfCb.pnfUeCb[ueId-1].msgRegistrationComp)
+      {
+         pnfCb.pnfUeCb[ueId-1].msgRegistrationComp = true;
+         type = MSG_TYPE_REGISTRATION_COMPLETE; 
+      }
+      else if(!pnfCb.pnfUeCb[ueId-1].msgRrcReconfigComp)
+      {
+         pnfCb.pnfUeCb[ueId-1].msgRrcReconfigComp = true;
+         type = MSG_TYPE_RRC_RECONFIG_COMPLETE;
+      }
+      else
+         return ROK;
+   }
+
+   if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("ERROR  --> NFAPI_PNF : Memory allocation failed in start response");
+      return RFAILED;
+   }
+   nfapiFillP7Hdr(mBuf, (sizeof(fapi_rx_data_ind_msg_body) + sizeof(nFapi_msg_header)), 0, 0);
+   nfapiFillMsgHdr(mBuf, 1, FAPI_RX_DATA_INDICATION, (sizeof(fapi_rx_data_ind_msg_body) + puschPdu.puschData.tbSize));
+
+   CMCHKPK(oduPackPostUInt16, sfn, mBuf);
+   CMCHKPK(oduPackPostUInt16, slot, mBuf);
+   CMCHKPK(oduPackPostUInt16, 1, mBuf);
+   
+   //Fill fapi_pdu_ind_info_t
+   CMCHKPK(oduPackPostUInt32, puschPdu.handle, mBuf); 
+   CMCHKPK(oduPackPostUInt16, puschPdu.rnti, mBuf); 
+   CMCHKPK(oduPackPostUInt8, puschPdu.puschData.harqProcessId, mBuf); 
+   CMCHKPK(oduPackPostUInt8, 0, mBuf); //ul_cqi
+   CMCHKPK(oduPackPostUInt16, 0, mBuf); //timingAdvance
+   CMCHKPK(oduPackPostUInt16, 0, mBuf); //rssi
+   CMCHKPK(oduPackPostUInt16, puschPdu.puschData.tbSize, mBuf);//pdu_length
+   CMCHKPK(oduPackPostUInt8, 0, mBuf);//pad[0]
+   CMCHKPK(oduPackPostUInt8, 0, mBuf);//pad[1]
+
+   switch(type)
+   {
+      case MSG_TYPE_MSG3: 
+         {
+            DU_LOG("DEBUG  -->  NFAPI_PNF: Forming MSG3 PDU ");
+            /* For Initial RRC setup Request,
+               MAC subheader format is R/R/LCId (1byte)
+               LCId is CCCH(0)
+               From 38.321 section 6.1.1
+               */
+            CMCHKPK(oduPackPostUInt8, 0, mBuf); //LCID = CCCH
+            byteIdx++;
+            /* Hardcoding MAC PDU */
+            CMCHKPK(oduPackPostUInt8, 16, mBuf);
+            byteIdx++;
+            CMCHKPK(oduPackPostUInt8, 0, mBuf);
+            byteIdx++;
+            CMCHKPK(oduPackPostUInt8, 0, mBuf);
+            byteIdx++;
+            CMCHKPK(oduPackPostUInt8, 0, mBuf);
+            byteIdx++;
+            CMCHKPK(oduPackPostUInt8, 0, mBuf);
+            byteIdx++;
+            CMCHKPK(oduPackPostUInt8, 103, mBuf);
+            byteIdx++;
+            break;
+         }
+#if 0
+      case MSG_TYPE_SHORT_BSR:
+         {
+            DU_LOG("DEBUG  -->  NFAPI_PNF: Forming SHORT BSR PDU ");
+            uint8_t lcgId = 1;
+            uint8_t bufferSizeIdx = 6;
+
+            /* For Short BSR
+               MAC subheader format is R/R/LcId (1Byte)
+               LCId is 61
+               From 38.321 section 6.1.1
+               */
+            CMCHKPK(oduPackPostUInt8, 61, mBuf); //LCID = 61
+            byteIdx++;
+            CMCHKPK(oduPackPostUInt8, (lcgId << 5) | bufferSizeIdx, mBuf); //LCG_ID and BufferSize
+            byteIdx++;
+
+            break;
+         }
+
+      case MSG_TYPE_MSG5:
+      {
+         /* For RRC setup complete
+          *
+          * MAC subheader format is R/F/LCId/L (2/3 bytes)
+          * LCId is 1 for SRB1
+          * L is length of PDU i.e 6bytes here 
+          * From 38.321 section 6.1.1
+          *
+          * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
+          * From 38.322, section 6.2.2.4
+          */
+         DU_LOG("DEBUG  -->  PHY_STUB: Forming MSG5 PDU");
+         uint8_t  msg5PduLen = 33; /* Length of MSG5 */
+         msg5PduLen += 2; /* RLC subheader */
+         uint8_t msg5[] = {1, msg5PduLen, 128, pnfCb.pnfUeCb[ueId-1].rlcSnForSrb1++, 0, pnfCb.pnfUeCb[ueId-1].pdcpSn++, 16, 0, \
+            5, 223, 128, 16, 94, 64, 3, 64, 68, 252, 97, 0, 0, 0, 0, 4, 0, 0, 4, 68, 11, 128, 184, 56, 0, 0, 0, 0, 0};
+
+         msg5PduLen += 2;  /* 2 bytes of MAC header */
+         memcpy(pdu, &msg5, msg5PduLen);
+         byteIdx += msg5PduLen; /* 4 bytes of header : MAC+RLC */
+         break;
+      }
+
+      case MSG_TYPE_NAS_AUTHENTICATION_COMPLETE:
+      {
+        /* For Authentication response where RRC Container is dummy
+          *
+          * MAC subheader format is R/F/LCId/L (2/3 bytes)
+          * LCId is 1 for SRB1
+          * L is length of PDU i.e 6bytes here 
+          * From 38.321 section 6.1.1
+          *
+          * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
+          * From 38.322, section 6.2.2.4
+          */
+         DU_LOG("DEBUG  -->  PHY_STUB: Forming AUTHENTICATION RESPONSE PDU");
+         uint8_t  pduLen = 37; /* Length of PDU */
+         pduLen += 2; /* RLC subheader */
+         uint8_t msg[] = {1, pduLen, 128, pnfCb.pnfUeCb[ueId-1].rlcSnForSrb1++, 0, pnfCb.pnfUeCb[ueId-1].pdcpSn++, 0x3a, \
+                          0x0e, 0x3f, 0x00, 0xca, 0x95, 0xe9, 0x19, 0x41, 0x3f, 0x00, 0x2b, 0x96, 0x88, 0x06, 0xd7, 0x16, 0xc6, \
+                          0x8b, 0xea, 0xae, 0x45, 0xd1, 0x01, 0xfd, 0x34, 0xd4, 0xfd, 0xd5, 0x71, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+         pduLen += 2;  /* 2 bytes of MAC header */
+         memcpy(pdu, &msg, pduLen);
+         byteIdx += pduLen; /* 4 bytes of header : MAC+RLC */
+         break;
+      }
+      
+      case MSG_TYPE_NAS_SECURITY_MODE_COMPLETE:
+      {
+        /* For NAS security mode complete where RRC Container is dummy
+          *
+          * MAC subheader format is R/F/LCId/L (2/3 bytes)
+          * LCId is 1 for SRB1
+          * L is length of PDU i.e 6bytes here 
+          * From 38.321 section 6.1.1
+          *
+          * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
+          * From 38.322, section 6.2.2.4
+          */
+         DU_LOG("DEBUG  -->  PHY_STUB: Forming NAS SECURITY MODE COMPLETE PDU");
+         uint8_t  pduLen = 93; /* Length of PDU */
+         pduLen += 2; /* RLC subheader */
+         uint8_t msg[] = {1, pduLen, 128, pnfCb.pnfUeCb[ueId-1].rlcSnForSrb1++, 0, pnfCb.pnfUeCb[ueId-1].pdcpSn++, 0x3a, 0x2a, 0x3f, 
+                          0x02, 0x75, 0xa0, 0xa0, 0xc0, 0x80, 0x3f, 0x00, 0x2f, 0x3b, 0x80, 0x04, 0x9a, 0xa2, 0x81, 0x09, 0x80, 0xc0, 
+                          0x28, 0x04, 0xf8, 0xb8, 0x80, 0x1d, 0xbf, 0x00, 0x20, 0x8c, 0x80, 0x05, 0xf9, 0x00, 0x78, 0x88, 0x7a, 0x88, 
+                          0xd9, 0x00, 0x00, 0x00, 0x03, 0x08, 0x00, 0x81, 0x97, 0x02, 0x78, 0x38, 0x78, 0x38, 0x17, 0x82, 0x82, 0x00, 
+                          0x80, 0x00, 0x00, 0xa9, 0x00, 0x78, 0x88, 0x00, 0x00, 0x00, 0x8b, 0x83, 0xf8, 0x38, 0x60, 0x20, 0x0c, 0xc0, 
+                          0x50, 0x0c, 0x00, 0x80, 0x3a, 0x00, 0x00, 0x48, 0x29, 0x80, 0x80, 0x80, 0x00, 0x00, 0x00, 0x00};
+
+         pduLen += 2;  /* 2 bytes of MAC header */
+         memcpy(pdu, &msg, pduLen);
+         byteIdx += pduLen; /* 4 bytes of header : MAC+RLC */
+         break;
+      }
+
+      case MSG_TYPE_RRC_SECURITY_MODE_COMPLETE:
+      {
+         /* For security mode complete where RRC Container is dummy
+          *
+          * MAC subheader format is R/F/LCId/L (2/3 bytes)
+          * LCId is 1 for SRB1
+          * L is length of PDU i.e 6bytes here 
+          * From 38.321 section 6.1.1
+          *
+          * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
+          * From 38.322, section 6.2.2.4
+          */
+         DU_LOG("DEBUG  -->  PHY_STUB: Forming RRC SECURITY MODE COMPLETE PDU");
+         uint8_t  pduLen = 12; /* Length of PDU */
+         pduLen += 2; /* RLC subheader */
+         uint8_t msg[] = {1, pduLen, 128, pnfCb.pnfUeCb[ueId-1].rlcSnForSrb1++, 0, pnfCb.pnfUeCb[ueId-1].pdcpSn++, 0x2a, 0x40, \
+            0, 0, 0, 0, 0, 0, 0, 0};
+
+         pduLen += 2;  /* 2 bytes of MAC header */
+         memcpy(pdu, &msg, pduLen);
+         byteIdx += pduLen; /* 4 bytes of header : MAC+RLC */
+         break;
+      }
+
+      case MSG_TYPE_REGISTRATION_COMPLETE:
+      {
+         /* For rrc reconfig complete where RRC Container is dummy
+          *
+          * MAC subheader format is R/F/LCId/L (2/3 bytes)
+          * LCId is 1 for SRB1
+          * L is length of PDU i.e 6bytes here
+          * From 38.321 section 6.1.1
+          * 
+          * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
+          * From 38.322, section 6.2.2.4
+          */
+         DU_LOG("DEBUG  -->  PHY_STUB: Forming RRC REGISTRATION COMPLETE PDU");
+         uint8_t  pduLen = 12; /* Length of PDU */
+         pduLen += 2; /* RLC subheader */
+         uint8_t msg[] = {1, pduLen, 128, pnfCb.pnfUeCb[ueId-1].rlcSnForSrb1++, 0, pnfCb.pnfUeCb[ueId-1].pdcpSn++, 0x3a, 0x81, \
+            0xbf, 0, 0x21, 0x80, 0, 0, 0, 0};
+
+         pduLen += 2;  /* 2 bytes of MAC header */
+         memcpy(pdu, &msg, pduLen);
+         byteIdx += pduLen; /* 4 bytes of header : MAC+RLC */
+         break;
+      }
+
+      case MSG_TYPE_RRC_RECONFIG_COMPLETE:
+      {
+         /* For rrc reconfig complete where RRC Container is dummy
+          *
+          * MAC subheader format is R/F/LCId/L (2/3 bytes)
+          * LCId is 1 for SRB1
+          * L is length of PDU i.e 6bytes here
+          * From 38.321 section 6.1.1
+          *
+          * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
+          * From 38.322, section 6.2.2.4
+          */
+         DU_LOG("DEBUG  -->  PHY_STUB: Forming RRC RECONFIGURATION COMPLETE PDU");
+         uint8_t  pduLen = 13; /* PDU length */
+         pduLen += 2; /* RLC sub header */
+         uint8_t msg[] = {1, pduLen, 128, pnfCb.pnfUeCb[ueId-1].rlcSnForSrb1++, 0, pnfCb.pnfUeCb[ueId-1].pdcpSn++, 8, 64, 0, 0,\
+            0, 0, 0, 0, 0, 0, 0};
+
+         pduLen += 2;  /* 2bytes of MAC header */
+         memcpy(pdu, &msg, pduLen);
+         byteIdx += pduLen; /* 4 bytes of header : MAC+RLC*/
+         break;
+
+      }
+#endif
+      default:
+      break;
+   } /* End of switch(type) */
+
+   /* Filling MAC SDU for Padding bytes*/
+   if(byteIdx < puschPdu.puschData.tbSize)
+   {
+      /* For Padding
+         MAC subheader format is R/R/LCId (1byte)
+         LCId is 63 for padding
+         From 38.321 section 6.1.1
+         */
+      CMCHKPK(oduPackPostUInt8, 63, mBuf);
+      byteIdx++;
+
+      for(; byteIdx < puschPdu.puschData.tbSize; byteIdx++)
+      {
+         CMCHKPK(oduPackPostUInt8, 0, mBuf);
+      }
+   }
+
+   /* Sending Rx data indication to MAC */
+   DU_LOG("INFO   --> NFAPI_PNF: Sending Rx data Indication to VNF");
+
+   if(pnfP7UdpSendMsg(mBuf) != ROK)
+   { 
+      return RFAILED;
+   }
+   return ROK;
+}
+
 /*********************************************************************************
  * @Brief: Processes UL_TTI_REQ received from VNF
  *
@@ -292,7 +720,10 @@ void pnfProcUlTtiReq(fapi_ul_tti_req_msg_body *pnfUlTtiReq)
       if(pnfUlTtiReq->pdus[numPdus-1].pduType == PUSCH_PDU_TYPE)
       {
          DU_LOG("INFO   --> NFAPI_PNF: PUSCH PDU");
-         /*TODO: CRC_IND and RX_DATA_IND to be built and Sent*/
+         if(ROK == pnfBuildAndSendCrcInd(pnfUlTtiReq->slot, pnfUlTtiReq->sfn, pnfUlTtiReq->pdus[numPdus-1].pdu.pusch_pdu))
+         {
+            pnfBuildAndSendRxDataInd(pnfUlTtiReq->slot, pnfUlTtiReq->sfn, pnfUlTtiReq->pdus[numPdus-1].pdu.pusch_pdu);
+         }
       }
       if(pnfUlTtiReq->pdus[numPdus-1].pduType == PUCCH_PDU_TYPE)
       {
