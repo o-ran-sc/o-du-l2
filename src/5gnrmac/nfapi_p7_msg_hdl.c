@@ -834,6 +834,132 @@ uint8_t nfapiP7ProcRachInd(Buffer *mBuf)
 
 /*******************************************************************
  *
+ * @brief Build And Sends Rx Data indication to MAC
+ *
+ * @details
+ *
+ *    Function : nfapiSendRxDataIndToMac
+ *
+ *    Functionality:
+ *      Builds and Sends EVENT_RX_DATA_IND to MAC
+ *
+ * @params[in] fapi_rx_data_indication_t message pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t nfapiSendRxDataIndToMac(fapi_rx_data_ind_msg_body *nfapiRxDataInd)
+{
+   Pst           pst;
+   uint8_t       pduIdx = 0, ret = ROK;
+   RxDataInd     *rxDataInd = NULLP;
+   RxDataIndPdu  *pdu = NULLP;   
+
+   MAC_ALLOC_SHRABL_BUF(rxDataInd, sizeof(RxDataInd));
+   if(!rxDataInd)
+   {
+      DU_LOG("ERROR  -->  NFAPI_VNF : Memory Allocation failed in nfapiSendRxDataIndToMac");
+      return RFAILED;
+   }
+
+   rxDataInd->cellId = vnfDb.cellId;
+   rxDataInd->timingInfo.sfn = nfapiRxDataInd->sfn; 
+   rxDataInd->timingInfo.slot = nfapiRxDataInd->slot;
+   rxDataInd->numPdus = nfapiRxDataInd->numPdus;
+
+   for(pduIdx = 0; pduIdx < rxDataInd->numPdus; pduIdx++)
+   {
+      pdu = &rxDataInd->pdus[pduIdx];
+      pdu->handle = nfapiRxDataInd->pdus[pduIdx].handle;
+      pdu->rnti = nfapiRxDataInd->pdus[pduIdx].rnti;
+      pdu->harqId = nfapiRxDataInd->pdus[pduIdx].harqId;
+      pdu->pduLength = nfapiRxDataInd->pdus[pduIdx].pdu_length;
+      pdu->ul_cqi = nfapiRxDataInd->pdus[pduIdx].ul_cqi;
+      pdu->timingAdvance = nfapiRxDataInd->pdus[pduIdx].timingAdvance;
+      pdu->rssi = nfapiRxDataInd->pdus[pduIdx].rssi;
+
+      MAC_ALLOC_SHRABL_BUF(pdu->pduData, pdu->pduLength);
+      if(pdu->pduData == NULLP)
+      {
+         DU_LOG("ERROR  -->  NFAPI_VNF : Memory Allocation failed in nfapiSendRxDataIndToMac");
+         MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, rxDataInd, sizeof(RxDataInd));
+         return RFAILED;
+      }
+      memcpy(pdu->pduData, nfapiRxDataInd->pdus[pduIdx].pduData, pdu->pduLength);
+   }
+
+   /* Fill post and sent to MAC */
+   FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_RX_DATA_IND_TO_MAC);
+   pst.selector = ODU_SELECTOR_LWLC;
+   ret = packRxDataInd(&pst, rxDataInd);
+   return ret;
+}
+
+
+/*******************************************************************
+ *
+ * @brief Process FAPI_RX_DATA_IND from PNF
+ *
+ * @details
+ *
+ *    Function : nfapiP7ProcRxDataInd
+ *
+ *    Functionality:
+ *           Processes FAPI_RX_DATA_IND received from PNF
+ *           Parametes can be referred from SCF222v2222.10.03, Sec 3.4.7
+ *
+ * @params[in] UDP Buffer 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t nfapiP7ProcRxDataInd(Buffer *mBuf)
+{
+    uint8_t pduCnt = 0, ret = ROK;
+    uint16_t byteIdx = 0;
+    fapi_rx_data_ind_msg_body  nfapiRxDataInd;
+
+    CMCHKPK(oduUnpackUInt16, &(nfapiRxDataInd.sfn), mBuf); 
+    CMCHKPK(oduUnpackUInt16, &(nfapiRxDataInd.slot), mBuf); 
+    CMCHKPK(oduUnpackUInt16, &(nfapiRxDataInd.numPdus), mBuf);
+
+    //Extract fapi_pdu_ind_info_t
+    for(pduCnt = 0; pduCnt < nfapiRxDataInd.numPdus; pduCnt++)
+    {
+       CMCHKPK(oduUnpackUInt32, &(nfapiRxDataInd.pdus[pduCnt].handle), mBuf); 
+       CMCHKPK(oduUnpackUInt16, &(nfapiRxDataInd.pdus[pduCnt].rnti), mBuf); 
+       CMCHKPK(oduUnpackUInt8, &(nfapiRxDataInd.pdus[pduCnt].harqId), mBuf); 
+       CMCHKPK(oduUnpackUInt8, &(nfapiRxDataInd.pdus[pduCnt].ul_cqi), mBuf); 
+       CMCHKPK(oduUnpackUInt16, &(nfapiRxDataInd.pdus[pduCnt].timingAdvance), mBuf); 
+       CMCHKPK(oduUnpackUInt16, &(nfapiRxDataInd.pdus[pduCnt].rssi), mBuf);
+       CMCHKPK(oduUnpackUInt16, &(nfapiRxDataInd.pdus[pduCnt].pdu_length), mBuf);
+       CMCHKPK(oduUnpackUInt8, &(nfapiRxDataInd.pdus[pduCnt].pad[0]), mBuf);
+       CMCHKPK(oduUnpackUInt8, &(nfapiRxDataInd.pdus[pduCnt].pad[1]), mBuf);
+
+       MAC_ALLOC(nfapiRxDataInd.pdus[pduCnt].pduData, nfapiRxDataInd.pdus[pduCnt].pdu_length);   
+       if(nfapiRxDataInd.pdus[pduCnt].pduData == NULLP)
+       {
+          DU_LOG("ERROR  --> NFAPI_VNF: Memory Allocation failed in nfapiP7ProcRxDataInd()");
+          return RFAILED;
+       }
+       for(byteIdx = 0; byteIdx < nfapiRxDataInd.pdus[pduCnt].pdu_length; byteIdx++)
+       {
+          CMCHKPK(oduUnpackUInt8, &(nfapiRxDataInd.pdus[pduCnt].pduData[byteIdx]), mBuf);
+       }
+    }
+
+    ret = nfapiSendRxDataIndToMac(&nfapiRxDataInd);
+    for(pduCnt = 0; pduCnt < nfapiRxDataInd.numPdus; pduCnt++)
+    {
+       MAC_FREE(nfapiRxDataInd.pdus[pduCnt].pduData, nfapiRxDataInd.pdus[pduCnt].pdu_length);
+    }
+    return ret;
+}
+
+/*******************************************************************
+ *
  * @brief Processed the NFAPI P7 message from UDP socket 
  *
  * @details
@@ -870,6 +996,17 @@ uint8_t nfapiP7MsgHandler(Buffer *mBuf)
       {
          DU_LOG("INFO  --> NFAPI_VNF: Received RACH INDICATIOn");
          nfapiP7ProcRachInd(mBuf);
+         break;
+      }
+      case FAPI_CRC_INDICATION:
+      {
+         DU_LOG("INFO  --> NFAPI_VNF: Received CRC INDICATIOn");
+         break;
+      }
+      case FAPI_RX_DATA_INDICATION:
+      {
+         DU_LOG("INFO  --> NFAPI_VNF: Received RX DATA INDICATIOn");
+         nfapiP7ProcRxDataInd(mBuf);
          break;
       }
       default:

@@ -90,6 +90,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
       {
          case MAC_LCID_CCCH :
             {
+               DU_LOG("INFO   --> MAC: LCID_CCH");
                pduLen--;
 
                /* for UL CCCH,fixed length of MAC SDU */
