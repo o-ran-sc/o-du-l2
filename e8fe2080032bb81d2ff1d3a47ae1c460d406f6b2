@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6613e031_fdbc938f",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-17T07:51:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b114ff49_b22cc7cb",
+      "revId": "e8fe2080032bb81d2ff1d3a47ae1c460d406f6b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b110397f_1ca3e0e7",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85683d4f_d206b728",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-17T07:51:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b110397f_1ca3e0e7",
+      "revId": "e8fe2080032bb81d2ff1d3a47ae1c460d406f6b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11474d6f_2588302a",
@@ -48,6 +84,30 @@
       "writtenOn": "2024-07-17T07:37:38Z",
       "side": 1,
       "message": "uint16?",
+      "range": {
+        "startLine": 204,
+        "startChar": 17,
+        "endLine": 204,
+        "endChar": 31
+      },
+      "revId": "e8fe2080032bb81d2ff1d3a47ae1c460d406f6b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9638a98c_2916f356",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-17T07:51:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11474d6f_2588302a",
       "range": {
         "startLine": 204,
         "startChar": 17,
@@ -81,6 +141,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb47df9b_8fac063e",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-17T07:51:38Z",
+      "side": 1,
+      "message": "Actually we dont need the rach_ind variable as we have to allocate a memory for it and release. And also since it is stub thus i thought lets do it in simple way or it will be redundant filling..",
+      "parentUuid": "f48a6c54_b73be370",
+      "range": {
+        "startLine": 250,
+        "startChar": 39,
+        "endLine": 250,
+        "endChar": 40
+      },
+      "revId": "e8fe2080032bb81d2ff1d3a47ae1c460d406f6b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be00eb54_6abe1cee",
@@ -94,6 +178,24 @@
       "writtenOn": "2024-07-17T07:37:38Z",
       "side": 1,
       "message": "uint16?",
+      "revId": "e8fe2080032bb81d2ff1d3a47ae1c460d406f6b2",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "000d96c7_9674fe08",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-17T07:51:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be00eb54_6abe1cee",
       "revId": "e8fe2080032bb81d2ff1d3a47ae1c460d406f6b2",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
