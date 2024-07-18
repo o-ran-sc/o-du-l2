@@ -16,6 +16,24 @@
       "message": "please remove the padding from this file completely.",
       "revId": "051dbee05b924d7ed129ee6d93aac6d52e37eb6e",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c2a0760_e74e295c",
+        "filename": "src/intel_fapi/nfapi_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-18T09:09:14Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "d54f30a2_8013830b",
+      "revId": "051dbee05b924d7ed129ee6d93aac6d52e37eb6e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }

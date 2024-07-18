@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b571eec2_49666971",
+        "filename": "src/5gnrmac/nfapi_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 1054,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-18T09:09:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2107f22d_fdfd9799",
+      "revId": "107b14b2150662e99a985bae120964fc4a197af9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46b0dbd9_c66a4449",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-07-18T04:57:55Z",
       "side": 1,
       "message": "static variable inside a local function considers as a local variable. \nIf you want this variable static move this line out of this function.",
+      "range": {
+        "startLine": 283,
+        "startChar": 3,
+        "endLine": 283,
+        "endChar": 9
+      },
+      "revId": "107b14b2150662e99a985bae120964fc4a197af9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f762b1e_587d5f18",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-18T09:09:14Z",
+      "side": 1,
+      "message": "As discussed, purpose of the static variable is that the local variable remains unchanged on every call of this function and scope of this function remains inside the function only.",
+      "parentUuid": "46b0dbd9_c66a4449",
       "range": {
         "startLine": 283,
         "startChar": 3,
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d71329c_293ee197",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-18T09:09:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "966e3de3_678f09e0",
+      "revId": "107b14b2150662e99a985bae120964fc4a197af9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70128f82_a5129498",
@@ -71,6 +131,24 @@
       "writtenOn": "2024-07-18T04:57:55Z",
       "side": 1,
       "message": "I think we should this in the loop for numCrcs times.",
+      "revId": "107b14b2150662e99a985bae120964fc4a197af9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7f22b62_02d31396",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-18T09:09:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70128f82_a5129498",
       "revId": "107b14b2150662e99a985bae120964fc4a197af9",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -98,6 +176,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0961d86_60ca869c",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-18T09:09:14Z",
+      "side": 1,
+      "message": "you are right, 50 diesnt make sense, rather sizeof the result array so that we dont access illegal pointer",
+      "parentUuid": "a87a00f9_89aa6583",
+      "range": {
+        "startLine": 334,
+        "startChar": 40,
+        "endLine": 334,
+        "endChar": 42
+      },
+      "revId": "107b14b2150662e99a985bae120964fc4a197af9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82250d67_4fccb52e",
@@ -111,6 +213,24 @@
       "writtenOn": "2024-07-18T04:57:55Z",
       "side": 1,
       "message": "do we send crc indication even if the ret is RFAILED.",
+      "revId": "107b14b2150662e99a985bae120964fc4a197af9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e4e58d7_6ce08d58",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-18T09:09:14Z",
+      "side": 1,
+      "message": "yes because that means the CRC fails and we need to inform that to DU but we will not send RX DATA IND.",
+      "parentUuid": "82250d67_4fccb52e",
       "revId": "107b14b2150662e99a985bae120964fc4a197af9",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -132,6 +252,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c0d34ab_d7550979",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-18T09:09:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c508fab_5bbbed3e",
+      "revId": "107b14b2150662e99a985bae120964fc4a197af9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6592f1e7_09878c24",
@@ -145,6 +283,30 @@
       "writtenOn": "2024-07-18T04:57:55Z",
       "side": 1,
       "message": "correct the comment.",
+      "range": {
+        "startLine": 441,
+        "startChar": 55,
+        "endLine": 441,
+        "endChar": 61
+      },
+      "revId": "107b14b2150662e99a985bae120964fc4a197af9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4d52510_30bf7ad4",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-18T09:09:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6592f1e7_09878c24",
       "range": {
         "startLine": 441,
         "startChar": 55,
@@ -178,6 +340,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb8d5292_320b9075",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-18T09:09:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ed754b2_0ff4d447",
+      "range": {
+        "startLine": 725,
+        "startChar": 12,
+        "endLine": 725,
+        "endChar": 36
+      },
+      "revId": "107b14b2150662e99a985bae120964fc4a197af9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ec02570_82b81f27",
@@ -191,6 +377,24 @@
       "writtenOn": "2024-07-18T04:57:55Z",
       "side": 1,
       "message": "add a failure print and return RFAILED in case of pnfBuildAndSendCrcInd failure.",
+      "revId": "107b14b2150662e99a985bae120964fc4a197af9",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6900fb7_42f1ccea",
+        "filename": "src/pnf_stub/pnf_stub_p7_msg_hdl.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 726,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-07-18T09:09:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ec02570_82b81f27",
       "revId": "107b14b2150662e99a985bae120964fc4a197af9",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
