@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d54f30a2_8013830b",
+        "filename": "src/intel_fapi/nfapi_interface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-07-18T04:57:55Z",
+      "side": 0,
+      "message": "please remove the padding from this file completely.",
+      "revId": "051dbee05b924d7ed129ee6d93aac6d52e37eb6e",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
