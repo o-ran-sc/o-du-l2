@@ -39,6 +39,7 @@
 #include "pnf_stub.h"
 
 extern PnfGlobalCb pnfCb;
+extern uint8_t  NUM_SLOTS_PER_SUBFRAME;
 
 /*********************************************************************************
  * @Brief: Filling of Ul Node Sync
@@ -369,7 +370,7 @@ uint16_t pnfBuildAndSendCrcInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t 
  * ****************************************************************/
 uint16_t pnfBuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu_t puschPdu)
 {
-   uint8_t idx = 0, ueId = 0;
+   uint8_t idx = 0, ueId = 0, pduIdx = 0;
    fapi_rx_data_indication_t *rxDataInd =NULLP;
    fapi_pdu_ind_info_t       *pduInfo =NULLP;
    uint8_t  *pdu = NULLP;
@@ -491,7 +492,6 @@ uint16_t pnfBuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu
             byteIdx++;
             break;
          }
-#if 0
       case MSG_TYPE_SHORT_BSR:
          {
             DU_LOG("DEBUG  -->  NFAPI_PNF: Forming SHORT BSR PDU ");
@@ -523,15 +523,19 @@ uint16_t pnfBuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu
           * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
           * From 38.322, section 6.2.2.4
           */
-         DU_LOG("DEBUG  -->  PHY_STUB: Forming MSG5 PDU");
+         DU_LOG("DEBUG  -->  NFAPI_PNF: Forming MSG5 PDU");
          uint8_t  msg5PduLen = 33; /* Length of MSG5 */
          msg5PduLen += 2; /* RLC subheader */
          uint8_t msg5[] = {1, msg5PduLen, 128, pnfCb.pnfUeCb[ueId-1].rlcSnForSrb1++, 0, pnfCb.pnfUeCb[ueId-1].pdcpSn++, 16, 0, \
             5, 223, 128, 16, 94, 64, 3, 64, 68, 252, 97, 0, 0, 0, 0, 4, 0, 0, 4, 68, 11, 128, 184, 56, 0, 0, 0, 0, 0};
 
          msg5PduLen += 2;  /* 2 bytes of MAC header */
-         memcpy(pdu, &msg5, msg5PduLen);
-         byteIdx += msg5PduLen; /* 4 bytes of header : MAC+RLC */
+
+         for(pduIdx = 0; pduIdx < msg5PduLen; pduIdx++)
+         {
+             CMCHKPK(oduPackPostUInt8, msg5[pduIdx], mBuf);
+             byteIdx++;
+         }
          break;
       }
 
@@ -547,7 +551,7 @@ uint16_t pnfBuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu
           * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
           * From 38.322, section 6.2.2.4
           */
-         DU_LOG("DEBUG  -->  PHY_STUB: Forming AUTHENTICATION RESPONSE PDU");
+         DU_LOG("DEBUG  -->  NFAPI_PNF: Forming AUTHENTICATION RESPONSE PDU");
          uint8_t  pduLen = 37; /* Length of PDU */
          pduLen += 2; /* RLC subheader */
          uint8_t msg[] = {1, pduLen, 128, pnfCb.pnfUeCb[ueId-1].rlcSnForSrb1++, 0, pnfCb.pnfUeCb[ueId-1].pdcpSn++, 0x3a, \
@@ -555,8 +559,11 @@ uint16_t pnfBuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu
                           0x8b, 0xea, 0xae, 0x45, 0xd1, 0x01, 0xfd, 0x34, 0xd4, 0xfd, 0xd5, 0x71, 0x00, 0x00, 0x00, 0x00, 0x00};
 
          pduLen += 2;  /* 2 bytes of MAC header */
-         memcpy(pdu, &msg, pduLen);
-         byteIdx += pduLen; /* 4 bytes of header : MAC+RLC */
+         for(pduIdx = 0; pduIdx < pduLen; pduIdx++)
+         {
+             CMCHKPK(oduPackPostUInt8, msg[pduIdx], mBuf);
+             byteIdx++;
+         }
          break;
       }
       
@@ -572,7 +579,7 @@ uint16_t pnfBuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu
           * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
           * From 38.322, section 6.2.2.4
           */
-         DU_LOG("DEBUG  -->  PHY_STUB: Forming NAS SECURITY MODE COMPLETE PDU");
+         DU_LOG("DEBUG  -->  NFAPI_PNF: Forming NAS SECURITY MODE COMPLETE PDU");
          uint8_t  pduLen = 93; /* Length of PDU */
          pduLen += 2; /* RLC subheader */
          uint8_t msg[] = {1, pduLen, 128, pnfCb.pnfUeCb[ueId-1].rlcSnForSrb1++, 0, pnfCb.pnfUeCb[ueId-1].pdcpSn++, 0x3a, 0x2a, 0x3f, 
@@ -583,8 +590,11 @@ uint16_t pnfBuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu
                           0x50, 0x0c, 0x00, 0x80, 0x3a, 0x00, 0x00, 0x48, 0x29, 0x80, 0x80, 0x80, 0x00, 0x00, 0x00, 0x00};
 
          pduLen += 2;  /* 2 bytes of MAC header */
-         memcpy(pdu, &msg, pduLen);
-         byteIdx += pduLen; /* 4 bytes of header : MAC+RLC */
+         for(pduIdx = 0; pduIdx < pduLen; pduIdx++)
+         {
+             CMCHKPK(oduPackPostUInt8, msg[pduIdx], mBuf);
+             byteIdx++;
+         }
          break;
       }
 
@@ -600,15 +610,18 @@ uint16_t pnfBuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu
           * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
           * From 38.322, section 6.2.2.4
           */
-         DU_LOG("DEBUG  -->  PHY_STUB: Forming RRC SECURITY MODE COMPLETE PDU");
+         DU_LOG("DEBUG  -->  NFAPI_PNF: Forming RRC SECURITY MODE COMPLETE PDU");
          uint8_t  pduLen = 12; /* Length of PDU */
          pduLen += 2; /* RLC subheader */
          uint8_t msg[] = {1, pduLen, 128, pnfCb.pnfUeCb[ueId-1].rlcSnForSrb1++, 0, pnfCb.pnfUeCb[ueId-1].pdcpSn++, 0x2a, 0x40, \
             0, 0, 0, 0, 0, 0, 0, 0};
 
          pduLen += 2;  /* 2 bytes of MAC header */
-         memcpy(pdu, &msg, pduLen);
-         byteIdx += pduLen; /* 4 bytes of header : MAC+RLC */
+         for(pduIdx = 0; pduIdx < pduLen; pduIdx++)
+         {
+             CMCHKPK(oduPackPostUInt8, msg[pduIdx], mBuf);
+             byteIdx++;
+         }
          break;
       }
 
@@ -624,15 +637,18 @@ uint16_t pnfBuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu
           * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
           * From 38.322, section 6.2.2.4
           */
-         DU_LOG("DEBUG  -->  PHY_STUB: Forming RRC REGISTRATION COMPLETE PDU");
+         DU_LOG("DEBUG  -->  NFAPI_PNF: Forming RRC REGISTRATION COMPLETE PDU");
          uint8_t  pduLen = 12; /* Length of PDU */
          pduLen += 2; /* RLC subheader */
          uint8_t msg[] = {1, pduLen, 128, pnfCb.pnfUeCb[ueId-1].rlcSnForSrb1++, 0, pnfCb.pnfUeCb[ueId-1].pdcpSn++, 0x3a, 0x81, \
             0xbf, 0, 0x21, 0x80, 0, 0, 0, 0};
 
          pduLen += 2;  /* 2 bytes of MAC header */
-         memcpy(pdu, &msg, pduLen);
-         byteIdx += pduLen; /* 4 bytes of header : MAC+RLC */
+         for(pduIdx = 0; pduIdx < pduLen; pduIdx++)
+         {
+             CMCHKPK(oduPackPostUInt8, msg[pduIdx], mBuf);
+             byteIdx++;
+         }
          break;
       }
 
@@ -648,19 +664,20 @@ uint16_t pnfBuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu
           * RLC subheader for AM PDU is D/C/P/SI/SN (2 bytes for 12-bit SN)
           * From 38.322, section 6.2.2.4
           */
-         DU_LOG("DEBUG  -->  PHY_STUB: Forming RRC RECONFIGURATION COMPLETE PDU");
+         DU_LOG("DEBUG  -->  NFAPI_PNF: Forming RRC RECONFIGURATION COMPLETE PDU");
          uint8_t  pduLen = 13; /* PDU length */
          pduLen += 2; /* RLC sub header */
          uint8_t msg[] = {1, pduLen, 128, pnfCb.pnfUeCb[ueId-1].rlcSnForSrb1++, 0, pnfCb.pnfUeCb[ueId-1].pdcpSn++, 8, 64, 0, 0,\
             0, 0, 0, 0, 0, 0, 0};
 
          pduLen += 2;  /* 2bytes of MAC header */
-         memcpy(pdu, &msg, pduLen);
-         byteIdx += pduLen; /* 4 bytes of header : MAC+RLC*/
+         for(pduIdx = 0; pduIdx < pduLen; pduIdx++)
+         {
+             CMCHKPK(oduPackPostUInt8, msg[pduIdx], mBuf);
+             byteIdx++;
+         }
          break;
-
       }
-#endif
       default:
       break;
    } /* End of switch(type) */
@@ -692,6 +709,207 @@ uint16_t pnfBuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu
    return ROK;
 }
 
+/*******************************************************************
+ *
+ * @brief Fills Uci Ind Pdu Info carried on Pucch Format 0/Format 1
+ *
+ * @details
+ *
+ *    Function : pnfFillPucchF0F1PduInfo
+ *
+ *    Functionality:
+ *       Fills Uci Ind Pdu Info carried on Pucch Format 0/Format 1 
+ *
+ * @params[in] fapi_uci_o_pucch_f0f1_t *
+ *             pucchPdu
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t pnfFillPucchF0F1PduInfo(fapi_uci_o_pucch_f0f1_t *pduInfo, fapi_ul_pucch_pdu_t pucchPdu)
+{
+   uint8_t idx = 0;
+   static uint8_t ind=0;
+   uint8_t result[]={0,//msg4
+                     0,//Security Mode Command
+                     0,//Registration Accept
+                     0,//RRC Reconfiguration
+                     0,//Data 1
+                     0,//Data 2
+                     0,//Data 3
+                     0,//Data 4
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,
+                     0,0,0,0,0,};
+
+   pduInfo->handle = pucchPdu.handle;
+   pduInfo->pduBitmap = 1;  //hardcoded for SR
+   if (pucchPdu.bitLenHarq)
+   {
+      pduInfo->pduBitmap |= HARQ_PDU_BITMASK;
+   }
+   pduInfo->pucchFormat = pucchPdu.formatType;
+   pduInfo->ul_cqi = 0;
+   pduInfo->rnti = pucchPdu.rnti;
+   pduInfo->timingAdvance = 0;
+   pduInfo->rssi = 0;
+   if(pduInfo->pduBitmap & SR_PDU_BITMASK)
+   {
+      if (result[ind % sizeof(result)] == 0)
+      {
+         pduInfo->srInfo.srIndication = SR_DETECTED;
+         pduInfo->srInfo.srConfidenceLevel = CONFDC_LEVEL_GOOD;
+      }
+   }
+   if(pduInfo->pduBitmap & HARQ_PDU_BITMASK)
+   {
+      pduInfo->harqInfo.numHarq++;
+      pduInfo->harqInfo.harqConfidenceLevel = CONFDC_LEVEL_GOOD;
+      for(idx = 0; idx < pduInfo->harqInfo.numHarq; idx++)
+      {
+         pduInfo->harqInfo.harqValue[idx] = result[ind % sizeof(result)];
+         ind++;
+      }
+   }
+   return ROK;
+}
+/*******************************************************************
+ *
+ * @brief Fills UCI Pdu Information
+ *
+ * @details
+ *
+ *    Function : pnfFillUciPduInfo
+ *
+ *    Functionality:
+ *       Fills UCI Pdu Information
+ *
+ * @params[in] Pointer to mBuf
+ *             pucchPdu
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t pnfFillUciPduInfo(Buffer *mBuf, fapi_ul_pucch_pdu_t pucchPdu)
+{
+   uint8_t ret = ROK, harqIdx = 0;
+   fapi_uci_pdu_info_t uciPduInfo;
+  
+   memset(&uciPduInfo, 0, sizeof(fapi_uci_pdu_info_t));
+
+   uciPduInfo.pduType = UCI_IND_PUCCH_F0F1;
+   /*TODO: The pduType is hardcoded here to support 
+     UCI Ind for PUCCH forat0/format1. This is to be
+     modified when we get SR form UE */
+   switch(uciPduInfo.pduType)
+   {
+      case UCI_IND_PUSCH:
+         break;
+      case UCI_IND_PUCCH_F0F1:
+         {
+            fapi_uci_o_pucch_f0f1_t *pduInfo = NULLP;
+
+            pduInfo = &uciPduInfo.uci.uciPucchF0F1;
+            memset(pduInfo, 0, sizeof(fapi_uci_o_pucch_f0f1_t));
+            ret = pnfFillPucchF0F1PduInfo(pduInfo, pucchPdu);
+            uciPduInfo.pduSize = sizeof(fapi_uci_o_pucch_f0f1_t);
+            
+            CMCHKPK(oduPackPostUInt16, uciPduInfo.pduType, mBuf);
+            CMCHKPK(oduPackPostUInt16, uciPduInfo.pduSize, mBuf);
+            CMCHKPK(oduPackPostUInt32, pduInfo->handle, mBuf);
+            CMCHKPK(oduPackPostUInt8, pduInfo->pduBitmap, mBuf);
+            CMCHKPK(oduPackPostUInt8, pduInfo->pucchFormat, mBuf);
+            CMCHKPK(oduPackPostUInt8, pduInfo->ul_cqi, mBuf);
+            CMCHKPK(oduPackPostUInt8, 0, mBuf);//pad
+            CMCHKPK(oduPackPostUInt16, pduInfo->rnti, mBuf);//pad
+            CMCHKPK(oduPackPostUInt16, pduInfo->timingAdvance, mBuf);
+            CMCHKPK(oduPackPostUInt16, pduInfo->rssi, mBuf);
+            CMCHKPK(oduPackPostUInt8, 0, mBuf);//pad1[0]
+            CMCHKPK(oduPackPostUInt8, 0, mBuf);//pad1[1]
+
+            //Fill fapi_sr_f0f1_info_t
+            CMCHKPK(oduPackPostUInt8, pduInfo->srInfo.srIndication, mBuf);
+            CMCHKPK(oduPackPostUInt8, pduInfo->srInfo.srConfidenceLevel, mBuf);
+            CMCHKPK(oduPackPostUInt8, 0, mBuf); //pad[0]
+            CMCHKPK(oduPackPostUInt8, 0, mBuf); //pad[1]
+             
+            //Fill fapi_harq_f0f1_info_t
+            CMCHKPK(oduPackPostUInt8, pduInfo->harqInfo.numHarq, mBuf);
+            CMCHKPK(oduPackPostUInt8, pduInfo->harqInfo.harqConfidenceLevel, mBuf);
+ 
+            for(harqIdx = 0; harqIdx < pduInfo->harqInfo.numHarq; harqIdx++)
+            {
+               CMCHKPK(oduPackPostUInt8, pduInfo->harqInfo.harqValue[harqIdx], mBuf);
+            }
+         }
+         break;
+      case UCI_IND_PUCCH_F2F3F4:
+         break;
+      default:
+         DU_LOG("ERROR  -->  PHY_STUB: Invalid Pdu Type %d", uciPduInfo.pduType);
+         break;
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Build and send Uci indication
+ *
+ * @details
+ *
+ *    Function : l1BuildAndSendUciInd
+ *
+ *    Functionality:
+ *       Build and send Uci indication
+ *
+ * @params[in] SFN
+ *             Slot
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t pnfBuildAndSendUciInd(PnfSlotInfo ulSlotInfo, fapi_ul_pucch_pdu_t pucchPdu)
+{
+   uint8_t ret = ROK;
+   Buffer *mBuf = NULLP;
+
+   if (ODU_GET_MSG_BUF(PNF_APP_MEM_REG, PNF_POOL, &mBuf) != ROK)
+   {
+      DU_LOG("ERROR  --> NFAPI_PNF : Memory allocation failed in start response");
+      return RFAILED;
+   }
+   nfapiFillP7Hdr(mBuf, (sizeof(fapi_uci_ind_msg_body) + sizeof(nFapi_msg_header)), 0, 0);
+   nfapiFillMsgHdr(mBuf, 1, FAPI_UCI_INDICATION, sizeof(fapi_uci_ind_msg_body));
+
+   CMCHKPK(oduPackPostUInt16, ulSlotInfo.sfn, mBuf);
+   CMCHKPK(oduPackPostUInt16, ulSlotInfo.slot, mBuf);
+   CMCHKPK(oduPackPostUInt16, 1, mBuf); //numUcis
+   
+   ret = pnfFillUciPduInfo(mBuf, pucchPdu);
+
+   if(ret == ROK)
+   {
+      /* Sending UCI indication to MAC */
+      DU_LOG("INFO   -->  NFAPI_PNF : Sending UCI Indication to VNF");
+      if(pnfP7UdpSendMsg(mBuf) != ROK)
+      { 
+         return RFAILED;
+      }
+   }
+   return ret;
+}
+
 /*********************************************************************************
  * @Brief: Processes UL_TTI_REQ received from VNF
  *
@@ -705,7 +923,7 @@ uint16_t pnfBuildAndSendRxDataInd(uint16_t slot, uint16_t sfn, fapi_ul_pusch_pdu
  *
  * ******************************************************************************/
 
-void pnfProcUlTtiReq(fapi_ul_tti_req_msg_body *pnfUlTtiReq)
+uint8_t pnfProcUlTtiReq(fapi_ul_tti_req_msg_body *pnfUlTtiReq)
 {
    uint8_t numPdus = pnfUlTtiReq->nPdus;
    uint8_t ret = ROK;
@@ -745,7 +963,13 @@ void pnfProcUlTtiReq(fapi_ul_tti_req_msg_body *pnfUlTtiReq)
       if(pnfUlTtiReq->pdus[numPdus-1].pduType == PUCCH_PDU_TYPE)
       {
          DU_LOG("INFO   --> NFAPI_PNF: PUCCH PDU");
-         /*TODO: UCI_IND to be built and sent*/ 
+         
+         PnfSlotInfo ulTtiSlotInfo;
+         memset(&ulTtiSlotInfo, 0, sizeof(PnfSlotInfo));
+         ulTtiSlotInfo.slot = pnfUlTtiReq->slot;
+         ulTtiSlotInfo.sfn  = pnfUlTtiReq->sfn;
+         ADD_DELTA_TO_TIME(ulTtiSlotInfo, ulTtiSlotInfo, SLOT_DELAY, NUM_SLOTS_PER_SUBFRAME);
+         pnfBuildAndSendUciInd(ulTtiSlotInfo, pnfUlTtiReq->pdus[numPdus-1].pdu.pucch_pdu);
       }
       numPdus--;
    }
@@ -930,12 +1154,16 @@ uint8_t pnfUlTtiReq(Buffer *mBuf)
          default:
          {
             DU_LOG("ERROR  --> NFAPI_VNF: Incorrect PduType:%d",fapiMsgBody.pdus[pduCnt].pduType);
-            return;
+            return RFAILED;
          }
       }
    }
 
-   pnfProcUlTtiReq(&fapiMsgBody);
+   if(pnfProcUlTtiReq(&fapiMsgBody) != ROK)
+   {
+      DU_LOG("ERROR -> NFAPI_PNF: UL_TTI_REQ processing failed");
+      return RFAILED;
+   }
 
    return ROK;
 }
@@ -977,6 +1205,16 @@ uint8_t  pnfP7MsgHandler(Buffer *mBuf)
       {
          DU_LOG("\nINFO   --> NFAPI_PNF: UL_TTI_REQ recevied.");
          ret = pnfUlTtiReq(mBuf);
+         break;
+      }
+      case FAPI_TX_DATA_REQUEST:
+      {
+         DU_LOG("\nINFO   --> NFAPI_PNF: TX_DATA_REQ recevied.");
+         break;
+      }
+      case FAPI_UL_DCI_REQUEST:
+      {
+         DU_LOG("\nINFO   --> NFAPI_PNF: UL_DCI_REQ recevied.");
          break;
       }
       default:

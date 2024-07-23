@@ -1075,6 +1075,214 @@ uint8_t nfapiP7ProcRxDataInd(Buffer *mBuf)
 
 /*******************************************************************
  *
+ * @brief Fills Uci Ind Pdu Info carried on Pucch Format 0/Format 1
+ *
+ * @details
+ *
+ *    Function : nfapiFillUciIndPucchF0F1
+ *
+ *    Functionality:
+ *       Fills Uci Ind Pdu Info carried on Pucch Format 0/Format 1
+ *
+ *@params[in] UciPucchF0F1 *
+ *            fapi_uci_o_pucch_f0f1_t *
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+uint8_t nfapiFillUciIndPucchF0F1(UciPucchF0F1 *pduInfo, fapi_uci_o_pucch_f0f1_t *fapiPduInfo)
+{
+   uint8_t harqIdx;
+  
+   if(fapiPduInfo == NULLP)
+   {
+      DU_LOG("\nERROR  --> NFAPI_VNF: nfapiFillUciIndPucchF0F1(): UCI PDU is NULL ");
+      return RFAILED;
+   }
+
+   pduInfo->handle        = fapiPduInfo->handle;
+   pduInfo->pduBitmap     = fapiPduInfo->pduBitmap;
+   pduInfo->pucchFormat   = fapiPduInfo->pucchFormat;
+   pduInfo->ul_cqi        = fapiPduInfo->ul_cqi;
+   pduInfo->crnti         = fapiPduInfo->rnti;
+   pduInfo->timingAdvance = fapiPduInfo->timingAdvance;
+   pduInfo->rssi          = fapiPduInfo->rssi;   
+   if(fapiPduInfo->srInfo.srIndication)
+   {
+      pduInfo->srInfo.srIndPres = fapiPduInfo->srInfo.srIndication;
+      pduInfo->srInfo.srConfdcLevel = fapiPduInfo->srInfo.srConfidenceLevel;
+   }
+   if(fapiPduInfo->harqInfo.numHarq)
+   {
+      pduInfo->harqInfo.numHarq = fapiPduInfo->harqInfo.numHarq;
+      pduInfo->harqInfo.harqConfdcLevel = fapiPduInfo->harqInfo.harqConfidenceLevel;
+      for(harqIdx = 0; harqIdx < pduInfo->harqInfo.numHarq; harqIdx++)
+      {
+         pduInfo->harqInfo.harqValue[harqIdx] = fapiPduInfo->harqInfo.harqValue[harqIdx];
+      }
+   }
+   return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief Build And Sends UCI indication to MAC
+ *
+ * @details
+ *
+ *    Function : nfapiSendUciIndToMac
+ *
+ *    Functionality:
+ *      Builds and Sends EVENT_UCI_IND to MAC
+ *
+ * @params[in] fapi_uci_indication_t message pointer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t nfapiSendUciIndToMac(fapi_uci_ind_msg_body *nfapiUciInd)
+{
+   uint8_t pduIdx;
+   uint8_t ret = ROK;
+   Pst     pst;
+   UciInd  *macUciInd = NULLP;
+
+   MAC_ALLOC_SHRABL_BUF(macUciInd, sizeof(UciInd));
+   if(!macUciInd)
+   {
+      DU_LOG("ERROR  -->  NFAPI_VNF: Memory Allocation failed in nfapiSendUciIndToMac");
+      return RFAILED;
+   }
+
+   DU_LOG("DEBUG  -->  NFAPI_VNF: Processing UCI Indication");
+   memset(macUciInd, 0, sizeof(UciInd));
+   macUciInd->cellId = vnfDb.cellId;
+   macUciInd->slotInd.sfn = nfapiUciInd->sfn; 
+   macUciInd->slotInd.slot = nfapiUciInd->slot;
+   macUciInd->numUcis = nfapiUciInd->numUcis;
+
+   for(pduIdx = 0; pduIdx < macUciInd->numUcis; pduIdx++)
+   {
+      macUciInd->pdus[pduIdx].pduType = nfapiUciInd->uciPdu[pduIdx].pduType;
+      switch(macUciInd->pdus[pduIdx].pduType)
+      {
+         case UCI_IND_PUSCH:
+         break;
+         case UCI_IND_PUCCH_F0F1:
+         {
+            UciPucchF0F1 *pduInfo = NULLP;
+            macUciInd->pdus[pduIdx].pduSize = nfapiUciInd->uciPdu[pduIdx].pduSize;
+            pduInfo = &macUciInd->pdus[pduIdx].uci.uciPucchF0F1;
+            ret = nfapiFillUciIndPucchF0F1(pduInfo, &nfapiUciInd->uciPdu[pduIdx].uci.uciPucchF0F1);
+            break;
+         }
+         case UCI_IND_PUCCH_F2F3F4:
+            break;
+         default:
+         {
+            DU_LOG("ERROR  -->  NFAPI_VNF: Invalid Pdu Type %d at nfapiSendUciIndToMac()", macUciInd->pdus[pduIdx].pduType);
+	         ret = RFAILED;
+            break;
+         }
+      }
+   }
+   if(!ret)
+   {
+      FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_UCI_IND_TO_MAC);
+      pst.selector = ODU_SELECTOR_LWLC;
+      ret = packUciInd(&pst, macUciInd);
+   }
+   else
+   {
+      DU_LOG("ERROR  -->  NFAPI_VNF: Failed sending UCI Ind to MAC");
+   }
+   return ret;
+}
+
+/*******************************************************************
+ *
+ * @brief Process FAPI_UCI_IND from PNF
+ *
+ * @details
+ *
+ *    Function : nfapiP7ProcUciInd
+ *
+ *    Functionality:
+ *           Processes FAPI_UCI_IND received from PNF
+ *           Parametes can be referred from SCF222v2222.10.03, Sec 3.4.9
+ *
+ * @params[in] UDP Buffer 
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+
+uint8_t nfapiP7ProcUciInd(Buffer *mBuf)
+{
+    uint8_t uciIdx = 0, ret = ROK;
+    uint16_t harqIdx = 0;
+    fapi_uci_ind_msg_body  nfapiUciInd;
+
+    CMCHKPK(oduUnpackUInt16, &(nfapiUciInd.sfn), mBuf); 
+    CMCHKPK(oduUnpackUInt16, &(nfapiUciInd.slot), mBuf); 
+    CMCHKPK(oduUnpackUInt16, &(nfapiUciInd.numUcis), mBuf); 
+
+    for(uciIdx = 0; uciIdx < nfapiUciInd.numUcis; uciIdx++)
+    {
+       CMCHKPK(oduUnpackUInt16, &(nfapiUciInd.uciPdu[uciIdx].pduType), mBuf); 
+       CMCHKPK(oduUnpackUInt16, &(nfapiUciInd.uciPdu[uciIdx].pduSize), mBuf);
+       switch(nfapiUciInd.uciPdu[uciIdx].pduType)
+       {
+          case UCI_IND_PUSCH:
+          break;
+          case UCI_IND_PUCCH_F0F1:
+          {
+             CMCHKPK(oduUnpackUInt32, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.handle), mBuf);
+             CMCHKPK(oduUnpackUInt8, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.pduBitmap), mBuf);
+             CMCHKPK(oduUnpackUInt8, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.pucchFormat), mBuf);
+             CMCHKPK(oduUnpackUInt8, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.ul_cqi), mBuf);
+             CMCHKPK(oduUnpackUInt8, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.pad), mBuf);
+             CMCHKPK(oduUnpackUInt16, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.rnti), mBuf);
+             CMCHKPK(oduUnpackUInt16, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.timingAdvance), mBuf);
+             CMCHKPK(oduUnpackUInt16, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.rssi), mBuf);
+             CMCHKPK(oduUnpackUInt8, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.pad1[0]), mBuf);
+             CMCHKPK(oduUnpackUInt8, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.pad1[1]), mBuf);
+
+             //Extract fapi_sr_f0f1_info_t
+             CMCHKPK(oduUnpackUInt8, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.srInfo.srIndication), mBuf);
+             CMCHKPK(oduUnpackUInt8, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.srInfo.srConfidenceLevel), mBuf);
+             CMCHKPK(oduUnpackUInt8, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.srInfo.pad[0]), mBuf);
+             CMCHKPK(oduUnpackUInt8, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.srInfo.pad[1]), mBuf);
+
+             //Extract fapi_harq_f0f1_info_t
+             CMCHKPK(oduUnpackUInt8, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.harqInfo.numHarq), mBuf);
+             CMCHKPK(oduUnpackUInt8, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.harqInfo.harqConfidenceLevel), mBuf);
+             for(harqIdx = 0;harqIdx <nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.harqInfo.numHarq;harqIdx++)
+             {
+                CMCHKPK(oduUnpackUInt8, &(nfapiUciInd.uciPdu[uciIdx].uci.uciPucchF0F1.harqInfo.harqValue[harqIdx]), mBuf);
+             
+             }
+
+             break;
+          }
+          case UCI_IND_PUCCH_F2F3F4:
+          break;
+          default:
+          {
+             DU_LOG("ERROR  --> NFAPI_VNF: Incorrect UCI PDUType:%d",nfapiUciInd.uciPdu[uciIdx].pduType);
+             return RFAILED;
+          }
+       }
+    }
+
+    ret = nfapiSendUciIndToMac(&nfapiUciInd);
+    return ret; 
+}
+
+
+/*******************************************************************
+ *
  * @brief Processed the NFAPI P7 message from UDP socket 
  *
  * @details
@@ -1123,6 +1331,12 @@ uint8_t nfapiP7MsgHandler(Buffer *mBuf)
       {
          DU_LOG("INFO  --> NFAPI_VNF: Received RX DATA INDICATIOn");
          nfapiP7ProcRxDataInd(mBuf);
+         break;
+      }
+      case FAPI_UCI_INDICATION:
+      {
+         DU_LOG("INFO  --> NFAPI_VNF: Received UCI INDICATIOn");
+         nfapiP7ProcUciInd(mBuf);
          break;
       }
       default:
