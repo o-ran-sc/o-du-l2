@@ -469,6 +469,7 @@ extern "C" {
 #define EVENT_RLC_UE_THROUGHPUT_TMR       7
 #define EVENT_RLC_UE_DELETE_TMR           8
 #define EVENT_RLC_SNSSAI_THROUGHPUT_TMR   9
+#define EVENT_RLC_DRB_THROUGHPUT_TMR   10
 
 /* Wait time for RLC Timers */
 #define RLC_UE_DELETE_WAIT_TIME           5 /*in milliseconds */
@@ -1721,6 +1722,20 @@ typedef struct rlcTptPerSnssai
    double   tpt;
 }RlcTptPerSnssai;
 
+typedef struct rlcTptPerDrb
+{
+   uint8_t   lcId;
+   uint8_t   ueId;
+   Snssai   *snssai;
+   uint64_t dataVol;
+   double   tpt;
+}RlcTptPerDrb;
+
+typedef struct rlcDrbTputInfo
+{
+   CmTimer       drbThptTmr;                   /* Throughput Timer */
+   CmLListCp     *dlTputPerDrbList[MAX_NUM_UE];   /* Linked List of rlcTptPerDrb */
+}RlcDrbTputInfo;
 
 typedef struct rlcSnssaiTputInfo
 {
@@ -1744,6 +1759,7 @@ typedef struct rlcThpt
    Inst               inst;                /* RLC instance */
    RlcUeTputInfo      ueTputInfo;
    RlcSnssaiTputInfo  snssaiTputInfo;
+   RlcDrbTputInfo     drbTputInfo;
 }RlcThpt;
 
 /** 
@@ -1802,6 +1818,8 @@ void rlcUeThptTmrExpiry(PTR cb);
 uint8_t  rlcUeDeleteTmrExpiry(PTR cb);
 
 void rlcSnssaiThptTmrExpiry(PTR cb);
+
+void rlcDrbThptTmrExpiry(PTR cb);
 RlcTptPerSnssai* rlcHandleSnssaiTputlist(RlcCb *gCb, Snssai *snssai,\
                                 ActionTypeLL  action, Direction dir);
 uint8_t rlcCalculateTputPerSnssai(CmLListCp *snssaiList, Direction dir);
@@ -1809,6 +1827,10 @@ uint8_t rlcDelTputSnssaiList(RlcCb *gCb, Direction dir);
 uint8_t BuildSliceReportToDu(uint8_t snssaiCnt);
 bool rlcFindSliceEntry(SliceIdentifier snssaiVal, uint8_t *snssaiIdx,\
                       SlicePmList *sliceStats);
+RlcTptPerDrb* rlcHandleDrbTputlist(RlcCb *gCb, Snssai *snssai, uint8_t ueId, \
+                           uint8_t lcId, ActionTypeLL action, Direction dir);
+uint8_t rlcDelTputDrbList(RlcCb *gCb, Direction dir);
+uint8_t rlcCalculateTputPerDrb(CmLListCp *drbList, Direction dir);
 
 #ifdef LTE_L2_MEAS
 Void rlcLmmSendAlarm ARGS (( RlcCb *gCb,
