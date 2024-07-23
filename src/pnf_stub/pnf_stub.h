@@ -58,6 +58,23 @@
    _sfnSlot.sfn = _delta / NUM_SLOTS_PER_SUBFRAME;   \
 }
 
+#define ADD_DELTA_TO_TIME(crntTime, toFill, incr, numOfSlot)          \
+{                                                          \
+   if ((crntTime.slot + incr) > (numOfSlot - 1))           \
+   {                                                       \
+      toFill.sfn = (crntTime.sfn + 1);                     \
+   }                                                       \
+   else                                                    \
+   {                                                       \
+      toFill.sfn = crntTime.sfn;                           \
+   }                                                       \
+   toFill.slot = (crntTime.slot + incr) % numOfSlot;       \
+   if (toFill.sfn >= 1024)                              \
+   {                                                       \
+      toFill.sfn %= 1024;                                 \
+   }                                                       \
+}
+
 /*P7 UDP Teansport Cfg Details*/
 #define PNF_P7_UDP_PORT 9876
 #define VNF_P7_UDP_PORT 6789
@@ -81,6 +98,18 @@
 #define PRACH_PDU_TYPE 0
 #define PUSCH_PDU_TYPE 1
 #define PUCCH_PDU_TYPE 2
+
+//UCI
+#define UCI_IND_PUSCH     0      /* UCI Indication carried on PUSCH */
+#define UCI_IND_PUCCH_F0F1   1   /* UCI Indication carried on PUCCH Format 0, 1 */
+#define UCI_IND_PUCCH_F2F3F4 2   /* UCI Indication carried on PUCCH Format 2, 3, 4 */
+#define SR_PDU_BITMASK    1      /* Bit Mask for SR_PDU */
+#define HARQ_PDU_BITMASK  2      /* Bit Mask for HARQ PDU */
+#define SR_NOT_DETECTED   0      /* SR not detected */
+#define SR_DETECTED       1      /* SR detected */
+#define CONFDC_LEVEL_GOOD 0      /* Confidence Level HARQ/SR */
+#define CONFDC_LEVEL_BAD  1
+#define SLOT_DELAY        3
 
 uint32_t PER_TTI_TIME_USEC;
 uint8_t  NUM_SLOTS_PER_SUBFRAME;

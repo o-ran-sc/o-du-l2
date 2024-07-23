@@ -42,6 +42,7 @@ PnfP7UdpGlobalCb pnfP7Cb;
 uint8_t pnfP7UdpActvInit();
 uint8_t pnfP7UdpCfgReq();
 void    pnfP7UdpHdlRecvMsg(Buffer *buf);
+S16 pnfP7UdpSendMsg(Buffer *mBuf);
 
 #endif
 
