@@ -31,6 +31,7 @@ File:     sch_slot_ind.c
 /** @file sch_slot_ind.c
   @brief This module processes slot indications
  */
+#include <time.h>
 #include "common_def.h"
 #include "tfu.h"
 #include "lrg.h"
@@ -41,6 +42,7 @@ File:     sch_slot_ind.c
 #include "mac_sch_interface.h"
 #include "sch.h"
 #include "sch_utils.h"
+#include "sch_slice_based.h"
 #ifdef NR_DRX 
 #include "sch_drx.h"
 #endif
