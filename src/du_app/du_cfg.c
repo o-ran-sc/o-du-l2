@@ -6181,6 +6181,7 @@ void printDuConfig()
 
    }
    DU_LOG("Number of TNL association %d\n", e2apDb->numOfTNLAssoc);
+   DU_LOG("Number of TNL 1234 sangeeta association %d\n", e2apDb->numOfTNLAssoc);
    for(tnlIdx=0;tnlIdx<e2apDb->numOfTNLAssoc;tnlIdx++)
    {
       DU_LOG("Local IPv4 Address present %u\n", e2apDb->tnlAssoc[tnlIdx].localIpAddress.ipV4Pres);
