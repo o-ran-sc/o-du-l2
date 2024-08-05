@@ -38,12 +38,270 @@
 #include "wls_lib.h"
 #endif
 
+#ifdef FAPI_DECODER
+#define PORT 8080
+#define SERVER_IP "127.0.0.1"  // Change this to the server's IP address
+#endif
+
+
 #ifdef INTEL_WLS_MEM
 CmLListCp wlsBlockToFreeList[WLS_MEM_FREE_PRD];
 #endif
 
 uint8_t rgClHndlCfgReq ARGS((void *msg));
 void l1ProcessFapiRequest ARGS((uint8_t msgType, uint32_t msgLen, void *msg));
+
+#ifdef FAPI_DECODER
+/*******************************************************************
+ *
+ * @brief print const fapi_api_queue_elem_t element list
+ *
+ * @details
+ *
+ *    Function : print_queue_elem
+ *
+ *    Functionality: print const fapi_api_queue_elem_t element list
+ *
+ * @params[in] const fapi_api_queue_elem_t *elem
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void print_queue_elem(const fapi_api_queue_elem_t *elem) 
+{
+   if (elem == NULL) {
+      printf("Element is NULL\n");
+      return;
+   }
+
+   printf("Queue Element:\n");
+   printf("  msg_type: %u\n", elem->msg_type);
+   printf("  num_message_in_block: %u\n", elem->num_message_in_block);
+   printf("  msg_len: %u\n", elem->msg_len);
+   printf("  align_offset: %u\n", elem->align_offset);
+   printf("  time_stamp: %llu\n", (unsigned long long)elem->time_stamp);
+   printf("  p_next: %p\n", (void*)elem->p_next);
+   printf("  p_tx_data_elm_list: %p\n", (void*)elem->p_tx_data_elm_list);
+}
+/*******************************************************************
+ *
+ * @brief calculate fapi msg size with the help of fapi msg id
+ *
+ * @details
+ *
+ *    Function : calculateFapiMsgSize
+ *
+ *    Functionality: calculate fapi msg size with the help of fapi 
+ *            msg id
+ *
+ * @params[in] uint8_t msgType, uint16_t *msgSzie
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+void calculateFapiMsgSize(uint8_t msgType, uint16_t *msgSzie)
+{
+   switch(msgType)
+   {
+      case FAPI_PARAM_REQUEST:
+         *msgSzie= sizeof(fapi_param_req_t);
+         break;
+      case FAPI_PARAM_RESPONSE:
+         *msgSzie=sizeof(fapi_param_resp_t);
+         break;
+      case FAPI_CONFIG_REQUEST:
+         *msgSzie=sizeof(fapi_config_req_t);
+         break;
+      case FAPI_CONFIG_RESPONSE:
+         *msgSzie=sizeof(fapi_config_resp_t);
+         break;
+      case FAPI_START_REQUEST:
+         *msgSzie=sizeof(fapi_start_req_t);
+         break;
+      case FAPI_STOP_REQUEST:
+         *msgSzie=sizeof(fapi_stop_req_t);
+         break;
+      case FAPI_STOP_INDICATION:
+         *msgSzie=sizeof(fapi_stop_ind_t);
+         break;
+      case FAPI_ERROR_INDICATION:
+         *msgSzie=sizeof(fapi_error_ind_t);
+         break;
+      case FAPI_DL_TTI_REQUEST:
+         *msgSzie=sizeof(fapi_dl_tti_req_t);
+         break;
+      case FAPI_UL_TTI_REQUEST:
+         *msgSzie=sizeof(fapi_ul_tti_req_t);
+         break;
+      case FAPI_SLOT_INDICATION:
+         *msgSzie=sizeof(fapi_slot_ind_t);
+         break;
+      case FAPI_UL_DCI_REQUEST:
+         *msgSzie=sizeof(fapi_ul_dci_req_t);
+         break;
+      case FAPI_TX_DATA_REQUEST:
+         *msgSzie=sizeof(fapi_tx_data_req_t);
+         break;
+      case FAPI_RX_DATA_INDICATION:
+         *msgSzie=sizeof(fapi_rx_data_indication_t);
+         break;
+      case FAPI_CRC_INDICATION:
+         *msgSzie=sizeof(fapi_crc_ind_t);
+         break;
+      case FAPI_UCI_INDICATION:
+         *msgSzie=sizeof(fapi_uci_indication_t);
+         break;
+      case FAPI_SRS_INDICATION:
+         *msgSzie=sizeof(fapi_srs_indication_t);
+         break;
+      case FAPI_RACH_INDICATION:
+         *msgSzie=sizeof(fapi_rach_indication_t);
+         break;
+   }
+}
+
+/*******************************************************************
+ *
+ * @brief serialize_list fapi_api_queue_elem_t list
+ *
+ * @details
+ *
+ *    Function : serialize_queue_elem 
+ *
+ *    Functionality: serialize_list fapi_api_queue_elem_t list
+ *             and store in buffer
+ *
+ * @params[in] const p_fapi_api_queue_elem_t elem, uint8_t *buffer
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+size_t serialize_queue_elem(const p_fapi_api_queue_elem_t elem, uint8_t *buffer) 
+{
+   size_t offset = 0;
+
+   // Serializep_fapi_api_queue_elem_t 
+   memcpy(buffer + offset, elem, sizeof(p_fapi_api_queue_elem_t));
+   offset += sizeof(p_fapi_api_queue_elem_t);
+
+   switch (elem->msg_type) {
+      case FAPI_VENDOR_MSG_HEADER_IND: // fapi_msg_header_t
+         memcpy(buffer + offset, (fapi_msg_header_t *)(elem + 1), sizeof(fapi_msg_header_t));
+         offset += sizeof(fapi_msg_header_t);
+         break;
+      case FAPI_CONFIG_REQUEST: // fapi_config_req_t
+         memcpy(buffer + offset, (fapi_config_req_t*)(elem + 1), sizeof(fapi_config_req_t));
+         offset += sizeof(fapi_config_req_t);
+         break;
+      case FAPI_VENDOR_MESSAGE: // fapi_vendor_msg_t
+         memcpy(buffer + offset, (fapi_vendor_msg_t*)(elem + 1), sizeof(fapi_vendor_msg_t));
+         offset += sizeof(fapi_vendor_msg_t);
+         break;
+      default:
+         fprintf(stderr, "Unknown message type: %u\n", elem->msg_type);
+         return 0; // Indicate an error
+   }
+   return offset;
+}
+
+/*******************************************************************
+ *
+ * @brief create and serialize_list fapi_api_queue_elem_t list
+ *
+ * @details
+ *
+ *    Function : create_and_serialize_list
+ *
+ *    Functionality: create and serialize_list fapi_api_queue_elem_t 
+ *            list
+ *
+ * @params[in] uint8_t *buffer, p_fapi_api_queue_elem_t headerElem
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+size_t create_and_serialize_list(uint8_t *buffer, p_fapi_api_queue_elem_t headerElem) 
+{
+   size_t total_size = 0;
+   size_t elem_size;
+
+   // Serialize the linked list
+   p_fapi_api_queue_elem_t current = headerElem;
+   while (current != NULL) {
+      elem_size = serialize_queue_elem(current, buffer + total_size);
+      if (elem_size == 0) {
+         return 0; // Error during serialization
+      }
+      total_size += elem_size;
+      current = current->p_next;
+   }
+
+   return total_size;
+}
+
+/*******************************************************************
+ *
+ * @brief send p_fapi_api_queue_elem_t  to fapi decoder
+ *
+ * @details
+ *
+ *    Function : sendFapiQueueElemToFapiDecoder
+ *
+ *    Functionality: send p_fapi_api_queue_elem_t  to fapi decoder
+ *
+ * @params[in] p_fapi_api_queue_elem_t headerElem
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ * ****************************************************************/
+int sendFapiQueueElemToFapiDecoder(p_fapi_api_queue_elem_t headerElem) 
+{
+   int sockfd;
+   struct sockaddr_in servaddr;
+   size_t buffer_size = 65536; // Define your desired buffer size
+   uint8_t *buffer = malloc(buffer_size);
+
+   // Create socket
+   sockfd = socket(AF_INET, SOCK_STREAM, 0);
+   if (sockfd < 0) {
+      perror("Socket creation failed");
+      exit(EXIT_FAILURE);
+   }
+
+   // Setup server address
+   servaddr.sin_family = AF_INET;
+   servaddr.sin_addr.s_addr = inet_addr(SERVER_IP);
+   servaddr.sin_port = htons(PORT);
+
+   // Connect to server
+   if (connect(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0) {
+      perror("Connection failed");
+      close(sockfd);
+      exit(EXIT_FAILURE);
+   }
+
+   // Create and serialize the linked list
+   size_t data_size = create_and_serialize_list(buffer, headerElem);
+   if (data_size == 0) {
+      fprintf(stderr, "Failed to create and serialize list\n");
+      close(sockfd);
+      exit(EXIT_FAILURE);
+   }
+
+   // Send data to server
+   if (send(sockfd, buffer, data_size, 0) != data_size) {
+      perror("Send failed");
+      close(sockfd);
+      exit(EXIT_FAILURE);
+   }
+
+   printf("Data sent successfully\n");
+
+   // Close socket
+   close(sockfd);
+   return 0;
+}
+#endif
 
 #ifdef INTEL_WLS_MEM
 
@@ -375,6 +633,27 @@ uint8_t LwrMacSendToL1(void *msg)
 #else
    p_fapi_api_queue_elem_t nextMsg = NULLP;
 
+#ifdef FAPI_DECODER
+   uint8_t msgType=0;
+   uint16_t msgSize =0;
+   currMsg = (p_fapi_api_queue_elem_t)msg;
+   while(currMsg)
+   {
+      nextMsg = currMsg->p_next;
+      msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
+      if((currMsg->msg_type != FAPI_VENDOR_MSG_HEADER_IND) && (currMsg->msg_type != FAPI_VENDOR_MESSAGE))
+      {
+          calculateFapiMsgSize(currMsg->msg_type, &msgSize);
+      }
+      currMsg = nextMsg;
+   }
+   currMsg = (p_fapi_api_queue_elem_t)msg;
+   
+   if(msgSize != 0)
+   {
+      sendFapiQueueElemToFapiDecoder(currMsg);
+   }
+#endif
    /* FAPI header and vendor specific msgs are freed here. Only 
     * the main FAPI messages are sent to phy stub */
    currMsg = (p_fapi_api_queue_elem_t)msg;
