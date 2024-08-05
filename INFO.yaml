@@ -12,8 +12,8 @@ project_lead: &oran_o_du_l2_ptl
 primary_contact: *oran_o_du_l2_ptl
 issue_tracking:
     type: 'jira'
-    url: 'https://jira.o-ran-sc.org/projects/'
-    key: 'o_du_l2'
+    url: 'https://lf-o-ran-sc.atlassian.net/jira/projects'
+    key: 'ODUHIGH'
 mailing_list:
     type: 'groups.io'
     url: 'technical-discuss@lists.o-ran-sc.org'

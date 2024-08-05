@@ -6017,6 +6017,7 @@ void printDuConfig()
    DU_LOG("Number of Antenna Ports %d\n", precodCfg->numAntPorts);
 
    DU_LOG(" ** MAC Cell Config : BEAM FORMING  CFG ** \n");
+   DU_LOG(" ** MAC Cell Config1234 : BEAM FORMING  CFG ** \n");
    beamFormingCfg = &macCellCfg ->beamCfg;
    DU_LOG("Number of Beams %d\n", beamFormingCfg->numOfBeams);
    DU_LOG("Number of Tx RUs %d\n", beamFormingCfg->numTxRUs);
