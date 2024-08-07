@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c27c5dfa_4700bca4",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 4
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T11:42:53Z",
+      "side": 1,
+      "message": "why const?",
+      "range": {
+        "startLine": 629,
+        "startChar": 25,
+        "endLine": 629,
+        "endChar": 31
+      },
+      "revId": "45c581c610170d64fc93c702f214ac4224254283",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
