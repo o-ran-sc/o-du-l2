@@ -45,6 +45,237 @@ CmLListCp wlsBlockToFreeList[WLS_MEM_FREE_PRD];
 uint8_t rgClHndlCfgReq ARGS((void *msg));
 void l1ProcessFapiRequest ARGS((uint8_t msgType, uint32_t msgLen, void *msg));
 
+#ifdef FAPI_DECODER
+int sockfd=0;
+
+/*******************************************************************
+ *
+ * @brief copy the fapi msg in a buffer and send it to fapi decoder
+ *
+ * @details
+ *
+ *    Function : processFapiMsg
+ *
+ *    Functionality:
+ *      copy the fapi msg in a buffer and send it to fapi decoder
+ *
+ * @params[in] p_fapi_api_queue_elem_t msg
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
+
+uint8_t processFapiMsg(p_fapi_api_queue_elem_t msg) 
+{
+    uint8_t *buffer=NULLP;
+    uint16_t  buffer_size=0;
+    switch (msg->msg_type) 
+    {
+        case FAPI_PARAM_REQUEST:
+            {
+                buffer_size = sizeof(fapi_param_req_t);
+                LWR_MAC_ALLOC(buffer,buffer_size);
+                if(buffer == NULLP)
+                {
+                   DU_LOG("\nERROR  -->  LWR MAC : Failed to allocate memory");
+                   return RFAILED;
+                }
+                fapi_param_req_t *paramReq = (fapi_param_req_t *)(msg+1);
+                memcpy(buffer, paramReq, sizeof(fapi_param_req_t));
+            }
+            break;
+        case FAPI_CONFIG_REQUEST:
+            {
+                buffer_size = sizeof(fapi_config_req_t);
+                LWR_MAC_ALLOC(buffer,buffer_size);
+                if(buffer == NULLP)
+                {
+                   DU_LOG("\nERROR  -->  LWR MAC : Failed to allocate memory");
+                   return RFAILED;
+                }
+                fapi_config_req_t *configReq = (fapi_config_req_t *)(msg+1);
+                memcpy(buffer, configReq, sizeof(fapi_config_req_t));
+            }
+            break;
+        case FAPI_START_REQUEST:
+            {
+                buffer_size = sizeof(fapi_start_req_t);
+                LWR_MAC_ALLOC(buffer,buffer_size);
+                if(buffer == NULLP)
+                {
+                   DU_LOG("\nERROR  -->  LWR MAC : Failed to allocate memory");
+                   return RFAILED;
+                }
+                fapi_start_req_t *startReq = (fapi_start_req_t *)(msg+1);
+                memcpy(buffer, startReq, sizeof(fapi_start_req_t));
+            }
+            break;
+        case FAPI_DL_TTI_REQUEST:
+            {
+                buffer_size = sizeof(fapi_dl_tti_req_t);
+                LWR_MAC_ALLOC(buffer,buffer_size);
+                if(buffer == NULLP)
+                {
+                   DU_LOG("\nERROR  -->  LWR MAC : Failed to allocate memory");
+                   return RFAILED;
+                }
+                fapi_dl_tti_req_t *dlTtiReq = (fapi_dl_tti_req_t *)(msg+1);
+                memcpy(buffer, dlTtiReq, sizeof(fapi_dl_tti_req_t));
+            }
+            break;
+        case FAPI_TX_DATA_REQUEST:
+            {
+                buffer_size = sizeof(fapi_tx_data_req_t);
+                LWR_MAC_ALLOC(buffer,buffer_size);
+                if(buffer == NULLP)
+                {
+                   DU_LOG("\nERROR  -->  LWR MAC : Failed to allocate memory");
+                   return RFAILED;
+                }
+                fapi_tx_data_req_t *txDataReq = (fapi_tx_data_req_t *)(msg+1);
+                memcpy(buffer, txDataReq, sizeof(fapi_tx_data_req_t));
+            }
+            break;
+        case FAPI_STOP_REQUEST:
+            {
+                buffer_size = sizeof(fapi_stop_req_t);
+                LWR_MAC_ALLOC(buffer,buffer_size);
+                if(buffer == NULLP)
+                {
+                   DU_LOG("\nERROR  -->  LWR MAC : Failed to allocate memory");
+                   return RFAILED;
+                }
+                fapi_stop_req_t *stopReq = (fapi_stop_req_t *)(msg+1);
+                memcpy(buffer, stopReq, sizeof(fapi_stop_req_t));
+            }
+            break;
+        case FAPI_UL_DCI_REQUEST:
+            {
+                buffer_size = sizeof(fapi_ul_dci_req_t);
+                LWR_MAC_ALLOC(buffer,buffer_size);
+                if(buffer == NULLP)
+                {
+                   DU_LOG("\nERROR  -->  LWR MAC : Failed to allocate memory");
+                   return RFAILED;
+                }
+                fapi_ul_dci_req_t *ulDciReq = (fapi_ul_dci_req_t *)(msg+1);
+                memcpy(buffer, ulDciReq, sizeof(fapi_ul_dci_req_t));
+            }
+            break;
+        case FAPI_UL_TTI_REQUEST:
+            {
+                buffer_size = sizeof(fapi_ul_tti_req_t);
+                LWR_MAC_ALLOC(buffer,buffer_size);
+                if(buffer == NULLP)
+                {
+                   DU_LOG("\nERROR  -->  LWR MAC : Failed to allocate memory");
+                   return RFAILED;
+                }
+                fapi_ul_tti_req_t *ulTtiReq = (fapi_ul_tti_req_t *)(msg+1);
+                memcpy(buffer, ulTtiReq, sizeof(fapi_ul_tti_req_t));
+            }
+            break;
+        default:
+            fprintf(stderr, "ERROR: Invalid message type[%d] received\n", msg->msg_type);
+            LWR_MAC_FREE(buffer,buffer_size);
+            return RFAILED;
+    }
+
+    printf("Processed request of type %d, buffer size: %d\n", msg->msg_type, buffer_size);
+
+    if (send(sockfd, buffer, buffer_size, 0) < 0) 
+    {
+       perror("ERROR sending message");
+       LWR_MAC_FREE(buffer,buffer_size);
+       return RFAILED;
+    }
+    LWR_MAC_FREE(buffer,buffer_size);
+    return ROK;
+}
+
+/*******************************************************************
+ *
+ * @brief create socket and connect with fapi decoder
+ *
+ * @details
+ *
+ *    Function : create_socket
+ *
+ *    Functionality:
+ *      create socket and connect with fapi decoder
+ *
+ * @params[in] server ip and port
+ * @return sockfd
+ *
+ * ****************************************************************/
+
+
+int create_socket(const char *server_ip, int port) 
+{
+    struct sockaddr_in serv_addr;
+
+    // Create socket
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) {
+        perror("ERROR opening socket");
+        return -1;
+    }
+
+    // Set up the server address struct
+    bzero((char *)&serv_addr, sizeof(serv_addr));
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(port);
+    serv_addr.sin_addr.s_addr = inet_addr(server_ip);
+
+    // Connect to server
+    if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+        perror("ERROR connecting");
+        close(sockfd);
+        return -1;
+    }
+
+    return sockfd;
+}
+
+/*******************************************************************
+ *
+ * @brief Build and send fapi msg to fapi decoder
+ *
+ * @details
+ *
+ *    Function : buildandsendfapimsgtofapidecoder
+ *
+ *    Functionality:
+ *      build and send fapi msg to fapi decoder
+ *
+ * @params[in] p_fapi_api_queue_elem_t msg
+ * @return ROK/RFAILED
+ *
+ * ****************************************************************/
+
+
+uint8_t buildandsendfapimsgtofapidecoder(p_fapi_api_queue_elem_t msg) 
+{
+    // Create and connect socket
+    if(sockfd==0)
+    {
+       sockfd = create_socket("127.0.0.1", 8080);
+       if(sockfd<=0)
+       {
+          DU_LOG("\nERROR  -->  LWR MAC : Failed to establish connection");
+          return RFAILED;
+       }
+    }
+    // Process the message (for demonstration purposes)
+    if(processFapiMsg(msg) != ROK)
+    {
+       DU_LOG("\nERROR  -->  LWR MAC : Failed to establish connection");
+       return RFAILED;
+    }
+
+    return ROK;
+}
+#endif
+
 #ifdef INTEL_WLS_MEM
 
 /*******************************************************************
@@ -385,7 +616,10 @@ uint8_t LwrMacSendToL1(void *msg)
       if((currMsg->msg_type != FAPI_VENDOR_MSG_HEADER_IND) && \
 	    (currMsg->msg_type != FAPI_VENDOR_MESSAGE))
       {
-	 l1ProcessFapiRequest(currMsg->msg_type, msgLen, currMsg);
+#ifdef FAPI_DECODER
+         buildandsendfapimsgtofapidecoder(currMsg);      
+#endif
+         l1ProcessFapiRequest(currMsg->msg_type, msgLen, currMsg);
       }
       else
       {
