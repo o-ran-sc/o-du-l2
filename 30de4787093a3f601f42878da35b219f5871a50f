@@ -1,0 +1,353 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbb42fde_26585166",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "n",
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e62dca8f_fad78c12",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "did u check the compilation.. I dont see these structure element in master branch and also OAI_TESTING flag?",
+      "range": {
+        "startLine": 27,
+        "startChar": 30,
+        "endLine": 27,
+        "endChar": 31
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ca4e0f2_e1830016",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "below two printf is redundant and can be replaced by decode_fapi_tl",
+      "range": {
+        "startLine": 48,
+        "startChar": 35,
+        "endLine": 48,
+        "endChar": 38
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "721160b6_15987a03",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 59,
+        "startChar": 32,
+        "endLine": 59,
+        "endChar": 34
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bf88879_f7fc42e1",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "why 4?",
+      "range": {
+        "startLine": 64,
+        "startChar": 29,
+        "endLine": 64,
+        "endChar": 30
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "997b3592_52bb330d",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "same as above .. direct function call is enough. Please check for all instances where data type is \"fapi_tl_t\"",
+      "range": {
+        "startLine": 77,
+        "startChar": 35,
+        "endLine": 77,
+        "endChar": 38
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7343071f_254fec36",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "again pls use direct functions \"decode_fapi_config_tlv\"",
+      "range": {
+        "startLine": 134,
+        "startChar": 14,
+        "endLine": 134,
+        "endChar": 23
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed771cd4_59eb6898",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "pls use function decoding fapi_uint16_tlv_t",
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d419c891_a8476ee5",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "Add the string as PrecoderWeightRe",
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a944dc9_bd6b519a",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "data type is int16",
+      "range": {
+        "startLine": 360,
+        "startChar": 26,
+        "endLine": 360,
+        "endChar": 27
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca7cab35_bb5dee35",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "data type is int16. use %d",
+      "range": {
+        "startLine": 361,
+        "startChar": 39,
+        "endLine": 361,
+        "endChar": 40
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9d86856_c1496e35",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "use decode_fapi_pmi_bfi instead of this and next printf",
+      "range": {
+        "startLine": 714,
+        "startChar": 25,
+        "endLine": 714,
+        "endChar": 27
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "249d50fd_db8a80c0",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "what is zu?",
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab9ad24a_345c32d4",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1048,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "remove these OAI testing flag. Also no need to print Padding field",
+      "range": {
+        "startLine": 1048,
+        "startChar": 8,
+        "endLine": 1048,
+        "endChar": 19
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "626e43d5_949da940",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1137,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "fapi_ul_rx_bmform_pdu_t beamforming;  missed this param",
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8617058f_19c8cda2",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1181,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "remove this whole padding print",
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b84e0070_3efebf9f",
+        "filename": "tools/Fapi_Decoder/nr5g_fapi_internal.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T08:30:48Z",
+      "side": 1,
+      "message": "nr5g_fapi_pucch_resources_t;   \u003e\u003e print this structure",
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
