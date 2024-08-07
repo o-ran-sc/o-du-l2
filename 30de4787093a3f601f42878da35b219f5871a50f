@@ -41,6 +41,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fb6c3c3_143406bb",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e62dca8f_fad78c12",
+      "range": {
+        "startLine": 27,
+        "startChar": 30,
+        "endLine": 27,
+        "endChar": 31
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ca4e0f2_e1830016",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-08-07T08:30:48Z",
       "side": 1,
       "message": "below two printf is redundant and can be replaced by decode_fapi_tl",
+      "range": {
+        "startLine": 48,
+        "startChar": 35,
+        "endLine": 48,
+        "endChar": 38
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67ac0734_b80f7b80",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "these two are for 2 different structures present in fapi_interface.h\n typedef struct {\n     fapi_tl_t tl;\n     uint8_t value;          // TLV with byte value\n     uint8_t rsv[3];         // Per 5g FAPI 3.3.1.4 the length of the value parameter must be 32 bits\n } fapi_uint8_tlv_t;\n typedef struct {\n     fapi_tl_t tl;\n     uint8_t *value;         // TLV with unsigned 32-bit value\n } fapi_uint8_ptr_tlv_t;",
+      "parentUuid": "0ca4e0f2_e1830016",
       "range": {
         "startLine": 48,
         "startChar": 35,
@@ -87,6 +135,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f667542_2865ecfb",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "same as above",
+      "parentUuid": "721160b6_15987a03",
+      "range": {
+        "startLine": 59,
+        "startChar": 32,
+        "endLine": 59,
+        "endChar": 34
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bf88879_f7fc42e1",
@@ -100,6 +172,30 @@
       "writtenOn": "2024-08-07T08:30:48Z",
       "side": 1,
       "message": "why 4?",
+      "range": {
+        "startLine": 64,
+        "startChar": 29,
+        "endLine": 64,
+        "endChar": 30
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56ddfd7a_047386d6",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "not required",
+      "parentUuid": "3bf88879_f7fc42e1",
       "range": {
         "startLine": 64,
         "startChar": 29,
@@ -133,6 +229,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c1f79ed_3e997a4a",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "997b3592_52bb330d",
+      "range": {
+        "startLine": 77,
+        "startChar": 35,
+        "endLine": 77,
+        "endChar": 38
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7343071f_254fec36",
@@ -156,6 +276,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6071e8eb_eb6443c4",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7343071f_254fec36",
+      "range": {
+        "startLine": 134,
+        "startChar": 14,
+        "endLine": 134,
+        "endChar": 23
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed771cd4_59eb6898",
@@ -169,6 +313,24 @@
       "writtenOn": "2024-08-07T08:30:48Z",
       "side": 1,
       "message": "pls use function decoding fapi_uint16_tlv_t",
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b92b8b85_8c289991",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed771cd4_59eb6898",
       "revId": "30de4787093a3f601f42878da35b219f5871a50f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -213,6 +375,48 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "756c0503_45ab09d4",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a944dc9_bd6b519a",
+      "range": {
+        "startLine": 360,
+        "startChar": 26,
+        "endLine": 360,
+        "endChar": 27
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62982005_8afef948",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d419c891_a8476ee5",
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca7cab35_bb5dee35",
@@ -226,6 +430,30 @@
       "writtenOn": "2024-08-07T08:30:48Z",
       "side": 1,
       "message": "data type is int16. use %d",
+      "range": {
+        "startLine": 361,
+        "startChar": 39,
+        "endLine": 361,
+        "endChar": 40
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e94ede08_2b87d83f",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca7cab35_bb5dee35",
       "range": {
         "startLine": 361,
         "startChar": 39,
@@ -259,6 +487,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fda057a_9c1db458",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 714,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9d86856_c1496e35",
+      "range": {
+        "startLine": 714,
+        "startChar": 25,
+        "endLine": 714,
+        "endChar": 27
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "249d50fd_db8a80c0",
@@ -272,6 +524,24 @@
       "writtenOn": "2024-08-07T08:30:48Z",
       "side": 1,
       "message": "what is zu?",
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71c9fdc3_b1617bc2",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "249d50fd_db8a80c0",
       "revId": "30de4787093a3f601f42878da35b219f5871a50f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -299,6 +569,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a6330e0_b3dbdc38",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1048,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab9ad24a_345c32d4",
+      "range": {
+        "startLine": 1048,
+        "startChar": 8,
+        "endLine": 1048,
+        "endChar": 19
+      },
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "626e43d5_949da940",
@@ -312,6 +606,24 @@
       "writtenOn": "2024-08-07T08:30:48Z",
       "side": 1,
       "message": "fapi_ul_rx_bmform_pdu_t beamforming;  missed this param",
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3be39048_8d109f23",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1137,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "626e43d5_949da940",
       "revId": "30de4787093a3f601f42878da35b219f5871a50f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -333,6 +645,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40f386c7_d768dde0",
+        "filename": "tools/Fapi_Decoder/fapi_interface.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 1181,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8617058f_19c8cda2",
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b84e0070_3efebf9f",
@@ -346,6 +676,24 @@
       "writtenOn": "2024-08-07T08:30:48Z",
       "side": 1,
       "message": "nr5g_fapi_pucch_resources_t;   \u003e\u003e print this structure",
+      "revId": "30de4787093a3f601f42878da35b219f5871a50f",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57b09f3e_0d1f188f",
+        "filename": "tools/Fapi_Decoder/nr5g_fapi_internal.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-07T11:38:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b84e0070_3efebf9f",
       "revId": "30de4787093a3f601f42878da35b219f5871a50f",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
