@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afff7b3f_0d680c1f",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T04:13:30Z",
+      "side": 1,
+      "message": "as stated in my previous comment, if we directly pass rrmPolicy in this funtion, we dont need this loop. Please check",
+      "range": {
+        "startLine": 323,
+        "startChar": 9,
+        "endLine": 323,
+        "endChar": 17
+      },
+      "revId": "6e615200b478dd1fd722bf4f1840473ccb8291af",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fd932cc_7cdfc30c",
+        "filename": "src/5gnrsch/sch_utils.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-07T04:13:30Z",
+      "side": 1,
+      "message": "I think we can remove this table as we have merged it in the below table i.e. \"fiveQiTable\"",
+      "range": {
+        "startLine": 770,
+        "startChar": 9,
+        "endLine": 770,
+        "endChar": 23
+      },
+      "revId": "6e615200b478dd1fd722bf4f1840473ccb8291af",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
