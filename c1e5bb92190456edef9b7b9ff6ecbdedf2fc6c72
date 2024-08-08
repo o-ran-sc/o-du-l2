@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c96a2704_63cf35ed",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-08T08:41:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34651997_98300ad4",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 9
+      },
+      "revId": "c1e5bb92190456edef9b7b9ff6ecbdedf2fc6c72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd4a9690_ce6dcf54",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-08-08T08:36:00Z",
       "side": 1,
       "message": "not using this variable?",
+      "range": {
+        "startLine": 165,
+        "startChar": 9,
+        "endLine": 165,
+        "endChar": 25
+      },
+      "revId": "c1e5bb92190456edef9b7b9ff6ecbdedf2fc6c72",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35137f89_261dbc0b",
+        "filename": "tools/Fapi_Decoder/decoder.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-08T08:41:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd4a9690_ce6dcf54",
       "range": {
         "startLine": 165,
         "startChar": 9,
