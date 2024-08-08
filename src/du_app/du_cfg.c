@@ -4393,7 +4393,7 @@ uint8_t parseThreadAffinity(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, ThreadIn
       {
          threads->egtpCoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 #ifdef THREAD_AFFINITY
-         ODU_SET_THREAD_AFFINITY(&threads->egtpSTskId, SS_AFFINITY_MODE_EXCL, threads->egtpCoreId, 0);
+         ODU_SET_THREAD_AFFINITY(&threads->egtpSTskId, SS_AFFINITY_MODE_SPECIFIC, threads->egtpCoreId, 0);
 #endif
       }
 
@@ -4442,7 +4442,7 @@ uint8_t parseThreadAffinity(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, ThreadIn
       {
          threads->udpP7CoreId = atoi((char *)xmlNodeListGetString(doc, cur->xmlChildrenNode, 1));
 #ifdef THREAD_AFFINITY
-         ODU_SET_THREAD_AFFINITY(&threads->udpP7STskId, SS_AFFINITY_MODE_EXCL, threads->udpP7CoreId, 0);
+         ODU_SET_THREAD_AFFINITY(&threads->udpP7STskId, SS_AFFINITY_MODE_SPECIFIC, threads->udpP7CoreId, 0);
 #endif
       }
       if ((!xmlStrcmp(cur->name, (const xmlChar *)"NFAPI_P7_CLK_CORE")) && (cur->ns == ns))

@@ -1207,6 +1207,7 @@ uint8_t  pnfP7MsgHandler(Buffer *mBuf)
          ret = pnfUlTtiReq(mBuf);
          break;
       }
+      #if 0
       case FAPI_TX_DATA_REQUEST:
       {
          DU_LOG("\nINFO   --> NFAPI_PNF: TX_DATA_REQ recevied.");
@@ -1217,6 +1218,7 @@ uint8_t  pnfP7MsgHandler(Buffer *mBuf)
          DU_LOG("\nINFO   --> NFAPI_PNF: UL_DCI_REQ recevied.");
          break;
       }
+      #endif
       default:
       {
          DU_LOG("ERROR  --> NFAPI_PNF: Wrong MSGID of NFAPI P7 Message:%d",msgHdr.msg_id);

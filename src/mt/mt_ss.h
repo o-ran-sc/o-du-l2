@@ -323,7 +323,7 @@ that are configured below.
 #ifdef XEON_SPECIFIC_CHANGES
 #define MT_HEAP_SIZE            6194304U
 #else
-#define MT_HEAP_SIZE            1004800U /*PAL FIX: 4MB to 6MB flexran */
+#define MT_HEAP_SIZE            2004800U /*PAL FIX: 4MB to 6MB flexran */
 #endif
 #endif
 
