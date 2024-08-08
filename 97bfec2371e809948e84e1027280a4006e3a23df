@@ -1,0 +1,289 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36154729_c897557a",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "the above two #defines are not used anywhere. we can use these instead of hardcoding in the code",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 18
+      },
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46d260cb_3101fe07",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "add function description in all the new func added",
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cdf6147_1c4b7a9f",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "please have a return check ..",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 5
+      },
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dbc1cdb_34a146f4",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "since we are no longer using malloc , size_t is not required. cant we replace with uint16 or uint32?",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 11
+      },
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f8cfb32_b25aba23",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "LWR_MAC_FREE",
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cda73673_d3c11602",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "reinitalize sockFd here if sockfd will be used to check the socket creation",
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6ea569b_ec7387e1",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "Pls check if we need to exit the program.. we can return failure and other process can continue as is.",
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96cfa981_d4c9dbe9",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "again no need to exit the program. we can work with RFAILED return",
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9304b49_1f43fd2f",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "instead of having a separate variable decodecount to check whether socket is created or not., Cant we check using sockfd?",
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "831b44c0_5206db97",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "please check whether socket creation was successful or not",
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77e1acc6_7989c878",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "Ip address can be used in consistent with what we use for DUAPP. Is there any specific reason for this IP?",
+      "range": {
+        "startLine": 176,
+        "startChar": 31,
+        "endLine": 176,
+        "endChar": 40
+      },
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeb81b2e_958e0cf7",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "always use ROK, RFAILED as return",
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba4b9b34_f7afbd19",
+        "filename": "src/5gnrmac/lwr_mac_phy.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 527,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "why are you typecasting here.? I think not needed",
+      "range": {
+        "startLine": 527,
+        "startChar": 43,
+        "endLine": 527,
+        "endChar": 66
+      },
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d600a1a2_f85afb54",
+        "filename": "tools/Fapi_Decoder/decoder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "here return failure should be there so that in the parent function, we can exit the infinite loop",
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0defcf52_611571f1",
+        "filename": "tools/Fapi_Decoder/decoder.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-08T04:28:38Z",
+      "side": 1,
+      "message": "why we need two infinite while loop. We can exit the outer loop once connecttion is accepted right?",
+      "revId": "97bfec2371e809948e84e1027280a4006e3a23df",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
