@@ -38,9 +38,6 @@
 #include "pnf_stub_p7_udp.h"
 #include "pnf_stub.h"
 
-extern PnfGlobalCb pnfCb;
-extern uint8_t  NUM_SLOTS_PER_SUBFRAME;
-
 /*********************************************************************************
  * @Brief: Filling of Ul Node Sync
  *

@@ -119,7 +119,7 @@ typedef struct nfapiVnfDb
 }NfapiVnfDb;
 
 /* Global variables */
-NfapiVnfDb vnfDb;
+extern NfapiVnfDb vnfDb;
 
 void nFapiVnfInit();
 typedef uint8_t (*nFapiVnfFsmHdlr)(nFapi_p5_hdr *, nFapi_msg_header *, void *);

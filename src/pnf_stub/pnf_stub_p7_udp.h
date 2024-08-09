@@ -37,7 +37,7 @@ typedef struct pnfP7UdpGlobalCb
    uint16_t     gCntMsg; 
 }PnfP7UdpGlobalCb;
 
-PnfP7UdpGlobalCb pnfP7Cb;
+extern PnfP7UdpGlobalCb pnfP7Cb;
 
 uint8_t pnfP7UdpActvInit();
 uint8_t pnfP7UdpCfgReq();

@@ -29,6 +29,8 @@
 #include "mac_utils.h"
 #include "lwr_mac_fsm.h"
 
+NfapiVnfDb vnfDb;
+
 /*******************************************************************
  *
  * @brief Initalization of VNF Database

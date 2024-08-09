@@ -38,9 +38,9 @@
 #include "pnf_stub.h"
 #include "pnf_stub_p5_msg_hdl.h"
 
-extern uint32_t PER_TTI_TIME_USEC;
-extern uint8_t  NUM_SLOTS_PER_SUBFRAME;
-extern PnfGlobalCb pnfCb;
+uint32_t PER_TTI_TIME_USEC;
+uint8_t  NUM_SLOTS_PER_SUBFRAME;
+PnfGlobalCb pnfCb;
 
 void init_log()
 {

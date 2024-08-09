@@ -41,8 +41,8 @@
 #include "mac_utils.h"
 #include "nfapi_p7_msg_hdl.h"
 
-extern uint32_t PER_TTI_TIME_USEC;
-extern uint8_t  NUM_SLOTS_PER_SUBFRAME;
+uint32_t PER_TTI_TIME_USEC;
+uint8_t  NUM_SLOTS_PER_SUBFRAME;
 
 /**************************************************************************
  * @brief Task Initiation callback function. 

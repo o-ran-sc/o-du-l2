@@ -27,6 +27,7 @@
 
 uint8_t sockType;
 uint8_t protType;
+PnfP7UdpGlobalCb pnfP7Cb;
 
 /**************************************************************************
  * @brief Task Initiation callback function. 

@@ -111,8 +111,8 @@
 #define CONFDC_LEVEL_BAD  1
 #define SLOT_DELAY        3
 
-uint32_t PER_TTI_TIME_USEC;
-uint8_t  NUM_SLOTS_PER_SUBFRAME;
+extern uint32_t PER_TTI_TIME_USEC;
+extern uint8_t  NUM_SLOTS_PER_SUBFRAME;
 
 typedef enum
 {
@@ -183,7 +183,7 @@ typedef struct pnfGlobalCb
    //DuDb         duInfo[MAX_DU_SUPPORTED]; /*TODO: VNF Database can be added*/
 }PnfGlobalCb;
 
-PnfGlobalCb pnfCb;
+extern PnfGlobalCb pnfCb;
 
 uint8_t p5MsgHandlerAtPnf(Buffer *mBuf);
 void nfapiFillP5Hdr(Buffer *mBuf);

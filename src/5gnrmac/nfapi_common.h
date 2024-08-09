@@ -201,8 +201,8 @@
 }
 
 /*Global Variable*/
-uint32_t PER_TTI_TIME_USEC;
-uint8_t  NUM_SLOTS_PER_SUBFRAME;
+extern uint32_t PER_TTI_TIME_USEC;
+extern uint8_t  NUM_SLOTS_PER_SUBFRAME;
 
 /*Common Functions*/
 void nfapiFillP5Hdr(Buffer *mBuf);

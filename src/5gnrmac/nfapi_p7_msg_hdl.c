@@ -31,8 +31,6 @@
 #include "nfapi_common.h"
 #include "nfapi_udp_p7.h"
 
-extern NfapiVnfDb vnfDb;
-
 /***********************************************************************
  *
  * @brief Pack parameters of Precoding and Beamforming

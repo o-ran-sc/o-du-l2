@@ -33,8 +33,6 @@
 #ifdef NFAPI_ENABLED
 #include "nfapi_interface.h"
 #include "nfapi_vnf_fsm.h"
-
-extern NfapiVnfDb vnfDb;
 #endif
 
 uint8_t ssbPeriodicity[6] = {5, 10, 20, 40, 80, 160};
