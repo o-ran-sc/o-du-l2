@@ -178,10 +178,35 @@ uint8_t fillAddrLst(CmInetNetAddrLst *addrLstPtr, SctpIpAddr *ipAddr)
  *******************************************************************************/
 uint8_t fillDestNetAddr(CmInetNetAddr *destAddrPtr, SctpIpAddr *dstIpPtr)
 {
-   /* Filling destination address */
-   destAddrPtr->type = CM_INET_IPV4ADDR_TYPE;
-   destAddrPtr->u.ipv4NetAddr = CM_INET_NTOH_UINT32(dstIpPtr->ipV4Addr);
-   return ROK;
+	/* Filling destination address */
+	destAddrPtr->type = CM_INET_IPV4ADDR_TYPE;
+	destAddrPtr->u.ipv4NetAddr = CM_INET_NTOH_UINT32(dstIpPtr->ipV4Addr);
+	return ROK;
+}
+void fillDestNetAddrWithCm(CmInetNetAddr *destAddrPtr, CmInetAddr  *peerAddr)
+{
+	destAddrPtr->type = CM_INET_IPV4ADDR_TYPE;
+	destAddrPtr->u.ipv4NetAddr = peerAddr->address;
+}
+void printIpFromUint32(CmInetNetAddr *destAddrPtr, uint32_t ip) 
+{
+	struct in_addr addr;
+	char ip_str[INET_ADDRSTRLEN];
+	CmInetIpAddr duIp;
+
+	// Convert uint32_t to struct in_addr
+	addr.s_addr = htonl(ip);
+
+	// Convert struct in_addr to human-readable IP address
+	if(inet_ntop(AF_INET, &addr, ip_str, sizeof(ip_str)) == NULL) 
+	{
+		perror("inet_ntop");
+		return;
+	}
+
+	duIp = inet_addr(ip_str);
+		DU_LOG("\n ########################### duip %s duIp %lu  ###############",ip_str, duIp);
+	/* Filling destination address */
 }
 
 /******************************************************************************
@@ -208,7 +233,40 @@ uint8_t sctpStartReq()
    CmInetFd sockFd;
 
    socket_type = CM_INET_STREAM;
+   if((ret = cmInetSocket(socket_type, &sctpCb.f1LstnSockFd, IPPROTO_SCTP) != ROK))
+   {
+	   DU_LOG("\nERROR  -->  SCTP : Socket[%d] coudnt open for listening", sctpCb.f1LstnSockFd.fd);
+   }
+   else if((ret = cmInetSctpBindx(&sctpCb.f1LstnSockFd, &sctpCb.localAddrLst, sctpCb.sctpCfg.f1SctpInfo.port)) != ROK)
+   {
+	   DU_LOG("\nERROR  -->  SCTP: Binding failed at CU");
+   }
+   else if(ret = cmInetListen(&sctpCb.f1LstnSockFd, 1) != ROK)
+   {
+	   DU_LOG("\nERROR  -->  SCTP : Listening on socket failed");
+	   cmInetClose(&sctpCb.f1LstnSockFd);
+	   return RFAILED;
+   }
+   else
+   {
+	   DU_LOG("\nDOne -->  SCTP PBORLA");
+	   for(assocIdx=0; assocIdx < sctpCb.numAssoc; assocIdx++)
+	   {
+		   if(sctpCb.assocCb[assocIdx].intf == F1_INTERFACE)
+		   {
+			   if((ret = sctpAccept(&sctpCb.f1LstnSockFd, &sctpCb.assocCb[assocIdx])) != ROK)
+			   {
+				   DU_LOG("\nERROR  -->  SCTP: Unable to accept the connection at CU");
+			   }
+			   printIpFromUint32(&sctpCb.assocCb[assocIdx].destIpNetAddr,  sctpCb.assocCb[assocIdx].peerAddr.address);
+			   //memcpy(sctpCb.assocCb[assocIdx].destIpNetAddr.u.ipv4NetAddr, &sctpCb.assocCb[assocIdx].peerAddr.u.ipv4Addr, sizeof(CmInetIpAddr));
+			   fillDestNetAddrWithCm(&sctpCb.assocCb[assocIdx].destIpNetAddr, &sctpCb.assocCb[assocIdx].peerAddr);
+		   }
+	   }
+   }
 
+	   DU_LOG("\nERROR  -->  SCTP PBORLA");
+#if 0
    /* Establish SCTP association at XN interface */
    if(sctpCb.sctpCfg.xnSctpInfo.numDestNode)
    {
@@ -314,7 +372,7 @@ uint8_t sctpStartReq()
          }
       }
    }
-
+#endif
    if(ret == ROK)
    {
       if(sctpSockPoll() != ROK)
@@ -405,6 +463,7 @@ uint8_t sctpAccept(CmInetFd *lstnSockFd, CuSctpAssocCb *assocCb)
          break;
       }
    }
+ 
    DU_LOG("\nINFO  -->  SCTP : Connection established");
 
    return ROK;
