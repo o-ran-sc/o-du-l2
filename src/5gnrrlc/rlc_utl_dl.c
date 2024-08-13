@@ -265,6 +265,7 @@ uint8_t rlcSendDedLcDlData(Pst *post, SpId spId, RguDDatReqInfo *datReqInfo)
             lcId = datPerLch.lcId;
             for(pduIdx = 0; pduIdx < datPerLch.pdu.numPdu; pduIdx++)
             {
+               dlData->pduInfo[dlData->numPdu].rbType = RB_TYPE_DRB;
                dlData->pduInfo[dlData->numPdu].lcId = datPerLch.lcId;
 
                /* Copy Message to fixed buffer to send */

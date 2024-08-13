@@ -39,7 +39,7 @@
 #include "ShortDRXCycleLength.h"
 #include "DRX-ConfigRrc.h"
 
-RLC_BearerConfig__servedRadioBearer_PR covertRbTypeFromIntEnumToRrcEnum(RlcRbType rbType);
+RLC_BearerConfig__servedRadioBearer_PR covertRbTypeFromIntEnumToRrcEnum(RbType rbType);
 RLC_Config_PR covertRlcModeFromIntEnumToRrcEnum(RlcMode mode);
 SN_FieldLengthAM_t covertAmSnLenFromIntEnumToRrcEnum(SnLenAm snLen);
 SnLenAm covertAmSnLenFromRrcEnumToIntEnum(SN_FieldLengthAM_t snLen);

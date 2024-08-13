@@ -59,6 +59,7 @@ typedef struct rlcSchedResultRpt
 /* DL/UL data transfer */
 typedef struct rlcPduInfo
 {
+   RbType     rbType;   /*!< Radio Bearer Type */
    uint8_t    lcId;     /*!< Logical channel ID */
    uint16_t   pduLen;   /*!< PDU Length */
    uint8_t    *pduBuf;  /*!< RLC PDU buffer */

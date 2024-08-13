@@ -37,7 +37,7 @@
  * @return RRC codec enum value for RB type
  *
  * **********************************************************************/
-RLC_BearerConfig__servedRadioBearer_PR covertRbTypeFromIntEnumToRrcEnum(RlcRbType rbType)
+RLC_BearerConfig__servedRadioBearer_PR covertRbTypeFromIntEnumToRrcEnum(RbType rbType)
 {
    switch(rbType)
    {

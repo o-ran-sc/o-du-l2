@@ -56,12 +56,6 @@
 
 typedef enum
 {
-   RB_TYPE_SRB,      /* Signalling Radio Bearer */
-   RB_TYPE_DRB       /* Data Radio Bearer */
-}RlcRbType;  
-
-typedef enum
-{
    TRANSMISSION_IN_PROGRESS,
    TRANSMISSION_COMPLETE,
    TRANSMISSION_FAILED
@@ -125,10 +119,10 @@ typedef enum
 
 typedef struct rlcMaxRetransInd 
 {
-   uint16_t       cellId;
-   uint16_t       ueId;
-   RlcRbType      lcType;
-   uint8_t        lcId;
+   uint16_t    cellId;
+   uint16_t    ueId;
+   RbType      lcType;
+   uint8_t     lcId;
 }RlcMaxRetransInfo;
 
 typedef struct ulAmCfg
@@ -188,7 +182,7 @@ typedef struct umUniDirDlBearerCfg
 typedef struct rlcBearerCfg
 {
    uint8_t      rbId;
-   RlcRbType    rbType;
+   RbType       rbType;
    uint8_t      lcId;
    uint8_t      lcType;
    Snssai       *snssai; 
