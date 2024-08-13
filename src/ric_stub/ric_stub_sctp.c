@@ -114,6 +114,32 @@ uint8_t fillDestNetAddr(CmInetNetAddr *destAddrPtr, SctpIpAddr *dstIpPtr)
    return ROK;
 }
 
+void fillDestNetAddrWithCm(CmInetNetAddr *destAddrPtr, CmInetAddr  *peerAddr)
+{
+        destAddrPtr->type = CM_INET_IPV4ADDR_TYPE;
+        destAddrPtr->u.ipv4NetAddr = peerAddr->address;
+}
+void printIpFromUint32(CmInetNetAddr *destAddrPtr, uint32_t ip)
+{
+        struct in_addr addr;
+        char ip_str[INET_ADDRSTRLEN];
+        CmInetIpAddr duIp;
+
+        // Convert uint32_t to struct in_addr
+        addr.s_addr = htonl(ip);
+
+        // Convert struct in_addr to human-readable IP address
+        if(inet_ntop(AF_INET, &addr, ip_str, sizeof(ip_str)) == NULL)
+        {
+                perror("inet_ntop");
+                return;
+        }
+
+        duIp = inet_addr(ip_str);
+                DU_LOG("\n ########################### duip %s duIp %lu  ###############",ip_str, duIp);
+        /* Filling destination address */
+}
+
 /******************************************************************************
  *
  * @brief Eastablishes the Assoc Req for the received interface type
@@ -164,6 +190,11 @@ uint8_t sctpStartReq()
             {
                DU_LOG("\nERROR  -->  SCTP: Unable to accept the connection at RIC");
             }
+	    else
+	    {
+		  printIpFromUint32(&sctpCb.assocCb[assocIdx].destIpNetAddr,  sctpCb.assocCb[assocIdx].peerAddr.address);
+		  fillDestNetAddrWithCm(&sctpCb.assocCb[assocIdx].destIpNetAddr, &sctpCb.assocCb[assocIdx].peerAddr);
+	    }
          }
       }
    }
