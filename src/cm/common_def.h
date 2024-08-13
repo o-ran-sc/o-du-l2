@@ -329,6 +329,12 @@ typedef enum
    TRAVERSE_ALL
 }ActionTypeLL;
 
+typedef enum
+{
+   RB_TYPE_SRB,      /* Signalling Radio Bearer */
+   RB_TYPE_DRB       /* Data Radio Bearer */
+}RbType;  
+
 typedef struct slotTimingInfo
 {
    uint16_t cellId;

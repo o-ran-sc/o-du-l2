@@ -303,6 +303,7 @@ void rlcTmmSendToMac(RlcCb *gCb, SuId suId, RlcDlRbCb *rbCb, RguCStaIndInfo *sta
    dlData->cellId = rbCb->rlcId.cellId;
    dlData->rnti = sdu->mode.tm.rnti;
    dlData->numPdu = 1;
+   dlData->pduInfo[0].rbType = RB_TYPE_DRB;
    dlData->pduInfo[0].lcId = rbCb->lch.lChId;
 
    /* Copy Message to fixed buffer to send */

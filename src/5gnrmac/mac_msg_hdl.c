@@ -388,6 +388,20 @@ uint8_t lcId, uint16_t pduLen, uint8_t *pdu)
    ulData->slotInfo.cellId = cellId;
 
    /* Filling pdu info */
+   if(lcId < MIN_DRB_LCID)
+   {
+      ulData->pduInfo[ulData->numPdu].rbType = RB_TYPE_SRB;
+   }
+   else if(lcId <= MAX_DRB_LCID)
+   {
+      ulData->pduInfo[ulData->numPdu].rbType = RB_TYPE_DRB;
+   }
+   else
+   {
+      DU_LOG("\nERROR  --> MAC: Invalid LCID:%d thus can't forward UL DATA to RLC", lcId);
+      MAC_FREE_SHRABL_BUF(MAC_MEM_REGION, MAC_POOL, ulData, sizeof(RlcUlData));
+      return RFAILED;
+   }
    ulData->pduInfo[ulData->numPdu].lcId = lcId;
    ulData->pduInfo[ulData->numPdu].pduBuf = pdu;
    ulData->pduInfo[ulData->numPdu].pduLen = pduLen;
