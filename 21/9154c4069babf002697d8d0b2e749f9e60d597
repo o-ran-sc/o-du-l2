@@ -1,0 +1,8 @@
+Verified+1: ORAN Required GHA <releng+oran.required.gha@linuxfoundation.org>
+Code-Review+2: Priyanka Borla <pborla@radisys.com>
+Verified+1: Priyanka Borla <pborla@radisys.com>
+Submitted-by: Sangeeta Vaidhyanathan <svaidhya@radisys.com>
+Submitted-at: Tue, 13 Aug 2024 10:22:54 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/o-du/l2/+/13254
+Project: o-du/l2
+Branch: refs/heads/nFapi_dev
