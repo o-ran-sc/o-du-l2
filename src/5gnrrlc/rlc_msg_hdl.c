@@ -224,19 +224,21 @@ uint8_t fillLcCfg(RlcCb *gCb, RlcEntCfgInfo *rlcUeCfg, RlcBearerCfg *duRlcUeCfg)
       case RLC_MODE_AM:
          {
             /* DL AM INFO */
-            rlcUeCfg->m.amInfo.dl.snLen       = duRlcUeCfg->u.amCfg->dlAmCfg.snLenDl; 
-            rlcUeCfg->m.amInfo.dl.pollRetxTmr = duRlcUeCfg->u.amCfg->dlAmCfg.pollRetxTmr;
-            rlcUeCfg->m.amInfo.dl.pollPdu     = duRlcUeCfg->u.amCfg->dlAmCfg.pollPdu; 
-            rlcUeCfg->m.amInfo.dl.pollByte    = duRlcUeCfg->u.amCfg->dlAmCfg.pollByte; 
-            rlcUeCfg->m.amInfo.dl.maxRetx     = duRlcUeCfg->u.amCfg->dlAmCfg.maxRetxTh;
+            /*Reversal storage becuase gNB's RLC tx side(DL) will be polling and Rx entity(UL)
+             * will be sending status*/
+            rlcUeCfg->m.amInfo.dl.snLen       = duRlcUeCfg->u.amCfg->ulAmCfg.snLenDl; 
+            rlcUeCfg->m.amInfo.dl.pollRetxTmr = duRlcUeCfg->u.amCfg->ulAmCfg.pollRetxTmr;
+            rlcUeCfg->m.amInfo.dl.pollPdu     = duRlcUeCfg->u.amCfg->ulAmCfg.pollPdu; 
+            rlcUeCfg->m.amInfo.dl.pollByte    = duRlcUeCfg->u.amCfg->ulAmCfg.pollByte; 
+            rlcUeCfg->m.amInfo.dl.maxRetx     = duRlcUeCfg->u.amCfg->ulAmCfg.maxRetxTh;
 
             /* UL AM INFO */
             lChRbIdx++;   //lChRbIdx = 1, indicates UL AM
             rlcUeCfg->lCh[lChRbIdx].lChId    = duRlcUeCfg->lcId;   
             rlcUeCfg->lCh[lChRbIdx].type     = duRlcUeCfg->lcType;
-            rlcUeCfg->m.amInfo.ul.snLen      = duRlcUeCfg->u.amCfg->ulAmCfg.snLenUl; 
-            rlcUeCfg->m.amInfo.ul.staProhTmr = duRlcUeCfg->u.amCfg->ulAmCfg.statProhTmr;
-            rlcUeCfg->m.amInfo.ul.reAsmblTmr   = duRlcUeCfg->u.amCfg->ulAmCfg.reAssemTmr;
+            rlcUeCfg->m.amInfo.ul.snLen      = duRlcUeCfg->u.amCfg->dlAmCfg.snLenUl; 
+            rlcUeCfg->m.amInfo.ul.staProhTmr = duRlcUeCfg->u.amCfg->dlAmCfg.statProhTmr;
+            rlcUeCfg->m.amInfo.ul.reAsmblTmr   = duRlcUeCfg->u.amCfg->dlAmCfg.reAssemTmr;
             break;
          }
       case RLC_MODE_UM:
