@@ -1457,16 +1457,16 @@ uint8_t updateDuMacUeCfg(uint16_t cellId, uint8_t gnbDuUef1apId, uint16_t crnti,
 void fillDefaultAmInfo(AmBearerCfg *amCfg)
 {
    /* DL AM */
-   amCfg->dlAmCfg.snLenDl     = AM_SIZE_12;
-   amCfg->dlAmCfg.pollRetxTmr = T_POLL_RETRANSMIT_VAL;
-   amCfg->dlAmCfg.pollPdu     = POLL_PDU_VAL;
-   amCfg->dlAmCfg.pollByte    = POLL_BYTE_VAL;
-   amCfg->dlAmCfg.maxRetxTh   = MAX_RETX_THRESHOLD_VAL;   
+   amCfg->ulAmCfg.snLenDl     = AM_SIZE_12;
+   amCfg->ulAmCfg.pollRetxTmr = T_POLL_RETRANSMIT_VAL;
+   amCfg->ulAmCfg.pollPdu     = POLL_PDU_VAL;
+   amCfg->ulAmCfg.pollByte    = POLL_BYTE_VAL;
+   amCfg->ulAmCfg.maxRetxTh   = MAX_RETX_THRESHOLD_VAL;   
  
    /* UL AM */
-   amCfg->ulAmCfg.snLenUl     = AM_SIZE_12;
-   amCfg->ulAmCfg.reAssemTmr  = T_REASSEMBLY_VAL; 
-   amCfg->ulAmCfg.statProhTmr = T_STATUS_PROHIBHIT_VAL;
+   amCfg->dlAmCfg.snLenUl     = AM_SIZE_12;
+   amCfg->dlAmCfg.reAssemTmr  = T_REASSEMBLY_VAL; 
+   amCfg->dlAmCfg.statProhTmr = T_STATUS_PROHIBHIT_VAL;
 }
 
 /******************************************************************
@@ -2362,16 +2362,16 @@ uint8_t fillRlcCfgToAddMod(DuRlcBearerCfg *lcCfg, DuRlcBearerCfg *f1UeDbLcCfg)
                   return RFAILED;
             }
             /* DL AM */
-            lcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.snLenDl     = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.snLenDl;    
-            lcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.pollRetxTmr = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.pollRetxTmr;
-            lcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.pollPdu     = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.pollPdu;
-            lcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.pollByte    = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.pollByte;   
-            lcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.maxRetxTh   = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.maxRetxTh;   
+            lcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.snLenDl     = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.snLenDl;    
+            lcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.pollRetxTmr = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.pollRetxTmr;
+            lcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.pollPdu     = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.pollPdu;
+            lcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.pollByte    = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.pollByte;   
+            lcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.maxRetxTh   = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.maxRetxTh;   
 
             /* UL AM */
-            lcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.snLenUl     = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.snLenUl;
-            lcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.reAssemTmr  = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.reAssemTmr; 
-            lcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.statProhTmr = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->ulAmCfg.statProhTmr;
+            lcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.snLenUl     = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.snLenUl;
+            lcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.reAssemTmr  = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.reAssemTmr; 
+            lcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.statProhTmr = f1UeDbLcCfg->rlcBearerCfg.u.amCfg->dlAmCfg.statProhTmr;
             break;
          }
       case RLC_UM_BI_DIRECTIONAL :

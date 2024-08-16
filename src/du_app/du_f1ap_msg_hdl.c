@@ -3304,11 +3304,11 @@ uint8_t BuildRlcConfigAm(AmBearerCfg *amCfg, struct RLC_Config *rlcConfig)
    }
    else
    {
-      *(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength) = covertAmSnLenFromIntEnumToRrcEnum(amCfg->dlAmCfg.snLenDl);
-      rlcConfig->choice.am->ul_AM_RLC.t_PollRetransmit  = covertPollRetxTmrValueToEnum(amCfg->dlAmCfg.pollRetxTmr);
-      rlcConfig->choice.am->ul_AM_RLC.pollPDU           = covertPollPduValueToEnum(amCfg->dlAmCfg.pollPdu);
-      rlcConfig->choice.am->ul_AM_RLC.pollByte          = covertPollByteValueToEnum(amCfg->dlAmCfg.pollByte);
-      rlcConfig->choice.am->ul_AM_RLC.maxRetxThreshold  = covertMaxRetxValueToEnum(amCfg->dlAmCfg.maxRetxTh);
+      *(rlcConfig->choice.am->ul_AM_RLC.sn_FieldLength) = covertAmSnLenFromIntEnumToRrcEnum(amCfg->ulAmCfg.snLenDl);
+      rlcConfig->choice.am->ul_AM_RLC.t_PollRetransmit  = covertPollRetxTmrValueToEnum(amCfg->ulAmCfg.pollRetxTmr);
+      rlcConfig->choice.am->ul_AM_RLC.pollPDU           = covertPollPduValueToEnum(amCfg->ulAmCfg.pollPdu);
+      rlcConfig->choice.am->ul_AM_RLC.pollByte          = covertPollByteValueToEnum(amCfg->ulAmCfg.pollByte);
+      rlcConfig->choice.am->ul_AM_RLC.maxRetxThreshold  = covertMaxRetxValueToEnum(amCfg->ulAmCfg.maxRetxTh);
    }
 
    /* Fill AM DL configuraion */
@@ -3329,9 +3329,9 @@ uint8_t BuildRlcConfigAm(AmBearerCfg *amCfg, struct RLC_Config *rlcConfig)
    }
    else /* Fill AM configuration from DU database */
    {
-      *(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength) = covertAmSnLenFromIntEnumToRrcEnum(amCfg->ulAmCfg.snLenUl);
-      rlcConfig->choice.am->dl_AM_RLC.t_Reassembly      = convertReasmblTmrValueToEnum(amCfg->ulAmCfg.reAssemTmr);
-      rlcConfig->choice.am->dl_AM_RLC.t_StatusProhibit  = convertProhibitTmrValueToEnum(amCfg->ulAmCfg.statProhTmr);
+      *(rlcConfig->choice.am->dl_AM_RLC.sn_FieldLength) = covertAmSnLenFromIntEnumToRrcEnum(amCfg->dlAmCfg.snLenUl);
+      rlcConfig->choice.am->dl_AM_RLC.t_Reassembly      = convertReasmblTmrValueToEnum(amCfg->dlAmCfg.reAssemTmr);
+      rlcConfig->choice.am->dl_AM_RLC.t_StatusProhibit  = convertProhibitTmrValueToEnum(amCfg->dlAmCfg.statProhTmr);
    }
    return ROK;
 }
@@ -10143,20 +10143,20 @@ void extractRlcAmCfg(AmBearerCfg *amCfgToSet, struct RLC_Config__am *rlcAmCfg)
       /* UL AM */
       if(rlcAmCfg->dl_AM_RLC.sn_FieldLength)
       {
-	 amCfgToSet->ulAmCfg.snLenUl = covertAmSnLenFromRrcEnumToIntEnum(*(rlcAmCfg->dl_AM_RLC.sn_FieldLength));
+         amCfgToSet->dlAmCfg.snLenUl = covertAmSnLenFromRrcEnumToIntEnum(*(rlcAmCfg->dl_AM_RLC.sn_FieldLength));
          /*TODO: Check the timer value when sent by real CU */
-	 amCfgToSet->ulAmCfg.reAssemTmr = convertReasmblTmrEnumToValue(rlcAmCfg->dl_AM_RLC.t_Reassembly); 
-	 amCfgToSet->ulAmCfg.statProhTmr = convertProhibitTmrEnumToValue(rlcAmCfg->dl_AM_RLC.t_StatusProhibit);
+         amCfgToSet->dlAmCfg.reAssemTmr = convertReasmblTmrEnumToValue(rlcAmCfg->dl_AM_RLC.t_Reassembly); 
+         amCfgToSet->dlAmCfg.statProhTmr = convertProhibitTmrEnumToValue(rlcAmCfg->dl_AM_RLC.t_StatusProhibit);
       }
 
       /* DL AM */
       if(rlcAmCfg->ul_AM_RLC.sn_FieldLength)
       {
-	 amCfgToSet->dlAmCfg.snLenDl = covertAmSnLenFromRrcEnumToIntEnum(*(rlcAmCfg->ul_AM_RLC.sn_FieldLength));
-	 amCfgToSet->dlAmCfg.pollRetxTmr = covertPollRetxTmrEnumToValue(rlcAmCfg->ul_AM_RLC.t_PollRetransmit);
-	 amCfgToSet->dlAmCfg.pollPdu   = covertPollPduEnumToValue(rlcAmCfg->ul_AM_RLC.pollPDU);
-	 amCfgToSet->dlAmCfg.pollByte  = covertPollByteEnumToValue(rlcAmCfg->ul_AM_RLC.pollByte);
-	 amCfgToSet->dlAmCfg.maxRetxTh = covertMaxRetxEnumToValue(rlcAmCfg->ul_AM_RLC.maxRetxThreshold);
+         amCfgToSet->ulAmCfg.snLenDl = covertAmSnLenFromRrcEnumToIntEnum(*(rlcAmCfg->ul_AM_RLC.sn_FieldLength));
+         amCfgToSet->ulAmCfg.pollRetxTmr = covertPollRetxTmrEnumToValue(rlcAmCfg->ul_AM_RLC.t_PollRetransmit);
+         amCfgToSet->ulAmCfg.pollPdu   = covertPollPduEnumToValue(rlcAmCfg->ul_AM_RLC.pollPDU);
+         amCfgToSet->ulAmCfg.pollByte  = covertPollByteEnumToValue(rlcAmCfg->ul_AM_RLC.pollByte);
+         amCfgToSet->ulAmCfg.maxRetxTh = covertMaxRetxEnumToValue(rlcAmCfg->ul_AM_RLC.maxRetxThreshold);
       }
    }
 }

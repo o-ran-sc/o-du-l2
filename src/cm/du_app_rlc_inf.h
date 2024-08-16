@@ -131,7 +131,7 @@ typedef struct ulAmCfg
    int8_t         reAssemTmr;           /* T_reassembling Timer in msec*/
    int16_t        statProhTmr;          /* T_status_prohibit Timer in msec*/
 
-}UlAmCfg;
+}DlAmCfg;
 
 typedef struct dlAmCfg
 {
@@ -141,7 +141,7 @@ typedef struct dlAmCfg
    int32_t      pollByte;            /* Poll_Byte in bytes. */
    uint8_t      maxRetxTh;           /* Max_Retx_Threshold */
 
-}DlAmCfg;
+}UlAmCfg;
 
 typedef struct dlUmCfg
 {
