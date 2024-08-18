@@ -167,7 +167,12 @@ uint8_t DuProcRlcMaxRetransInd(Pst *pst, RlcMaxRetransInfo *maxRetransInfo)
          if(duCb.actvCellLst[cellIdx]->ueCb[ueId-1].crnti ==  crnti)
          {
             /*TODO: complete the processing of max retransmission */
-            ret = ROK;
+            if(BuildAndSendUeContextReleaseReq(maxRetransInfo->cellId, maxRetransInfo->ueId) != ROK)
+            {
+               DU_LOG("\nERROR  -->  DU APP : Failed to build and send ue context release request");
+            }
+            else
+              ret = ROK;
          }
          else
             DU_LOG("\nERROR  -->  DU APP : DuProcRlcMaxRetransInd(): CRNTI [%d] not found", crnti);
