@@ -53,6 +53,7 @@
 #include "rlc_utils.h"            /* RLC defines */
 #include "rlc_dl_ul_inf.h"
 #include "rlc_dl.h"
+#include "rlc_mgr.h"
 
 //UDAY
 #ifdef L2_OPTMZ
@@ -2230,6 +2231,11 @@ static Void rlcAmmDlMarkPduForReTx(RlcCb *gCb,RlcDlRbCb *rbCb,RlcRetx *retx)
             rlcUtlSendDedLcBoStatus(gCb, rbCb, 0,0,0,0);
             rlcAmmSndStaInd(gCb, rbCb, retx);
             gRlcStats.amRlcStats.numDLMaxRetx++;
+            
+            /* As per 38.322, RLC on reaching maxRetxThreshold in AM mode following needs to be done: */
+            /* if RETX_COUNT = maxRetxThreshold: */
+            /* - indicate to upper layers that max retransmission has been reached. "*/
+            BuildAndSendRlcMaxRetransIndToDu(rbCb->rlcId.cellId, rbCb->rlcId.ueId, rbCb->lch.lChId, rbCb->lch.lChType);
          }
 
          rlcRemRetxPdu(gCb,rbCb, retx);
