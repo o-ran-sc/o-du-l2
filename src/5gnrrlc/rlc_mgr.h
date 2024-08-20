@@ -22,6 +22,7 @@ uint8_t SendRlcUeCreateRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp);
 uint8_t SendRlcUeReconfigRspToDu(Pst *pst, RlcCfgCfmInfo *cfgRsp);
 uint8_t sendRlcUeDeleteRspToDu(uint16_t cellId, uint8_t ueId, CauseOfResult  status);
 uint8_t sendRlcUeReestablishRspToDu(uint16_t cellId,uint8_t ueId, CauseOfResult  status);
+uint8_t BuildAndSendRlcMaxRetransIndToDu(uint16_t cellId,uint8_t ueId, uint8_t lcId, uint8_t lcType);
 /**********************************************************************
          End of file
 **********************************************************************/
