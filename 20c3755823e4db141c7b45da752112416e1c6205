@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "580417fe_6886ee66",
+        "filename": "src/5gnrrlc/rlc_amm_dl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2234,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-20T05:05:57Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "e9e3e4fd_1b2f3fed",
+      "revId": "20c3755823e4db141c7b45da752112416e1c6205",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e1b580cc_040a1414",
@@ -35,6 +53,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c3e6aba_877c029f",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-20T05:05:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1b580cc_040a1414",
+      "revId": "20c3755823e4db141c7b45da752112416e1c6205",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7adf5713_3cfcfc1a",
@@ -48,6 +84,30 @@
       "writtenOn": "2024-08-19T10:35:03Z",
       "side": 1,
       "message": "Add ret \u003d RFAILED",
+      "range": {
+        "startLine": 172,
+        "startChar": 44,
+        "endLine": 172,
+        "endChar": 46
+      },
+      "revId": "20c3755823e4db141c7b45da752112416e1c6205",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9d00a9f_8fa6124a",
+        "filename": "src/du_app/du_ue_mgr.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-08-20T05:05:57Z",
+      "side": 1,
+      "message": "ret \u003d RFAILED; already added on 156 here it is not required",
+      "parentUuid": "7adf5713_3cfcfc1a",
       "range": {
         "startLine": 172,
         "startChar": 44,
