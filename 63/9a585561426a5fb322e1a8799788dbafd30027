@@ -1,0 +1,9 @@
+Verified+1: ORAN Jobbuilder <releng+oran-jobbuilder@linuxfoundation.org>
+Verified+1: ORAN Required GHA <releng+oran.required.gha@linuxfoundation.org>
+Code-Review+2: Sangeeta Vaidhyanathan <svaidhya@radisys.com>
+Verified+1: Sangeeta Vaidhyanathan <svaidhya@radisys.com>
+Submitted-by: Priyanka Borla <pborla@radisys.com>
+Submitted-at: Tue, 20 Aug 2024 07:34:40 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/o-du/l2/+/13269
+Project: o-du/l2
+Branch: refs/heads/master
