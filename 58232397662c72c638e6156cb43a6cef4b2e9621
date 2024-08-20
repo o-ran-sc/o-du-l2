@@ -16,6 +16,24 @@
       "message": "add a comment explaining why we are storing in reverse order.\nSo that in future we can take it as a reference.",
       "revId": "58232397662c72c638e6156cb43a6cef4b2e9621",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31341eff_065b4743",
+        "filename": "src/5gnrrlc/rlc_msg_hdl.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-08-20T04:24:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a600cff_ff5973f1",
+      "revId": "58232397662c72c638e6156cb43a6cef4b2e9621",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
