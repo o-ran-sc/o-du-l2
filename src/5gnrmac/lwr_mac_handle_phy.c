@@ -558,11 +558,15 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
    fapi_msg_t *header = NULLP;
    header = (fapi_msg_t *)msg;
 
+#ifdef OAI_TESTING 
+   header->msg_id = reverseBytes16(header->msg_id);
+   header->length = reverseBytes32(header->length);        
+#endif
 #ifdef CALL_FLOW_DEBUG_LOG 
    callFlowFromPhyToLwrMac(header->msg_id);
 #endif
-
-   switch(header->msg_id)
+DU_LOG("\n\nINFO  -->  LWR_MAC: PHY has received message 0x%02x\n\n", header->msg_id);
+   switch(msgType)
    {
 #ifdef INTEL_TIMER_MODE
       case FAPI_VENDOR_EXT_UL_IQ_SAMPLES:
@@ -581,6 +585,7 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 	 }
       case FAPI_CONFIG_RESPONSE:
 	 {
+		 DU_LOG("\nPBORLA %s ",__func__);
 	    sendToLowerMac(CONFIG_RESPONSE, msgSize, msg);
 	    break;
 	 }

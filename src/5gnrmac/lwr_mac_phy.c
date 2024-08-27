@@ -225,7 +225,9 @@ void LwrMacRecvPhyMsg()
    {
       while(true)
       {
+        DU_LOG("\n\nINFO  -->  LWR_MAC: Before WLS_Wait\n\n");
 	 numMsgToGet = WLS_Wait(wlsHdlr);
+        DU_LOG("\n\nINFO  -->  LWR_MAC: After WLS_Wait numMsgToGet = %d \n\n",numMsgToGet);
 	 if(numMsgToGet == 0)
 	 {
 	    continue;
@@ -236,11 +238,26 @@ void LwrMacRecvPhyMsg()
 	    currElem = NULLP;
 	    l1Msg = (uint64_t)NULLP;
 	    l1MsgPtr = NULLP;
+        DU_LOG("\n\nINFO  -->  LWR_MAC: Before WLS_Get\n\n");
 	    l1Msg = WLS_Get(wlsHdlr, &msgSize, &msgType, &flag);
+        DU_LOG("\n\nINFO  -->  LWR_MAC: After WLS_Get msgType = %d\n\n", msgType);
 	    if(l1Msg)
 	    {
+
 	       l1MsgPtr = WLS_PA2VA(wlsHdlr, l1Msg); 
 	       currElem = (p_fapi_api_queue_elem_t) l1MsgPtr;
+           DU_LOG("\n\nINFO  -->  LWR_MAC: PHY has received message\n");
+                   uint8_t * msgt = (uint8_t *)(currElem + 1);
+        for (int x = 0; x < msgSize; ++x) {
+          printf("0x%02x ", msgt[x]);
+        }
+
+        printf("\n\n\n\n");
+        DU_LOG("\n\nINFO  -->  LWR_MAC: After WLS_Get msgType = %d (currElem->msg_type %d)\n\n", msgType, (currElem->msg_type));
+		if(currElem->msg_type == 3)
+		{
+			//Print
+		}
 	       if(currElem->msg_type != FAPI_VENDOR_MSG_HEADER_IND)
 	       {
 		  procPhyMessages(currElem->msg_type, 0, (void *)(currElem + 1));
@@ -351,12 +368,18 @@ uint8_t LwrMacSendToL1(void *msg)
 	 addWlsBlockToFree(currMsg, msgLen, (lwrMacCb.phySlotIndCntr-1));
 	 if(currMsg->p_next != NULLP)
 	 {
+		 if(currMsg->msg_type == 4)
+		 {
+			 DU_LOG("\nPBORLA Start req %lu", msgLen);
+			 
+		 }
 	    ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, currMsg), msgLen, currMsg->msg_type, WLS_SG_NEXT);
 	    if(ret != 0)
 	    {
 	       DU_LOG("\nERROR  -->  LWR MAC : Failure in sending message to PHY");
 	       return RFAILED;
 	    }
+
 	    currMsg = currMsg->p_next;
 	 }
 	 else
