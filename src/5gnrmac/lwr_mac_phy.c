@@ -239,11 +239,12 @@ void LwrMacRecvPhyMsg()
 	    l1Msg = WLS_Get(wlsHdlr, &msgSize, &msgType, &flag);
 	    if(l1Msg)
 	    {
+
 	       l1MsgPtr = WLS_PA2VA(wlsHdlr, l1Msg); 
 	       currElem = (p_fapi_api_queue_elem_t) l1MsgPtr;
 	       if(currElem->msg_type != FAPI_VENDOR_MSG_HEADER_IND)
 	       {
-		  procPhyMessages(currElem->msg_type, 0, (void *)(currElem + 1));
+             procPhyMessages(currElem->msg_type, 0, (void *)(currElem + 1));
 	       }
 	       WLS_MEM_FREE(currElem, LWR_MAC_WLS_BUF_SIZE);
 	    }

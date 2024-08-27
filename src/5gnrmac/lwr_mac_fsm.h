@@ -72,7 +72,8 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
 uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo);
 typedef uint8_t (*lwrMacFsmHdlr)(void *);
 void lwrMacLayerInit(Region region, Pool pool);
-
+uint16_t reverseBytes16(uint16_t num);
+uint32_t reverseBytes32(uint32_t num);
 #endif
 
 /**********************************************************************

@@ -558,10 +558,14 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
    fapi_msg_t *header = NULLP;
    header = (fapi_msg_t *)msg;
 
+#ifdef OAI_TESTING 
+   header->msg_id = reverseBytes16(header->msg_id);
+   header->length = reverseBytes32(header->length);        
+#endif
 #ifdef CALL_FLOW_DEBUG_LOG 
    callFlowFromPhyToLwrMac(header->msg_id);
 #endif
-
+DU_LOG("\n\nINFO  -->  LWR_MAC: PHY has received message 0x%02x\n\n", header->msg_id);
    switch(header->msg_id)
    {
 #ifdef INTEL_TIMER_MODE
