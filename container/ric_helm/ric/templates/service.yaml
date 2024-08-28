@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ric.fullname" . }}
+  labels:
+    {{- include "ric.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol:  {{ .Values.service.protocol }}
+      name: e2ap
+  selector:
+    {{- include "ric.selectorLabels" . | nindent 4 }}

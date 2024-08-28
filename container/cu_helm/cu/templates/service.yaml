@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cu.fullname" . }}
+  labels:
+    {{- include "cu.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol:  {{ .Values.service.protocol }}
+      name: f1ap
+  selector:
+    {{- include "cu.selectorLabels" . | nindent 4 }}
