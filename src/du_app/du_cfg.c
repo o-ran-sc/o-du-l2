@@ -5559,8 +5559,8 @@ void printDuConfig()
 
    egtp = &duCfgParam.egtpParams;
    DU_LOG("\n ** EGTP PARAMETER ** \n");
-   DU_LOG("DU IP Address %d\n", egtp->localIp.ipV4Addr);
-   DU_LOG("CU IP Address %d\n", egtp->destIp.ipV4Addr);
+   DU_LOG("DU IP Address %u\n", egtp->localIp.ipV4Addr);
+   DU_LOG("CU IP Address %u\n", egtp->destIp.ipV4Addr);
    DU_LOG("EGTP Port at DU %d\n", egtp->localPort);
    DU_LOG("EGTP Port at CU %d\n", egtp->destPort);
    DU_LOG("Minimum Tunnel ID %d\n", egtp->minTunnelId);

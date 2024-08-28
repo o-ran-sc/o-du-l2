@@ -114,6 +114,33 @@ uint8_t fillDestNetAddr(CmInetNetAddr *destAddrPtr, SctpIpAddr *dstIpPtr)
    return ROK;
 }
 
+#ifdef CONTAINERIZE
+/******************************************************************************
+ *
+ * @brief in case of containerization the du ip recive only after completeing the 
+ *  sctp connection that's why updating the duip after sctpAccept.
+ *
+ * @details
+ *
+ *    Function : updateDestAddrPtr 
+ *
+ *    Functionality:
+ *       updating the destAddrPtr in database
+ *
+ * @params[in] DuSctpDestCb *paramPtr
+ * 	       CmInetAddr  *peerAddr
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ *******************************************************************************/
+
+void updateDestAddrPtr(CmInetNetAddr *destAddrPtr, CmInetAddr  *peerAddr)
+{
+        destAddrPtr->type = CM_INET_IPV4ADDR_TYPE;
+        destAddrPtr->u.ipv4NetAddr = peerAddr->address;
+}
+#endif
+
 /******************************************************************************
  *
  * @brief Eastablishes the Assoc Req for the received interface type
@@ -164,6 +191,12 @@ uint8_t sctpStartReq()
             {
                DU_LOG("\nERROR  -->  SCTP: Unable to accept the connection at RIC");
             }
+	    else
+	    {
+#ifdef CONTAINERIZE
+		  updateDestAddrPtr(&sctpCb.assocCb[assocIdx].destIpNetAddr, &sctpCb.assocCb[assocIdx].peerAddr);
+#endif
+	    }
          }
       }
    }
