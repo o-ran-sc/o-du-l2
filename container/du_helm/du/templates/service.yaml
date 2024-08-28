@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "du.fullname" . }}
+  labels:
+    {{- include "du.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.f1port }}
+      targetPort: {{ .Values.service.f1targetPort }}
+      protocol:  {{ .Values.service.f1protocol }}
+      name: f1ap
+    - port: {{ .Values.service.e2port }}
+      targetPort: {{ .Values.service.e2targetPort }}
+      protocol:  {{ .Values.service.e2protocol }}
+      name: e2ap
+  selector:
+    {{- include "du.selectorLabels" . | nindent 4 }}

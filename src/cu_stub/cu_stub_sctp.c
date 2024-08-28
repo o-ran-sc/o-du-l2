@@ -178,11 +178,38 @@ uint8_t fillAddrLst(CmInetNetAddrLst *addrLstPtr, SctpIpAddr *ipAddr)
  *******************************************************************************/
 uint8_t fillDestNetAddr(CmInetNetAddr *destAddrPtr, SctpIpAddr *dstIpPtr)
 {
-   /* Filling destination address */
-   destAddrPtr->type = CM_INET_IPV4ADDR_TYPE;
-   destAddrPtr->u.ipv4NetAddr = CM_INET_NTOH_UINT32(dstIpPtr->ipV4Addr);
-   return ROK;
+	/* Filling destination address */
+	destAddrPtr->type = CM_INET_IPV4ADDR_TYPE;
+	destAddrPtr->u.ipv4NetAddr = CM_INET_NTOH_UINT32(dstIpPtr->ipV4Addr);
+	return ROK;
 }
+
+#ifdef CONTAINERIZE
+/******************************************************************************
+ *
+ * @brief in case of containerization the du ip recive only after completeing the
+ *  sctp connection that's why updating the duip after sctpAccept.
+ *
+ * @details
+ *
+ *    Function : updateDestAddrPtr
+ *
+ *    Functionality:
+ *       updating the destAddrPtr in database
+ *
+ * @params[in] DuSctpDestCb *paramPtr
+ *             CmInetAddr  *peerAddr
+ * @return ROK     - success
+ *         RFAILED - failure
+ *
+ *******************************************************************************/
+
+void updateDestAddrPtr(CmInetNetAddr *destAddrPtr, CmInetAddr  *peerAddr)
+{
+	destAddrPtr->type = CM_INET_IPV4ADDR_TYPE;
+	destAddrPtr->u.ipv4NetAddr = peerAddr->address;
+}
+#endif
 
 /******************************************************************************
  *
@@ -207,7 +234,40 @@ uint8_t sctpStartReq()
    uint8_t ret = ROK;
    CmInetFd sockFd;
 
+#ifdef CONTAINERIZE
    socket_type = CM_INET_STREAM;
+   if((ret = cmInetSocket(socket_type, &sctpCb.f1LstnSockFd, IPPROTO_SCTP) != ROK))
+   {
+	   DU_LOG("\nERROR  -->  SCTP : Socket[%d] coudnt open for listening", sctpCb.f1LstnSockFd.fd);
+   }
+   else if((ret = cmInetSctpBindx(&sctpCb.f1LstnSockFd, &sctpCb.localAddrLst, sctpCb.sctpCfg.f1SctpInfo.port)) != ROK)
+   {
+	   DU_LOG("\nERROR  -->  SCTP: Binding failed at CU");
+   }
+   else if(ret = cmInetListen(&sctpCb.f1LstnSockFd, 1) != ROK)
+   {
+	   DU_LOG("\nERROR  -->  SCTP : Listening on socket failed");
+	   cmInetClose(&sctpCb.f1LstnSockFd);
+	   return RFAILED;
+   }
+   else
+   {
+	   for(assocIdx=0; assocIdx < sctpCb.numAssoc; assocIdx++)
+	   {
+		   if(sctpCb.assocCb[assocIdx].intf == F1_INTERFACE)
+		   {
+			   if((ret = sctpAccept(&sctpCb.f1LstnSockFd, &sctpCb.assocCb[assocIdx])) != ROK)
+			   {
+				   DU_LOG("\nERROR  -->  SCTP: Unable to accept the connection at CU");
+			   }
+			   else
+			   {
+				   updateDestAddrPtr(&sctpCb.assocCb[assocIdx].destIpNetAddr, &sctpCb.assocCb[assocIdx].peerAddr);
+			   }
+		   }
+	   }
+   }
+#else
 
    /* Establish SCTP association at XN interface */
    if(sctpCb.sctpCfg.xnSctpInfo.numDestNode)
@@ -314,7 +374,7 @@ uint8_t sctpStartReq()
          }
       }
    }
-
+#endif
    if(ret == ROK)
    {
       if(sctpSockPoll() != ROK)
@@ -405,6 +465,7 @@ uint8_t sctpAccept(CmInetFd *lstnSockFd, CuSctpAssocCb *assocCb)
          break;
       }
    }
+ 
    DU_LOG("\nINFO  -->  SCTP : Connection established");
 
    return ROK;
