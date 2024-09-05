@@ -52,6 +52,24 @@
       "parentUuid": "74f5d117_2bcc5a51",
       "revId": "fc9632ea69082c495f32509c2bc1c4744cb38a86",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aff9efc0_4e184ca5",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1002343
+      },
+      "writtenOn": "2024-09-05T19:43:53Z",
+      "side": 0,
+      "message": "OK we will add this section to ensure that all resources related to this UE are released correctly",
+      "parentUuid": "f9b4d603_bbee3d23",
+      "revId": "fc9632ea69082c495f32509c2bc1c4744cb38a86",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
