@@ -536,6 +536,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fbbba497_d7195fa4",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "I dont see WFQ algo getting set for the 1st slice because both if((tempAlgoSelection \u003c 1) and else conditions are same",
+      "parentUuid": "b4e4ed99_0d5fec66",
+      "range": {
+        "startLine": 239,
+        "startChar": 12,
+        "endLine": 239,
+        "endChar": 26
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3638e160_d33759a5",
         "filename": "src/5gnrsch/sch_slice_based.c",
         "patchSetId": 1
@@ -1011,6 +1035,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "45776b19_614b21b0",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1432,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "Func schFillBoGrantDlSchedInfo also does scheduling only .. To maintain the symmetry, I would suggest to use the same func as new DL transmission. If func \"schSliceBasedDlScheduling \" has some extra element/scheduling not required for retx then in the same func we can skip those lines using retx\u003d\u003dtrue condition.. please check.",
+      "parentUuid": "533f3c7b_2036c379",
+      "range": {
+        "startLine": 1432,
+        "startChar": 34,
+        "endLine": 1432,
+        "endChar": 59
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0eafea3d_ff36eeed",
         "filename": "src/5gnrsch/sch_slice_based.c",
         "patchSetId": 1
@@ -1118,6 +1166,30 @@
       "side": 1,
       "message": "This is for the development of multi-UE TTIs and hierarchical models\n\nOur original per TTI functionality is not easy to present in Flat Mode, so we need a scheduling functionality that can handle multiple UEs in order to allocate resources more efficiently between different tiers, which will also help in the development of subsequent hierarchical mode architectures, but since the per TTI version is already available in the J-release, maybe we can remove it",
       "parentUuid": "e9182cd5_a32fa3b3",
+      "range": {
+        "startLine": 1448,
+        "startChar": 37,
+        "endLine": 1448,
+        "endChar": 62
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ca291b3_dddb36f4",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1448,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "As stated in one of my comments, please keep the gerrits separate for every feature. If something is not required at this stage/for this feature please remove it and we can raise separate gerrit for extra upgrades/feature support",
+      "parentUuid": "f291247f_33febff1",
       "range": {
         "startLine": 1448,
         "startChar": 37,
@@ -1308,6 +1380,30 @@
       "side": 1,
       "message": "OK",
       "parentUuid": "177fcba2_7309e1ce",
+      "range": {
+        "startLine": 1504,
+        "startChar": 41,
+        "endLine": 1504,
+        "endChar": 66
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "453e9bba_60f4f918",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1504,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a2e87e2_7482024a",
       "range": {
         "startLine": 1504,
         "startChar": 41,
@@ -1888,6 +1984,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c34a2db_eb29838c",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1680,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "741cf30a_3fedba53",
+      "range": {
+        "startLine": 1680,
+        "startChar": 28,
+        "endLine": 1680,
+        "endChar": 38
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "370e6c49_5d240395",
@@ -1997,6 +2117,30 @@
       "side": 1,
       "message": "OK",
       "parentUuid": "29ba6a83_7b09b5e9",
+      "range": {
+        "startLine": 1737,
+        "startChar": 17,
+        "endLine": 1737,
+        "endChar": 48
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f9db5d0_c46bebfb",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1737,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08b7dd23_cb958a4f",
       "range": {
         "startLine": 1737,
         "startChar": 17,
@@ -2126,6 +2270,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dce2551e_e27983b7",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1757,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28b4f875_46c38e4b",
+      "range": {
+        "startLine": 1757,
+        "startChar": 29,
+        "endLine": 1757,
+        "endChar": 60
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b0f82d8_646fd859",
@@ -2235,6 +2403,30 @@
       "side": 1,
       "message": "Same as 1448, this was originally also intended to develop multi-UE per-TTI and hierarchical models\n\nSince we haven\u0027t yet rendered our full multi-UE per-TTI functionality inside this patch, it seems confusing, why do we need to maintain a list of UEs within a function that only one UE handles at a time? But in fact, our original developers would have added all per-TTI UEs to this list for maintenance.\n\nBut it\u0027s the same problem, because of the per-TTI feature that J-release has released, maybe we need to delete this part as well?",
       "parentUuid": "de7ab5f1_8231b9c5",
+      "range": {
+        "startLine": 1875,
+        "startChar": 13,
+        "endLine": 1875,
+        "endChar": 32
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "209fb15b_fbbcd4e4",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1875,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "two things: 1. Please remove any code which is not used.\n2. For multi-ue per tti or any other feature related code please make it separate and pls implement only those which is absolutely required for slice based algorithm. Any other updates on this feature can be implemented separately on top of this. Doing this way, code and feature segregation will be clear",
+      "parentUuid": "d6e6b88d_4109cbf0",
       "range": {
         "startLine": 1875,
         "startChar": 13,
@@ -2666,6 +2858,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9d528d2_e3b701e2",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2186,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7118b969_8df5fd3d",
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b876196a_92a60f57",
@@ -2822,6 +3032,30 @@
       "side": 1,
       "message": "any comment?",
       "parentUuid": "5475a9e8_a1ae9a36",
+      "range": {
+        "startLine": 2364,
+        "startChar": 28,
+        "endLine": 2364,
+        "endChar": 36
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34282462_af32a87c",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2364,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "any comments?",
+      "parentUuid": "7aec6e72_058acc81",
       "range": {
         "startLine": 2364,
         "startChar": 28,
@@ -4166,6 +4400,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00de7465_88f6610b",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4429,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35df1bcc_5663c3b1",
+      "range": {
+        "startLine": 4429,
+        "startChar": 40,
+        "endLine": 4429,
+        "endChar": 65
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc58565e_8589ebf7",
@@ -4227,6 +4485,30 @@
       "side": 1,
       "message": "Okey we\u0027ll ignore this comment",
       "parentUuid": "30eae111_be11baf7",
+      "range": {
+        "startLine": 4430,
+        "startChar": 40,
+        "endLine": 4430,
+        "endChar": 65
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "178ef92c_09d7f319",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4430,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8048875_e74ad80f",
       "range": {
         "startLine": 4430,
         "startChar": 40,
@@ -4358,6 +4640,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "564f5c7f_ada46e7b",
+        "filename": "src/5gnrsch/sch_slice_based.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "but please point out where are we using these i.e. dedLcList and defLcList? The structure which contains these lists that is \"SchSliceRecfgReq\" is not getting used in the sch_slice_based.c so not sure why we need these list.",
+      "parentUuid": "6a54f4b9_33fe4fee",
+      "range": {
+        "startLine": 53,
+        "startChar": 13,
+        "endLine": 53,
+        "endChar": 22
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7967420d_89e78efc",
         "filename": "src/5gnrsch/sch_slice_based.h",
         "patchSetId": 1
@@ -4417,6 +4723,30 @@
       "side": 1,
       "message": "The data structure SchSliceBasedLcCb is the original OSC code, we only added two new comments.\n\n /* and have separate DedLCInfo for each RRMPolcyMemberList */\n/* Dedicated LC List will be allocated, if any available */\n\nIt is true that this is not used in the SliceBased Scheduler, but this data structure was not created by us, and we are certainly happy to help remove it if necessary.",
       "parentUuid": "9d2858a2_dac8d438",
+      "range": {
+        "startLine": 58,
+        "startChar": 1,
+        "endLine": 58,
+        "endChar": 18
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1a14b9d_46b60c11",
+        "filename": "src/5gnrsch/sch_slice_based.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "if the structure is not used in the slice based algo then we can remove it",
+      "parentUuid": "f1a1ecb5_dab29d7a",
       "range": {
         "startLine": 58,
         "startChar": 1,
@@ -4548,6 +4878,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a83dc9e1_773d8964",
+        "filename": "src/5gnrsch/sch_slice_based.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "yes we have per-TTI architecture but these variables are not used anywhere. If these variables are not required in slice based algo then we can remove it from this file.",
+      "parentUuid": "33715079_ade5863b",
+      "range": {
+        "startLine": 79,
+        "startChar": 8,
+        "endLine": 79,
+        "endChar": 22
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c799ef7_4cb1bd56",
         "filename": "src/5gnrsch/sch_slot_ind.c",
         "patchSetId": 1
@@ -4631,6 +4985,24 @@
       "side": 1,
       "message": "Okey we will remove it",
       "parentUuid": "8b459725_7426b1ef",
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec070027_e2bd1d47",
+        "filename": "src/5gnrsch/sch_slot_ind.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca307b11_9445d096",
       "revId": "db307526838df945e9142d77ff64fa20f61d7733",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -4833,6 +5205,24 @@
       "side": 1,
       "message": "OK,we add a MAX_OF_SUPPORTED_SLICE in du_cfg.h and use it in this case.",
       "parentUuid": "a8e4fe00_83bc2f06",
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b109df33_abdc4cbc",
+        "filename": "src/du_app/du_cfg.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97893db1_682211c4",
       "revId": "db307526838df945e9142d77ff64fa20f61d7733",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }

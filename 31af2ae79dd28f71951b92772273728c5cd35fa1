@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b6ecce6_402855f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "Before raising a review patch please try to run the code with the slice based scheduling algo enabled because while reviewing I came across certain codes which might be syntactically wrong or can cause seg faults. Please try to run as much as scenarios as well",
+      "revId": "31af2ae79dd28f71951b92772273728c5cd35fa1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ff76067_6d904553",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1984,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "please check this line. There is a major difference between definition and calling of this function(SchSliceRecfgReq) in terms of input parameters. \nIn sch_slice_based.c, this funtion is defined as \"void SchSliceBasedSliceRecfgReq(SchCellCb *cellCb, SchRrmPolicyOfSlice *rrmPolicy)\" but here only rrmPolicyOfSlices is passed. \nNot sure why the compilation error was not observed?",
+      "revId": "31af2ae79dd28f71951b92772273728c5cd35fa1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "148e2ee4_ac596133",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1984,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "Also cellCb must have random address. we should pass cellCb in order to use this. It is right now defined as local variable and directly used without assigning any value to cellb. Again not sure how the compilation error is not onserved?",
+      "revId": "31af2ae79dd28f71951b92772273728c5cd35fa1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a93a3dc_c6a25d3a",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2038,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "since we are calling this line inside fillSliceRecfgRsp function thus we dont need this here. Please check.",
+      "revId": "31af2ae79dd28f71951b92772273728c5cd35fa1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d93d133e_cfbe4298",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "sliceCfg is actually list which is stored in schCb\u0027s sliceCfg. Since we are directly passing rrmPolicy we dont need to traverse the list in schCb. Instead we need to traverse the list stored in schSpcCell-\u003esliceCbList. This whole while loop will not work as we are actually comparing rrmPolicy from same list which is schCb-\u003esliceCfg list.\n\nPlease again review the whole function and implement again.\n\nBasically while loop should be to traverse the sliceList in schSpcCell and change the rrmPolicy stored in this list .",
+      "revId": "31af2ae79dd28f71951b92772273728c5cd35fa1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "519f2b69_10a6ae6b",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-13T08:26:51Z",
+      "side": 1,
+      "message": "sliceCbNode is actually NULL and it will cause seg faults. please go through the whole funtion again",
+      "range": {
+        "startLine": 325,
+        "startChar": 37,
+        "endLine": 325,
+        "endChar": 48
+      },
+      "revId": "31af2ae79dd28f71951b92772273728c5cd35fa1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
