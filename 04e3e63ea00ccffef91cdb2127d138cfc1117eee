@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1086b397_377f8ae1",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4107,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-09-17T08:59:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "610e605b_8b271795",
+      "revId": "04e3e63ea00ccffef91cdb2127d138cfc1117eee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92314683_3bfc3680",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-09-17T08:16:58Z",
       "side": 1,
       "message": "please align the variables as in the first letter of variable name shld be in one line",
+      "range": {
+        "startLine": 4373,
+        "startChar": 11,
+        "endLine": 4373,
+        "endChar": 24
+      },
+      "revId": "04e3e63ea00ccffef91cdb2127d138cfc1117eee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41231751_d36cfd2e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4373,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-09-17T08:59:22Z",
+      "side": 1,
+      "message": "i will make this change in next patch",
+      "parentUuid": "92314683_3bfc3680",
       "range": {
         "startLine": 4373,
         "startChar": 11,
@@ -58,6 +100,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57a20098_b423d556",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4378,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-09-17T08:59:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7e2a5a69_2445e5d3",
+      "revId": "04e3e63ea00ccffef91cdb2127d138cfc1117eee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22db9838_1d38896a",
@@ -71,6 +131,30 @@
       "writtenOn": "2024-09-17T08:16:58Z",
       "side": 1,
       "message": "please initialize all the variable and also take of this in the #ifndef OAI_TESTING code leg.",
+      "range": {
+        "startLine": 4379,
+        "startChar": 18,
+        "endLine": 4379,
+        "endChar": 36
+      },
+      "revId": "04e3e63ea00ccffef91cdb2127d138cfc1117eee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89cf1c96_94a7781a",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4379,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-09-17T08:59:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22db9838_1d38896a",
       "range": {
         "startLine": 4379,
         "startChar": 18,
@@ -98,6 +182,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "536be3d4_9d557dfe",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4387,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-09-17T08:59:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d0b884b_ccf3a5a3",
+      "revId": "04e3e63ea00ccffef91cdb2127d138cfc1117eee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "695757c6_254c9f2c",
@@ -111,6 +213,24 @@
       "writtenOn": "2024-09-17T08:16:58Z",
       "side": 1,
       "message": "add the spec reference and also why the nGroup is hardcoded to 1",
+      "revId": "04e3e63ea00ccffef91cdb2127d138cfc1117eee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ce8795a_fddf948d",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4397,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-09-17T08:59:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "695757c6_254c9f2c",
       "revId": "04e3e63ea00ccffef91cdb2127d138cfc1117eee",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -132,6 +252,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f89c6a87_abbd6f09",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4424,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-09-17T08:59:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c05c2adb_8acd11bc",
+      "revId": "04e3e63ea00ccffef91cdb2127d138cfc1117eee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33e94e1f_71c89aa2",
@@ -149,6 +287,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95ba3bd9_f15eb795",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4549,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-09-17T08:59:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33e94e1f_71c89aa2",
+      "revId": "04e3e63ea00ccffef91cdb2127d138cfc1117eee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2b404f2_83a60c36",
@@ -162,6 +318,24 @@
       "writtenOn": "2024-09-17T08:16:58Z",
       "side": 1,
       "message": "please take care of cosmetic changes as discussed",
+      "revId": "04e3e63ea00ccffef91cdb2127d138cfc1117eee",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abbe3a6f_102a40b8",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 5158,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-09-17T08:59:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2b404f2_83a60c36",
       "revId": "04e3e63ea00ccffef91cdb2127d138cfc1117eee",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }

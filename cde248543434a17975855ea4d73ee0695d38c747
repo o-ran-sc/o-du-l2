@@ -16,6 +16,24 @@
       "message": "since the length of this func is huge i will suggest to have a separate function for OAI_TESTING code",
       "revId": "cde248543434a17975855ea4d73ee0695d38c747",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "becb21ba_a394b648",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4419,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-09-17T08:59:22Z",
+      "side": 0,
+      "message": "i will raise new patch for this",
+      "parentUuid": "d3cee169_835ddf60",
+      "revId": "cde248543434a17975855ea4d73ee0695d38c747",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
