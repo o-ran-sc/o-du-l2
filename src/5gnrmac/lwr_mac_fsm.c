@@ -4098,353 +4098,523 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
 #endif
 
 #ifdef INTEL_FAPI
-	uint8_t idx =0;
-	uint8_t nPdu = 0;
-	uint8_t numPduEncoded = 0;
-	uint8_t  ueIdx;
-	uint16_t cellIdx =0;
-	uint16_t pduIndex = 0;
-
-	SlotTimingInfo dlTtiReqTimingInfo;
-	MacDlSlot *currDlSlot = NULLP;
-	MacCellCfg macCellCfg;
-	RntiType rntiType;
-	fapi_dl_tti_req_t *dlTtiReq = NULLP;
-	fapi_msg_header_t *msgHeader = NULLP;
-	p_fapi_api_queue_elem_t dlTtiElem;
-	p_fapi_api_queue_elem_t headerElem;
-	p_fapi_api_queue_elem_t prevElem;
-	if(lwrMacCb.phyState == PHY_STATE_RUNNING)
-	{
-		GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
-		/* consider phy delay */
-		ADD_DELTA_TO_TIME(currTimingInfo,dlTtiReqTimingInfo,gConfigInfo.gPhyDeltaDl, macCb.macCell[cellIdx]->numOfSlots);
-		dlTtiReqTimingInfo.cellId = currTimingInfo.cellId;
-
-		macCellCfg = macCb.macCell[cellIdx]->macCellCfg;
-
-		currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlTtiReqTimingInfo.slot]; 
-
-#ifndef OAI_TESTING 
-		/* Vendor Message */
-		fapi_vendor_msg_t *vendorMsg;
-		p_fapi_api_queue_elem_t  vendorMsgQElem;
-		/* Allocte And fill Vendor msg */
-		LWR_MAC_ALLOC(vendorMsgQElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));  
-		if(!vendorMsgQElem)
-		{
-			DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for vendor msg in config req");
-			return RFAILED;
-		}
-		FILL_FAPI_LIST_ELEM(vendorMsgQElem, NULLP, FAPI_VENDOR_MESSAGE, 1, sizeof(fapi_vendor_msg_t)); 
-		vendorMsg = (fapi_vendor_msg_t *)(vendorMsgQElem + 1);
-		fillMsgHeader(&vendorMsg->header, FAPI_VENDOR_MESSAGE, sizeof(fapi_vendor_msg_t));
-#endif
-		LWR_MAC_ALLOC(dlTtiElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_dl_tti_req_t)));
-		if(dlTtiElem)
-		{
-			FILL_FAPI_LIST_ELEM(dlTtiElem, NULLP, FAPI_DL_TTI_REQUEST, 1, \
-					sizeof(fapi_dl_tti_req_t));
-			/* Fill message header */
-			LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
-			if(!headerElem)
-			{
-				DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for header in DL TTI req");
-				LWR_MAC_FREE(dlTtiElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_dl_tti_req_t)));
-				return RFAILED;
-			}
-
-			FILL_FAPI_LIST_ELEM(headerElem, dlTtiElem, FAPI_VENDOR_MSG_HEADER_IND, 1, \
-					sizeof(fapi_msg_header_t));
-			msgHeader = (fapi_msg_header_t *)(headerElem + 1);
-			msgHeader->num_msg = 2;
-			msgHeader->handle = 0;
-
-			/* Fill Dl TTI Request */
-			dlTtiReq = (fapi_dl_tti_req_t *)(dlTtiElem +1);
-			memset(dlTtiReq, 0, sizeof(fapi_dl_tti_req_t));
-			fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, sizeof(fapi_dl_tti_req_t));
-
-			dlTtiReq->sfn  = dlTtiReqTimingInfo.sfn;
-			dlTtiReq->slot = dlTtiReqTimingInfo.slot;
-			dlTtiReq->nPdus = calcDlTtiReqPduCount(currDlSlot);  /* get total Pdus */
-			nPdu = dlTtiReq->nPdus;
-
-#ifndef OAI_TESTING 
-			vendorMsg->p7_req_vendor.dl_tti_req.num_pdus = nPdu;
-			vendorMsg->p7_req_vendor.dl_tti_req.sym = 0;
-#endif
-			dlTtiReq->nGroup = 0;
-			if(dlTtiReq->nPdus > 0)
-			{
-				if(currDlSlot->dlInfo.isBroadcastPres)
-				{
-					if(currDlSlot->dlInfo.brdcstAlloc.ssbTransmissionMode)
-					{
-						if(dlTtiReq->pdus != NULLP)
-						{
-							for(idx = 0; idx < currDlSlot->dlInfo.brdcstAlloc.ssbIdxSupported; idx++)
-							{
-								fillSsbPdu(&dlTtiReq->pdus[numPduEncoded], &macCellCfg,\
-										currDlSlot, idx, dlTtiReq->sfn);
-								numPduEncoded++;
-							}
-						}
-						DU_LOG("\033[1;31m");
-						DU_LOG("\nDEBUG  -->  LWR_MAC: MIB sent..");
-						DU_LOG("\033[0m");
-					}
-
-					if(currDlSlot->dlInfo.brdcstAlloc.sib1TransmissionMode)
-					{
-						/* Filling SIB1 param */
-						if(numPduEncoded != nPdu)
-						{
-							if(currDlSlot->dlInfo.brdcstAlloc.crnti == SI_RNTI)
-								rntiType = SI_RNTI_TYPE;
-
-#ifndef OAI_TESTING 
-							/* PDCCH PDU */
-							fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded], 
-									currDlSlot, -1, rntiType, CORESET_TYPE0, MAX_NUM_UE);
-#else
-							/* PDCCH PDU */
-							fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], NULLP, currDlSlot, -1, rntiType, CORESET_TYPE0, MAX_NUM_UE);
-#endif
-							numPduEncoded++;
-
-#ifndef OAI_TESTING 
-							/* PDSCH PDU */
-							fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
-									&currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg->dci[0].pdschCfg,
-									currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.bwp, pduIndex);
-#else
-							fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], NULLP, &currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg->dci[0].pdschCfg,
-									currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.bwp, pduIndex);
-#endif
-							dlTtiReq->ue_grp_info[dlTtiReq->nGroup].pduIdx[pduIndex] = pduIndex;
-							pduIndex++;
-							numPduEncoded++;
-						}
-						DU_LOG("\033[1;34m");
-						DU_LOG("\nDEBUG  -->  LWR_MAC: SIB1 sent...");
-						DU_LOG("\033[0m");
-					}
-				}
-
-				if(currDlSlot->pageAllocInfo != NULLP)
-				{
-					/* Filling DL Paging Alloc param */
-					if(numPduEncoded != nPdu)
-					{
-						rntiType = P_RNTI_TYPE;
-#ifndef OAI_TESTING 
-						fillPagePdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded], \
-								currDlSlot->pageAllocInfo, &macCellCfg);
-#else
-						fillPagePdcchPdu(&dlTtiReq->pdus[numPduEncoded], NULLP, currDlSlot->pageAllocInfo, &macCellCfg);
-#endif
-						numPduEncoded++;
-#ifndef OAI_TESTING 
-						fillPagePdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
-								currDlSlot->pageAllocInfo, pduIndex, &macCellCfg);
-#else
-						fillPagePdschPdu(&dlTtiReq->pdus[numPduEncoded], NULLP,	currDlSlot->pageAllocInfo, pduIndex, &macCellCfg);
-#endif
-						dlTtiReq->ue_grp_info[dlTtiReq->nGroup].pduIdx[pduIndex] = pduIndex;
-						pduIndex++;
-						numPduEncoded++;
-					}
-					DU_LOG("\033[1;34m");
-					DU_LOG("\nDEBUG  -->  LWR_MAC: PAGE sent...");
-					DU_LOG("\033[0m");
-				}
-
-				for(ueIdx=0; ueIdx<MAX_NUM_UE; ueIdx++)
-				{
-					if(currDlSlot->dlInfo.rarAlloc[ueIdx] != NULLP)
-					{
-						/* Filling RAR param */
-						rntiType = RA_RNTI_TYPE;
-						if(currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdcchCfg)
-						{
-#ifndef OAI_TESTING 
-							fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
-									currDlSlot, -1, rntiType, CORESET_TYPE0, ueIdx);
-#else
-							fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], NULLP, currDlSlot, -1, rntiType, CORESET_TYPE0, ueIdx);
-#endif
-							numPduEncoded++;
-							MAC_FREE(currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdcchCfg, sizeof(PdcchCfg));
-						}
-						if(currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdschCfg)
-						{
-#ifndef OAI_TESTING 
-							fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
-									currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdschCfg, currDlSlot->dlInfo.rarAlloc[ueIdx]->bwp, pduIndex);
-#else
-							fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], NULLP,
-									currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdschCfg, currDlSlot->dlInfo.rarAlloc[ueIdx]->bwp, pduIndex);
-#endif
-							numPduEncoded++;
-							pduIndex++;
-
-							DU_LOG("\033[1;32m");
-							DU_LOG("\nDEBUG  -->  LWR_MAC: RAR sent...");
-							DU_LOG("\033[0m");
-						}
-					}
-
-					if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx] != NULLP)
-					{
-						if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdcchCfg)  \
-						{
-							rntiType = C_RNTI_TYPE;
-#ifndef OAI_TESTING 
-							fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
-									currDlSlot, idx, rntiType, currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdcchCfg->coresetCfg.coreSetType, ueIdx);
-#else
-							fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], NULLP,
-									currDlSlot, idx, rntiType, currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdcchCfg->coresetCfg.coreSetType, ueIdx);
-#endif
-							numPduEncoded++;
-						}
-
-						if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdu != NULLP)
-						{
-							if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdschCfg)
-							{
-#ifndef OAI_TESTING 
-								fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded], \
-										currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdschCfg,\
-										currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->bwp, pduIndex);
-#else
-								fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], NULLP, currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdschCfg,\
-										currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->bwp, pduIndex);
-#endif
-								numPduEncoded++;
-								pduIndex++;
-
-								DU_LOG("\033[1;32m");
-								if((macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status))
-								{
-									DU_LOG("\nDEBUG  -->  LWR_MAC: MSG4 sent...");
-									MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status, sizeof(bool));
-								}
-								else
-								{
-									DU_LOG("\nDEBUG  -->  LWR_MAC: DL MSG sent...");
-								}
-								DU_LOG("\033[0m");
-							}
-
-						}
-						MAC_FREE(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdcchCfg,sizeof(PdcchCfg));
-						/*   else
-						     {
-						     MAC_FREE(currDlSlot->dlInfo.dlMsgAlloc[ueIdx], sizeof(DlMsgAlloc));
-						     currDlSlot->dlInfo.dlMsgAlloc[ueIdx] = NULLP;
-						     }
-						     */
-					}
-				}
-
-				dlTtiReq->ue_grp_info[dlTtiReq->nGroup].nUe = MAX_NUM_UE_PER_TTI;
-				dlTtiReq->nGroup++;
-
-#ifdef ODU_SLOT_IND_DEBUG_LOG	    
-				DU_LOG("\nDEBUG  -->  LWR_MAC: Sending DL TTI Request");
-#endif	    
-
-				/* Intel L1 expects UL_TTI.request following DL_TTI.request */
-#ifndef OAI_TESTING 
-				fillUlTtiReq(currTimingInfo, dlTtiElem, &(vendorMsg->p7_req_vendor.ul_tti_req));
-#else
-				fillUlTtiReq(currTimingInfo, dlTtiElem, NULLP);
-#endif
-				msgHeader->num_msg++;
-
-				/* Intel L1 expects UL_DCI.request following DL_TTI.request */
-#ifndef OAI_TESTING 
-				fillUlDciReq(dlTtiReqTimingInfo, dlTtiElem->p_next, &(vendorMsg->p7_req_vendor.ul_dci_req));
-#else
-				fillUlDciReq(dlTtiReqTimingInfo, dlTtiElem->p_next, NULLP);
-#endif
-				msgHeader->num_msg++;
-
-				/* send Tx-DATA req message */
-
-#ifndef OAI_TESTING 
-				sendTxDataReq(dlTtiReqTimingInfo, currDlSlot, dlTtiElem->p_next->p_next, &(vendorMsg->p7_req_vendor.tx_data_req));
-#else
-				sendTxDataReq(dlTtiReqTimingInfo, currDlSlot, dlTtiElem->p_next->p_next, NULLP);
-#endif
-				if(dlTtiElem->p_next->p_next->p_next)
-				{
-					msgHeader->num_msg++;
-					prevElem = dlTtiElem->p_next->p_next->p_next;
-				}
-				else
-					prevElem = dlTtiElem->p_next->p_next;
-			}
-			else
-			{
-#ifdef ODU_SLOT_IND_DEBUG_LOG	    
-				DU_LOG("\nDEBUG  -->  LWR_MAC: Sending DL TTI Request");
-#endif	    
-				/* Intel L1 expects UL_TTI.request following DL_TTI.request */
-#ifndef OAI_TESTING 
-				fillUlTtiReq(currTimingInfo, dlTtiElem, &(vendorMsg->p7_req_vendor.ul_tti_req));
-#else
-				fillUlTtiReq(currTimingInfo, dlTtiElem, NULLP);
-#endif
-				msgHeader->num_msg++;
-
-				/* Intel L1 expects UL_DCI.request following DL_TTI.request */
 #ifndef OAI_TESTING
-				fillUlDciReq(dlTtiReqTimingInfo, dlTtiElem->p_next, &(vendorMsg->p7_req_vendor.ul_dci_req));
-#else
-				fillUlDciReq(dlTtiReqTimingInfo, dlTtiElem->p_next, NULLP);
-#endif
-				msgHeader->num_msg++;
+   uint8_t idx =0;
+   uint8_t nPdu = 0;
+   uint8_t numPduEncoded = 0;
+   uint8_t  ueIdx;
+   uint16_t cellIdx =0;
+   uint16_t pduIndex = 0;
+   SlotTimingInfo dlTtiReqTimingInfo;
+   MacDlSlot *currDlSlot = NULLP;
+   MacCellCfg macCellCfg;
+   RntiType rntiType;
+   fapi_dl_tti_req_t *dlTtiReq = NULLP;
+   fapi_msg_header_t *msgHeader = NULLP;
+   p_fapi_api_queue_elem_t dlTtiElem;
+   p_fapi_api_queue_elem_t headerElem;
+   p_fapi_api_queue_elem_t prevElem;
+   if(lwrMacCb.phyState == PHY_STATE_RUNNING)
+   {
+      GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
+      /* consider phy delay */
+      ADD_DELTA_TO_TIME(currTimingInfo,dlTtiReqTimingInfo,gConfigInfo.gPhyDeltaDl, macCb.macCell[cellIdx]->numOfSlots);
+      dlTtiReqTimingInfo.cellId = currTimingInfo.cellId;
+      macCellCfg = macCb.macCell[cellIdx]->macCellCfg;
+      currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlTtiReqTimingInfo.slot];
 
-				prevElem = dlTtiElem->p_next->p_next;
-			}
+      /* Vendor Message */
+      fapi_vendor_msg_t *vendorMsg;
+      p_fapi_api_queue_elem_t  vendorMsgQElem;
+      /* Allocte And fill Vendor msg */
+      LWR_MAC_ALLOC(vendorMsgQElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_vendor_msg_t)));
+      if(!vendorMsgQElem)
+      {
+         DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for vendor msg in config req");
+         return RFAILED;
+      }
+      FILL_FAPI_LIST_ELEM(vendorMsgQElem, NULLP, FAPI_VENDOR_MESSAGE, 1, sizeof(fapi_vendor_msg_t));
+      vendorMsg = (fapi_vendor_msg_t *)(vendorMsgQElem + 1);
+      fillMsgHeader(&vendorMsg->header, FAPI_VENDOR_MESSAGE, sizeof(fapi_vendor_msg_t));
 
-			if(macCb.macCell[cellIdx]->state == CELL_TO_BE_STOPPED)
-			{
-				/* Intel L1 expects UL_DCI.request following DL_TTI.request */
-#ifndef OAI_TESTING
-				lwr_mac_procStopReqEvt(currTimingInfo, prevElem, &(vendorMsg->stop_req_vendor));
+      LWR_MAC_ALLOC(dlTtiElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_dl_tti_req_t)));
+      if(dlTtiElem)
+      {
+         FILL_FAPI_LIST_ELEM(dlTtiElem, NULLP, FAPI_DL_TTI_REQUEST, 1, \
+               sizeof(fapi_dl_tti_req_t));
+         /* Fill message header */
+         LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
+         if(!headerElem)
+         {
+            DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for header in DL TTI req");
+            LWR_MAC_FREE(dlTtiElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_dl_tti_req_t)));
+            return RFAILED;
+         }
+         FILL_FAPI_LIST_ELEM(headerElem, dlTtiElem, FAPI_VENDOR_MSG_HEADER_IND, 1, \
+               sizeof(fapi_msg_header_t));
+         msgHeader = (fapi_msg_header_t *)(headerElem + 1);
+         msgHeader->num_msg = 2;
+         msgHeader->handle = 0;
+         /* Fill Dl TTI Request */
+         dlTtiReq = (fapi_dl_tti_req_t *)(dlTtiElem +1);
+         memset(dlTtiReq, 0, sizeof(fapi_dl_tti_req_t));
+         fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, sizeof(fapi_dl_tti_req_t));
+         dlTtiReq->sfn  = dlTtiReqTimingInfo.sfn;
+         dlTtiReq->slot = dlTtiReqTimingInfo.slot;
+         dlTtiReq->nPdus = calcDlTtiReqPduCount(currDlSlot);  /* get total Pdus */
+         nPdu = dlTtiReq->nPdus;
+         vendorMsg->p7_req_vendor.dl_tti_req.num_pdus = nPdu;
+         vendorMsg->p7_req_vendor.dl_tti_req.sym = 0;
+
+         dlTtiReq->nGroup = 0;
+         if(dlTtiReq->nPdus > 0)
+         {
+            if(currDlSlot->dlInfo.isBroadcastPres)
+            {
+               if(currDlSlot->dlInfo.brdcstAlloc.ssbTransmissionMode)
+               {
+                  if(dlTtiReq->pdus != NULLP)
+                  {
+                     for(idx = 0; idx < currDlSlot->dlInfo.brdcstAlloc.ssbIdxSupported; idx++)
+                     {
+                        fillSsbPdu(&dlTtiReq->pdus[numPduEncoded], &macCellCfg,\
+                              currDlSlot, idx, dlTtiReq->sfn);
+                        numPduEncoded++;
+                     }
+                  }
+                  DU_LOG("\033[1;31m");
+                  DU_LOG("\nDEBUG  -->  LWR_MAC: MIB sent..");
+                  DU_LOG("\033[0m");
+               }
+               if(currDlSlot->dlInfo.brdcstAlloc.sib1TransmissionMode)
+               {
+                  /* Filling SIB1 param */
+                  if(numPduEncoded != nPdu)
+                  {
+                     if(currDlSlot->dlInfo.brdcstAlloc.crnti == SI_RNTI)
+                        rntiType = SI_RNTI_TYPE;
+
+                     /* PDCCH PDU */
+                     fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
+                           currDlSlot, -1, rntiType, CORESET_TYPE0, MAX_NUM_UE);
+                     numPduEncoded++;
+
+                     /* PDSCH PDU */
+                     fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
+                           &currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg->dci[0].pdschCfg,
+                           currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.bwp, pduIndex);
+                     dlTtiReq->ue_grp_info[dlTtiReq->nGroup].pduIdx[pduIndex] = pduIndex;
+                     pduIndex++;
+                     numPduEncoded++;
+                  }
+                  DU_LOG("\033[1;34m");
+                  DU_LOG("\nDEBUG  -->  LWR_MAC: SIB1 sent...");
+                  DU_LOG("\033[0m");
+               }
+            }
+            if(currDlSlot->pageAllocInfo != NULLP)
+            {
+               /* Filling DL Paging Alloc param */
+               if(numPduEncoded != nPdu)
+               {
+                  rntiType = P_RNTI_TYPE;
+
+                  fillPagePdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded], \
+                        currDlSlot->pageAllocInfo, &macCellCfg);
+                  numPduEncoded++;
+
+                  fillPagePdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
+                        currDlSlot->pageAllocInfo, pduIndex, &macCellCfg);
+                  dlTtiReq->ue_grp_info[dlTtiReq->nGroup].pduIdx[pduIndex] = pduIndex;
+                  pduIndex++;
+                  numPduEncoded++;
+               }
+               DU_LOG("\033[1;34m");
+               DU_LOG("\nDEBUG  -->  LWR_MAC: PAGE sent...");
+               DU_LOG("\033[0m");
+            }
+            for(ueIdx=0; ueIdx<MAX_NUM_UE; ueIdx++)
+            {
+               if(currDlSlot->dlInfo.rarAlloc[ueIdx] != NULLP)
+               {
+                  /* Filling RAR param */
+                  rntiType = RA_RNTI_TYPE;
+                  if(currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdcchCfg)
+                  {
+
+                     fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
+                           currDlSlot, -1, rntiType, CORESET_TYPE0, ueIdx);
+                     numPduEncoded++;
+                     MAC_FREE(currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdcchCfg, sizeof(PdcchCfg));
+                  }
+                  if(currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdschCfg)
+                  {
+
+                     fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
+                           currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdschCfg, currDlSlot->dlInfo.rarAlloc[ueIdx]->bwp, pduIndex);
+                     numPduEncoded++;
+                     pduIndex++;
+                     DU_LOG("\033[1;32m");
+                     DU_LOG("\nDEBUG  -->  LWR_MAC: RAR sent...");
+                     DU_LOG("\033[0m");
+                  }
+               }
+               if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx] != NULLP)
+               {
+                  if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdcchCfg)  \
+                  {
+                     rntiType = C_RNTI_TYPE;
+
+                     fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded],
+                           currDlSlot, idx, rntiType, currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdcchCfg->coresetCfg.coreSetType, ueIdx);
+                     numPduEncoded++;
+                  }
+                  if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdu != NULLP)
+                  {
+                     if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdschCfg)
+                     {
+
+                        fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], &vendorMsg->p7_req_vendor.dl_tti_req.pdus[numPduEncoded], \
+                              currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdschCfg,\
+                              currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->bwp, pduIndex);
+                        numPduEncoded++;
+                        pduIndex++;
+                        DU_LOG("\033[1;32m");
+                        if((macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status))
+                        {
+                           DU_LOG("\nDEBUG  -->  LWR_MAC: MSG4 sent...");
+                           MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status, sizeof(bool));
+                        }
+                        else
+                        {
+                           DU_LOG("\nDEBUG  -->  LWR_MAC: DL MSG sent...");
+                        }
+                        DU_LOG("\033[0m");
+                     }
+                  }
+                  MAC_FREE(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdcchCfg,sizeof(PdcchCfg));
+                  /*   else
+                       {
+                       MAC_FREE(currDlSlot->dlInfo.dlMsgAlloc[ueIdx], sizeof(DlMsgAlloc));
+                       currDlSlot->dlInfo.dlMsgAlloc[ueIdx] = NULLP;
+                       }
+                       */
+               }
+            }
+            dlTtiReq->ue_grp_info[dlTtiReq->nGroup].nUe = MAX_NUM_UE_PER_TTI;
+            dlTtiReq->nGroup++;
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+            DU_LOG("\nDEBUG  -->  LWR_MAC: Sending DL TTI Request");
+#endif
+            /* Intel L1 expects UL_TTI.request following DL_TTI.request */
+
+            fillUlTtiReq(currTimingInfo, dlTtiElem, &(vendorMsg->p7_req_vendor.ul_tti_req));
+            msgHeader->num_msg++;
+            /* Intel L1 expects UL_DCI.request following DL_TTI.request */
+
+            fillUlDciReq(dlTtiReqTimingInfo, dlTtiElem->p_next, &(vendorMsg->p7_req_vendor.ul_dci_req));
+            msgHeader->num_msg++;
+            /* send Tx-DATA req message */
+
+            sendTxDataReq(dlTtiReqTimingInfo, currDlSlot, dlTtiElem->p_next->p_next, &(vendorMsg->p7_req_vendor.tx_data_req));
+            if(dlTtiElem->p_next->p_next->p_next)
+            {
+               msgHeader->num_msg++;
+               prevElem = dlTtiElem->p_next->p_next->p_next;
+            }
+            else
+               prevElem = dlTtiElem->p_next->p_next;
+         }
+         else
+         {
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+            DU_LOG("\nDEBUG  -->  LWR_MAC: Sending DL TTI Request");
+#endif
+            /* Intel L1 expects UL_TTI.request following DL_TTI.request */
+
+            fillUlTtiReq(currTimingInfo, dlTtiElem, &(vendorMsg->p7_req_vendor.ul_tti_req));
+            msgHeader->num_msg++;
+            /* Intel L1 expects UL_DCI.request following DL_TTI.request */
+
+            fillUlDciReq(dlTtiReqTimingInfo, dlTtiElem->p_next, &(vendorMsg->p7_req_vendor.ul_dci_req));
+            msgHeader->num_msg++;
+            prevElem = dlTtiElem->p_next->p_next;
+         }
+         if(macCb.macCell[cellIdx]->state == CELL_TO_BE_STOPPED)
+         {
+            /* Intel L1 expects UL_DCI.request following DL_TTI.request */
+
+            lwr_mac_procStopReqEvt(currTimingInfo, prevElem, &(vendorMsg->stop_req_vendor));
+            msgHeader->num_msg++;
+            macCb.macCell[cellIdx]->state = CELL_STOP_IN_PROGRESS;
+            prevElem = prevElem->p_next;
+         }
+
+         prevElem->p_next = vendorMsgQElem;
+         LwrMacSendToL1(headerElem);
+         memset(currDlSlot, 0, sizeof(MacDlSlot));
+         return ROK;
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for DL TTI Request");
+         memset(currDlSlot, 0, sizeof(MacDlSlot));
+         return RFAILED;
+      }
+   }
+   else
+   {
+      lwr_mac_procInvalidEvt(&currTimingInfo);
+      return RFAILED;
+   }
 #else
-				lwr_mac_procStopReqEvt(currTimingInfo, prevElem, NULLP);
+   uint8_t idx =0;
+   uint8_t nPdus = 0;
+   uint8_t numPduEncoded = 0;
+   uint8_t  ueIdx;
+   uint8_t  nGroup;
+   uint16_t cellIdx =0;
+   uint16_t pduIndex = 0;
+   uint32_t msgLen= 0;
+   SlotTimingInfo dlTtiReqTimingInfo;
+   MacDlSlot *currDlSlot = NULLP;
+   MacCellCfg macCellCfg;
+   RntiType rntiType;
+   fapi_dl_tti_req_t *dlTtiReq = NULLP;
+   fapi_msg_header_t *msgHeader = NULLP;
+   p_fapi_api_queue_elem_t dlTtiElem;
+   p_fapi_api_queue_elem_t headerElem;
+   p_fapi_api_queue_elem_t prevElem;
+   if(lwrMacCb.phyState == PHY_STATE_RUNNING)
+   {
+      GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
+      /* consider phy delay */
+      ADD_DELTA_TO_TIME(currTimingInfo,dlTtiReqTimingInfo,gConfigInfo.gPhyDeltaDl, macCb.macCell[cellIdx]->numOfSlots);
+      dlTtiReqTimingInfo.cellId = currTimingInfo.cellId;
+      macCellCfg = macCb.macCell[cellIdx]->macCellCfg;
+      currDlSlot = &macCb.macCell[cellIdx]->dlSlot[dlTtiReqTimingInfo.slot];
+      nPdus = calcDlTtiReqPduCount(currDlSlot);
+      if(nPdus>0)
+         nGroup=1;
+      msgLen=sizeof(fapi_msg_t)+ 2*sizeof(uint16_t)+2*sizeof(uint8_t)+ nPdus*sizeof(fapi_dl_tti_req_pdu_t)+nGroup * sizeof(fapi_ue_info_t);
+      LWR_MAC_ALLOC(dlTtiElem, (sizeof(fapi_api_queue_elem_t) + msgLen));
+      if(dlTtiElem)
+      {
+         FILL_FAPI_LIST_ELEM(dlTtiElem, NULLP, FAPI_DL_TTI_REQUEST, 1, msgLen);
+         /* Fill message header */
+         LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
+         if(!headerElem)
+         {
+            DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for header in DL TTI req");
+            LWR_MAC_FREE(dlTtiElem, (sizeof(fapi_api_queue_elem_t) + msgLen));
+            return RFAILED;
+         }
+         FILL_FAPI_LIST_ELEM(headerElem, dlTtiElem, FAPI_VENDOR_MSG_HEADER_IND, 1, \
+               sizeof(fapi_msg_header_t));
+         msgHeader = (fapi_msg_header_t *)(headerElem + 1);
+         msgHeader->num_msg = 2;
+         msgHeader->handle = 0;
+         /* Fill Dl TTI Request */
+         dlTtiReq = (fapi_dl_tti_req_t *)(dlTtiElem +1);
+         memset(dlTtiReq, 0, msgLen);
+         fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
+         dlTtiReq->sfn  = dlTtiReqTimingInfo.sfn;
+         dlTtiReq->slot = dlTtiReqTimingInfo.slot;
+         dlTtiReq->nPdus = nPdus;  /* get total Pdus */
+         dlTtiReq->nGroup = 0;
+         if(dlTtiReq->nPdus > 0)
+         {
+            if(currDlSlot->dlInfo.isBroadcastPres)
+            {
+               if(currDlSlot->dlInfo.brdcstAlloc.ssbTransmissionMode)
+               {
+                  if(dlTtiReq->pdus != NULLP)
+                  {
+                     for(idx = 0; idx < currDlSlot->dlInfo.brdcstAlloc.ssbIdxSupported; idx++)
+                     {
+                        fillSsbPdu(&dlTtiReq->pdus[numPduEncoded], &macCellCfg,\
+                              currDlSlot, idx, dlTtiReq->sfn);
+                        numPduEncoded++;
+                     }
+                  }
+                  DU_LOG("\033[1;31m");
+                  DU_LOG("\nDEBUG  -->  LWR_MAC: MIB sent..");
+                  DU_LOG("\033[0m");
+               }
+               if(currDlSlot->dlInfo.brdcstAlloc.sib1TransmissionMode)
+               {
+                  /* Filling SIB1 param */
+                  if(numPduEncoded != nPdus)
+                  {
+                     if(currDlSlot->dlInfo.brdcstAlloc.crnti == SI_RNTI)
+                        rntiType = SI_RNTI_TYPE;
+                     /* PDCCH PDU */
+                     fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], NULLP, currDlSlot, -1, rntiType, CORESET_TYPE0, MAX_NUM_UE);
+
+                     numPduEncoded++;
+                     fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], NULLP, &currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg->dci[0].pdschCfg,
+                           currDlSlot->dlInfo.brdcstAlloc.sib1Alloc.bwp, pduIndex);
+
+                     dlTtiReq->ue_grp_info[dlTtiReq->nGroup].pduIdx[pduIndex] = pduIndex;
+                     pduIndex++;
+                     numPduEncoded++;
+                  }
+                  DU_LOG("\033[1;34m");
+                  DU_LOG("\nDEBUG  -->  LWR_MAC: SIB1 sent...");
+                  DU_LOG("\033[0m");
+               }
+            }
+            if(currDlSlot->pageAllocInfo != NULLP)
+            {
+               /* Filling DL Paging Alloc param */
+               if(numPduEncoded != nPdus)
+               {
+                  rntiType = P_RNTI_TYPE;
+                  fillPagePdcchPdu(&dlTtiReq->pdus[numPduEncoded], NULLP, currDlSlot->pageAllocInfo, &macCellCfg);
+
+                  numPduEncoded++;
+                  fillPagePdschPdu(&dlTtiReq->pdus[numPduEncoded], NULLP,  currDlSlot->pageAllocInfo, pduIndex, &macCellCfg);
+
+                  dlTtiReq->ue_grp_info[dlTtiReq->nGroup].pduIdx[pduIndex] = pduIndex;
+                  pduIndex++;
+                  numPduEncoded++;
+               }
+               DU_LOG("\033[1;34m");
+               DU_LOG("\nDEBUG  -->  LWR_MAC: PAGE sent...");
+               DU_LOG("\033[0m");
+            }
+            for(ueIdx=0; ueIdx<MAX_NUM_UE; ueIdx++)
+            {
+               if(currDlSlot->dlInfo.rarAlloc[ueIdx] != NULLP)
+               {
+                  /* Filling RAR param */
+                  rntiType = RA_RNTI_TYPE;
+                  if(currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdcchCfg)
+                  {
+                     fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], NULLP, currDlSlot, -1, rntiType, CORESET_TYPE0, ueIdx);
+                     numPduEncoded++;
+                     MAC_FREE(currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdcchCfg, sizeof(PdcchCfg));
+                  }
+                  if(currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdschCfg)
+                  {
+                     fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], NULLP,
+                           currDlSlot->dlInfo.rarAlloc[ueIdx]->rarPdschCfg, currDlSlot->dlInfo.rarAlloc[ueIdx]->bwp, pduIndex);
+                     numPduEncoded++;
+                     pduIndex++;
+                     DU_LOG("\033[1;32m");
+                     DU_LOG("\nDEBUG  -->  LWR_MAC: RAR sent...");
+                     DU_LOG("\033[0m");
+                  }
+               }
+               if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx] != NULLP)
+               {
+                  if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdcchCfg)  \
+                  {
+                     rntiType = C_RNTI_TYPE;
+                     fillPdcchPdu(&dlTtiReq->pdus[numPduEncoded], NULLP,
+                           currDlSlot, idx, rntiType, currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdcchCfg->coresetCfg.coreSetType, ueIdx);
+                     numPduEncoded++;
+                  }
+                  if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdu != NULLP)
+                  {
+                     if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdschCfg)
+                     {
+                        fillPdschPdu(&dlTtiReq->pdus[numPduEncoded], NULLP, currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdschCfg,\
+                              currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->bwp, pduIndex);
+                        numPduEncoded++;
+                        pduIndex++;
+                        DU_LOG("\033[1;32m");
+                        if((macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status))
+                        {
+                           DU_LOG("\nDEBUG  -->  LWR_MAC: MSG4 sent...");
+                           MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status, sizeof(bool));
+                        }
+                        else
+                        {
+                           DU_LOG("\nDEBUG  -->  LWR_MAC: DL MSG sent...");
+                        }
+                        DU_LOG("\033[0m");
+                     }
+                  }
+                  MAC_FREE(currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdcchCfg,sizeof(PdcchCfg));
+                  /*   else
+                       {
+                       MAC_FREE(currDlSlot->dlInfo.dlMsgAlloc[ueIdx], sizeof(DlMsgAlloc));
+                       currDlSlot->dlInfo.dlMsgAlloc[ueIdx] = NULLP;
+                       }
+                       */
+               }
+            }
+            dlTtiReq->ue_grp_info[dlTtiReq->nGroup].nUe = MAX_NUM_UE_PER_TTI;
+            dlTtiReq->nGroup++;
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+            DU_LOG("\nDEBUG  -->  LWR_MAC: Sending DL TTI Request");
 #endif
-				msgHeader->num_msg++;
-				macCb.macCell[cellIdx]->state = CELL_STOP_IN_PROGRESS;
-				prevElem = prevElem->p_next;
-			}
-#ifndef OAI_TESTING
-			prevElem->p_next = vendorMsgQElem;
-#else
-			prevElem->p_next = NULLP;
+            /* Intel L1 expects UL_TTI.request following DL_TTI.request */
+            fillUlTtiReq(currTimingInfo, dlTtiElem, NULLP);
+
+            msgHeader->num_msg++;
+            /* Intel L1 expects UL_DCI.request following DL_TTI.request */
+            fillUlDciReq(dlTtiReqTimingInfo, dlTtiElem->p_next, NULLP);
+
+            msgHeader->num_msg++;
+            /* send Tx-DATA req message */
+            sendTxDataReq(dlTtiReqTimingInfo, currDlSlot, dlTtiElem->p_next->p_next, NULLP);
+
+            if(dlTtiElem->p_next->p_next->p_next)
+            {
+               msgHeader->num_msg++;
+               prevElem = dlTtiElem->p_next->p_next->p_next;
+            }
+            else
+               prevElem = dlTtiElem->p_next->p_next;
+         }
+         else
+         {
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+            DU_LOG("\nDEBUG  -->  LWR_MAC: Sending DL TTI Request");
 #endif
-			LwrMacSendToL1(headerElem);
-			memset(currDlSlot, 0, sizeof(MacDlSlot));
-			return ROK;
-		}
-		else
-		{
-			DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for DL TTI Request");
-			memset(currDlSlot, 0, sizeof(MacDlSlot));
-			return RFAILED;
-		}
-	}
-	else
-	{
-		lwr_mac_procInvalidEvt(&currTimingInfo);
-		return RFAILED;
-	}
+            /* Intel L1 expects UL_TTI.request following DL_TTI.request */
+            fillUlTtiReq(currTimingInfo, dlTtiElem, NULLP);
+
+            msgHeader->num_msg++;
+            /* Intel L1 expects UL_DCI.request following DL_TTI.request */
+            fillUlDciReq(dlTtiReqTimingInfo, dlTtiElem->p_next, NULLP);
+
+            msgHeader->num_msg++;
+            prevElem = dlTtiElem->p_next->p_next;
+         }
+         if(macCb.macCell[cellIdx]->state == CELL_TO_BE_STOPPED)
+         {
+            /* Intel L1 expects UL_DCI.request following DL_TTI.request */
+            lwr_mac_procStopReqEvt(currTimingInfo, prevElem, NULLP);
+
+            msgHeader->num_msg++;
+            macCb.macCell[cellIdx]->state = CELL_STOP_IN_PROGRESS;
+            prevElem = prevElem->p_next;
+         }
+         prevElem->p_next = NULLP;
+
+         LwrMacSendToL1(headerElem);
+         memset(currDlSlot, 0, sizeof(MacDlSlot));
+         return ROK;
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for DL TTI Request");
+         memset(currDlSlot, 0, sizeof(MacDlSlot));
+         return RFAILED;
+      }
+   }
+   else
+   {
+      lwr_mac_procInvalidEvt(&currTimingInfo);
+      return RFAILED;
+   }
+
+#endif   
 #endif
+
 	return ROK;
 }
 
@@ -4474,6 +4644,7 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
    uint8_t  nPdu = 0;
    uint8_t  ueIdx=0;
    uint16_t cellIdx=0;
+   uint32_t MsgLen=0;
    uint16_t pduIndex = 0;
    fapi_tx_data_req_t       *txDataReq =NULLP;
    p_fapi_api_queue_elem_t  txDataElem = 0;
@@ -4482,20 +4653,24 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
 
    /* send TX_Data request message */
    nPdu = calcTxDataReqPduCount(dlSlot);
+#ifndef OAI_TESTING
+   MsgLen=sizeof(fapi_tx_data_req_t);
+#else
+   MsgLen = sizeof(fapi_msg_t)+ 3*sizeof(uint16_t)+nPdu*sizeof(fapi_tx_pdu_desc_t);
+#endif
    if(nPdu > 0)
    {
-      LWR_MAC_ALLOC(txDataElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_tx_data_req_t)));
+      LWR_MAC_ALLOC(txDataElem, (sizeof(fapi_api_queue_elem_t) + MsgLen));
       if(txDataElem == NULLP)
       {
          DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for TX data Request");
          return RFAILED;
       }
 
-      FILL_FAPI_LIST_ELEM(txDataElem, NULLP, FAPI_TX_DATA_REQUEST, 1, \
-            sizeof(fapi_tx_data_req_t));
+      FILL_FAPI_LIST_ELEM(txDataElem, NULLP, FAPI_TX_DATA_REQUEST, 1, MsgLen);
       txDataReq = (fapi_tx_data_req_t *)(txDataElem +1);
       memset(txDataReq, 0, sizeof(fapi_tx_data_req_t));
-      fillMsgHeader(&txDataReq->header, FAPI_TX_DATA_REQUEST, sizeof(fapi_tx_data_req_t));
+      fillMsgHeader(&txDataReq->header, FAPI_TX_DATA_REQUEST, MsgLen);
 
 #ifndef OAI_TESTING 
       vendorTxDataReq->sym = 0;
@@ -4576,11 +4751,11 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
  * @return count
  * ********************************************************************/
 #ifdef INTEL_FAPI
-uint8_t getnPdus(fapi_ul_tti_req_t *ulTtiReq, MacUlSlot *currUlSlot)
+uint8_t getnPdus(MacUlSlot *currUlSlot)
 {
    uint8_t pduCount = 0, ueIdx = 0;
 
-   if(ulTtiReq && currUlSlot)
+   if(currUlSlot)
    {
       if(currUlSlot->ulSchInfo.dataType & SCH_DATATYPE_PRACH)
       {
@@ -4877,6 +5052,7 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
 #endif
 
 #ifdef INTEL_FAPI
+#ifndef OAI_TESTING 
    uint16_t   cellIdx =0;
    uint8_t    pduIdx = -1;
    uint8_t    ueIdx = 0;
@@ -4905,11 +5081,9 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
          fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, sizeof(fapi_ul_tti_req_t));
          ulTtiReq->sfn  = ulTtiReqTimingInfo.sfn;
          ulTtiReq->slot = ulTtiReqTimingInfo.slot;
-         ulTtiReq->nPdus = getnPdus(ulTtiReq, currUlSlot);
-#ifndef OAI_TESTING 
+         ulTtiReq->nPdus = getnPdus(currUlSlot);
          vendorUlTti->num_ul_pdu =  ulTtiReq->nPdus;
          vendorUlTti->sym = 0;
-#endif
          ulTtiReq->nGroup = 0;
          if(ulTtiReq->nPdus > 0)
          {
@@ -4934,11 +5108,7 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
                DU_LOG("\nDEBUG --> LWR_MAC: UL_TTI_REQ, PUSCH PDU ueId:%d", ueIdx);
 #endif
                      pduIdx++;
-#ifndef OAI_TESTING 
                      fillPuschPdu(&ulTtiReq->pdus[pduIdx], &vendorUlTti->ul_pdus[pduIdx], &macCellCfg, &currUlSlot->ulSchInfo.schPuschInfo[ueIdx]);
-#else
-                     fillPuschPdu(&ulTtiReq->pdus[pduIdx], NULLP, &macCellCfg, &currUlSlot->ulSchInfo.schPuschInfo[ueIdx]);
-#endif
                      ulTtiReq->nUlsch++;
                   }
                }
@@ -4948,11 +5118,7 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
                   if(currUlSlot->ulSchInfo.schPucchInfo[ueIdx].crnti != 0)
                   {
                      pduIdx++;
-#ifndef OAI_TESTING 
                      fillPucchPdu(&ulTtiReq->pdus[pduIdx], &vendorUlTti->ul_pdus[pduIdx], &macCellCfg, &currUlSlot->ulSchInfo.schPucchInfo[ueIdx]);
-#else
-                     fillPucchPdu(&ulTtiReq->pdus[pduIdx], NULLP, &macCellCfg, &currUlSlot->ulSchInfo.schPucchInfo[ueIdx]);
-#endif
                      ulTtiReq->nUlcch++;
                   }
                }
@@ -4980,6 +5146,100 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
    {
       lwr_mac_procInvalidEvt(&currTimingInfo);
    }
+#else
+   uint16_t   cellIdx =0;
+   uint8_t    pduIdx = -1;
+   uint8_t    ueIdx = 0;
+   uint8_t    nPdus = 0;
+   uint32_t   msgLen = 0;
+   SlotTimingInfo ulTtiReqTimingInfo;
+   MacUlSlot *currUlSlot = NULLP;
+   MacCellCfg macCellCfg;
+   fapi_ul_tti_req_t *ulTtiReq = NULLP;
+   p_fapi_api_queue_elem_t ulTtiElem;
+   if(lwrMacCb.phyState == PHY_STATE_RUNNING)
+   {
+      GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
+      macCellCfg = macCb.macCell[cellIdx]->macCellCfg;
+      /* add PHY delta */
+      ADD_DELTA_TO_TIME(currTimingInfo,ulTtiReqTimingInfo,gConfigInfo.gPhyDeltaUl, macCb.macCell[cellIdx]->numOfSlots);
+      currUlSlot = &macCb.macCell[cellIdx]->ulSlot[ulTtiReqTimingInfo.slot % macCb.macCell[cellIdx]->numOfSlots];
+      nPdus=getnPdus(currUlSlot);
+      msgLen=sizeof(fapi_msg_t)+ 2*sizeof(uint16_t)+5*sizeof(uint8_t)+ nPdus*sizeof(fapi_ul_tti_req_pdu_t)+sizeof(fapi_ue_info_t);
+      
+      LWR_MAC_ALLOC(ulTtiElem, (sizeof(fapi_api_queue_elem_t) + msgLen));
+      if(ulTtiElem)
+      {
+         FILL_FAPI_LIST_ELEM(ulTtiElem, NULLP, FAPI_UL_TTI_REQUEST, 1, msgLen);
+             
+         ulTtiReq = (fapi_ul_tti_req_t *)(ulTtiElem +1);
+         memset(ulTtiReq, 0, msgLen);
+         fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, msgLen);
+         ulTtiReq->sfn  = ulTtiReqTimingInfo.sfn;
+         ulTtiReq->slot = ulTtiReqTimingInfo.slot;
+         ulTtiReq->nPdus = nPdus;
+         ulTtiReq->nGroup = 0;
+         if(ulTtiReq->nPdus > 0)
+         {
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+               DU_LOG("\nDEBUG --> LWR_MAC: UL_TTI_REQ, datatype:%d, sfn/slot:%d/%d", currUlSlot->ulSchInfo.dataType,  ulTtiReq->sfn,  ulTtiReq->slot);
+#endif
+            /* Fill Prach Pdu */
+            if(currUlSlot->ulSchInfo.dataType & SCH_DATATYPE_PRACH)
+            {
+               pduIdx++;
+               fillPrachPdu(&ulTtiReq->pdus[pduIdx], &macCellCfg, currUlSlot);
+               ulTtiReq->rachPresent++;
+            }
+            for(ueIdx = 0; ueIdx < MAX_NUM_UE; ueIdx++)
+            {
+               /* Fill PUSCH PDU */
+               if(currUlSlot->ulSchInfo.dataType & SCH_DATATYPE_PUSCH)
+               {
+                  if(currUlSlot->ulSchInfo.schPuschInfo[ueIdx].crnti != 0)
+                  {
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+               DU_LOG("\nDEBUG --> LWR_MAC: UL_TTI_REQ, PUSCH PDU ueId:%d", ueIdx);
+#endif
+                     pduIdx++;
+                     fillPuschPdu(&ulTtiReq->pdus[pduIdx], NULLP, &macCellCfg, &currUlSlot->ulSchInfo.schPuschInfo[ueIdx]);
+                     ulTtiReq->nUlsch++;
+                  }
+               }
+               /* Fill PUCCH PDU */
+               if(currUlSlot->ulSchInfo.dataType & SCH_DATATYPE_UCI)
+               {
+                  if(currUlSlot->ulSchInfo.schPucchInfo[ueIdx].crnti != 0)
+                  {
+                     pduIdx++;
+                     fillPucchPdu(&ulTtiReq->pdus[pduIdx], NULLP, &macCellCfg, &currUlSlot->ulSchInfo.schPucchInfo[ueIdx]);
+                     ulTtiReq->nUlcch++;
+                  }
+               }
+            }
+            ulTtiReq->ueGrpInfo[ulTtiReq->nGroup].nUe = MAX_NUM_UE_PER_TTI;
+            ulTtiReq->nGroup++;
+         }
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+         DU_LOG("\nDEBUG  -->  LWR_MAC: Sending UL TTI Request");
+#endif
+         prevElem->p_next = ulTtiElem;
+         memset(currUlSlot, 0, sizeof(MacUlSlot));
+         return ROK;
+      }
+      else
+      {
+         DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for UL TTI Request");
+         memset(currUlSlot, 0, sizeof(MacUlSlot));
+         return RFAILED;
+      }
+   }
+   else
+   {
+      lwr_mac_procInvalidEvt(&currTimingInfo);
+   }
+  
+#endif
 #endif
    return ROK;
 }
@@ -5209,6 +5469,7 @@ uint8_t fillUlDciPdcchPdu(fapi_dci_pdu_t *ulDciReqPdu, fapi_vendor_dci_pdu_t *ve
 uint16_t fillUlDciReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t prevElem, fapi_vendor_ul_dci_req_t *vendorUlDciReq)
 {
 #ifdef INTEL_FAPI
+#ifndef OAI_TESTING
    uint8_t      cellIdx =0;
    uint8_t      numPduEncoded = 0;
    SlotTimingInfo  ulDciReqTimingInfo ={0};
@@ -5235,19 +5496,13 @@ uint16_t fillUlDciReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
          ulDciReq->slot = ulDciReqTimingInfo.slot;
          if(currDlSlot->dlInfo.ulGrant != NULLP)
          {
-#ifndef OAI_TESTING
             vendorUlDciReq->sym = 0;
             vendorUlDciReq->num_pdus = ulDciReq->numPdus;
-#endif
             ulDciReq->numPdus = 1;  // No. of PDCCH PDUs
             if(ulDciReq->numPdus > 0)
             {
                /* Fill PDCCH configuration Pdu */
-#ifndef OAI_TESTING
                fillUlDciPdcchPdu(&ulDciReq->pdus[numPduEncoded], &vendorUlDciReq->pdus[numPduEncoded], &currDlSlot->dlInfo, CORESET_TYPE1);
-#else
-               fillUlDciPdcchPdu(&ulDciReq->pdus[numPduEncoded], NULLP, &currDlSlot->dlInfo, CORESET_TYPE1);
-#endif
                numPduEncoded++;
                /* free UL GRANT at SCH */
                MAC_FREE(currDlSlot->dlInfo.ulGrant, sizeof(DciInfo));
@@ -5263,6 +5518,61 @@ uint16_t fillUlDciReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
    {
       lwr_mac_procInvalidEvt(&currTimingInfo);
    }
+#else
+   uint8_t      cellIdx =0;
+   uint8_t      numPdus =0;
+   uint8_t      numPduEncoded = 0;
+   uint32_t     msgLen=0;
+   SlotTimingInfo  ulDciReqTimingInfo ={0};
+   MacDlSlot    *currDlSlot = NULLP;
+   fapi_ul_dci_req_t        *ulDciReq =NULLP;
+   p_fapi_api_queue_elem_t  ulDciElem;
+
+   if(lwrMacCb.phyState == PHY_STATE_RUNNING)
+   {
+      GET_CELL_IDX(currTimingInfo.cellId, cellIdx);
+      memcpy(&ulDciReqTimingInfo, &currTimingInfo, sizeof(SlotTimingInfo));
+      currDlSlot = &macCb.macCell[cellIdx]->dlSlot[ulDciReqTimingInfo.slot % macCb.macCell[cellIdx]->numOfSlots];
+      if(currDlSlot->dlInfo.ulGrant != NULLP)
+      {
+         numPdus = 1;
+      }
+      msgLen = sizeof(fapi_msg_t)+ 2*sizeof(uint16_t)+sizeof(uint8_t)+ numPdus*sizeof(fapi_dci_pdu_t);
+      LWR_MAC_ALLOC(ulDciElem, (sizeof(fapi_api_queue_elem_t) + msgLen));
+      if(ulDciElem)
+      {
+         FILL_FAPI_LIST_ELEM(ulDciElem, NULLP, FAPI_UL_DCI_REQUEST, 1, msgLen);
+               
+         ulDciReq = (fapi_ul_dci_req_t *)(ulDciElem +1);
+         memset(ulDciReq, 0, msgLen);
+         fillMsgHeader(&ulDciReq->header, FAPI_UL_DCI_REQUEST, msgLen);
+
+         ulDciReq->sfn  = ulDciReqTimingInfo.sfn;
+         ulDciReq->slot = ulDciReqTimingInfo.slot;
+         if(currDlSlot->dlInfo.ulGrant != NULLP)
+         {
+            ulDciReq->numPdus = 1;  // No. of PDCCH PDUs
+            if(ulDciReq->numPdus > 0)
+            {
+               /* Fill PDCCH configuration Pdu */
+               fillUlDciPdcchPdu(&ulDciReq->pdus[numPduEncoded], NULLP, &currDlSlot->dlInfo, CORESET_TYPE1);
+               numPduEncoded++;
+               /* free UL GRANT at SCH */
+               MAC_FREE(currDlSlot->dlInfo.ulGrant, sizeof(DciInfo));
+            }
+#ifdef ODU_SLOT_IND_DEBUG_LOG
+            DU_LOG("\nDEBUG  -->  LWR_MAC: Sending UL DCI Request");
+#endif
+         }
+         prevElem->p_next = ulDciElem;
+      }
+   }
+   else
+   {
+      lwr_mac_procInvalidEvt(&currTimingInfo);
+   }
+
+#endif
 #endif
    return ROK;
 }
