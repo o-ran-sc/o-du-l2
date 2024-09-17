@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3cee169_835ddf60",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4419,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-17T08:16:58Z",
+      "side": 0,
+      "message": "since the length of this func is huge i will suggest to have a separate function for OAI_TESTING code",
+      "revId": "cde248543434a17975855ea4d73ee0695d38c747",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
