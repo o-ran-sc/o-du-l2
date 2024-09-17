@@ -16,6 +16,24 @@
       "message": "spec number is wrong",
       "revId": "3cd51885a8076eb288e69bc0720fca1fc0687061",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56a3a871_969605b1",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 4411,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-17T09:03:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fcbec10_db62e7c4",
+      "revId": "3cd51885a8076eb288e69bc0720fca1fc0687061",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
   ]
 }
