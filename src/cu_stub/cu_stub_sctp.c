@@ -233,9 +233,9 @@ uint8_t sctpStartReq()
    uint8_t assocIdx;
    uint8_t ret = ROK;
    CmInetFd sockFd;
+   socket_type = CM_INET_STREAM;
 
 #ifdef CONTAINERIZE
-   socket_type = CM_INET_STREAM;
    if((ret = cmInetSocket(socket_type, &sctpCb.f1LstnSockFd, IPPROTO_SCTP) != ROK))
    {
 	   DU_LOG("\nERROR  -->  SCTP : Socket[%d] coudnt open for listening", sctpCb.f1LstnSockFd.fd);
