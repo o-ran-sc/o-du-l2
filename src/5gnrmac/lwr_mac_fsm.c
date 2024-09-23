@@ -3617,9 +3617,11 @@ void fillPagePdschPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].beamIdx[0].beamidx = 0;
       dlTtiReqPdu->pdu.pdsch_pdu.powerControlOffset = 0;
       dlTtiReqPdu->pdu.pdsch_pdu.powerControlOffsetSS = 0;
+#ifndef OAI_TESTING 
       dlTtiReqPdu->pdu.pdsch_pdu.mappingType =   pageAlloc->pageDlSch.timeAlloc.mappingType;
       dlTtiReqPdu->pdu.pdsch_pdu.nrOfDmrsSymbols = pageAlloc->pageDlSch.dmrs.nrOfDmrsSymbols;
       dlTtiReqPdu->pdu.pdsch_pdu.dmrsAddPos = pageAlloc->pageDlSch.dmrs.dmrsAddPos;
+#endif
 
       dlTtiReqPdu->pduSize = sizeof(fapi_dl_pdsch_pdu_t);
 
@@ -3705,10 +3707,11 @@ void fillPdschPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_pdu
          beamIdx[0].beamidx = pdschInfo->beamPdschInfo.prg[0].beamIdx[0];
       dlTtiReqPdu->pdu.pdsch_pdu.powerControlOffset = pdschInfo->txPdschPower.powerControlOffset;  
       dlTtiReqPdu->pdu.pdsch_pdu.powerControlOffsetSS = pdschInfo->txPdschPower.powerControlOffsetSS;
+#ifndef OAI_TESTING 
       dlTtiReqPdu->pdu.pdsch_pdu.mappingType =   pdschInfo->dmrs.mappingType;
       dlTtiReqPdu->pdu.pdsch_pdu.nrOfDmrsSymbols = pdschInfo->dmrs.nrOfDmrsSymbols;
       dlTtiReqPdu->pdu.pdsch_pdu.dmrsAddPos = pdschInfo->dmrs.dmrsAddPos;
-
+#endif
       dlTtiReqPdu->pduSize = sizeof(fapi_dl_pdsch_pdu_t);
 
 #ifndef OAI_TESTING 
@@ -3853,7 +3856,12 @@ uint8_t calcTxDataReqPduCount(MacDlSlot *dlSlot)
 uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCellCfg *macCellCfg,
       PdschCfg *pdschCfg)
 {
+#ifndef OAI_TESTING 
    uint32_t payloadSize = 0;
+#else
+   uint16_t payloadSize = 0;
+#endif
+
    uint8_t *sib1Payload = NULLP;
    fapi_api_queue_elem_t *payloadElem = NULLP;
 #ifdef INTEL_WLS_MEM
@@ -3914,7 +3922,13 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCel
  * ********************************************************************/
 uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPageAlloc *pageAllocInfo)
 {
+
+#ifndef OAI_TESTING 
    uint32_t payloadSize = 0;
+#else
+   uint16_t payloadSize = 0;
+#endif
+
    uint8_t *pagePayload = NULLP;
    fapi_api_queue_elem_t *payloadElem = NULLP;
 #ifdef INTEL_WLS_MEM
@@ -3975,7 +3989,13 @@ uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPage
  * ********************************************************************/
 uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo *rarInfo, PdschCfg *pdschCfg)
 {
-   uint16_t payloadSize;
+
+#ifndef OAI_TESTING 
+   uint32_t payloadSize = 0;
+#else
+   uint16_t payloadSize = 0;
+#endif
+
    uint8_t  *rarPayload = NULLP;
    fapi_api_queue_elem_t *payloadElem = NULLP;
 #ifdef INTEL_WLS_MEM
@@ -4954,12 +4974,14 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       ulTtiReqPdu->pdu.pusch_pdu.nrOfSymbols = \
          puschInfo->tdAlloc.numSymb;
 #ifdef INTEL_FAPI
+#ifndef OAI_TESTING 
       ulTtiReqPdu->pdu.pusch_pdu.mappingType = \
          puschInfo->dmrsMappingType;
       ulTtiReqPdu->pdu.pusch_pdu.nrOfDmrsSymbols = \
          puschInfo->nrOfDmrsSymbols;
       ulTtiReqPdu->pdu.pusch_pdu.dmrsAddPos = \
          puschInfo->dmrsAddPos;
+#endif
 #endif
       ulTtiReqPdu->pdu.pusch_pdu.puschData.rvIndex = \
          puschInfo->tbInfo.rv;

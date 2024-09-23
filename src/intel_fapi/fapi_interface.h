@@ -747,19 +747,19 @@ extern "C" {
         uint8_t nrOfLayers;
         uint8_t transmissionScheme;
         uint8_t refPoint;
-        uint8_t dmrsConfigType;
         uint16_t dlDmrsSymbPos;
+        uint8_t dmrsConfigType;
+        uint16_t dlDmrsScramblingId;
         uint8_t scid;
         uint8_t numDmrsCdmGrpsNoData;
+        uint16_t dmrsPorts;
         uint8_t resourceAlloc;
 #ifndef OAI_TESTING
         uint8_t pad1;
 #endif
-        uint16_t dlDmrsScramblingId;
-        uint16_t dmrsPorts;
+        uint8_t rbBitmap[36];
         uint16_t rbStart;
         uint16_t rbSize;
-        uint8_t rbBitmap[36];
         uint8_t vrbToPrbMapping;
         uint8_t startSymbIndex;
         uint8_t nrOfSymbols;
@@ -774,10 +774,10 @@ extern "C" {
         uint8_t isLastCbPresent;
         uint8_t isInlineTbCrc;
         uint32_t dlTbCrc;       // 5G FAPI Table 3-38
+#ifndef OAI_TESTING
         uint8_t mappingType;
         uint8_t nrOfDmrsSymbols;
         uint8_t dmrsAddPos;
-#ifndef OAI_TESTING
         uint8_t pad2;
 #endif
     } fapi_dl_pdsch_pdu_t;
@@ -828,8 +828,8 @@ extern "C" {
         uint8_t betaPss;
         uint8_t ssbBlockIndex;
         uint8_t ssbSubCarrierOffset;
-        uint8_t bchPayloadFlag;
         uint16_t ssbOffsetPointA;
+        uint8_t bchPayloadFlag;
         fapi_bch_payload_t bchPayload;
         fapi_precoding_bmform_t preCodingAndBeamforming;    // 5G FAPI Table 3-40
     } fapi_dl_ssb_pdu_t;
@@ -906,16 +906,16 @@ extern "C" {
 // Updated per 5G FAPI
     typedef struct {
         uint8_t numPtrsPorts;
+        fapi_ptrs_info_t ptrsInfo[FAPI_MAX_NUM_PTRS_PORTS];
         uint8_t ptrsTimeDensity;
         uint8_t ptrsFreqDensity;    // 5G FAPI Table 3-49 Subset
         uint8_t ulPtrsPower;
-        fapi_ptrs_info_t ptrsInfo[FAPI_MAX_NUM_PTRS_PORTS];
     } fapi_pusch_ptrs_t;
 
 // Updated per 5G FAPI
     typedef struct {
-        uint16_t lowPaprSequenceNumber;
         uint8_t lowPaprGroupNumber;
+        uint16_t lowPaprSequenceNumber;
         uint8_t ulPtrsSampleDensity;
         uint8_t ulPtrsTimeDensityTransformPrecoding;
 #ifndef OAI_TESTING
@@ -959,35 +959,36 @@ extern "C" {
         uint16_t bwpStart;
         uint8_t subCarrierSpacing;
         uint8_t cyclicPrefix;
-        uint8_t mcsIndex;
-        uint8_t mcsTable;
         uint16_t targetCodeRate;
         uint8_t qamModOrder;
+        uint8_t mcsIndex;
+        uint8_t mcsTable;
         uint8_t transformPrecoding;
         uint16_t dataScramblingId;
         uint8_t nrOfLayers;
-        uint8_t dmrsConfigType;
         uint16_t ulDmrsSymbPos;
+        uint8_t dmrsConfigType;
         uint16_t ulDmrsScramblingId;
+        uint16_t puschIdentity; //ADDED as per : 55G FAPI: PHY API Version: 222.10.02 
         uint8_t scid;
         uint8_t numDmrsCdmGrpsNoData;
         uint16_t dmrsPorts;
-        uint16_t nTpPuschId;
-        uint16_t tpPi2Bpsk;
-        uint8_t rbBitmap[36];
+        uint8_t resourceAlloc;
+        uint8_t rbBitmap[36]; 
         uint16_t rbStart;
         uint16_t rbSize;
         uint8_t vrbToPrbMapping;
         uint8_t frequencyHopping;
         uint16_t txDirectCurrentLocation;
-        uint8_t resourceAlloc;
         uint8_t uplinkFrequencyShift7p5khz;
         uint8_t startSymbIndex;
         uint8_t nrOfSymbols;
+#ifndef OAI_TESTING
+        uint16_t nTpPuschId; 
+        uint16_t tpPi2Bpsk; 
         uint8_t mappingType;
         uint8_t nrOfDmrsSymbols;
         uint8_t dmrsAddPos;
-#ifndef OAI_TESTING
         uint8_t pad;
 #endif
 
@@ -1020,12 +1021,12 @@ extern "C" {
         uint8_t startSymbolIndex;
         uint8_t nrOfSymbols;
         uint8_t freqHopFlag;
+        uint16_t secondHopPrb;
         uint8_t groupHopFlag;
         uint8_t sequenceHopFlag;
 #ifndef OAI_TESTING
         uint8_t pad3;
 #endif
-        uint16_t secondHopPrb;
         uint16_t hoppingId;
         uint16_t initialCyclicShift;
         uint16_t dataScramblingId;
@@ -1061,8 +1062,8 @@ extern "C" {
         uint8_t numRepetitions;
         uint8_t timeStartPosition;
         uint8_t configIndex;
-        uint8_t bandwidthIndex;
         uint16_t sequenceId;
+        uint8_t bandwidthIndex;
         uint8_t combSize;
         uint8_t combOffset;
         uint8_t cyclicShift;
@@ -1129,9 +1130,15 @@ extern "C" {
 
 // Updated per 5G FAPI
     typedef struct {
+#ifndef OAI_TESTING
         uint32_t pdu_length;
         uint16_t pdu_index;
         uint16_t num_tlvs;
+#else
+        uint16_t pdu_length;
+        uint16_t pdu_index;
+        uint32_t num_tlvs;
+#endif
         fapi_uint8_ptr_tlv_t tlvs[FAPI_MAX_NUMBER_OF_TLVS_PER_PDU]; // 5G FAPI Table 3-58 Subset
     } fapi_tx_pdu_desc_t;
 
@@ -1152,10 +1159,10 @@ extern "C" {
         uint32_t handle;
         uint16_t rnti;
         uint8_t harqId;
+        uint16_t pdu_length;
         uint8_t ul_cqi;
         uint16_t timingAdvance;
         uint16_t rssi;
-        uint16_t pdu_length;
 #ifndef OAI_TESTING
         uint8_t pad[2];
 #endif
@@ -1180,14 +1187,14 @@ extern "C" {
         uint16_t rnti;
         uint8_t harqId;
         uint8_t tbCrcStatus;
+        uint16_t numCb;
+        uint8_t cbCrcStatus[FAPI_MAX_NUM_CB_PER_TTI_IN_BYTES];  // 5G FAPI Table 3-62 subset
         uint8_t ul_cqi;
+        uint16_t timingAdvance;
+        uint16_t rssi;
 #ifndef OAI_TESTING
         uint8_t pad;
 #endif
-        uint16_t numCb;
-        uint16_t timingAdvance;
-        uint16_t rssi;
-        uint8_t cbCrcStatus[FAPI_MAX_NUM_CB_PER_TTI_IN_BYTES];  // 5G FAPI Table 3-62 subset
     } fapi_crc_ind_info_t;
 
 // Updated per 5G FAPI
@@ -1234,11 +1241,10 @@ extern "C" {
 
 // Updated per 5G FAPI
     typedef struct {
-
-        uint32_t handle;
         uint8_t pduBitmap;
-        uint8_t ul_cqi;
+        uint32_t handle;
         uint16_t rnti;
+        uint8_t ul_cqi;
         uint16_t timingAdvance;
         uint16_t rssi;          // 5G FAPI Table 3-64
         fapi_harq_info_t harqInfo;  // This is included if indicated by the pduBitmap
@@ -1280,30 +1286,35 @@ extern "C" {
 
 // Updated per 5G FAPI
     typedef struct {
-        uint32_t handle;
         uint8_t pduBitmap;
+        uint32_t handle;
+        uint16_t rnti;
         uint8_t pucchFormat;
         uint8_t ul_cqi;
-#ifndef OAI_TESTING
-        uint8_t pad;
-#endif
-        uint16_t rnti;
         uint16_t timingAdvance;
         uint16_t rssi;          // 5G FAPI Table 3-66
+#ifndef OAI_TESTING
+        uint8_t pad;
         uint16_t num_uci_bits;
         uint8_t uciBits[FAPI_MAX_UCI_BIT_BYTE_LEN];
+#else
+        fapi_sr_f2f3f4_info_t srF2F3F4Info; //ADDED as per : 55G FAPI: PHY API Version: 222.10.02
+        fapi_harq_f2f3f4_info_t harqF2F3F4Info;
+        fapi_csi_p1_info_t csiP1Info;
+        fapi_csi_p2_info_t csiP2Info;
+#endif
     } fapi_uci_o_pucch_f2f3f4_t;
 
 // Updated per 5G FAPI
     typedef struct {
-        uint32_t handle;
         uint8_t pduBitmap;
+        uint32_t handle;
+        uint16_t rnti;
         uint8_t pucchFormat;
         uint8_t ul_cqi;
 #ifndef OAI_TESTING
         uint8_t pad;
 #endif
-        uint16_t rnti;
         uint16_t timingAdvance;
         uint16_t rssi;          // 5G FAPI Table 3-65
 #ifndef OAI_TESTING 
