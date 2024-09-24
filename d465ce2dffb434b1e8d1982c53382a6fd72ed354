@@ -1,0 +1,371 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "580f7fc9_03937abc",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3925,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "payload size of uint16 for OAI Testint",
+      "range": {
+        "startLine": 3925,
+        "startChar": 12,
+        "endLine": 3925,
+        "endChar": 23
+      },
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1eef9d6_b3ba69f3",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3986,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "payload size of uint16 for OAI Testint",
+      "range": {
+        "startLine": 3986,
+        "startChar": 12,
+        "endLine": 3986,
+        "endChar": 23
+      },
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "526f19d5_b8e39695",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "we can merge this padding into above one",
+      "range": {
+        "startLine": 782,
+        "startChar": 1,
+        "endLine": 782,
+        "endChar": 7
+      },
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31ed8b06_10d0a844",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 914,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "this fapi_ptrs_info_t shld come below fapi_cell_parms_t",
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64d1ae2c_e760bb4c",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 919,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "Seq number should come under GroupNumber",
+      "range": {
+        "startLine": 919,
+        "startChar": 8,
+        "endLine": 919,
+        "endChar": 16
+      },
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b495eb60_7b4a17f6",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "please check the order of mcsIndex, mcsTable comes after qamModOrder",
+      "range": {
+        "startLine": 964,
+        "startChar": 16,
+        "endLine": 964,
+        "endChar": 24
+      },
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6809f153_ccb663b1",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 972,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "this comes above dmrsConfigType",
+      "range": {
+        "startLine": 972,
+        "startChar": 17,
+        "endLine": 972,
+        "endChar": 30
+      },
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09a6ef67_3cc4e92d",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 974,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "uint16_t puschIdentity missed above scid",
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a1af7ce_9baf9048",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "nTpPuschId and tpPi2Bpsk not present in spec",
+      "range": {
+        "startLine": 977,
+        "startChar": 17,
+        "endLine": 977,
+        "endChar": 27
+      },
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6354a03c_35d5c7ff",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "resourceAlloc shld come above rbBitMap[36]",
+      "range": {
+        "startLine": 985,
+        "startChar": 16,
+        "endLine": 985,
+        "endChar": 29
+      },
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42dc9720_ad33f0da",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 989,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "these three not in spec",
+      "range": {
+        "startLine": 989,
+        "startChar": 16,
+        "endLine": 989,
+        "endChar": 27
+      },
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a71da013_a356f9ea",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "this shld come below freqHopFlag",
+      "range": {
+        "startLine": 1030,
+        "startChar": 17,
+        "endLine": 1030,
+        "endChar": 29
+      },
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20406b8c_09ac12e6",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1066,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "bandwidthIndex below seqIndex",
+      "range": {
+        "startLine": 1066,
+        "startChar": 16,
+        "endLine": 1066,
+        "endChar": 30
+      },
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e4fa6ae_69ee7b5a",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1191,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "sequence of parameters below tbCrcStatus needs to be checked..",
+      "range": {
+        "startLine": 1191,
+        "startChar": 16,
+        "endLine": 1191,
+        "endChar": 22
+      },
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21c842af_f87944e1",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1290,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "handle is the second param",
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e525011c_fe6902be",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1297,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "rnti before pucchFOrmat",
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd731fa6_4ce0f8cf",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1300,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-09-24T09:53:56Z",
+      "side": 1,
+      "message": "last two param are not in the spec and also some other parameters are given. please check",
+      "range": {
+        "startLine": 1300,
+        "startChar": 17,
+        "endLine": 1300,
+        "endChar": 29
+      },
+      "revId": "d465ce2dffb434b1e8d1982c53382a6fd72ed354",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
