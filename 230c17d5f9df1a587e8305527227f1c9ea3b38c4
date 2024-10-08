@@ -1,0 +1,363 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37bd0692_f5a07805",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2928,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "you dont need this for normal testing",
+      "range": {
+        "startLine": 2928,
+        "startChar": 15,
+        "endLine": 2928,
+        "endChar": 16
+      },
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b09a0714_36c68137",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3180,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "this is uint16",
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44fe546c_d2f6f548",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3181,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "this is uint16",
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cfdde96_b0b1fa1e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3183,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "uint16",
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89cee25d_9115593f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3184,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "uint16",
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35d967fe_87865748",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3227,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "this reversal has to be done after 3234 line as it is getting used here",
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9985f35d_5ca19cea",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3336,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "pc_and_bform have uint16 variables as mentioned above .. pls check",
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab148474_c4c1a7af",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3395,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "same as above as it is getting used in line no: 3405",
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a53877ad_737068c5",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3481,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "this function is missed .. please check  all the param",
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c25a21f5_4dd16f07",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3637,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "this can be common",
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73c9c0b3_248ec953",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3670,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "uint16",
+      "range": {
+        "startLine": 3670,
+        "startChar": 48,
+        "endLine": 3670,
+        "endChar": 63
+      },
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7713996_e66ff338",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3675,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "uint32",
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b880c682_ecb172b2",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3688,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "preCodingAndBeamforming has uint16 param .. please check",
+      "range": {
+        "startLine": 3688,
+        "startChar": 33,
+        "endLine": 3688,
+        "endChar": 56
+      },
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37237098_213e2b00",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3742,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "this can be common",
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c778ebfe_56a4adb4",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3775,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "uint16",
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f216e4db_4278a22e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3780,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "uint32",
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6454cbb_efda55af",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 3793,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "few param of preCodingAndBeamforming",
+      "range": {
+        "startLine": 3793,
+        "startChar": 33,
+        "endLine": 3793,
+        "endChar": 56
+      },
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e3c5319_c1e9869c",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4556,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "if you reverse it here then wherever this variable is used will have wrong value",
+      "range": {
+        "startLine": 4556,
+        "startChar": 26,
+        "endLine": 4556,
+        "endChar": 40
+      },
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d74b161_03aa554d",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 4557,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-10-08T09:58:22Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 4557,
+        "startChar": 26,
+        "endLine": 4557,
+        "endChar": 40
+      },
+      "revId": "230c17d5f9df1a587e8305527227f1c9ea3b38c4",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
