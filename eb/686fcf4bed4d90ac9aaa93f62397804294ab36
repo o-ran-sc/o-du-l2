@@ -1,0 +1,8 @@
+Code-Review+2: Sangeeta Vaidhyanathan <svaidhya@radisys.com>
+Verified+1: Sangeeta Vaidhyanathan <svaidhya@radisys.com>
+Verified+1: ORAN Required GHA <releng+oran.required.gha@linuxfoundation.org>
+Submitted-by: Priyanka Borla <pborla@radisys.com>
+Submitted-at: Mon, 14 Oct 2024 11:10:18 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/o-du/l2/+/13610
+Project: o-du/l2
+Branch: refs/heads/oai-integration
