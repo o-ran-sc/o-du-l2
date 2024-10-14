@@ -3997,13 +3997,21 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCel
    void * wlsHdlr = NULLP;
 #endif
 
+   payloadSize = pdschCfg->codeword[0].tbSize;
+#ifndef OAI_TESTING 
    pduDesc[pduIndex].pdu_index = pduIndex;
    pduDesc[pduIndex].num_tlvs = 1;
-
    /* fill the TLV */
-   payloadSize = pdschCfg->codeword[0].tbSize;
    pduDesc[pduIndex].tlvs[0].tl.tag = ((payloadSize & 0xff0000) >> 8) | FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
    pduDesc[pduIndex].tlvs[0].tl.length = (payloadSize & 0x0000ffff);
+#else
+   pduDesc[pduIndex].pdu_index = reverseBytes16(pduIndex);
+   pduDesc[pduIndex].num_tlvs = reverseBytes32(1);
+   /* fill the TLV */
+   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(((payloadSize & 0xff0000) >> 8) | FAPI_TX_DATA_PTR_TO_PAYLOAD_64);
+   pduDesc[pduIndex].tlvs[0].tl.length = reverseBytes16((payloadSize & 0x0000ffff));
+#endif
+
    LWR_MAC_ALLOC(sib1Payload, payloadSize);
    if(sib1Payload == NULLP)
    {
@@ -4020,7 +4028,11 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCel
 #else
    pduDesc[pduIndex].tlvs[0].value = sib1Payload;
 #endif
+
    pduDesc[pduIndex].pdu_length = payloadSize; 
+#ifdef OAI_TESTING
+   pduDesc[pduIndex].pdu_length = reverseBytes16(pduDesc[pduIndex].pdu_length);
+#endif 
 
 #ifdef INTEL_WLS_MEM   
    addWlsBlockToFree(sib1Payload, payloadSize, (lwrMacCb.phySlotIndCntr-1));
@@ -4064,13 +4076,22 @@ uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPage
    void * wlsHdlr = NULLP;
 #endif
 
+   payloadSize = pageAllocInfo->pageDlSch.tbInfo.tbSize;
+
+#ifndef OAI_TESTING 
    pduDesc[pduIndex].pdu_index = pduIndex;
    pduDesc[pduIndex].num_tlvs = 1;
-
    /* fill the TLV */
-   payloadSize = pageAllocInfo->pageDlSch.tbInfo.tbSize;
    pduDesc[pduIndex].tlvs[0].tl.tag = ((payloadSize & 0xff0000) >> 8) | FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
    pduDesc[pduIndex].tlvs[0].tl.length = (payloadSize & 0x0000ffff);
+#else
+   pduDesc[pduIndex].pdu_index = reverseBytes16(pduIndex);
+   pduDesc[pduIndex].num_tlvs = reverseBytes32(1);
+   /* fill the TLV */
+   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(((payloadSize & 0xff0000) >> 8) | FAPI_TX_DATA_PTR_TO_PAYLOAD_64);
+   pduDesc[pduIndex].tlvs[0].tl.length = reverseBytes16((payloadSize & 0x0000ffff));
+#endif
+
    LWR_MAC_ALLOC(pagePayload, payloadSize);
    if(pagePayload == NULLP)
    {
@@ -4087,7 +4108,11 @@ uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPage
 #else
    pduDesc[pduIndex].tlvs[0].value = pagePayload;
 #endif
+
    pduDesc[pduIndex].pdu_length = payloadSize; 
+#ifdef OAI_TESTING 
+   pduDesc[pduIndex].pdu_length = reverseBytes16(pduDesc[pduIndex].pdu_length);
+#endif
 
 #ifdef INTEL_WLS_MEM   
    addWlsBlockToFree(pagePayload, payloadSize, (lwrMacCb.phySlotIndCntr-1));
@@ -4131,13 +4156,22 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
    void * wlsHdlr = NULLP;
 #endif
 
+   payloadSize = pdschCfg->codeword[0].tbSize;
+
+#ifndef OAI_TESTING
    pduDesc[pduIndex].pdu_index = pduIndex;
    pduDesc[pduIndex].num_tlvs = 1;
-
    /* fill the TLV */
-   payloadSize = pdschCfg->codeword[0].tbSize;
    pduDesc[pduIndex].tlvs[0].tl.tag = FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
    pduDesc[pduIndex].tlvs[0].tl.length = payloadSize;
+#else
+   pduDesc[pduIndex].pdu_index = reverseBytes16(pduIndex);
+   pduDesc[pduIndex].num_tlvs = reverseBytes32(1);
+   /* fill the TLV */
+   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(FAPI_TX_DATA_PTR_TO_PAYLOAD_64);
+   pduDesc[pduIndex].tlvs[0].tl.length = reverseBytes16(payloadSize);
+#endif
+
    LWR_MAC_ALLOC(rarPayload, payloadSize);
    if(rarPayload == NULLP)
    {
@@ -4153,7 +4187,11 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
 #else
    pduDesc[pduIndex].tlvs[0].value = rarPayload;
 #endif
+
    pduDesc[pduIndex].pdu_length = payloadSize;
+#ifdef OAI_TESTING
+   pduDesc[pduIndex].pdu_length = reverseBytes16(pduDesc[pduIndex].pdu_length);
+#endif
 
 #ifdef INTEL_WLS_MEM
    addWlsBlockToFree(rarPayload, payloadSize, (lwrMacCb.phySlotIndCntr-1));
@@ -4190,13 +4228,21 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsg
    void * wlsHdlr = NULLP;
 #endif
 
+   payloadSize = pdschCfg->codeword[0].tbSize;
+#ifndef OAI_TESTING 
    pduDesc[pduIndex].pdu_index = pduIndex;
    pduDesc[pduIndex].num_tlvs = 1;
-
    /* fill the TLV */
-   payloadSize = pdschCfg->codeword[0].tbSize;
    pduDesc[pduIndex].tlvs[0].tl.tag = FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
    pduDesc[pduIndex].tlvs[0].tl.length = payloadSize;
+#else
+   pduDesc[pduIndex].pdu_index = reverseBytes16(pduIndex);
+   pduDesc[pduIndex].num_tlvs = reverseBytes32(1);
+   /* fill the TLV */
+   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(FAPI_TX_DATA_PTR_TO_PAYLOAD_64);
+   pduDesc[pduIndex].tlvs[0].tl.length = reverseBytes16(payloadSize);
+#endif
+
    LWR_MAC_ALLOC(dlMsgPayload, payloadSize);
    if(dlMsgPayload == NULLP)
    {
@@ -4212,7 +4258,11 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsg
 #else
    pduDesc[pduIndex].tlvs[0].value = dlMsgPayload;
 #endif
+
    pduDesc[pduIndex].pdu_length = payloadSize;
+#ifdef OAI_TESTING 
+   pduDesc[pduIndex].pdu_length = reverseBytes16(pduDesc[pduIndex].pdu_length);
+#endif
 
 #ifdef INTEL_WLS_MEM
    addWlsBlockToFree(dlMsgPayload, payloadSize, (lwrMacCb.phySlotIndCntr-1));
@@ -4855,9 +4905,12 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
 
 #ifndef OAI_TESTING 
       vendorTxDataReq->sym = 0;
-#endif
       txDataReq->sfn  = currTimingInfo.sfn;
       txDataReq->slot = currTimingInfo.slot;
+#else
+      txDataReq->sfn  = reverseBytes16(currTimingInfo.sfn);
+      txDataReq->slot = reverseBytes16(currTimingInfo.slot);
+#endif
       if(dlSlot->dlInfo.brdcstAlloc.sib1TransmissionMode)
       {
          fillSib1TxDataReq(txDataReq->pdu_desc, pduIndex, &macCb.macCell[cellIdx]->macCellCfg, \
@@ -4907,6 +4960,12 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
             MAC_FREE(dlSlot->dlInfo.dlMsgAlloc[ueIdx], sizeof(DlMsgSchInfo));
          }
       }
+
+#ifdef OAI_TESTING 
+      DU_LOG("\nDEBUG  -->  LWR_MAC: Sending TX DATA Request with total number pdu %u", txDataReq->num_pdus);
+      txDataReq->num_pdus= reverseBytes16(txDataReq->num_pdus);
+      DU_LOG("\nDEBUG  -->  LWR_MAC: After reversing total number pdu %u = ", txDataReq->num_pdus);
+#endif
 
       /* Fill message header */
       DU_LOG("\nDEBUG  -->  LWR_MAC: Sending TX DATA Request");
@@ -5496,16 +5555,26 @@ void fillUlDciPdu(fapi_dl_dci_t *ulDciPtr, DciInfo *schDciInfo)
       uint8_t puschTpcSize         = 2;
       uint8_t ul_SlIndSize         = 1;
 
+#ifndef OAI_TESTING
       ulDciPtr->rnti                          = schDciInfo->dciInfo.rnti;
       ulDciPtr->scramblingId                  = schDciInfo->dciInfo.scramblingId;    
       ulDciPtr->scramblingRnti                = schDciInfo->dciInfo.scramblingRnti;
-      ulDciPtr->cceIndex                      = schDciInfo->dciInfo.cceIndex;
-      ulDciPtr->aggregationLevel              = schDciInfo->dciInfo.aggregLevel;
       ulDciPtr->pc_and_bform.numPrgs          = schDciInfo->dciInfo.beamPdcchInfo.numPrgs;
       ulDciPtr->pc_and_bform.prgSize          = schDciInfo->dciInfo.beamPdcchInfo.prgSize;
-      ulDciPtr->pc_and_bform.digBfInterfaces  = schDciInfo->dciInfo.beamPdcchInfo.digBfInterfaces;
       ulDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = schDciInfo->dciInfo.beamPdcchInfo.prg[0].pmIdx;
       ulDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = schDciInfo->dciInfo.beamPdcchInfo.prg[0].beamIdx[0];
+#else
+      ulDciPtr->rnti                          = reverseBytes16(schDciInfo->dciInfo.rnti);
+      ulDciPtr->scramblingId                  = reverseBytes16(schDciInfo->dciInfo.scramblingId);    
+      ulDciPtr->scramblingRnti                = reverseBytes16(schDciInfo->dciInfo.scramblingRnti);
+      ulDciPtr->pc_and_bform.numPrgs          = reverseBytes16(schDciInfo->dciInfo.beamPdcchInfo.numPrgs);
+      ulDciPtr->pc_and_bform.prgSize          = reverseBytes16(schDciInfo->dciInfo.beamPdcchInfo.prgSize);
+      ulDciPtr->pc_and_bform.pmi_bfi[0].pmIdx = reverseBytes16(schDciInfo->dciInfo.beamPdcchInfo.prg[0].pmIdx);
+      ulDciPtr->pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = reverseBytes16(schDciInfo->dciInfo.beamPdcchInfo.prg[0].beamIdx[0]);
+#endif
+      ulDciPtr->cceIndex                      = schDciInfo->dciInfo.cceIndex;
+      ulDciPtr->aggregationLevel              = schDciInfo->dciInfo.aggregLevel;
+      ulDciPtr->pc_and_bform.digBfInterfaces  = schDciInfo->dciInfo.beamPdcchInfo.digBfInterfaces;
       ulDciPtr->beta_pdcch_1_0                = schDciInfo->dciInfo.txPdcchPower.beta_pdcch_1_0;           
       ulDciPtr->powerControlOffsetSS          = schDciInfo->dciInfo.txPdcchPower.powerControlOffsetSS;
 
@@ -5561,6 +5630,9 @@ void fillUlDciPdu(fapi_dl_dci_t *ulDciPtr, DciInfo *schDciInfo)
       if(ulDciPtr->payloadSizeBits % 8)
          numBytes += 1;
 
+#ifdef OAI_TESTING
+      ulDciPtr->payloadSizeBits = reverseBytes16(ulDciPtr->payloadSizeBits);
+#endif
       if(numBytes > FAPI_DCI_PAYLOAD_BYTE_LEN)
       {
          DU_LOG("\nERROR  -->  LWR_MAC : Total bytes for DCI is more than expected");
@@ -5620,9 +5692,24 @@ uint8_t fillUlDciPdcchPdu(fapi_dci_pdu_t *ulDciReqPdu, fapi_vendor_dci_pdu_t *ve
    {
       memset(&ulDciReqPdu->pdcchPduConfig, 0, sizeof(fapi_dl_pdcch_pdu_t));
       fillUlDciPdu(ulDciReqPdu->pdcchPduConfig.dlDci, dlInfo->ulGrant);
+
+#ifndef OAI_TESTING
+      /* Calculating PDU length. Considering only one Ul dci pdu for now */
+      ulDciReqPdu->pduSize                          = sizeof(fapi_dl_pdcch_pdu_t);
       ulDciReqPdu->pduType                          = PDCCH_PDU_TYPE;
       ulDciReqPdu->pdcchPduConfig.bwpSize           = dlInfo->ulGrant->bwpCfg.freqAlloc.numPrb;
       ulDciReqPdu->pdcchPduConfig.bwpStart          = dlInfo->ulGrant->bwpCfg.freqAlloc.startPrb;
+      ulDciReqPdu->pdcchPduConfig.shiftIndex        = dlInfo->ulGrant->coresetCfg.shiftIndex;
+      ulDciReqPdu->pdcchPduConfig.numDlDci          = 1;
+#else
+      /* Calculating PDU length. Considering only one Ul dci pdu for now */
+      ulDciReqPdu->pduSize                          = reverseBytes16(sizeof(fapi_dl_pdcch_pdu_t));
+      ulDciReqPdu->pduType                          = reverseBytes16(PDCCH_PDU_TYPE);
+      ulDciReqPdu->pdcchPduConfig.bwpSize           = reverseBytes16(dlInfo->ulGrant->bwpCfg.freqAlloc.numPrb);
+      ulDciReqPdu->pdcchPduConfig.bwpStart          = reverseBytes16(dlInfo->ulGrant->bwpCfg.freqAlloc.startPrb);
+      ulDciReqPdu->pdcchPduConfig.shiftIndex        = reverseBytes16(dlInfo->ulGrant->coresetCfg.shiftIndex);
+      ulDciReqPdu->pdcchPduConfig.numDlDci          = reverseBytes16(1);
+#endif
       ulDciReqPdu->pdcchPduConfig.subCarrierSpacing = dlInfo->ulGrant->bwpCfg.subcarrierSpacing; 
       ulDciReqPdu->pdcchPduConfig.cyclicPrefix      = dlInfo->ulGrant->bwpCfg.cyclicPrefix; 
       ulDciReqPdu->pdcchPduConfig.startSymbolIndex  = dlInfo->ulGrant->coresetCfg.startSymbolIndex;
@@ -5632,18 +5719,16 @@ uint8_t fillUlDciPdcchPdu(fapi_dci_pdu_t *ulDciReqPdu, fapi_vendor_dci_pdu_t *ve
       ulDciReqPdu->pdcchPduConfig.cceRegMappingType = dlInfo->ulGrant->coresetCfg.cceRegMappingType;
       ulDciReqPdu->pdcchPduConfig.regBundleSize     = dlInfo->ulGrant->coresetCfg.regBundleSize;
       ulDciReqPdu->pdcchPduConfig.interleaverSize   = dlInfo->ulGrant->coresetCfg.interleaverSize;
-      ulDciReqPdu->pdcchPduConfig.shiftIndex        = dlInfo->ulGrant->coresetCfg.shiftIndex;
       ulDciReqPdu->pdcchPduConfig.precoderGranularity = dlInfo->ulGrant->coresetCfg.precoderGranularity;
-      ulDciReqPdu->pdcchPduConfig.numDlDci          = 1;
       ulDciReqPdu->pdcchPduConfig.coreSetType       = coreSetType;
 
-      /* Calculating PDU length. Considering only one Ul dci pdu for now */
-      ulDciReqPdu->pduSize = sizeof(fapi_dl_pdcch_pdu_t);
 
+#ifndef OAI_TESTING
       /* Vendor UL DCI PDU */
       vendorUlDciPdu->pdcch_pdu_config.num_dl_dci = ulDciReqPdu->pdcchPduConfig.numDlDci;
       vendorUlDciPdu->pdcch_pdu_config.dl_dci[0].epre_ratio_of_pdcch_to_ssb = 0;
       vendorUlDciPdu->pdcch_pdu_config.dl_dci[0].epre_ratio_of_dmrs_to_ssb = 0;
+#endif
    }
    return ROK;
 }
@@ -5754,8 +5839,8 @@ uint16_t fillUlDciReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
          memset(ulDciReq, 0, msgLen);
          fillMsgHeader(&ulDciReq->header, FAPI_UL_DCI_REQUEST, msgLen);
 
-         ulDciReq->sfn  = ulDciReqTimingInfo.sfn;
-         ulDciReq->slot = ulDciReqTimingInfo.slot;
+         ulDciReq->sfn  = reverseBytes16(ulDciReqTimingInfo.sfn);
+         ulDciReq->slot = reverseBytes16(ulDciReqTimingInfo.slot);
          if(currDlSlot->dlInfo.ulGrant != NULLP)
          {
             ulDciReq->numPdus = 1;  // No. of PDCCH PDUs
