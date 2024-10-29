@@ -112,8 +112,13 @@ uint8_t procSlotInd(fapi_slot_ind_t *fapiSlotInd)
    if(slotInd)
    {
       slotInd->cellId = lwrMacCb.cellCb[0].cellId; 
+#ifndef OAI_TESTING 
       slotInd->sfn = fapiSlotInd->sfn;
       slotInd->slot = fapiSlotInd->slot;
+#else
+      slotInd->sfn = reverseBytes16(fapiSlotInd->sfn);
+      slotInd->slot = reverseBytes16(fapiSlotInd->slot);
+#endif
       FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_SLOT_IND_TO_MAC);
       pst.selector = ODU_SELECTOR_LWLC;
       ret = (*sendSlotIndOpts[pst.selector])(&pst, slotInd);
