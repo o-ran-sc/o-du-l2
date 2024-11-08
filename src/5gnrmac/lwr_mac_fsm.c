@@ -2058,7 +2058,7 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
    totalTlv = 24;
 #else
    //configReq->number_of_tlvs = 25 + 1 + MAX_TDD_PERIODICITY_SLOTS * MAX_SYMB_PER_SLOT;
-   totalTlv = 24 + 1+ MAX_TDD_PERIODICITY_SLOTS * MAX_SYMB_PER_SLOT;
+   totalTlv = 25 + 1+ MAX_TDD_PERIODICITY_SLOTS * MAX_SYMB_PER_SLOT;
 #endif
    /* totalCfgReqMsgLen = size of config req's msg header + size of tlv supporting + size of tlv supporting *sizeof(fapi_uint32_tlv_t)   */
    totalCfgReqMsgLen += sizeof(configReq->header) + sizeof( configReq->number_of_tlvs) + totalTlv*sizeof(fapi_uint32_tlv_t);
@@ -2114,8 +2114,8 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
    /* fill SSB configuration */
    fillTlvs(&configReq->tlvs[index++], FAPI_SS_PBCH_POWER_TAG,             \
          sizeof(uint32_t), macCfgParams.ssbCfg.ssbPbchPwr << TLV_ALIGN(32), &msgLen);
-   //fillTlvs(&configReq->tlvs[index++], FAPI_BCH_PAYLOAD_TAG,               \
-   sizeof(uint8_t), macCfgParams.ssbCfg.bchPayloadFlag, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_BCH_PAYLOAD_TAG,               \
+   sizeof(uint8_t), macCfgParams.ssbCfg.bchPayloadFlag<<TLV_ALIGN(8), &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_SCS_COMMON_TAG,                \
          sizeof(uint8_t), macCfgParams.ssbCfg.scsCmn << TLV_ALIGN(8), &msgLen);
 
@@ -4008,7 +4008,7 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCel
    pduDesc[pduIndex].pdu_index = reverseBytes16(pduIndex);
    pduDesc[pduIndex].num_tlvs = reverseBytes32(1);
    /* fill the TLV */
-   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(((payloadSize & 0xff0000) >> 8) | FAPI_TX_DATA_PTR_TO_PAYLOAD_64);
+   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(((payloadSize & 0xff0000) >> 8) | FAPI_TX_DATA_PTR_TO_PAYLOAD_32);
    pduDesc[pduIndex].tlvs[0].tl.length = reverseBytes16((payloadSize & 0x0000ffff));
 #endif
 
@@ -4088,7 +4088,7 @@ uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPage
    pduDesc[pduIndex].pdu_index = reverseBytes16(pduIndex);
    pduDesc[pduIndex].num_tlvs = reverseBytes32(1);
    /* fill the TLV */
-   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(((payloadSize & 0xff0000) >> 8) | FAPI_TX_DATA_PTR_TO_PAYLOAD_64);
+   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(((payloadSize & 0xff0000) >> 8) | FAPI_TX_DATA_PTR_TO_PAYLOAD_32);
    pduDesc[pduIndex].tlvs[0].tl.length = reverseBytes16((payloadSize & 0x0000ffff));
 #endif
 
@@ -4168,7 +4168,7 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
    pduDesc[pduIndex].pdu_index = reverseBytes16(pduIndex);
    pduDesc[pduIndex].num_tlvs = reverseBytes32(1);
    /* fill the TLV */
-   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(FAPI_TX_DATA_PTR_TO_PAYLOAD_64);
+   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(FAPI_TX_DATA_PTR_TO_PAYLOAD_32);
    pduDesc[pduIndex].tlvs[0].tl.length = reverseBytes16(payloadSize);
 #endif
 
@@ -4239,7 +4239,7 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsg
    pduDesc[pduIndex].pdu_index = reverseBytes16(pduIndex);
    pduDesc[pduIndex].num_tlvs = reverseBytes32(1);
    /* fill the TLV */
-   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(FAPI_TX_DATA_PTR_TO_PAYLOAD_64);
+   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(FAPI_TX_DATA_PTR_TO_PAYLOAD_32);
    pduDesc[pduIndex].tlvs[0].tl.length = reverseBytes16(payloadSize);
 #endif
 
@@ -4609,7 +4609,11 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
       {
          nGroup=1; /*As per 5G FAPI: PHY API spec v 222.10.02, section 3.4.2 DL_TTI.request, For SU-MIMO, one group includes one UE only */
       }
-
+      else
+      {
+         //DU_LOG("\nINFO   --> LWR_MAC: NO PDU to be scheduled in DL");
+	 return ROK;
+      }
       /* Below msg length is calculated based on the parameter present in fapi_dl_tti_req_t structure
        * the prameters of fapi_dl_tti_req_t structure are ->
        * header = sizeof(fapi_msg_t) , {sfn, slot} = 2*sizeof(uint16_t),
@@ -4900,7 +4904,7 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
 
       FILL_FAPI_LIST_ELEM(txDataElem, NULLP, FAPI_TX_DATA_REQUEST, 1, MsgLen);
       txDataReq = (fapi_tx_data_req_t *)(txDataElem +1);
-      memset(txDataReq, 0, sizeof(fapi_tx_data_req_t));
+      memset(txDataReq, 0, MsgLen);
       fillMsgHeader(&txDataReq->header, FAPI_TX_DATA_REQUEST, MsgLen);
 
 #ifndef OAI_TESTING 
