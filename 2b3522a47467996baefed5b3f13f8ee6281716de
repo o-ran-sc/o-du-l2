@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23fc1d8c_05af23fb",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5899,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-11T12:33:31Z",
+      "side": 1,
+      "message": "please correct the return type as discussed",
+      "range": {
+        "startLine": 5899,
+        "startChar": 5,
+        "endLine": 5899,
+        "endChar": 18
+      },
+      "revId": "2b3522a47467996baefed5b3f13f8ee6281716de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f58170f2_635eb164",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 2
+      },
+      "lineNbr": 5933,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-11T12:33:31Z",
+      "side": 1,
+      "message": "the if check and also step increment can be done outside switch case. Please check",
+      "range": {
+        "startLine": 5933,
+        "startChar": 41,
+        "endLine": 5933,
+        "endChar": 42
+      },
+      "revId": "2b3522a47467996baefed5b3f13f8ee6281716de",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
