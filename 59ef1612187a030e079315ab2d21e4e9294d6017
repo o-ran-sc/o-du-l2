@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74b706c3_bba77201",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5957,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-11-12T07:13:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4decace9_a16a9d70",
+      "revId": "59ef1612187a030e079315ab2d21e4e9294d6017",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "133b2136_17e848af",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-11-12T05:16:36Z",
       "side": 1,
       "message": "if you implement as per below comment then step\u003d5 will not be required",
+      "revId": "59ef1612187a030e079315ab2d21e4e9294d6017",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86aeaf7f_07812734",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5959,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-11-12T07:13:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "133b2136_17e848af",
       "revId": "59ef1612187a030e079315ab2d21e4e9294d6017",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -58,6 +94,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4d1adb5_8abf7f71",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5964,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-11-12T07:13:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7531833_de363549",
+      "range": {
+        "startLine": 5964,
+        "startChar": 22,
+        "endLine": 5964,
+        "endChar": 28
+      },
+      "revId": "59ef1612187a030e079315ab2d21e4e9294d6017",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30eedc14_203bc4fa",
@@ -71,6 +131,24 @@
       "writtenOn": "2024-11-12T05:16:36Z",
       "side": 1,
       "message": "instead of checking the step , we can just put \"current \u003d current-\u003ep_next;\" here and while loop will exit automatically",
+      "revId": "59ef1612187a030e079315ab2d21e4e9294d6017",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "111617a9_c956974f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5967,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-11-12T07:13:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30eedc14_203bc4fa",
       "revId": "59ef1612187a030e079315ab2d21e4e9294d6017",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
