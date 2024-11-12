@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4decace9_a16a9d70",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5957,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-12T05:16:36Z",
+      "side": 1,
+      "message": "we can make this as default case:",
+      "revId": "59ef1612187a030e079315ab2d21e4e9294d6017",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "133b2136_17e848af",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5959,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-12T05:16:36Z",
+      "side": 1,
+      "message": "if you implement as per below comment then step\u003d5 will not be required",
+      "revId": "59ef1612187a030e079315ab2d21e4e9294d6017",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7531833_de363549",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5964,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-12T05:16:36Z",
+      "side": 1,
+      "message": "we can remove from if check and make this statement common to while loop",
+      "range": {
+        "startLine": 5964,
+        "startChar": 22,
+        "endLine": 5964,
+        "endChar": 28
+      },
+      "revId": "59ef1612187a030e079315ab2d21e4e9294d6017",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30eedc14_203bc4fa",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 3
+      },
+      "lineNbr": 5967,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-12T05:16:36Z",
+      "side": 1,
+      "message": "instead of checking the step , we can just put \"current \u003d current-\u003ep_next;\" here and while loop will exit automatically",
+      "revId": "59ef1612187a030e079315ab2d21e4e9294d6017",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
