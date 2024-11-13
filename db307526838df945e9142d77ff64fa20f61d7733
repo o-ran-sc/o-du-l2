@@ -560,6 +560,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5147ce96_a896d08c",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1002343
+      },
+      "writtenOn": "2024-11-13T07:58:51Z",
+      "side": 1,
+      "message": "OK, sliceCbToStore-\u003ealgorithm \u003d WFQ;",
+      "parentUuid": "fbbba497_d7195fa4",
+      "range": {
+        "startLine": 239,
+        "startChar": 12,
+        "endLine": 239,
+        "endChar": 26
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3638e160_d33759a5",
         "filename": "src/5gnrsch/sch_slice_based.c",
         "patchSetId": 1
@@ -1059,6 +1083,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c09c3734_c7c7a203",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1432,
+      "author": {
+        "id": 1002343
+      },
+      "writtenOn": "2024-11-13T07:58:51Z",
+      "side": 1,
+      "message": "OK",
+      "parentUuid": "45776b19_614b21b0",
+      "range": {
+        "startLine": 1432,
+        "startChar": 34,
+        "endLine": 1432,
+        "endChar": 59
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0eafea3d_ff36eeed",
         "filename": "src/5gnrsch/sch_slice_based.c",
         "patchSetId": 1
@@ -1190,6 +1238,30 @@
       "side": 1,
       "message": "As stated in one of my comments, please keep the gerrits separate for every feature. If something is not required at this stage/for this feature please remove it and we can raise separate gerrit for extra upgrades/feature support",
       "parentUuid": "f291247f_33febff1",
+      "range": {
+        "startLine": 1448,
+        "startChar": 37,
+        "endLine": 1448,
+        "endChar": 62
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "627c5346_d5199b10",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1448,
+      "author": {
+        "id": 1002343
+      },
+      "writtenOn": "2024-11-13T07:58:51Z",
+      "side": 1,
+      "message": "OK we already remove CmLListCp ueDlNewTransmission;",
+      "parentUuid": "2ca291b3_dddb36f4",
       "range": {
         "startLine": 1448,
         "startChar": 37,
@@ -2439,6 +2511,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "79a2b8d2_d24dde3c",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1875,
+      "author": {
+        "id": 1002343
+      },
+      "writtenOn": "2024-11-13T07:58:51Z",
+      "side": 1,
+      "message": "OK,we already remove that",
+      "parentUuid": "209fb15b_fbbcd4e4",
+      "range": {
+        "startLine": 1875,
+        "startChar": 13,
+        "endLine": 1875,
+        "endChar": 32
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c540b7c_c9e14614",
         "filename": "src/5gnrsch/sch_slice_based.c",
         "patchSetId": 1
@@ -3056,6 +3152,30 @@
       "side": 1,
       "message": "any comments?",
       "parentUuid": "7aec6e72_058acc81",
+      "range": {
+        "startLine": 2364,
+        "startChar": 28,
+        "endLine": 2364,
+        "endChar": 36
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1106f815_38a8d52f",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2364,
+      "author": {
+        "id": 1002343
+      },
+      "writtenOn": "2024-11-13T07:58:51Z",
+      "side": 1,
+      "message": "We added a check for LCs that have SNSSAI and are not dedicated (isDedicated !\u003d true)",
+      "parentUuid": "34282462_af32a87c",
       "range": {
         "startLine": 2364,
         "startChar": 28,
@@ -4759,6 +4879,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8d4ccf4_603fc206",
+        "filename": "src/5gnrsch/sch_slice_based.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1002343
+      },
+      "writtenOn": "2024-11-13T07:58:51Z",
+      "side": 1,
+      "message": "SchSliceBasedHqProcCb The main purpose of this library is to document the lcCb member of the SchSliceBasedLcCb structure. And lcCb is widely used in both fcfs and slice_base. I think we just keep it as same.",
+      "parentUuid": "e1a14b9d_46b60c11",
+      "range": {
+        "startLine": 58,
+        "startChar": 1,
+        "endLine": 58,
+        "endChar": 18
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "abde4351_2e41406c",
         "filename": "src/5gnrsch/sch_slice_based.h",
         "patchSetId": 1
@@ -4890,6 +5034,30 @@
       "side": 1,
       "message": "yes we have per-TTI architecture but these variables are not used anywhere. If these variables are not required in slice based algo then we can remove it from this file.",
       "parentUuid": "33715079_ade5863b",
+      "range": {
+        "startLine": 79,
+        "startChar": 8,
+        "endLine": 79,
+        "endChar": 22
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bee69aa_3e92d55e",
+        "filename": "src/5gnrsch/sch_slice_based.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1002343
+      },
+      "writtenOn": "2024-11-13T07:58:51Z",
+      "side": 1,
+      "message": "We will remove that",
+      "parentUuid": "a83dc9e1_773d8964",
       "range": {
         "startLine": 79,
         "startChar": 8,
