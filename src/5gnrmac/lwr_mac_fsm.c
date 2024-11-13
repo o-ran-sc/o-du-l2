@@ -2026,8 +2026,11 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
 #ifdef NR_TDD
    uint8_t slotIdx = 0;
    uint8_t symbolIdx =0;
+   uint8_t numSlotsInMaxPeriodicity = 0; /*number of TDD Slots in MAX_PERIODICITY(10ms) as per numerology*/
+   uint8_t numSlotsInCurrPeriodicity = 0; /*number of TDD Slots in Configured_PERIODICITY(0.5ms to 10ms) as per numerology*/
+   uint8_t cntSlotCfg = 0; /*number of Slot Cfg repeatition*/
 #endif
-   uint8_t totalTlv=0;
+   uint16_t totalTlv=0;
    uint16_t index = 0;
    uint16_t *cellId =NULLP;
    uint16_t cellIdx =0;
@@ -2058,8 +2061,18 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
 #ifndef NR_TDD
    totalTlv = 24;
 #else
+   numSlotsInMaxPeriodicity = MAX_TDD_PERIODICITY * pow(2, macCb.macCell[cellIdx]->numerology);
+   numSlotsInCurrPeriodicity = calcNumSlotsInCurrPeriodicity(macCfgParams.tddCfg.tddPeriod, macCb.macCell[cellIdx]->numerology);
+
+   if(numSlotsInCurrPeriodicity == 0)
+   {
+      DU_LOG("\nERROR  --> LWR_MAC: CONFIG_REQ: numSlotsInCurrPeriodicity is 0 thus exiting");
+      return RFAILED;
+   }
+   DU_LOG("\nINFO   --> LWR_MAC: CONFIG_REQ: numberofTDDSlot in MAX_PERIOICITY(10ms) = %d", numSlotsInMaxPeriodicity);
+   DU_LOG("\nINFO   --> LWR_MAC: CONFIG_REQ: numberofTDDSlot in CURRENT PERIOICITY(enumVal = %d) = %d\n", macCfgParams.tddCfg.tddPeriod, numSlotsInCurrPeriodicity);
    //configReq->number_of_tlvs = 25 + 1 + MAX_TDD_PERIODICITY_SLOTS * MAX_SYMB_PER_SLOT;
-   totalTlv = 25 + 1+ MAX_TDD_PERIODICITY_SLOTS * MAX_SYMB_PER_SLOT;
+   totalTlv = 25 + 1+ numSlotsInMaxPeriodicity * MAX_SYMB_PER_SLOT;
 #endif
    /* totalCfgReqMsgLen = size of config req's msg header + size of tlv supporting + size of tlv supporting *sizeof(fapi_uint32_tlv_t)   */
    totalCfgReqMsgLen += sizeof(configReq->header) + sizeof( configReq->number_of_tlvs) + totalTlv*sizeof(fapi_uint32_tlv_t);
@@ -2185,33 +2198,39 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
    /* fill TDD table */
    fillTlvs(&configReq->tlvs[index++], FAPI_TDD_PERIOD_TAG,                \
          sizeof(uint8_t), macCfgParams.tddCfg.tddPeriod << TLV_ALIGN(8), &msgLen);
-   for(slotIdx =0 ;slotIdx < MAX_TDD_PERIODICITY_SLOTS; slotIdx++)
-   {
-      for(symbolIdx = 0; symbolIdx < MAX_SYMB_PER_SLOT; symbolIdx++)
-      {
-         /*Fill Full-DL Slots as well as DL symbols ini 1st Flexi Slo*/
-         if(slotIdx < macCfgParams.tddCfg.nrOfDlSlots || \
-               (slotIdx == macCfgParams.tddCfg.nrOfDlSlots && symbolIdx < macCfgParams.tddCfg.nrOfDlSymbols))
-         {
-            fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
-                  sizeof(uint8_t), DL_SYMBOL << TLV_ALIGN(8), &msgLen);
-         }
 
-         /*Fill Full-FLEXI SLOT and as well as Flexi Symbols in 1 slot preceding FULL-UL slot*/
-         else if(slotIdx < (MAX_TDD_PERIODICITY_SLOTS - macCfgParams.tddCfg.nrOfUlSlots -1) ||  \
-               (slotIdx == (MAX_TDD_PERIODICITY_SLOTS - macCfgParams.tddCfg.nrOfUlSlots -1) && \
-                symbolIdx < (MAX_SYMB_PER_SLOT - macCfgParams.tddCfg.nrOfUlSymbols)))
+   cntSlotCfg = numSlotsInMaxPeriodicity/numSlotsInCurrPeriodicity;
+   while(cntSlotCfg)
+   {
+      for(slotIdx =0 ;slotIdx < numSlotsInCurrPeriodicity; slotIdx++) 
+      {
+         for(symbolIdx = 0; symbolIdx < MAX_SYMB_PER_SLOT; symbolIdx++)
          {
-            fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
-                  sizeof(uint8_t), FLEXI_SYMBOL << TLV_ALIGN(8), &msgLen);
-         }
-         /*Fill Partial UL symbols and Full-UL slot*/
-         else
-         {
-            fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
-                  sizeof(uint8_t), UL_SYMBOL << TLV_ALIGN(8), &msgLen);
+            /*Fill Full-DL Slots as well as DL symbols ini 1st Flexi Slo*/
+            if(slotIdx < macCfgParams.tddCfg.nrOfDlSlots || \
+                  (slotIdx == macCfgParams.tddCfg.nrOfDlSlots && symbolIdx < macCfgParams.tddCfg.nrOfDlSymbols)) 
+            {
+               fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
+                    sizeof(uint8_t), DL_SYMBOL<< TLV_ALIGN(8), &msgLen);
+            }
+
+            /*Fill Full-FLEXI SLOT and as well as Flexi Symbols in 1 slot preceding FULL-UL slot*/ 
+            else if(slotIdx < (numSlotsInCurrPeriodicity - macCfgParams.tddCfg.nrOfUlSlots -1) ||  \
+                     (slotIdx == (numSlotsInCurrPeriodicity - macCfgParams.tddCfg.nrOfUlSlots -1) && \
+                     symbolIdx < (MAX_SYMB_PER_SLOT - macCfgParams.tddCfg.nrOfUlSymbols)))
+            {
+               fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
+                     sizeof(uint8_t), FLEXI_SYMBOL<< TLV_ALIGN(8), &msgLen);
+            }
+            /*Fill Partial UL symbols and Full-UL slot*/
+            else
+            {
+               fillTlvs(&configReq->tlvs[index++], FAPI_SLOT_CONFIG_TAG,               \
+                     sizeof(uint8_t), UL_SYMBOL<< TLV_ALIGN(8), &msgLen);
+            }
          }
       }
+      cntSlotCfg--;
    }
 #endif
 

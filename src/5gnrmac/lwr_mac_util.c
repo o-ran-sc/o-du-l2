@@ -188,6 +188,97 @@ void convertFreqDomRsrcMapToIAPIFormat(uint8_t *sourceBitMap, uint8_t *destBitMa
    }
 }
 
+#ifdef NR_TDD
+/**
+ *@brief Returns Num of Slots in Current TDD periodicity
+ *
+ * @details
+ * 
+ * Function : calcNumSlotsInCurrPeriodicity 
+ * 
+ * This API returns numOfSlots In CurrPeriodicity as per numerology
+ * 
+ * @param[in] DlUlTxPeriodicity, numerology
+ * @return  numSlotsInCurrPeriodicity 
+ * **/
+
+uint8_t calcNumSlotsInCurrPeriodicity(DlUlTxPeriodicity tddPeriod, uint8_t numerology)
+{
+   float periodicityInMsec = 0;
+   
+   switch(tddPeriod)
+   {
+      case TX_PRDCTY_MS_0P5:
+      {
+	 if(numerology <= 0)
+	 {
+	    DU_LOG("\nERROR  --> LWR_MAC_UTILS: numerology:%d cant be configured with 0.5ms periodicity",numerology);
+	    return 0;
+	 }
+	 periodicityInMsec = 0.5;
+         break;
+      }
+      case TX_PRDCTY_MS_0P625:
+      {
+	 if(numerology <= 2)
+	 {
+	    DU_LOG("\nERROR  --> LWR_MAC_UTILS: numerology:%d cant be configured with 0.625ms periodicity",numerology);
+	    return 0;
+	 }
+         periodicityInMsec = 0.625;
+         break;
+      }
+      case TX_PRDCTY_MS_1:
+      {
+         periodicityInMsec = 1;
+         break;
+      }
+      case TX_PRDCTY_MS_1P25:
+      {
+	 if(numerology <= 1)
+	 {
+	    DU_LOG("\nERROR  --> LWR_MAC_UTILS: numerology:%d cant be configured with 1.25ms periodicity",numerology);
+	    return 0;
+	 }
+         periodicityInMsec = 1.25;
+         break;
+      }
+      case TX_PRDCTY_MS_2:
+      {
+         periodicityInMsec = 2;
+         break;
+      }
+      case TX_PRDCTY_MS_2P5:
+      {
+	 if(numerology <= 0)
+	 {
+	    DU_LOG("\nERROR  --> LWR_MAC_UTILS: numerology:%d cant be configured with 2.5ms periodicity",numerology);
+	    return 0;
+	 }
+         periodicityInMsec = 2.5;
+         break;
+      }
+      case TX_PRDCTY_MS_5:
+      {
+         periodicityInMsec = 5;
+         break;
+      }
+      case TX_PRDCTY_MS_10:
+      {
+         periodicityInMsec = 10;
+         break;
+      }
+      default:
+      {
+	 DU_LOG("\nERROR  -->  LWR_MAC_UTILS : Invalid DlUlTxPeriodicity:%d", tddPeriod);
+	 return 0;
+      }
+   }
+
+   return (periodicityInMsec * pow(2,numerology));
+}
+#endif
+
 /**********************************************************************
   End of file
  **********************************************************************/

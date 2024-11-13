@@ -61,6 +61,9 @@
 }
  
 void convertFreqDomRsrcMapToIAPIFormat(uint8_t *sourceBitMap, uint8_t *destBitMap);
+#ifdef NR_TDD
+uint8_t calcNumSlotsInCurrPeriodicity(DlUlTxPeriodicity tddPeriod, uint8_t numerology);
+#endif
 /**********************************************************************
          End of file
 **********************************************************************/

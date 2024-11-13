@@ -160,6 +160,7 @@
  * TODO : To support 160, FAPI_MAX_NUM_TLVS_CONFIG in fapi_interface.h
  * of Intel L1 must be incremented to a higher number */
 #define MAX_TDD_PERIODICITY_SLOTS 10 
+#define MAX_TDD_PERIODICITY 10 
 #endif
 
 #define GET_UE_ID( _crnti,_ueId)           \
