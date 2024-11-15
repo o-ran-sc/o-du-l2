@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9d2b49e_5933565f",
+        "filename": "src/5gnrmac/lwr_mac_util.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2024-11-15T05:00:45Z",
+      "side": 1,
+      "message": "return 0 or RFAILED?",
+      "range": {
+        "startLine": 216,
+        "startChar": 5,
+        "endLine": 216,
+        "endChar": 14
+      },
+      "revId": "2ef2d8f7898595224fc395babea5ee3e64ff1618",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
