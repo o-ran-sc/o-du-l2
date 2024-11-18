@@ -309,6 +309,21 @@ extern "C" {
         fapi_tl_t tl;
         uint8_t *value;         // TLV with unsigned 32 bit value
     } fapi_uint8_ptr_tlv_t;
+
+    typedef struct {
+        uint16_t tag;
+        uint32_t length;        // 5G FAPI Table 3-7 Fixed part
+	union
+	{
+		uint32_t *ptr;         // TLV with unsigned 32 bit value
+		uint32_t direct[380];         // TLV with unsigned 32 bit value
+	}value;
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_uint32_ptr_tlv_t;
+#else
+    } fapi_uint32_ptr_tlv_t;
+#endif
+
 // Updated per 5G FAPI
     typedef struct {
         fapi_tl_t tl;
@@ -1129,18 +1144,20 @@ extern "C" {
     } fapi_ul_dci_req_t;
 
 // Updated per 5G FAPI
-    typedef struct {
+typedef struct {
 #ifndef OAI_TESTING
-        uint32_t pdu_length;
-        uint16_t pdu_index;
-        uint16_t num_tlvs;
+	uint32_t pdu_length;
+	uint16_t pdu_index;
+	uint16_t num_tlvs;
+	fapi_uint8_ptr_tlv_t tlvs[FAPI_MAX_NUMBER_OF_TLVS_PER_PDU]; // 5G FAPI Table 3-58 Subset
+} fapi_tx_pdu_desc_t;
 #else
-        uint16_t pdu_length;
-        uint16_t pdu_index;
-        uint32_t num_tlvs;
+	uint32_t pdu_length;
+	uint16_t pdu_index;
+	uint32_t num_tlvs;
+	fapi_uint32_ptr_tlv_t tlvs[FAPI_MAX_NUMBER_OF_TLVS_PER_PDU]; // 5G FAPI Table 3-58 Subset
+} __attribute__((packed))  fapi_tx_pdu_desc_t;
 #endif
-        fapi_uint8_ptr_tlv_t tlvs[FAPI_MAX_NUMBER_OF_TLVS_PER_PDU]; // 5G FAPI Table 3-58 Subset
-    } fapi_tx_pdu_desc_t;
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1152,7 +1169,11 @@ extern "C" {
         uint8_t pad[2];
 #endif
         fapi_tx_pdu_desc_t pdu_desc[FAPI_MAX_NUMBER_DL_PDUS_PER_TTI];   // 5G FAPI Table 3-58
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_tx_data_req_t;
+#else
     } fapi_tx_data_req_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
