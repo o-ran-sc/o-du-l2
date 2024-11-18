@@ -276,11 +276,12 @@ extern "C" {
         uint8_t num_msg;
         // Can be used for Phy Id or Carrier Id  5G FAPI Table 3-2
         uint8_t handle;
-#ifndef OAI_TESTING
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_msg_header_t, *p_fapi_msg_header_t;
+#else
         uint8_t pad[2];
+    } fapi_msg_header_t, *p_fapi_msg_header_t;
 #endif
-    } fapi_msg_header_t,
-    *p_fapi_msg_header_t;
 
 // Updated per 5G FAPI
     typedef struct {
@@ -293,56 +294,117 @@ extern "C" {
 #ifndef OAI_TESTING
         uint16_t pad;
 #endif
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_msg_t;
+#else
     }fapi_msg_t;
+#endif
+
 // Updated per 5G FAPI
     typedef struct {
         uint16_t tag;
         uint16_t length;        // 5G FAPI Table 3-7 Fixed part
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_tl_t;
+#else
     } fapi_tl_t;
+#endif
+
 // Updated per 5G FAPI
     typedef struct {
         fapi_tl_t tl;
         uint8_t value;          // TLV with byte value
         uint8_t rsv[3];         // Per 5g FAPI 3.3.1.4 the lenght of the value parameter must be 32 bits
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_uint8_tlv_t;
+#else
     } fapi_uint8_tlv_t;
-    typedef struct {
+#endif
+
+typedef struct {
         fapi_tl_t tl;
         uint8_t *value;         // TLV with unsigned 32 bit value
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_uint8_ptr_tlv_t;
+#else
     } fapi_uint8_ptr_tlv_t;
+#endif
+
+    typedef struct {
+        uint16_t tag;
+        uint32_t length;        // 5G FAPI Table 3-7 Fixed part
+	union
+	{
+		uint32_t *ptr;         // TLV with unsigned 32 bit value
+		uint32_t direct[380];         // TLV with unsigned 32 bit value
+	}value;
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_uint32_ptr_tlv_t;
+#else
+    } fapi_uint32_ptr_tlv_t;
+#endif
+
 // Updated per 5G FAPI
     typedef struct {
         fapi_tl_t tl;
         uint16_t value;         // TLV with unsigned 16 bit value
         uint8_t rsv[2];         // Per 5g FAPI 3.3.1.4 the lenght of the value parameter must be 32 bits
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_uint16_tlv_t;
+#else
     } fapi_uint16_tlv_t;
+#endif
+
 // Updated per 5G FAPI
     typedef struct {
         fapi_tl_t tl;
         int16_t value;          // TLV with signed 16 bit value
         uint8_t rsv[2];         // Per 5g FAPI 3.3.1.4 the lenght of the value parameter must be 32 bits
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_int16_tlv_t;
+#else
     } fapi_int16_tlv_t;
+#endif
+
 // Updated per 5G FAPI
     typedef struct {
         fapi_tl_t tl;
         uint32_t value;         // TLV with unsigned 32 bit value
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_uint32_tlv_t;
+#else
     } fapi_uint32_tlv_t;
+#endif
+
 // Updated per 5G FAPI
     typedef struct {
         uint16_t tag;           // In 5G FAPI for Cell Params inside Table 3-9 under NumConfigTLVsToReport Loop
         uint8_t length;
         uint8_t value;
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_config_tlv_t;
+#else
     } fapi_config_tlv_t;
+#endif
 
     typedef struct {
         fapi_tl_t tl;
         uint16_t value[FAPI_NUMEROLOGIES];
         uint16_t rsv;           // To be 32-bit aligned, if FAPI_NUMEROLOGIES changes to some other value than 5 please ensure 32 bit alignment
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_config_num_tlv_t;
+#else
     } fapi_config_num_tlv_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_msg_t header;      // For PARAM.req message length in fapi_msg_t is zero per 5G FAPI 3.3.1.1
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_param_req_t;
+#else
     } fapi_param_req_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -352,7 +414,11 @@ extern "C" {
         fapi_uint8_tlv_t skipBlankUlConfig;
         fapi_uint16_tlv_t numTlvsToReport;
         fapi_config_tlv_t tlvStatus[FAPI_MAX_NUM_TLVS_CONFIG];  // 5G FAPI Table 3-9
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_cell_parms_t;
+#else
     } fapi_cell_parms_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -361,7 +427,11 @@ extern "C" {
         fapi_uint16_tlv_t supportedBandwidthDl;
         fapi_uint8_tlv_t supportedSubcarrierSpecingsUl;
         fapi_uint16_tlv_t supportedBandwidthUl; // 5G FAPI Table 3-10
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_carrier_parms_t;
+#else
     } fapi_carrier_parms_t;
+#endif
 
 // Updated per 5G FAPI    
     typedef struct {
@@ -371,13 +441,21 @@ extern "C" {
         fapi_uint8_tlv_t pdcchMuMimo;
         fapi_uint8_tlv_t pdcchPrecoderCycling;
         fapi_uint8_tlv_t maxPdcchsPerSlot;  // 5G FAPI Table 3-11
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_pdcch_parms_t;
+#else
     } fapi_pdcch_parms_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_uint8_tlv_t pucchFormats;
         fapi_uint8_tlv_t maxPucchsPerSlot;  // 5G FAPI Table 3-12
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_pucch_parms_t;
+#else
     } fapi_pucch_parms_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -395,7 +473,11 @@ extern "C" {
         fapi_uint8_tlv_t pdschDataInDmrsSymbols;
         fapi_uint8_tlv_t premptionSupport;
         fapi_uint8_tlv_t pdschNonSlotSupport;   // 5G FAPI Table 3-13
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_pdsch_parms_t;
+#else
     } fapi_pdsch_parms_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -416,7 +498,11 @@ extern "C" {
         fapi_uint8_tlv_t maxMuMimoUsersUl;
         fapi_uint8_tlv_t dftsOfdmSupport;
         fapi_uint8_tlv_t puschAggregationFactor;    // 5G FAPI Table 3-14
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_pusch_parms_t;
+#else
     } fapi_pusch_parms_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -424,12 +510,20 @@ extern "C" {
         fapi_uint16_tlv_t prachShortFormats;
         fapi_uint8_tlv_t prachRestrictedSets;
         fapi_uint8_tlv_t maxPrachFdOccasionsInASlot;    // 5G FAPI Table 3-15
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_prach_parms_t;
+#else
     } fapi_prach_parms_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_uint8_tlv_t rssiMeasurementSupport;    // 5G FAPI Table 3-16
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_meas_parms_t;
+#else
     } fapi_meas_parms_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -441,7 +535,11 @@ extern "C" {
         fapi_pusch_parms_t pusch_parms;
         fapi_prach_parms_t prach_parms;
         fapi_meas_parms_t meas_parms;   // 5G FAPI Table 3-8
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_params_t;
+#else
     } fapi_params_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -452,7 +550,11 @@ extern "C" {
         uint8_t pad[2];
 #endif
         fapi_uint16_tlv_t tlvs[FAPI_MAX_NUM_TLVS_PARAMS];   // 5G FAPI Table 3-5
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_param_resp_t;
+#else
     } fapi_param_resp_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -467,20 +569,32 @@ extern "C" {
         fapi_config_num_tlv_t ulGridSize;
         fapi_uint16_tlv_t numRxAnt;
         fapi_uint8_tlv_t frequencyShift7p5KHz;  // 5G FAPI Table 3-21
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_carrier_config_t;
+#else
     } fapi_carrier_config_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_uint8_tlv_t phyCellId;
         fapi_uint8_tlv_t frameDuplexType;   // 5G FAPI Table 3-22
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_cell_config_t;
+#else
     } fapi_cell_config_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_uint32_tlv_t ssPbchPower;
         fapi_uint8_tlv_t bchPayload;
         fapi_uint8_tlv_t scsCommon; // 5G FAPI Table 3-23
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_ssb_config_t;
+#else
     } fapi_ssb_config_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -489,9 +603,12 @@ extern "C" {
         fapi_uint16_tlv_t k1;
         fapi_uint8_tlv_t prachZeroCorrConf;
         fapi_uint16_tlv_t numUnusedRootSequences;   // 5G FAPI Table 3-24 Subset
-        fapi_uint16_tlv_t
-            unusedRootSequences[FAPI_MAX_NUM_UNUSED_ROOT_SEQUENCES];
+        fapi_uint16_tlv_t unusedRootSequences[FAPI_MAX_NUM_UNUSED_ROOT_SEQUENCES];
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_prachFdOccasion_t;
+#else
     } fapi_prachFdOccasion_t;
+#endif
 
 // Updated per 5G FAPI_
     typedef struct {
@@ -503,7 +620,11 @@ extern "C" {
         fapi_prachFdOccasion_t prachFdOccasion[FAPI_MAX_NUM_PRACH_FD_OCCASIONS];
         fapi_uint8_tlv_t ssbPerRach;
         fapi_uint8_tlv_t prachMultipleCarriersInABand;  // 5G FAPI Table 3-24
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_prach_configuration_t;
+#else
     } fapi_prach_configuration_t;
+#endif
 
 //Updated per 5G FAPI
     typedef struct {
@@ -516,53 +637,89 @@ extern "C" {
         fapi_uint8_tlv_t beamId[64];
         fapi_uint8_tlv_t ssPbchMultipleCarriersInABand;
         fapi_uint8_tlv_t multipleCellsSsPbchInACarrier; // 5G FAPI Table 3-25
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_ssb_table_t;
+#else
     } fapi_ssb_table_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_uint8_tlv_t slotConfig[FAPI_MAX_NUM_OF_SYMBOLS_PER_SLOT];  // 5G FAPI Table 3-26 Subset
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_slotconfig_t;
+#else
     } fapi_slotconfig_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_uint8_tlv_t tddPeriod;
         fapi_slotconfig_t slotConfig[FAPI_MAX_TDD_PERIODICITY]; // 5G FAPI Table 3-26
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_tdd_table_t;
+#else
     } fapi_tdd_table_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_uint8_tlv_t rssiMeasurement;   // 5G FAPI Table 3-27
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_meas_config_t;
+#else
     } fapi_meas_config_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         int16_t digBeamWeightRe;
         int16_t digBeamWeightIm;    // 5G FAPI Table 3-32 Subset
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_dig_beam_weight_t;
+#else
     } fapi_dig_beam_weight_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         uint16_t beamIdx;
         fapi_dig_beam_weight_t digBeamWeight[FAPI_MAX_NUMBER_TX_RUS];   // 5G FAPI Table 3-32 Subset
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_dig_beam_config_t;
+#else
     } fapi_dig_beam_config_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         uint16_t numDigBeams;
         uint16_t numTxRus;
         fapi_dig_beam_config_t digBeam[FAPI_MAX_NUMBER_OF_BEAMS];   // 5G FAPI Table 3-32
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_beamforming_table_t;
+#else
     } fapi_beamforming_table_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         int16_t preCoderWeightRe;
         int16_t preCoderWeightIm;   // 5G FAPI Table 3-33 Subset
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_precoderWeight_t;
+#else
     } fapi_precoderWeight_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_precoderWeight_t precoder_weight[FAPI_MAX_NUM_ANT_PORTS];  // 5G FAPI Table 3-33 Subset
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_precoder_weight_t;
+#else
     } fapi_precoder_weight_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -573,7 +730,11 @@ extern "C" {
         uint16_t pad[1];
 #endif
         fapi_precoder_weight_t precoderWeight[FAPI_MAX_NUM_LAYERS]; // 5G FAPI Table 3-33
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_precoding_table_t;
+#else
     } fapi_precoding_table_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -586,7 +747,11 @@ extern "C" {
         fapi_meas_config_t measConfig;
         fapi_beamforming_table_t beamformingTable;
         fapi_precoding_table_t precodingTable;  // 5G FAPI Table 3-20
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_config_t;
+#else
     } fapi_config_t;
+#endif
 
 // Updated per 5G FAPI 
     typedef struct {
@@ -619,22 +784,38 @@ extern "C" {
         //   fapi_uint16_tlv_t invalid_idle_only_tlvs[FAPI_MAX_NUMBER_OF_INVALID_IDLE_ONLY_TLVS];
         //   fapi_uint16_tlv_t invalid_running_only_tlvs[FAPI_MAX_NUMBER_OF_INVALID_RUNNING_ONLY_TLVS];
         //   fapi_uint16_tlv_t missing_tlvs[FAPI_MAX_NUMBER_OF_MISSING_TLVS];            
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_config_resp_t;
+#else
     } fapi_config_resp_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_msg_t header;
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_start_req_t;
+#else
     } fapi_start_req_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_msg_t header;      // Message Length is zero for STOP.request
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_stop_req_t;
+#else
     } fapi_stop_req_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_msg_t header;      // Message Length is zero for STOP.indication
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_stop_ind_t;
+#else
     } fapi_stop_ind_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -646,19 +827,31 @@ extern "C" {
 #ifndef OAI_TESTING 
         uint8_t pad[2];
 #endif
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_error_ind_t;
+#else
     } fapi_error_ind_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_msg_t header;
         uint16_t sfn;
         uint16_t slot;          // 5G FAPI Table 3-34
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_slot_ind_t;
+#else
     } fapi_slot_ind_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         uint16_t beamidx;       // 5G FAPI Table 3-43 subset
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_bmi_t;
+#else
     } fapi_bmi_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -667,7 +860,11 @@ extern "C" {
         uint8_t pad[2];
 #endif
         fapi_bmi_t beamIdx[FAPI_MAX_NUM_DIGBFINTERFACES];   // 5G FAPI Table 3-43 subset
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_pmi_bfi_t;
+#else
     } fapi_pmi_bfi_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -678,7 +875,11 @@ extern "C" {
         uint8_t pad[3];
 #endif
         fapi_pmi_bfi_t pmi_bfi[FAPI_MAX_NUM_PRGS_PER_TTI];  // 5G FAPI Table 3-43
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_precoding_bmform_t;
+#else
     } fapi_precoding_bmform_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -692,7 +893,11 @@ extern "C" {
         uint8_t powerControlOffsetSS;
         uint16_t payloadSizeBits;
         uint8_t payload[FAPI_DCI_PAYLOAD_BYTE_LEN]; // 5G FAPI Table 3-37
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_dl_dci_t;
+#else
     } fapi_dl_dci_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -714,7 +919,11 @@ extern "C" {
 #endif
         uint16_t numDlDci;      // 5G FAPI Table 3-36
         fapi_dl_dci_t dlDci[FAPI_MAX_NUMBER_DL_DCI];
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_dl_pdcch_pdu_t;
+#else
     } fapi_dl_pdcch_pdu_t;
+#endif
 
     // Updated per 5G FAPI
     typedef struct {
@@ -727,7 +936,11 @@ extern "C" {
         uint8_t pad[2];
 #endif
         uint32_t tbSize;        // 5G FAPI Table 3-38 Subset
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_codeword_pdu_t;
+#else
     } fapi_codeword_pdu_t;
+#endif
 
     // Updated per 5G FAPI
     typedef struct {
@@ -780,7 +993,11 @@ extern "C" {
         uint8_t dmrsAddPos;
         uint8_t pad2;
 #endif
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_dl_pdsch_pdu_t;
+#else
     } fapi_dl_pdsch_pdu_t;
+#endif
 
     // Updated per 5G FAPI
     typedef struct {
@@ -804,7 +1021,11 @@ extern "C" {
         uint8_t pad[2];
 #endif
         fapi_precoding_bmform_t preCodingAndBeamforming;    // 5G FAPI Table 3-39
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_dl_csi_rs_pdu_t;
+#else
     } fapi_dl_csi_rs_pdu_t;
+#endif
 
 // Updated per 5G FAPI 
     typedef struct {
@@ -812,7 +1033,11 @@ extern "C" {
         uint8_t pdcchConfigSib1;
         uint8_t cellBarred;
         uint8_t intraFreqReselection;   // 5G FAPI Table 3-42
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_phy_mib_pdu_t;
+#else
     } fapi_phy_mib_pdu_t;
+#endif
 
 // Updated per 5G FAPI 
     typedef struct {
@@ -820,7 +1045,11 @@ extern "C" {
             uint32_t bchPayload;
             fapi_phy_mib_pdu_t phyMibPdu;   // 5G FAPI Table 3-40 Subset
         };
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_bch_payload_t;
+#else
     } fapi_bch_payload_t;
+#endif
 
     // Updated per 5G FAPI
     typedef struct {
@@ -832,7 +1061,11 @@ extern "C" {
         uint8_t bchPayloadFlag;
         fapi_bch_payload_t bchPayload;
         fapi_precoding_bmform_t preCodingAndBeamforming;    // 5G FAPI Table 3-40
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_dl_ssb_pdu_t;
+#else
     } fapi_dl_ssb_pdu_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -844,7 +1077,11 @@ extern "C" {
             fapi_dl_csi_rs_pdu_t csi_rs_pdu;
             fapi_dl_ssb_pdu_t ssb_pdu;  // 5G FAPI Table 3-35 Subset
         } pdu;
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_dl_tti_req_pdu_t;
+#else
     } fapi_dl_tti_req_pdu_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -853,7 +1090,11 @@ extern "C" {
         uint8_t pad[3];
 #endif
         uint8_t pduIdx[FAPI_MAX_NUMBER_OF_UES_PER_TTI]; // 5G FAPI Subset Table 3-35 and Table 3-44
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_ue_info_t;
+#else
     } fapi_ue_info_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -867,7 +1108,11 @@ extern "C" {
 #endif
         fapi_dl_tti_req_pdu_t pdus[FAPI_MAX_PDUS_PER_SLOT]; // 5G FAPI Table 3-35
         fapi_ue_info_t ue_grp_info[FAPI_MAX_NUMBER_OF_GROUPS_PER_TTI];
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_dl_tti_req_t;
+#else
     } fapi_dl_tti_req_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -880,7 +1125,11 @@ extern "C" {
         uint32_t tbSize;
         uint16_t numCb;         // 5G FAPI Table 3-47
         uint8_t cbPresentAndPosition[2];    // Since the maximum number of Code Blocks per TCB in a CBG is 8 for 1 CW or 4 for 2CW and this is a bit field with pading to align to 32 bits
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_pusch_data_t;
+#else
     } fapi_pusch_data_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -891,17 +1140,23 @@ extern "C" {
         uint8_t betaOffsetHarqAck;
         uint8_t betaOffsetCsi1;
         uint8_t betaOffsetCsi2; // 5G FAPI Table 3-48
-#ifndef OAI_TESTING 
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_pusch_uci_t;
+#else
         uint8_t pad[2];
-#endif
     } fapi_pusch_uci_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         uint16_t ptrsPortIndex;
         uint8_t ptrsDmrsPort;
         uint8_t ptrsReOffset;   // 5G FAPI Table 3-49 Subset
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_ptrs_info_t;
+#else
     } fapi_ptrs_info_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -910,7 +1165,11 @@ extern "C" {
         uint8_t ptrsTimeDensity;
         uint8_t ptrsFreqDensity;    // 5G FAPI Table 3-49 Subset
         uint8_t ulPtrsPower;
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_pusch_ptrs_t;
+#else
     } fapi_pusch_ptrs_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -918,15 +1177,21 @@ extern "C" {
         uint16_t lowPaprSequenceNumber;
         uint8_t ulPtrsSampleDensity;
         uint8_t ulPtrsTimeDensityTransformPrecoding;
-#ifndef OAI_TESTING
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_dfts_ofdm_t;
+#else
         uint8_t pad;            // 5G FAPI Table 3-50
-#endif
     } fapi_dfts_ofdm_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         fapi_bmi_t beamIdx[FAPI_MAX_NUM_DIGBFINTERFACES];
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_rx_bfi_t;
+#else
     } fapi_rx_bfi_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -937,7 +1202,11 @@ extern "C" {
         uint8_t pad[3];
 #endif
         fapi_rx_bfi_t rx_bfi[FAPI_MAX_NUM_PRGS_PER_TTI];    // 5G FAPI Table 3-53
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_ul_rx_bmform_pdu_t;
+#else
     } fapi_ul_rx_bmform_pdu_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -948,7 +1217,11 @@ extern "C" {
         uint8_t prachStartSymbol;
         uint16_t numCs;
         fapi_ul_rx_bmform_pdu_t beamforming;
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_ul_prach_pdu_t;
+#else
     } fapi_ul_prach_pdu_t;      // 5G FAPI Table 3-45
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -997,7 +1270,11 @@ extern "C" {
         fapi_pusch_ptrs_t puschPtrs;
         fapi_dfts_ofdm_t dftsOfdm;
         fapi_ul_rx_bmform_pdu_t beamforming;    // 5G FAPI Table 3-46
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_ul_pusch_pdu_t;
+#else
     } fapi_ul_pusch_pdu_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1044,7 +1321,11 @@ extern "C" {
         uint16_t bitLenCsiPart1;
         uint16_t bitLenCsiPart2;
         fapi_ul_rx_bmform_pdu_t beamforming;    // 5G FAPI Table 3-51
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_ul_pucch_pdu_t;
+#else
     } fapi_ul_pucch_pdu_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1078,7 +1359,11 @@ extern "C" {
         uint16_t tSrs;
         uint16_t tOffset;
         fapi_ul_rx_bmform_pdu_t beamforming;    // 5G FAPI Table 3-52
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_ul_srs_pdu_t;
+#else
     } fapi_ul_srs_pdu_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1090,7 +1375,11 @@ extern "C" {
             fapi_ul_pucch_pdu_t pucch_pdu;
             fapi_ul_srs_pdu_t srs_pdu;
         } pdu;
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_ul_tti_req_pdu_t;
+#else
     } fapi_ul_tti_req_pdu_t;    // 5G FAPI Subset Table 3-44
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1107,14 +1396,22 @@ extern "C" {
 #endif
         fapi_ul_tti_req_pdu_t pdus[FAPI_MAX_NUMBER_UL_PDUS_PER_TTI];    // 5G FAPI Table 3-44
         fapi_ue_info_t ueGrpInfo[FAPI_MAX_NUMBER_OF_GROUPS_PER_TTI];
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_ul_tti_req_t;
+#else
     } fapi_ul_tti_req_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         uint16_t pduType;
         uint16_t pduSize;
         fapi_dl_pdcch_pdu_t pdcchPduConfig; // 5G FAPI Table 3-54 Subset
+#ifdef OAI_TESTING
+    } __attribute__((packed)) fapi_dci_pdu_t;
+#else
     } fapi_dci_pdu_t;
+#endif
 
     // Updated per 5G FAPI
     typedef struct {
@@ -1126,21 +1423,27 @@ extern "C" {
         uint8_t pad[3];
 #endif
         fapi_dci_pdu_t pdus[FAPI_MAX_NUMBER_UCI_PDUS_PER_SLOT]; // 5G FAPI Table 3-54
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_ul_dci_req_t;
+#else
     } fapi_ul_dci_req_t;
+#endif
 
 // Updated per 5G FAPI
-    typedef struct {
+typedef struct {
 #ifndef OAI_TESTING
-        uint32_t pdu_length;
-        uint16_t pdu_index;
-        uint16_t num_tlvs;
+	uint32_t pdu_length;
+	uint16_t pdu_index;
+	uint16_t num_tlvs;
+	fapi_uint8_ptr_tlv_t tlvs[FAPI_MAX_NUMBER_OF_TLVS_PER_PDU]; // 5G FAPI Table 3-58 Subset
+} fapi_tx_pdu_desc_t;
 #else
-        uint16_t pdu_length;
-        uint16_t pdu_index;
-        uint32_t num_tlvs;
+	uint32_t pdu_length;
+	uint16_t pdu_index;
+	uint32_t num_tlvs;
+	fapi_uint32_ptr_tlv_t tlvs[FAPI_MAX_NUMBER_OF_TLVS_PER_PDU]; // 5G FAPI Table 3-58 Subset
+} __attribute__((packed))  fapi_tx_pdu_desc_t;
 #endif
-        fapi_uint8_ptr_tlv_t tlvs[FAPI_MAX_NUMBER_OF_TLVS_PER_PDU]; // 5G FAPI Table 3-58 Subset
-    } fapi_tx_pdu_desc_t;
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1152,7 +1455,11 @@ extern "C" {
         uint8_t pad[2];
 #endif
         fapi_tx_pdu_desc_t pdu_desc[FAPI_MAX_NUMBER_DL_PDUS_PER_TTI];   // 5G FAPI Table 3-58
+#ifdef OAI_TESTING
+    } __attribute__((packed))  fapi_tx_data_req_t;
+#else
     } fapi_tx_data_req_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1167,7 +1474,11 @@ extern "C" {
         uint8_t pad[2];
 #endif
         void *pduData;          // 5G FAPI Table 3-61 Subset
+#ifndef OAI_TESTING
     } fapi_pdu_ind_info_t;
+#else
+    } __attribute__((packed))  fapi_pdu_ind_info_t;
+#endif
 
     // Updated per 5G FAPI
     typedef struct {
@@ -1179,7 +1490,11 @@ extern "C" {
         uint8_t pad[2];
 #endif
         fapi_pdu_ind_info_t pdus[FAPI_MAX_NUMBER_OF_ULSCH_PDUS_PER_SLOT];   // 5G FAPI Table 3-61
+#ifndef OAI_TESTING
     } fapi_rx_data_indication_t;
+#else
+    } __attribute__((packed))  fapi_rx_data_indication_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1194,8 +1509,10 @@ extern "C" {
         uint16_t rssi;
 #ifndef OAI_TESTING
         uint8_t pad;
-#endif
     } fapi_crc_ind_info_t;
+#else
+    } __attribute__((packed))  fapi_crc_ind_info_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1203,11 +1520,13 @@ extern "C" {
         uint16_t sfn;
         uint16_t slot;
         uint16_t numCrcs;
+        fapi_crc_ind_info_t crc[FAPI_MAX_NUMBER_OF_CRCS_PER_SLOT];  // 5G FAPI Table 3-62
 #ifndef OAI_TESTING
         uint8_t pad[2];
-#endif
-        fapi_crc_ind_info_t crc[FAPI_MAX_NUMBER_OF_CRCS_PER_SLOT];  // 5G FAPI Table 3-62
     } fapi_crc_ind_t;
+#else
+    } __attribute__((packed))  fapi_crc_ind_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1217,7 +1536,11 @@ extern "C" {
 #endif
         uint16_t harqBitLen;
         uint8_t harqPayload[FAPI_MAX_HARQ_INFO_LEN_BYTES];  // 5G FAPI Table 3-70
+#ifndef OAI_TESTING
     } fapi_harq_info_t;
+#else
+    } __attribute__((packed))  fapi_harq_info_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1227,7 +1550,11 @@ extern "C" {
 #endif
         uint16_t csiPart1BitLen;
         uint8_t csiPart1Payload[FAPI_MAX_CSI_PART1_DATA_BYTES]; // 5G FAPI Table 3-71
+#ifndef OAI_TESTING
     } fapi_csi_p1_info_t;
+#else
+    } __attribute__((packed))  fapi_csi_p1_info_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1237,7 +1564,11 @@ extern "C" {
 #endif
         uint16_t csiPart2BitLen;
         uint8_t csiPart2Payload[FAPI_MAX_CSI_PART2_DATA_BYTES]; // 5G FAPI Table 3-72
+#ifndef OAI_TESTING
     } fapi_csi_p2_info_t;
+#else
+    } __attribute__((packed))  fapi_csi_p2_info_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1250,7 +1581,11 @@ extern "C" {
         fapi_harq_info_t harqInfo;  // This is included if indicated by the pduBitmap
         fapi_csi_p1_info_t csiPart1info;    // This is included if indicated by the pduBitmap
         fapi_csi_p2_info_t csiPart2info;    // This is included if indicated by the pduBitmap
+#ifndef OAI_TESTING
     } fapi_uci_o_pusch_t;
+#else
+    } __attribute__((packed))  fapi_uci_o_pusch_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1258,21 +1593,31 @@ extern "C" {
         uint8_t srConfidenceLevel;  // 5G FAPI Table 3-67
 #ifndef OAI_TESTING 
         uint8_t pad[2];
-#endif
     } fapi_sr_f0f1_info_t;
+#else
+    } __attribute__((packed))  fapi_sr_f0f1_info_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         uint8_t numHarq;
         uint8_t harqConfidenceLevel;
         uint8_t harqValue[FAPI_MAX_NUMBER_OF_HARQS_PER_IND];    // 5G FAPI Table 3-68
+#ifndef OAI_TESTING
     } fapi_harq_f0f1_info_t;
+#else
+    } __attribute__((packed))  fapi_harq_f0f1_info_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
         uint16_t srBitlen;
         uint8_t srPayload[FAPI_MAX_SR_PAYLOAD_SIZE + 1];    // 5G FAPI Table 3-69
+#ifndef OAI_TESTING
     } fapi_sr_f2f3f4_info_t;
+#else
+    } __attribute__((packed))  fapi_sr_f2f3f4_info_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1282,7 +1627,11 @@ extern "C" {
 #endif
         uint16_t harqBitLen;
         uint8_t harqPayload[FAPI_MAX_HARQ_PAYLOAD_SIZE + 2];    // 5G FAPI Table 3-70
+#ifndef OAI_TESTING
     } fapi_harq_f2f3f4_info_t;
+#else
+    } __attribute__((packed))  fapi_harq_f2f3f4_info_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1303,7 +1652,11 @@ extern "C" {
         fapi_csi_p1_info_t csiP1Info;
         fapi_csi_p2_info_t csiP2Info;
 #endif
+#ifndef OAI_TESTING
     } fapi_uci_o_pucch_f2f3f4_t;
+#else
+    } __attribute__((packed))  fapi_uci_o_pucch_f2f3f4_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1322,7 +1675,11 @@ extern "C" {
 #endif
         fapi_sr_f0f1_info_t srInfo; // This is included if indicated by the pduBitmap
         fapi_harq_f0f1_info_t harqInfo; // This is included if indicated by the pduBitmap
+#ifndef OAI_TESTING
     } fapi_uci_o_pucch_f0f1_t;
+#else
+    } __attribute__((packed))  fapi_uci_o_pucch_f0f1_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1333,7 +1690,11 @@ extern "C" {
             fapi_uci_o_pucch_f0f1_t uciPucchF0F1;
             fapi_uci_o_pucch_f2f3f4_t uciPucchF2F3F4;   // 5G FAPI Table 3-63 subset
         } uci;
+#ifndef OAI_TESTING
     } fapi_uci_pdu_info_t;
+#else
+    } __attribute__((packed))  fapi_uci_pdu_info_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1345,7 +1706,11 @@ extern "C" {
         uint8_t pad[2];
 #endif
         fapi_uci_pdu_info_t uciPdu[FAPI_MAX_NUMBER_UCI_PDUS_PER_SLOT];
+#ifndef OAI_TESTING
     } fapi_uci_indication_t;
+#else
+    } __attribute__((packed))  fapi_uci_indication_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1354,7 +1719,11 @@ extern "C" {
         uint8_t pad[2];
 #endif
         uint8_t rbSNR[FAPI_MAX_NUMBER_RBS]; // 5G FAPI Table 3-73 Subset
+#ifndef OAI_TESTING
     } fapi_symb_snr_t;
+#else
+    } __attribute__((packed))  fapi_symb_snr_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1368,7 +1737,11 @@ extern "C" {
         uint8_t pad;
 #endif
         fapi_symb_snr_t symbSnr[FAPI_MAX_NUMBER_OF_REP_SYMBOLS];    // 5G FAPI Table 3-73 subset
+#ifndef OAI_TESTING
     } fapi_srs_pdu_t;
+#else
+    } __attribute__((packed))  fapi_srs_pdu_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1380,7 +1753,11 @@ extern "C" {
         uint8_t pad[3];
 #endif
         fapi_srs_pdu_t srsPdus[FAPI_MAX_NUMBER_SRS_PDUS_PER_SLOT];  // 5G FAPI Table 3-73
+#ifndef OAI_TESTING
     } fapi_srs_indication_t;
+#else
+    } __attribute__((packed))  fapi_srs_indication_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1390,7 +1767,11 @@ extern "C" {
 #endif
         uint16_t timingAdvance;
         uint32_t preamblePwr;   // 5G FAPI Table 3-74 Subset
+#ifndef OAI_TESTING
     } fapi_preamble_info_t;
+#else
+    } __attribute__((packed))  fapi_preamble_info_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1402,7 +1783,11 @@ extern "C" {
         uint8_t avgSnr;
         uint8_t numPreamble;
         fapi_preamble_info_t preambleInfo[FAPI_MAX_NUM_PREAMBLES_PER_SLOT]; // 5G FAPI Table 3-74 Subset
+#ifndef OAI_TESTING
     } fapi_rach_pdu_t;
+#else
+    } __attribute__((packed))  fapi_rach_pdu_t;
+#endif
 
 // Updated per 5G FAPI
     typedef struct {
@@ -1414,8 +1799,11 @@ extern "C" {
         uint8_t pad[3];
 #endif
         fapi_rach_pdu_t rachPdu[FAPI_MAX_NUMBER_RACH_PDUS_PER_SLOT];    // 5G FAPI Table 3-74
+#ifndef OAI_TESTING
     } fapi_rach_indication_t;
-
+#else
+    } __attribute__((packed))  fapi_rach_indication_t;
+#endif
 //------------------------------------------------------------------------------
 
 #if defined(__cplusplus)
