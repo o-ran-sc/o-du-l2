@@ -3984,6 +3984,12 @@ uint8_t calcTxDataReqPduCount(MacDlSlot *dlSlot)
    return count;
 }
 
+uint8_t get_tlv_padding(uint16_t tlv_length)
+{
+   DU_LOG("\nDEBUG  -->  LWR_MAC: get_tlv_padding tlv_length %lu = padding = %d\n",tlv_length, ((4 - (tlv_length % 4)) % 4));
+   return (4 - (tlv_length % 4)) % 4;
+}
+
 /***********************************************************************
  *
  * @brief fills the SIB1 TX-DATA request message
@@ -4006,60 +4012,67 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCel
       PdschCfg *pdschCfg)
 {
 #ifndef OAI_TESTING 
-   uint32_t payloadSize = 0;
-#else
-   uint16_t payloadSize = 0;
+	uint32_t payloadSize = 0;
+	uint8_t *sib1Payload = NULLP;
+	fapi_api_queue_elem_t *payloadElem = NULLP;
+#ifdef INTEL_WLS_MEM
+	void * wlsHdlr = NULLP;
 #endif
+
+	pduDesc[pduIndex].pdu_index = pduIndex;
+	pduDesc[pduIndex].num_tlvs = 1;
+
+	/* fill the TLV */
+	payloadSize = pdschCfg->codeword[0].tbSize;
+	pduDesc[pduIndex].tlvs[0].tl.tag = ((payloadSize & 0xff0000) >> 8) | FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
+	pduDesc[pduIndex].tlvs[0].tl.length = (payloadSize & 0x0000ffff);
+	LWR_MAC_ALLOC(sib1Payload, payloadSize);
+	if(sib1Payload == NULLP)
+	{
+		return RFAILED;
+	}
+	payloadElem = (fapi_api_queue_elem_t *)sib1Payload;
+	FILL_FAPI_LIST_ELEM(payloadElem, NULLP, FAPI_VENDOR_MSG_PHY_ZBC_BLOCK_REQ, 1, \
+			macCellCfg->cellCfg.sib1Cfg.sib1PduLen);
+	memcpy(sib1Payload + TX_PAYLOAD_HDR_LEN, macCellCfg->cellCfg.sib1Cfg.sib1Pdu, macCellCfg->cellCfg.sib1Cfg.sib1PduLen);
+
+#ifdef INTEL_WLS_MEM
+	mtGetWlsHdl(&wlsHdlr);
+	pduDesc[pduIndex].tlvs[0].value = (uint8_t *)(WLS_VA2PA(wlsHdlr, sib1Payload));
+#else
+	pduDesc[pduIndex].tlvs[0].value = sib1Payload;
+#endif
+	pduDesc[pduIndex].pdu_length = payloadSize;
+
+#ifdef INTEL_WLS_MEM
+	addWlsBlockToFree(sib1Payload, payloadSize, (lwrMacCb.phySlotIndCntr-1));
+#else
+	LWR_MAC_FREE(sib1Payload, payloadSize);
+#endif
+
+
+#else
 
    uint8_t *sib1Payload = NULLP;
    fapi_api_queue_elem_t *payloadElem = NULLP;
 #ifdef INTEL_WLS_MEM
    void * wlsHdlr = NULLP;
 #endif
+   uint8_t tlvPaddingLen =get_tlv_padding(macCellCfg->cellCfg.sib1Cfg.sib1PduLen);
+   uint16_t totalLen= macCellCfg->cellCfg.sib1Cfg.sib1PduLen+tlvPaddingLen;
 
-   payloadSize = pdschCfg->codeword[0].tbSize;
-#ifndef OAI_TESTING 
-   pduDesc[pduIndex].pdu_index = pduIndex;
-   pduDesc[pduIndex].num_tlvs = 1;
-   /* fill the TLV */
-   pduDesc[pduIndex].tlvs[0].tl.tag = ((payloadSize & 0xff0000) >> 8) | FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
-   pduDesc[pduIndex].tlvs[0].tl.length = (payloadSize & 0x0000ffff);
-#else
+   pduDesc[pduIndex].pdu_length = totalLen; 
+#ifdef OAI_TESTING
+  pduDesc[pduIndex].pdu_length = reverseBytes32(pduDesc[pduIndex].pdu_length);
+#endif 
    pduDesc[pduIndex].pdu_index = reverseBytes16(pduIndex);
    pduDesc[pduIndex].num_tlvs = reverseBytes32(1);
-   /* fill the TLV */
-   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(FAPI_TX_DATA_PTR_TO_PAYLOAD_32);
-   pduDesc[pduIndex].tlvs[0].tl.length = reverseBytes16(payloadSize);
+   pduDesc[pduIndex].tlvs[0].tag = reverseBytes16(FAPI_TX_DATA_PAYLOAD);
+   pduDesc[pduIndex].tlvs[0].length = reverseBytes32(macCellCfg->cellCfg.sib1Cfg.sib1PduLen);
+   memcpy(pduDesc[pduIndex].tlvs[0].value.direct, macCellCfg->cellCfg.sib1Cfg.sib1Pdu, macCellCfg->cellCfg.sib1Cfg.sib1PduLen);
+
 #endif
-
-   LWR_MAC_ALLOC(sib1Payload, payloadSize);
-   if(sib1Payload == NULLP)
-   {
-      return RFAILED;
-   }
-   payloadElem = (fapi_api_queue_elem_t *)sib1Payload;
-   FILL_FAPI_LIST_ELEM(payloadElem, NULLP, FAPI_VENDOR_MSG_PHY_ZBC_BLOCK_REQ, 1, \
-      macCellCfg->cellCfg.sib1Cfg.sib1PduLen);
-   memcpy(sib1Payload + TX_PAYLOAD_HDR_LEN, macCellCfg->cellCfg.sib1Cfg.sib1Pdu, macCellCfg->cellCfg.sib1Cfg.sib1PduLen);
-
-#ifdef INTEL_WLS_MEM
-   mtGetWlsHdl(&wlsHdlr);
-   pduDesc[pduIndex].tlvs[0].value = (uint8_t *)(WLS_VA2PA(wlsHdlr, sib1Payload));
-#else
-   pduDesc[pduIndex].tlvs[0].value = sib1Payload;
-#endif
-
-   pduDesc[pduIndex].pdu_length = payloadSize; 
-#ifdef OAI_TESTING
-   pduDesc[pduIndex].pdu_length = reverseBytes16(pduDesc[pduIndex].pdu_length);
-#endif 
-
-#ifdef INTEL_WLS_MEM   
-   addWlsBlockToFree(sib1Payload, payloadSize, (lwrMacCb.phySlotIndCntr-1));
-#else
-   LWR_MAC_FREE(sib1Payload, payloadSize);
-#endif
-
+	
    return ROK;
 }
 
@@ -4084,6 +4097,7 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCel
 uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPageAlloc *pageAllocInfo)
 {
 
+#ifndef OAI_TESTING 
 #ifndef OAI_TESTING 
    uint32_t payloadSize = 0;
 #else
@@ -4121,7 +4135,6 @@ uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPage
    FILL_FAPI_LIST_ELEM(payloadElem, NULLP, FAPI_VENDOR_MSG_PHY_ZBC_BLOCK_REQ, 1, \
          pageAllocInfo->pageDlSch.dlPagePduLen);
    memcpy(pagePayload + TX_PAYLOAD_HDR_LEN, pageAllocInfo->pageDlSch.dlPagePdu, pageAllocInfo->pageDlSch.dlPagePduLen);
-
 #ifdef INTEL_WLS_MEM
    mtGetWlsHdl(&wlsHdlr);
    pduDesc[pduIndex].tlvs[0].value = (uint8_t *)(WLS_VA2PA(wlsHdlr, pagePayload));
@@ -4138,6 +4151,7 @@ uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPage
    addWlsBlockToFree(pagePayload, payloadSize, (lwrMacCb.phySlotIndCntr-1));
 #else
    LWR_MAC_FREE(pagePayload, payloadSize);
+#endif
 #endif
 
    return ROK;
@@ -4164,6 +4178,7 @@ uint8_t fillPageTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlPage
 uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo *rarInfo, PdschCfg *pdschCfg)
 {
 
+#ifndef OAI_TESTING 
 #ifndef OAI_TESTING 
    uint32_t payloadSize = 0;
 #else
@@ -4200,7 +4215,6 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
    payloadElem = (fapi_api_queue_elem_t *)rarPayload;
    FILL_FAPI_LIST_ELEM(payloadElem, NULLP, FAPI_VENDOR_MSG_PHY_ZBC_BLOCK_REQ, 1, rarInfo->rarPduLen);
    memcpy(rarPayload + TX_PAYLOAD_HDR_LEN, rarInfo->rarPdu, rarInfo->rarPduLen);
-
 #ifdef INTEL_WLS_MEM
    mtGetWlsHdl(&wlsHdlr);
    pduDesc[pduIndex].tlvs[0].value = (uint8_t *)(WLS_VA2PA(wlsHdlr, rarPayload));
@@ -4218,6 +4232,7 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
 #else
    LWR_MAC_FREE(rarPayload, payloadSize);
 #endif
+#endif /* FAPI */
    return ROK;
 }
 
@@ -4241,6 +4256,8 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
  * ********************************************************************/
 uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsgSchInfo *dlMsgSchInfo, PdschCfg *pdschCfg)
 {
+
+#ifndef OAI_TESTING 
    uint16_t payloadSize;
    uint8_t  *dlMsgPayload = NULLP;
    fapi_api_queue_elem_t *payloadElem = NULLP;
@@ -4289,6 +4306,7 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsg
 #else
    LWR_MAC_FREE(dlMsgPayload, payloadSize);
 #endif
+#endif /* FAPI */
    return ROK;
 }
 
@@ -4927,6 +4945,7 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
       DU_LOG("\nDEBUG  -->  LWR_MAC: Sending TX DATA Request");
       prevElem->p_next = txDataElem;
    }
+
 #else
    uint8_t  nPdu = 0;
    uint8_t  ueIdx=0;
@@ -4970,7 +4989,7 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
       txDataReq->slot = reverseBytes16(currTimingInfo.slot);
       if(dlSlot->dlInfo.brdcstAlloc.sib1TransmissionMode)
       {
-         fillSib1TxDataReq(txDataReq->pdu_desc, pduIndex, &macCb.macCell[cellIdx]->macCellCfg, \
+        fillSib1TxDataReq(txDataReq->pdu_desc, pduIndex, &macCb.macCell[cellIdx]->macCellCfg, \
                &dlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg->dci[0].pdschCfg);
          pduIndex++;
          MAC_FREE(dlSlot->dlInfo.brdcstAlloc.sib1Alloc.sib1PdcchCfg,sizeof(PdcchCfg));
@@ -5023,7 +5042,7 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
       DU_LOG("\nDEBUG  -->  LWR_MAC: After reversing total number pdu %u = ", txDataReq->num_pdus);
 
       /* Fill message header */
-      DU_LOG("\nDEBUG  -->  LWR_MAC: Sending TX DATA Request");
+      DU_LOG("\nDEBUG  -->  LWR_MAC: Sending TX DATA Request\n");
       prevElem->p_next = txDataElem;
    }
 #endif
