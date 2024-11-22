@@ -1736,10 +1736,16 @@ void printLcLL(CmLListCp *lcLL)
  *      -# UL    - 1
  *      -# FLEXI - 2
  **/
-SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t bitMap)
+SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t *bitMap)
 {
-   uint32_t offset = (slot)*2;
-   return (bitMap & 0x3<<offset)>>offset;
+   uint32_t offset = 0;
+   
+   if(slot > 16)
+      offset = ((slot - 16)%16) * 2;
+   else
+      offset = (slot)*2;
+
+   return (bitMap[slot/16] & 0x3<<offset)>>offset;
 #if 0
    SlotConfig slotFrmt;
    int mask1 = 0, mask2 = 0;

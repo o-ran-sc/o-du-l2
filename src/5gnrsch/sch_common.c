@@ -1266,7 +1266,7 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
             {
                for(checkSymbol = startSymbol; checkSymbol<endSymbol; checkSymbol ++)
                {
-                  slotCfg = cell->slotCfg[tmpSlot][checkSymbol];
+                  slotCfg = cell->slotCfg[checkSymbol][tmpSlot];
                   if(slotCfg == UL_SLOT)
                   {
                      ulSlotPresent = true;
@@ -1301,7 +1301,7 @@ SchPdschConfig pdschDedCfg, uint8_t ulAckListCount, uint8_t *UlAckTbl)
                   {
                      for(checkSymbol = 0; checkSymbol< MAX_SYMB_PER_SLOT;checkSymbol++)
                      {
-                        if(cell->slotCfg[tmpSlot][checkSymbol] == UL_SYMBOL)
+                        if(cell->slotCfg[checkSymbol][tmpSlot] == UL_SYMBOL)
                         {
                            ulSlotPresent = true;
                            break;
@@ -1473,7 +1473,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
                      dlSymbolPresent = false;
                      for(checkSymbol= startSymbol; checkSymbol<endSymbol; checkSymbol++)
                      {
-                        currentSymbol = cell->slotCfg[k2TmpVal][checkSymbol];
+                        currentSymbol = cell->slotCfg[checkSymbol][k2TmpVal];
                         if(currentSymbol == DL_SLOT || currentSymbol == FLEXI_SLOT)
                         {
                            dlSymbolPresent = true;
@@ -1509,7 +1509,7 @@ SchK2TimingInfoTbl *msg3K2InfoTbl, SchK2TimingInfoTbl *k2InfoTbl)
                         dlSymbolPresent = false;
                         for(checkSymbol= startSymbol; checkSymbol<endSymbol; checkSymbol++)
                         {
-                           currentSymbol = cell->slotCfg[msg3K2TmpVal][checkSymbol];
+                           currentSymbol = cell->slotCfg[checkSymbol][msg3K2TmpVal];
                            if(currentSymbol == DL_SLOT || currentSymbol == FLEXI_SLOT)
                            {
                               dlSymbolPresent = true;

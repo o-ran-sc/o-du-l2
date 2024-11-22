@@ -82,12 +82,15 @@ bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo)
       {
          /* prach ocassion present in this subframe */
 #ifdef NR_TDD
+	 printf("\nSANGEETA: slot:%d, cell->slotFrmtBitMap[1],[0]:%lu,%lu",prachOccasionTimingInfo.slot,cell->slotFrmtBitMap[1],cell->slotFrmtBitMap[0]);
          if(UL_SLOT != schGetSlotSymbFrmt(prachOccasionTimingInfo.slot % cell->numSlotsInPeriodicity,\
                                              cell->slotFrmtBitMap))
          {
             DU_LOG("\nERROR  --> SCH : PrachCfgIdx %d doesn't support UL slot", prachCfgIdx);
             return FALSE;
          }
+	 else
+            printf("\nSANGEETA: prach successful");
 #endif
          return TRUE;
       }
