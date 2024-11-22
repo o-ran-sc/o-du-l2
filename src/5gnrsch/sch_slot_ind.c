@@ -425,7 +425,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
 
    ADD_DELTA_TO_TIME(currTime, (*pdcchTime), gConfigInfo.gPhyDeltaDl + SCHED_DELTA, cell->numSlots);
 #ifdef NR_TDD
-   if(schGetSlotSymbFrmt(pdcchTime->slot, cell->slotFrmtBitMap) != DL_SLOT)
+   if(schGetSlotSymbFrmt(pdcchTime->slot % cell->numSlotsInPeriodicity, cell->slotFrmtBitMap) != DL_SLOT)
    {
       /* If it is not a DL slot, cannot schedule PDCCH. Return from here. */
       return false;
@@ -476,7 +476,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
 
       ADD_DELTA_TO_TIME((*pdcchTime), (*pdschTime), k0Val, cell->numSlots);
 #ifdef NR_TDD
-      if(schGetSlotSymbFrmt(pdschTime->slot, cell->slotFrmtBitMap) != DL_SLOT)
+      if(schGetSlotSymbFrmt(pdschTime->slot % cell->numSlotsInPeriodicity, cell->slotFrmtBitMap) != DL_SLOT)
       {
          continue;
       }
@@ -503,7 +503,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
          }
          ADD_DELTA_TO_TIME((*pdschTime),(*pucchTime), k1Val, cell->numSlots);
 #ifdef NR_TDD
-         if(schGetSlotSymbFrmt(pucchTime->slot, cell->slotFrmtBitMap) == DL_SLOT)
+         if(schGetSlotSymbFrmt(pucchTime->slot % cell->numSlotsInPeriodicity, cell->slotFrmtBitMap) == DL_SLOT)
          {
             continue;
          }

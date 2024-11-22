@@ -691,8 +691,8 @@ typedef struct schCellCb
    SchPageCb     pageCb;                            /*!< Page Record at Schedular*/
 #ifdef NR_TDD
    uint8_t       numSlotsInPeriodicity;             /*!< number of slots in configured periodicity and SCS */
-   uint32_t      slotFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S slots. 00-D, 01-U, 10-S */
-   SchSymbolConfig       slotCfg[MAX_TDD_PERIODICITY_SLOTS][MAX_SYMB_PER_SLOT];
+   uint32_t      *slotFrmtBitMap;                    /*!< 2 bits must be read together to determine D/U/S slots. 00-D, 01-U, 10-S */
+   SchSymbolConfig    *slotCfg[MAX_SYMB_PER_SLOT];  /*!< slotCfg is 2D array with Symbol as ROW and Slot as COLUMN */
 #endif
 #ifdef NR_DRX
    SchDrxCb      drxCb[MAX_DRX_SIZE];                           /*!< Drx cb*/

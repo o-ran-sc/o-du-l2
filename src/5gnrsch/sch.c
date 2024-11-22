@@ -294,13 +294,23 @@ uint16_t schGetPeriodicityInMsec(DlUlTxPeriodicity tddPeriod)
  * This API Fills the slotCfg from CellCfg
  * 
  * @param[in] SchCellCb *cell, TDDCfg tddCfg
- * @return  void
+ * @return ROK, RFAILED 
  * **/
-void schFillSlotConfig(SchCellCb *cell, TDDCfg tddCfg)
+uint8_t schFillSlotConfig(SchCellCb *cell, TDDCfg tddCfg)
 {
    uint8_t slotIdx = 0, symbolIdx = 0;
 
-   for(slotIdx =0 ;slotIdx < MAX_TDD_PERIODICITY_SLOTS; slotIdx++) 
+   for(symbolIdx = 0; symbolIdx < MAX_SYMB_PER_SLOT; symbolIdx++)
+   {
+      SCH_ALLOC(cell->slotCfg[symbolIdx], cell->numSlotsInPeriodicity * sizeof(SchSymbolConfig));
+      if(cell->slotCfg[symbolIdx] == NULLP)
+      {
+          DU_LOG("\nERROR  -->  SCH: Memory allocation issue in schFillSlotConfig()");
+          return RFAILED;
+      }
+   }
+   
+   for(slotIdx =0 ;slotIdx < cell->numSlotsInPeriodicity; slotIdx++) 
    {
       for(symbolIdx = 0; symbolIdx < MAX_SYMB_PER_SLOT; symbolIdx++)
       {
@@ -308,23 +318,24 @@ void schFillSlotConfig(SchCellCb *cell, TDDCfg tddCfg)
          if(slotIdx < tddCfg.nrOfDlSlots || \
                (slotIdx == tddCfg.nrOfDlSlots && symbolIdx < tddCfg.nrOfDlSymbols)) 
          {
-              cell->slotCfg[slotIdx][symbolIdx] = DL_SYMBOL; 
+              cell->slotCfg[symbolIdx][slotIdx] = DL_SYMBOL; 
          }
 
          /*Fill Full-FLEXI SLOT and as well as Flexi Symbols in 1 slot preceding FULL-UL slot*/ 
-         else if(slotIdx < (MAX_TDD_PERIODICITY_SLOTS - tddCfg.nrOfUlSlots -1) ||  \
-               (slotIdx == (MAX_TDD_PERIODICITY_SLOTS - tddCfg.nrOfUlSlots -1) && \
+         else if(slotIdx < (cell->numSlotsInPeriodicity - tddCfg.nrOfUlSlots -1) ||  \
+               (slotIdx == (cell->numSlotsInPeriodicity - tddCfg.nrOfUlSlots -1) && \
                 symbolIdx < (MAX_SYMB_PER_SLOT - tddCfg.nrOfUlSymbols)))
          {
-              cell->slotCfg[slotIdx][symbolIdx] = FLEXI_SYMBOL; 
+              cell->slotCfg[symbolIdx][slotIdx] = FLEXI_SYMBOL; 
          }
          /*Fill Partial UL symbols and Full-UL slot*/
          else
          {
-              cell->slotCfg[slotIdx][symbolIdx] = UL_SYMBOL; 
+              cell->slotCfg[symbolIdx][slotIdx] = UL_SYMBOL; 
          }
       }
    }
+   return ROK;
 }
 
 /**
@@ -340,34 +351,48 @@ void schFillSlotConfig(SchCellCb *cell, TDDCfg tddCfg)
  *  @param[in]  SchCellCfg *schCellCfg
  *  @return  void
  **/
-void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
+uint8_t schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
 {
    uint16_t periodicityInMicroSec = 0;
    int8_t slotIdx, symbIdx;
-
+   uint8_t sizeSlotBitmap = 0, idxSlotBitmap = 0;
+   
    periodicityInMicroSec = schGetPeriodicityInMsec(schCellCfg->tddCfg.tddPeriod);
    cell->numSlotsInPeriodicity = (periodicityInMicroSec * pow(2, cell->numerology))/1000;
-   cell->slotFrmtBitMap = 0;
-   schFillSlotConfig(cell, schCellCfg->tddCfg);
+   if(schFillSlotConfig(cell, schCellCfg->tddCfg) != ROK)
+   {
+      DU_LOG("\nERROR  --> SCH: Slot Configuration failed in SCH");
+      return RFAILED;
+   }
+
+   sizeSlotBitmap = (cell->numSlotsInPeriodicity / 16) + 1;
+   SCH_ALLOC(cell->slotFrmtBitMap, sizeSlotBitmap * sizeof(uint32_t));
+
+   if(cell->slotFrmtBitMap == NULLP)
+   {
+      DU_LOG("\nERROR  --> SCH: Slot Format Bit Map memory allocation failed.");
+      return RFAILED;
+   }
    for(slotIdx = cell->numSlotsInPeriodicity-1; slotIdx >= 0; slotIdx--)
    {
+      idxSlotBitmap = (slotIdx /16);
       symbIdx = 0;
       /* If the first and last symbol are the same, the entire slot is the same type */
-      if((cell->slotCfg[slotIdx][symbIdx] == cell->slotCfg[slotIdx][MAX_SYMB_PER_SLOT-1]) &&
-              cell->slotCfg[slotIdx][symbIdx] != FLEXI_SYMBOL)
+      if((cell->slotCfg[symbIdx][slotIdx] == cell->slotCfg[MAX_SYMB_PER_SLOT-1][slotIdx]) &&
+              cell->slotCfg[symbIdx][slotIdx] != FLEXI_SYMBOL)
       {
-         switch(cell->slotCfg[slotIdx][symbIdx])
+         switch(cell->slotCfg[symbIdx][slotIdx])
          {
             case DL_SLOT:
             {
                /*BitMap to be set to 00 */
-               cell->slotFrmtBitMap = (cell->slotFrmtBitMap<<2);
+               cell->slotFrmtBitMap[idxSlotBitmap] = (cell->slotFrmtBitMap[idxSlotBitmap]<<2);
                break;
             }
             case UL_SLOT:
             {
                /*BitMap to be set to 01 */
-               cell->slotFrmtBitMap = ((cell->slotFrmtBitMap<<2) | (UL_SLOT));
+               cell->slotFrmtBitMap[idxSlotBitmap] = ((cell->slotFrmtBitMap[idxSlotBitmap]<<2) | (UL_SLOT));
                break;
             }
             default:
@@ -376,8 +401,9 @@ void schInitTddSlotCfg(SchCellCb *cell, SchCellCfg *schCellCfg)
          continue;
       }
       /* slot config is flexible. First set slotBitMap to 10 */
-      cell->slotFrmtBitMap = ((cell->slotFrmtBitMap<<2) | (FLEXI_SLOT));
+      cell->slotFrmtBitMap[idxSlotBitmap] = ((cell->slotFrmtBitMap[idxSlotBitmap]<<2) | (FLEXI_SLOT));
    }
+   return ROK;
 }
 #endif
 
@@ -507,7 +533,11 @@ uint8_t schInitCellCb(Inst inst, SchCellCfg *schCellCfg)
 	 DU_LOG("\nERROR  -->  SCH : Numerology %d not supported", cell->numerology);
    }
 #ifdef NR_TDD
-   schInitTddSlotCfg(cell, schCellCfg);   
+   if(schInitTddSlotCfg(cell, schCellCfg) != ROK)
+   {
+      DU_LOG("\nERROR  -->  SCH : Initialization of TDD Configuration failed");
+      return RFAILED;
+   }
 #endif
 
    SCH_ALLOC(cell->schDlSlotInfo, cell->numSlots * sizeof(SchDlSlotInfo*));
@@ -891,6 +921,10 @@ void deleteSchCellCb(SchCellCb *cellCb)
    CmLListCp *list=NULL;
    CmLList *node=NULL, *next=NULL;
    SchPageInfo *tempNode = NULLP;
+#ifdef NR_TDD
+    uint8_t sizeSlotBitmap = 0;
+    uint8_t symbolIdx = 0;
+#endif
 
    if(cellCb->schDlSlotInfo)
    {
@@ -968,6 +1002,14 @@ void deleteSchCellCb(SchCellCb *cellCb)
       }
    }
 
+#ifdef NR_TDD
+   for(symbolIdx = 0; symbolIdx < MAX_SYMB_PER_SLOT; symbolIdx++)
+   {
+      SCH_FREE(cellCb->slotCfg[symbolIdx], cellCb->numSlotsInPeriodicity * sizeof(SchSymbolConfig));
+   }
+   sizeSlotBitmap = (cellCb->numSlotsInPeriodicity / 16) + 1;
+   SCH_FREE(cellCb->slotFrmtBitMap, sizeSlotBitmap * sizeof(uint32_t));
+#endif
    cellCb->api->SchCellDeleteReq(cellCb);
 
    memset(cellCb, 0, sizeof(SchCellCb));

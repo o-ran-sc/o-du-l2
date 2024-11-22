@@ -575,7 +575,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
    dciSlot = dciTime.slot;
 #ifdef NR_TDD
    /* Consider this slot for sending DCI, only if it is a DL slot */
-   if(schGetSlotSymbFrmt(dciSlot, cell->slotFrmtBitMap) == DL_SLOT)
+   if(schGetSlotSymbFrmt(dciSlot % cell->numSlotsInPeriodicity, cell->slotFrmtBitMap) == DL_SLOT)
 #endif
    {
       /* If PDCCH is already scheduled on this slot, cannot schedule PDSCH for another UE here. */
@@ -619,7 +619,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
 
                   ADD_DELTA_TO_TIME(rarTime, pucchTime, k1, cell->numSlots);
 #ifdef NR_TDD
-                  if(schGetSlotSymbFrmt(pucchTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
+                  if(schGetSlotSymbFrmt(pucchTime.slot % totalCfgSlot, cell->slotFrmtBitMap) == DL_SLOT)
                      continue;
 #endif
                   /*In this pucchTime, this particular UE/CRNTI is already scheduled thus checking 

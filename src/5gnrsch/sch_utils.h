@@ -126,7 +126,7 @@ uint8_t deleteNodeFromLList(CmLListCp *llist, CmLList *node);
 
 /* Functions declarations : Slot format handler */
 #ifdef NR_TDD
-SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t bitMap);
+SlotConfig schGetSlotSymbFrmt(uint16_t slot, uint32_t *bitMap);
 uint8_t calculateSlotPatternLength(uint8_t scs, uint8_t periodicity);
 #endif
 
