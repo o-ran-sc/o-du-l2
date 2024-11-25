@@ -4179,11 +4179,7 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
 {
 
 #ifndef OAI_TESTING 
-#ifndef OAI_TESTING 
    uint32_t payloadSize = 0;
-#else
-   uint16_t payloadSize = 0;
-#endif
 
    uint8_t  *rarPayload = NULLP;
    fapi_api_queue_elem_t *payloadElem = NULLP;
@@ -4193,19 +4189,11 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
 
    payloadSize = pdschCfg->codeword[0].tbSize;
 
-#ifndef OAI_TESTING
    pduDesc[pduIndex].pdu_index = pduIndex;
    pduDesc[pduIndex].num_tlvs = 1;
    /* fill the TLV */
    pduDesc[pduIndex].tlvs[0].tl.tag = FAPI_TX_DATA_PTR_TO_PAYLOAD_64;
    pduDesc[pduIndex].tlvs[0].tl.length = payloadSize;
-#else
-   pduDesc[pduIndex].pdu_index = reverseBytes16(pduIndex);
-   pduDesc[pduIndex].num_tlvs = reverseBytes32(1);
-   /* fill the TLV */
-   pduDesc[pduIndex].tlvs[0].tl.tag = reverseBytes16(FAPI_TX_DATA_PTR_TO_PAYLOAD_32);
-   pduDesc[pduIndex].tlvs[0].tl.length = reverseBytes16(payloadSize);
-#endif
 
    LWR_MAC_ALLOC(rarPayload, payloadSize);
    if(rarPayload == NULLP)
@@ -4223,15 +4211,28 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
 #endif
 
    pduDesc[pduIndex].pdu_length = payloadSize;
-#ifdef OAI_TESTING
-   pduDesc[pduIndex].pdu_length = reverseBytes16(pduDesc[pduIndex].pdu_length);
-#endif
 
 #ifdef INTEL_WLS_MEM
    addWlsBlockToFree(rarPayload, payloadSize, (lwrMacCb.phySlotIndCntr-1));
 #else
    LWR_MAC_FREE(rarPayload, payloadSize);
 #endif
+
+#else
+
+   uint8_t tlvPaddingLen =get_tlv_padding(rarInfo->rarPduLen);
+   uint16_t totalLen= rarInfo->rarPduLen +tlvPaddingLen;
+   pduDesc[pduIndex].pdu_length = totalLen;
+   pduDesc[pduIndex].pdu_length = reverseBytes16(pduDesc[pduIndex].pdu_length);
+
+   pduDesc[pduIndex].pdu_index = reverseBytes16(pduIndex);
+   pduDesc[pduIndex].num_tlvs = reverseBytes32(1);
+   /* fill the TLV */
+   pduDesc[pduIndex].tlvs[0].tag = reverseBytes16(FAPI_TX_DATA_PAYLOAD);
+   pduDesc[pduIndex].tlvs[0].length = reverseBytes16(rarInfo->rarPduLen);
+
+   memcpy(pduDesc[pduIndex].tlvs[0].value.direct, rarInfo->rarPdu, rarInfo->rarPduLen);
+
 #endif /* FAPI */
    return ROK;
 }
