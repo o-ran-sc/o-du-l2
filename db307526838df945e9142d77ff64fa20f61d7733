@@ -107,6 +107,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "674bf021_76216346",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1982,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "287f0fbd_2f3fd6f6",
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62ea3736_c336a495",
@@ -582,6 +600,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0959305b_99899063",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5147ce96_a896d08c",
+      "range": {
+        "startLine": 239,
+        "startChar": 12,
+        "endLine": 239,
+        "endChar": 26
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3638e160_d33759a5",
@@ -762,6 +804,30 @@
       "side": 1,
       "message": "OK",
       "parentUuid": "87ff977d_62d72ee0",
+      "range": {
+        "startLine": 307,
+        "startChar": 5,
+        "endLine": 307,
+        "endChar": 31
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "318d1b16_5a98bd02",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b7f68cc_6984994a",
       "range": {
         "startLine": 307,
         "startChar": 5,
@@ -1105,6 +1171,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c592963d_521ac380",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1432,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c09c3734_c7c7a203",
+      "range": {
+        "startLine": 1432,
+        "startChar": 34,
+        "endLine": 1432,
+        "endChar": 59
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0eafea3d_ff36eeed",
@@ -1262,6 +1352,30 @@
       "side": 1,
       "message": "OK we already remove CmLListCp ueDlNewTransmission;",
       "parentUuid": "2ca291b3_dddb36f4",
+      "range": {
+        "startLine": 1448,
+        "startChar": 37,
+        "endLine": 1448,
+        "endChar": 62
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ee4bb9b_4ebbe4b3",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1448,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "627c5346_d5199b10",
       "range": {
         "startLine": 1448,
         "startChar": 37,
@@ -2533,6 +2647,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97f92ab8_e8f58e51",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1875,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79a2b8d2_d24dde3c",
+      "range": {
+        "startLine": 1875,
+        "startChar": 13,
+        "endLine": 1875,
+        "endChar": 32
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c540b7c_c9e14614",
@@ -2618,6 +2756,30 @@
       "side": 1,
       "message": "We move the memory allocation for PDSCH and PDCCH (Step 3) to Find the maximum free PRB chunk (Step 4) and make sure to confirm the available resources before making the memory allocation.",
       "parentUuid": "d08da43a_be232015",
+      "range": {
+        "startLine": 1900,
+        "startChar": 26,
+        "endLine": 1900,
+        "endChar": 35
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab38e4ac_a28688c9",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 1900,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "546da7d6_87831448",
       "range": {
         "startLine": 1900,
         "startChar": 26,
@@ -3176,6 +3338,30 @@
       "side": 1,
       "message": "We added a check for LCs that have SNSSAI and are not dedicated (isDedicated !\u003d true)",
       "parentUuid": "34282462_af32a87c",
+      "range": {
+        "startLine": 2364,
+        "startChar": 28,
+        "endLine": 2364,
+        "endChar": 36
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af55c6bf_da0f575e",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 1
+      },
+      "lineNbr": 2364,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1106f815_38a8d52f",
       "range": {
         "startLine": 2364,
         "startChar": 28,
@@ -4784,6 +4970,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0a5019ce_2a1beb46",
+        "filename": "src/5gnrsch/sch_slice_based.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "can you pls reply?",
+      "parentUuid": "564f5c7f_ada46e7b",
+      "range": {
+        "startLine": 53,
+        "startChar": 13,
+        "endLine": 53,
+        "endChar": 22
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7967420d_89e78efc",
         "filename": "src/5gnrsch/sch_slice_based.h",
         "patchSetId": 1
@@ -4891,6 +5101,30 @@
       "side": 1,
       "message": "SchSliceBasedHqProcCb The main purpose of this library is to document the lcCb member of the SchSliceBasedLcCb structure. And lcCb is widely used in both fcfs and slice_base. I think we just keep it as same.",
       "parentUuid": "e1a14b9d_46b60c11",
+      "range": {
+        "startLine": 58,
+        "startChar": 1,
+        "endLine": 58,
+        "endChar": 18
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "053e7bf9_2a83e7ec",
+        "filename": "src/5gnrsch/sch_slice_based.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "that is the whole point of separating the sch implementation on algorithm base. If  either variable or function is used and common across all the scheduling algo then it will be kept in original OSC file like sch.c/.h, sch_comon.c/.h, Else we have to keep everything separated for any alog. If something is not used in one algo then we can remove the logic of the same from that particular algo",
+      "parentUuid": "e8d4ccf4_603fc206",
       "range": {
         "startLine": 58,
         "startChar": 1,
@@ -5058,6 +5292,30 @@
       "side": 1,
       "message": "We will remove that",
       "parentUuid": "a83dc9e1_773d8964",
+      "range": {
+        "startLine": 79,
+        "startChar": 8,
+        "endLine": 79,
+        "endChar": 22
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01e71ee8_28c00e9c",
+        "filename": "src/5gnrsch/sch_slice_based.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8bee69aa_3e92d55e",
       "range": {
         "startLine": 79,
         "startChar": 8,

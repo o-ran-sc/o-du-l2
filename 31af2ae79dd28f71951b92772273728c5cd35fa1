@@ -88,6 +88,42 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a84900ff_bca687a2",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1984,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "3883d631_7ec3fef0",
+      "revId": "31af2ae79dd28f71951b92772273728c5cd35fa1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b5a785a_92ed10e9",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 1984,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "cellCb has been initialized with sch\u0027s database.",
+      "parentUuid": "a207fbc5_696ee646",
+      "revId": "31af2ae79dd28f71951b92772273728c5cd35fa1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a93a3dc_c6a25d3a",
@@ -123,6 +159,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f750a201_20051c5a",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 2038,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40a3502a_0c53ebc5",
+      "revId": "31af2ae79dd28f71951b92772273728c5cd35fa1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d93d133e_cfbe4298",
@@ -154,6 +208,24 @@
       "side": 1,
       "message": "OK",
       "parentUuid": "d93d133e_cfbe4298",
+      "revId": "31af2ae79dd28f71951b92772273728c5cd35fa1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c887398d_f30a114d",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20da2475_ac2c58fb",
       "revId": "31af2ae79dd28f71951b92772273728c5cd35fa1",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -195,6 +267,30 @@
       "side": 1,
       "message": "I added some null pointer checks before entering function",
       "parentUuid": "519f2b69_10a6ae6b",
+      "range": {
+        "startLine": 325,
+        "startChar": 37,
+        "endLine": 325,
+        "endChar": 48
+      },
+      "revId": "31af2ae79dd28f71951b92772273728c5cd35fa1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3ca27a9_69eac6b0",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 6
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-25T16:24:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86a6e657_f961a29f",
       "range": {
         "startLine": 325,
         "startChar": 37,
