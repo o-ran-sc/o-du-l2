@@ -162,8 +162,16 @@ void schPrachResAlloc(SchCellCb *cell, UlSchedInfo *ulSchedInfo, SlotTimingInfo 
    prachCfgIdx      = cell->cellCfg.ulCfgCommon.schInitialUlBwp.schRachCfg.prachCfgGeneric.prachCfgIdx;
    prachFormat      = prachCfgIdxTable[prachCfgIdx][0];
    prachStartSymbol = prachCfgIdxTable[prachCfgIdx][4];
-   prachOcas        = prachCfgIdxTable[prachCfgIdx][6];
    prachDuration    = prachCfgIdxTable[prachCfgIdx][7];
+   if(prachFormat>3)
+   {
+      prachOcas        = prachCfgIdxTable[prachCfgIdx][6];
+   }
+   else
+   {
+      /* Note - as per spec 38.211 sec 5.3.2, N(ra,slot) is fixed to 1 for L_RA = 839 (long seq format)*/
+      prachOcas        = 1;
+   }
 
    /* numRa determined as 𝑛 belonging {0,1,.., M − 1},
     * where M is given by msg1Fdm */

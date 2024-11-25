@@ -134,7 +134,7 @@
             </SCS_SPEC_CARRIER>
             <RACH_CFG_COMMON>
                <PRESENT>2</PRESENT>
-               <PRACH_CONFIG_IDX>88</PRACH_CONFIG_IDX>
+               <PRACH_CONFIG_IDX>66</PRACH_CONFIG_IDX>
                <MSG_1_FDM>0</MSG_1_FDM>
                <MAX_NUM_RB>273</MAX_NUM_RB>
                <PRACH_MAX_PRB>24</PRACH_MAX_PRB>
@@ -547,7 +547,7 @@
       <PRACH_CFG>
          <PRACH_SEQ_LEN>1</PRACH_SEQ_LEN>
          <NR_SCS>30</NR_SCS>
-         <PRACH_CONFIG_IDX>88</PRACH_CONFIG_IDX>
+         <PRACH_CONFIG_IDX>66</PRACH_CONFIG_IDX>
          <NUM_PRACH_FDM>1</NUM_PRACH_FDM>
          <FDM_LIST>
             <FDM_INFO>
