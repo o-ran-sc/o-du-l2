@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37f36375_fda54bb5",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1985,
+      "author": {
+        "id": 1002343
+      },
+      "writtenOn": "2024-11-26T14:52:32Z",
+      "side": 1,
+      "message": "For function `SchSliceBasedSliceRecfgReq`, there is functional API `SchSliceRecfgReq`, we don\u0027t need to call it directly, so yeah we can remove it",
+      "parentUuid": "9e2416d8_b2881fa4",
+      "range": {
+        "startLine": 1985,
+        "startChar": 12,
+        "endLine": 1985,
+        "endChar": 38
+      },
+      "revId": "deee96b9f899f95eb248d27331f4a5c2f1386e41",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "89c450a7_5749dc75",
         "filename": "src/5gnrsch/sch_slice_based.c",
         "patchSetId": 7
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8e7ac490_f1fc24bd",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1002343
+      },
+      "writtenOn": "2024-11-26T14:52:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89c450a7_5749dc75",
+      "range": {
+        "startLine": 317,
+        "startChar": 3,
+        "endLine": 317,
+        "endChar": 5
+      },
+      "revId": "deee96b9f899f95eb248d27331f4a5c2f1386e41",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2df6211f_157eaf34",
         "filename": "src/5gnrsch/sch_slice_based.c",
         "patchSetId": 7
@@ -60,6 +108,30 @@
       "writtenOn": "2024-11-25T16:24:46Z",
       "side": 1,
       "message": "retransmisson case will end in infinite loop. Please check because it will remain in same sliceCb node. Also for retransmission case do we need to traverse the sliceCB Node.\n\nI am reiterating, please check and test the code with all possible corner scenarios for validation purpose.",
+      "range": {
+        "startLine": 2415,
+        "startChar": 9,
+        "endLine": 2415,
+        "endChar": 17
+      },
+      "revId": "deee96b9f899f95eb248d27331f4a5c2f1386e41",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e0f91ed_e28cfe20",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2415,
+      "author": {
+        "id": 1002343
+      },
+      "writtenOn": "2024-11-26T14:52:32Z",
+      "side": 1,
+      "message": "We don\u0027t re-calculate TB size for retransmission (use the value from first transmission), we can just schedule in final slice scheduling directly",
+      "parentUuid": "2df6211f_157eaf34",
       "range": {
         "startLine": 2415,
         "startChar": 9,

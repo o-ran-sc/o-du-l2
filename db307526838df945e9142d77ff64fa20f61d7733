@@ -4994,6 +4994,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "04e98ad7_55ecf0a3",
+        "filename": "src/5gnrsch/sch_slice_based.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1002343
+      },
+      "writtenOn": "2024-11-26T14:52:32Z",
+      "side": 1,
+      "message": "I think we don\u0027t need to separate LC list into defLcList and dedLcList under one slice control block, and actually it is not created by our side",
+      "parentUuid": "0a5019ce_2a1beb46",
+      "range": {
+        "startLine": 53,
+        "startChar": 13,
+        "endLine": 53,
+        "endChar": 22
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7967420d_89e78efc",
         "filename": "src/5gnrsch/sch_slice_based.h",
         "patchSetId": 1
@@ -5125,6 +5149,30 @@
       "side": 1,
       "message": "that is the whole point of separating the sch implementation on algorithm base. If  either variable or function is used and common across all the scheduling algo then it will be kept in original OSC file like sch.c/.h, sch_comon.c/.h, Else we have to keep everything separated for any alog. If something is not used in one algo then we can remove the logic of the same from that particular algo",
       "parentUuid": "e8d4ccf4_603fc206",
+      "range": {
+        "startLine": 58,
+        "startChar": 1,
+        "endLine": 58,
+        "endChar": 18
+      },
+      "revId": "db307526838df945e9142d77ff64fa20f61d7733",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd6f221b_2f4f4ea9",
+        "filename": "src/5gnrsch/sch_slice_based.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1002343
+      },
+      "writtenOn": "2024-11-26T14:52:32Z",
+      "side": 1,
+      "message": "From our perspective, in `schSliceBasedScheduleDlLc`, the currently available resources are stored in the sharedNumPrb field of schSpcHqP as available resources. Resource arrangements for defLcList and dedLcList are made sequentially in `prbAllocUsingRRMPolicy`. If the dataset is removed, the rrmPolicy will no longer have specific resources available for allocation.\n\nHowever, since the functions and parameters mentioned were created on your end, we believe it would be better for you to determine the appropriate way to remove them from the source code.",
+      "parentUuid": "053e7bf9_2a83e7ec",
       "range": {
         "startLine": 58,
         "startChar": 1,
