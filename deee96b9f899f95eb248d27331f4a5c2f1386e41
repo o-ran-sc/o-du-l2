@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a8b0b909_c9bea501",
+        "filename": "src/5gnrsch/sch.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 1985,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-27T07:14:59Z",
+      "side": 1,
+      "message": "If u remove from here then how will you trigger functional API SchSliceRecfgReq. Pls test once and see if the rrmPolicy is getting updated in slice algorithm sch cb?",
+      "parentUuid": "37f36375_fda54bb5",
+      "range": {
+        "startLine": 1985,
+        "startChar": 12,
+        "endLine": 1985,
+        "endChar": 38
+      },
+      "revId": "deee96b9f899f95eb248d27331f4a5c2f1386e41",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "89c450a7_5749dc75",
         "filename": "src/5gnrsch/sch_slice_based.c",
         "patchSetId": 7
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "89c450a7_5749dc75",
+      "range": {
+        "startLine": 317,
+        "startChar": 3,
+        "endLine": 317,
+        "endChar": 5
+      },
+      "revId": "deee96b9f899f95eb248d27331f4a5c2f1386e41",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c499fde_317175e8",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-27T07:14:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e7ac490_f1fc24bd",
       "range": {
         "startLine": 317,
         "startChar": 3,
@@ -132,6 +180,30 @@
       "side": 1,
       "message": "We don\u0027t re-calculate TB size for retransmission (use the value from first transmission), we can just schedule in final slice scheduling directly",
       "parentUuid": "2df6211f_157eaf34",
+      "range": {
+        "startLine": 2415,
+        "startChar": 9,
+        "endLine": 2415,
+        "endChar": 17
+      },
+      "revId": "deee96b9f899f95eb248d27331f4a5c2f1386e41",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f41fb2a6_f1b7e648",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 7
+      },
+      "lineNbr": 2415,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-27T07:14:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e0f91ed_e28cfe20",
       "range": {
         "startLine": 2415,
         "startChar": 9,

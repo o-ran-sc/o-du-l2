@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb4270ca_f6c8b980",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1461,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-27T07:14:59Z",
+      "side": 1,
+      "message": "remove the commented line and check for all the commented line if it has to be removed",
+      "range": {
+        "startLine": 1461,
+        "startChar": 17,
+        "endLine": 1461,
+        "endChar": 34
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f23620e2_0baa480f",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1490,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-27T07:14:59Z",
+      "side": 1,
+      "message": "I dont understand why this else case has been put to reset all the sliceCb Allocation. We can end up in this case in normal scenario as well, when a UE doesnt have a DL data to send but only UL scheduling then are we not disturbing the sliceCBList unnecessarily.\n\n1. Please explain why reset for else case is done.\n2. If it is a valid resetting, did u check all the scenario. For eg: where theres only UL scheduling for a UE and this reset is not disturbing some valid allocations?",
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89a8014d_2703c93f",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1533,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-27T07:14:59Z",
+      "side": 1,
+      "message": "when will the UL part be enabled?",
+      "range": {
+        "startLine": 1533,
+        "startChar": 39,
+        "endLine": 1533,
+        "endChar": 59
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90dfb5d4_ea8acf36",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1689,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-27T07:14:59Z",
+      "side": 1,
+      "message": "please check all the logs which are not named as a person.. rather follow the format any other already existing DU_LOG",
+      "range": {
+        "startLine": 1689,
+        "startChar": 15,
+        "endLine": 1689,
+        "endChar": 22
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18465dd3_114b0872",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2007,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-27T07:14:59Z",
+      "side": 1,
+      "message": "please check the log format",
+      "range": {
+        "startLine": 2007,
+        "startChar": 15,
+        "endLine": 2007,
+        "endChar": 23
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b432523_629d2371",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2196,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-11-27T07:14:59Z",
+      "side": 1,
+      "message": "pls check the log format. and also all the instances where log has a person name",
+      "range": {
+        "startLine": 2196,
+        "startChar": 32,
+        "endLine": 2196,
+        "endChar": 34
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
