@@ -946,6 +946,7 @@ void deleteSchCellCb(SchCellCb *cellCb)
          }
          SCH_FREE(cellCb->schDlSlotInfo[slotIdx]->ulGrant, sizeof(DciInfo));
          SCH_FREE(cellCb->schDlSlotInfo[slotIdx], sizeof(SchDlSlotInfo));
+         SCH_FREE(msg4PdschTime, sizeof(SlotTimingInfo));
       }
       SCH_FREE(cellCb->schDlSlotInfo, cellCb->numSlots *sizeof(SchDlSlotInfo*));
    }

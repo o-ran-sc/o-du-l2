@@ -1113,6 +1113,7 @@ typedef struct schSlotValue
    SlotTimingInfo broadcastTime;
    SlotTimingInfo rarTime;
    SlotTimingInfo dlMsgTime;
+   SlotTimingInfo msg4PdschTime;
    SlotTimingInfo ulDciTime;
 }SchSlotValue;
 

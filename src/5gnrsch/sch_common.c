@@ -1895,6 +1895,9 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    /* Check if both DCI and RAR are sent in the same slot.
     * If not, allocate memory RAR PDSCH slot to store RAR info
     */
+   SCH_ALLOC(cell->schDlSlotInfo[pdcchTime.slot]->msg4PdschTime, sizeof(SlotTimingInfo));
+   memcpy(cell->schDlSlotInfo[pdcchTime.slot]->msg4PdschTime, &pdschTime, sizeof(SlotTimingInfo));
+   
    if(pdcchTime.slot == pdschTime.slot)
    {
       SCH_ALLOC(dciSlotAlloc->dlMsgPdschCfg, sizeof(PdschCfg));
