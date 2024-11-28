@@ -4000,7 +4000,8 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo)
                         pduIndex++;
 
                         DU_LOG("\033[1;32m");
-                        if((macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status))
+                        if((macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status) && \
+                              (*macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status == TRUE))
                         {
                            DU_LOG("\nDEBUG  -->  LWR_MAC: MSG4 sent...");
                            MAC_FREE(macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status, sizeof(bool));

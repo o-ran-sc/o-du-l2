@@ -120,13 +120,14 @@ typedef struct macUlSlot
 
 typedef struct macCbInfo
 {
-   uint16_t    cellId;
-   uint16_t    crnti;
-   uint8_t     msg3Pdu[6];  /* used as CRI value during muxing */
-   uint8_t     *msg4Pdu;    /* storing DL-CCCH Ind Pdu */
-   uint16_t    msg4PduLen;  /* storing DL-CCCH Ind Pdu Len */
-   DlHarqProcCb msg4HqInfo; /* HARQ process info for msg 4 */
-   bool         *macMsg4Status;
+   uint16_t        cellId;
+   uint16_t        crnti;
+   uint8_t         msg3Pdu[6];  /* used as CRI value during muxing */
+   uint8_t        *msg4Pdu;    /* storing DL-CCCH Ind Pdu */
+   uint16_t        msg4PduLen;  /* storing DL-CCCH Ind Pdu Len */
+   DlHarqProcCb    msg4HqInfo; /* HARQ process info for msg 4 */
+   bool           *macMsg4Status;
+   SlotTimingInfo  msg4PdschSlotInfo; /*MSG4 PDSCH slot timing info*/
 }MacRaCbInfo;
 
 typedef struct macCe

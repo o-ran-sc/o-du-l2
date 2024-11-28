@@ -92,15 +92,20 @@ uint8_t MacProcDlAlloc(Pst *pst, DlSchedInfo *dlSchedInfo)
             if(dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgPdcchCfg && dlSchedInfo->dlMsgAlloc[ueIdx]->dlMsgPdcchCfg->coresetCfg.coreSetType == CORESET_TYPE0)
             {
                MAC_ALLOC(macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status, sizeof(bool));
+               *macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status = FALSE;
+               memcpy(&macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PdschSlotInfo, &dlSchedInfo->schSlotValue.msg4PdschTime, sizeof(SlotTimingInfo));
             }
 
             /* Check if the downlink pdu is msg4 */
-            if((macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status))
+            if((macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status) && 
+                  (macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PdschSlotInfo.sfn == dlSchedInfo->schSlotValue.dlMsgTime.sfn && 
+                   macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4PdschSlotInfo.slot == dlSchedInfo->schSlotValue.dlMsgTime.slot))
             {
                GET_UE_ID(dlSchedInfo->dlMsgAlloc[ueIdx]->crnti, ueId);
                ueIdx = ueId -1;
                schedInfo = dlSchedInfo->dlMsgAlloc[ueIdx];
                hqProcCb = &macCb.macCell[cellIdx]->macRaCb[ueIdx].msg4HqInfo;
+               *macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status = TRUE;
 
                if(!dlSchedInfo->dlMsgAlloc[ueIdx]->transportBlock[0].ndi)
                {
@@ -340,7 +345,9 @@ void buildAndSendMuxPdu(SlotTimingInfo currTimingInfo)
    {
       if(currDlSlot->dlInfo.dlMsgAlloc[ueIdx])
       {
-         if((macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status)&& (currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdschCfg))
+         if((macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status)&&
+              (*macCb.macCell[cellIdx]->macRaCb[ueIdx].macMsg4Status == TRUE) &&
+              (currDlSlot->dlInfo.dlMsgAlloc[ueIdx]->dlMsgPdschCfg))
          {
             fillMsg4Pdu(currTimingInfo.cellId, currDlSlot->dlInfo.dlMsgAlloc[ueIdx]);
          }

@@ -331,15 +331,16 @@ typedef struct schPdcchAllocInfo
  */
 typedef struct schDlSlotInfo
 {
-   SchPrbAlloc  prbAlloc;                 /*!< PRB allocated/available in this slot */
-   bool         ssbPres;                  /*!< Flag to determine if SSB is present in this slot */
-   uint8_t      ssbIdxSupported;          /*!< Max SSB index */
-   SsbInfo      ssbInfo[MAX_SSB_IDX];     /*!< SSB info */
-   bool         sib1Pres;                 /*!< Flag to determine if SIB1 is present in this slot */
-   uint8_t      pdcchUe;                  /*!< UE for which PDCCH Common is scheduled in this slot */
-   RarAlloc     *rarAlloc[MAX_NUM_UE];    /*!< RAR allocation per UE*/
-   DciInfo      *ulGrant;
-   DlMsgSchInfo *dlMsgAlloc[MAX_NUM_UE];  /*!< Dl msg allocation per UE*/
+   SchPrbAlloc    prbAlloc;                 /*!< PRB allocated/available in this slot */
+   bool           ssbPres;                  /*!< Flag to determine if SSB is present in this slot */
+   uint8_t        ssbIdxSupported;          /*!< Max SSB index */
+   SsbInfo        ssbInfo[MAX_SSB_IDX];     /*!< SSB info */
+   bool           sib1Pres;                 /*!< Flag to determine if SIB1 is present in this slot */
+   uint8_t        pdcchUe;                  /*!< UE for which PDCCH Common is scheduled in this slot */
+   SlotTimingInfo *msg4PdschTime;          /*!< PDSCH time for MSG4*/
+   RarAlloc       *rarAlloc[MAX_NUM_UE];    /*!< RAR allocation per UE*/
+   DciInfo        *ulGrant;
+   DlMsgSchInfo   *dlMsgAlloc[MAX_NUM_UE];  /*!< Dl msg allocation per UE*/
 }SchDlSlotInfo;
 
 typedef struct schRaCb

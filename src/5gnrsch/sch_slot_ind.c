@@ -752,6 +752,12 @@ uint8_t SchProcSlotInd(Pst *pst, SlotTimingInfo *slotInd)
        * specific interface structure to send to MAC */
       if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->dlMsgAlloc[ueIdx] != NULLP)
       {
+         if(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->msg4PdschTime != NULLP)
+         {
+            memcpy(&dlSchedInfo.schSlotValue.msg4PdschTime, \
+                      cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->msg4PdschTime, sizeof(SlotTimingInfo));
+            SCH_FREE(cell->schDlSlotInfo[dlSchedInfo.schSlotValue.dlMsgTime.slot]->msg4PdschTime, sizeof(SlotTimingInfo));
+         }
          slot = dlSchedInfo.schSlotValue.dlMsgTime.slot;
          dlSchedInfo.dlMsgAlloc[ueIdx] = cell->schDlSlotInfo[slot]->dlMsgAlloc[ueIdx];
          cell->schDlSlotInfo[slot]->dlMsgAlloc[ueIdx] = NULLP;
