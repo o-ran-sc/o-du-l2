@@ -24,6 +24,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e75b4d6f_fdb5905c",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1461,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-05T05:41:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb4270ca_f6c8b980",
+      "range": {
+        "startLine": 1461,
+        "startChar": 17,
+        "endLine": 1461,
+        "endChar": 34
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f23620e2_0baa480f",
@@ -41,6 +65,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da63917c_7bdd6dbd",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1490,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-05T05:41:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f23620e2_0baa480f",
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89a8014d_2703c93f",
@@ -54,6 +96,30 @@
       "writtenOn": "2024-11-27T07:14:59Z",
       "side": 1,
       "message": "when will the UL part be enabled?",
+      "range": {
+        "startLine": 1533,
+        "startChar": 39,
+        "endLine": 1533,
+        "endChar": 59
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1c41225_10a591f9",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1533,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-05T05:41:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89a8014d_2703c93f",
       "range": {
         "startLine": 1533,
         "startChar": 39,
@@ -87,6 +153,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b01b0ce_fb38b451",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1689,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-05T05:41:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90dfb5d4_ea8acf36",
+      "range": {
+        "startLine": 1689,
+        "startChar": 15,
+        "endLine": 1689,
+        "endChar": 22
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18465dd3_114b0872",
@@ -110,6 +200,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "757798eb_a5ba61cd",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2007,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-05T05:41:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18465dd3_114b0872",
+      "range": {
+        "startLine": 2007,
+        "startChar": 15,
+        "endLine": 2007,
+        "endChar": 23
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b432523_629d2371",
@@ -123,6 +237,30 @@
       "writtenOn": "2024-11-27T07:14:59Z",
       "side": 1,
       "message": "pls check the log format. and also all the instances where log has a person name",
+      "range": {
+        "startLine": 2196,
+        "startChar": 32,
+        "endLine": 2196,
+        "endChar": 34
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ce03059_3a6d8c0c",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2196,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-05T05:41:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b432523_629d2371",
       "range": {
         "startLine": 2196,
         "startChar": 32,
