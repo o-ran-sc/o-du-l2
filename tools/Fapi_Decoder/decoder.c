@@ -72,8 +72,6 @@ uint8_t processFapiMsg(uint8_t *buffer, size_t buffer_size)
        fapi_ul_tti_req_t *ulTtiReq = (fapi_ul_tti_req_t *)buffer;
        decode_fapi_ul_tti_req(ulTtiReq);
     }
-       printf("\nPrinting fapi_config_req_t\n");
-       printf("\nPrinting fapi_config_req_t\n");
     return 1;
 }
 

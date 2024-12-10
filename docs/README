@@ -20,6 +20,14 @@ A. Directory Structure :
    h. rlog     : logging module
    i. O1       : O1 module
 
+4. l2/container/ : contains helm charts of DU, CU and RIC
+   a. cu_helm  : CU helm chart
+   b. du_helm  : DU helm chart
+   c. ric_helm : RIC helm chart
+
+5. l2/tools/ : 
+   a. Fapi_Decoder         : Decodes FAPI messages
+   b. Memory_Leak_Detector : Detects memory leaks
 
 B. Pre-requisite for Compilation :
 ----------------------------------
@@ -313,3 +321,80 @@ J. Troubleshooting Netconf server issues
    $cd l2/build/scripts
    $sudo ./troubleshoot_netconf.sh cleanup
    execute section C.3 and C.4 again
+
+K. Running the DU, CU Stub and RIC Stub in containerization mode
+-----------------------------------------------------------------
+
+1. Pre-requisite for Running in Containerization Mode
+
+   - Install Docker
+
+   - Set Up Kubernetes Cluster Using Minikube and Use Docker as the Driver
+
+
+2. Steps to Run the DU, CU Stub, and RIC Stub in Containerization Mode
+    a. Clone and compile the Code
+        - Create a directory:
+            i. mkdir ODU_CONTAINER
+
+        - Navigate to the directory:
+            i. cd ODU_CONTAINER
+
+        - Clone the repository:
+            i. git clone "https://gerrit.o-ran-sc.org/r/o-du/l2"
+
+        - Compilation steps are mentioned in section d.
+
+   b. Set Docker Environment
+        - Set up Docker environment for Minikube:
+            i. eval $(minikube docker-env)
+
+   c. Generate Docker Images
+        - Navigate to the l2 directory:
+            i. cd l2
+
+        - Build the Docker images:
+            i.   docker build -f Dockerfile.cu -t new-cu-container:v1 .
+            ii.  docker build -f Dockerfile.ric -t new-ric-container:v1 .
+            iii. docker build -f Dockerfile.du -t new-du-container:v1 .
+
+   d. Check Docker Images
+        - Run the following command to check if the Docker images are created:
+            i. docker images
+
+   e. Deploy with Helm
+        - Go to the container/cu_helm directory and deploy the ocu chart:
+            i.  cd container/cu_helm
+            ii. helm install ocu cu
+
+        - Go to the du_helm directory and deploy the odu chart:
+            i.  cd ../du_helm
+            ii. helm install odu du
+
+        - Go to the ric_helm directory and deploy the ric chart:
+            i.  cd ../ric_helm
+            ii. helm install ric ric
+
+   f. Get Pod, Deployment, and Service Info
+        - Run the following command to get information about the pod, deployment, and service:
+            i. kubectl get all
+
+   g. Run the Pods in Separate Terminals
+        - Terminal 1 (CU Pod):
+            i. kubectl exec -it <CU_POD_NAME> -- bash
+            ii. ./cu-docker-entrypoint.sh
+            iii. cd /root/l2/build/odu/bin
+            iv. ./cu_stub/cu_stub
+
+        - Terminal 2 (RIC Pod):
+            i. kubectl exec -it <RIC_POD_NAME> -- bash
+            ii. ./ric-docker-entrypoint.sh
+            iii. cd /root/l2/build/odu/bin
+            iv. ./ric_stub/ric_stub
+
+        - Terminal 3 (DU Pod):
+            i. kubectl exec -it <DU_POD_NAME> -- bash
+            ii. ./docker-entrypoint.sh
+            iii. cd /root/l2/bin
+            iv. ./odu/odu
+

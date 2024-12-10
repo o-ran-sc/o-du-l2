@@ -812,3 +812,37 @@ The O-DU High partially supports below use-cases:
 - Health Check
 
 
+Containerization of DU, CU stub & RIC stub
+-------------------------------------------
+
+
+This section describes the Containerization of DU, CU stub and RIC stub:
+
+- The DU, CU Stub, and RIC Stub are packaged into portable containers for consistent operation across various environments.
+
+- Docker is used to create these containers, ensuring that all necessary dependencies are included for proper functionality.
+
+- These containers are deployed and managed using Kubernetes, which handles scaling, load balancing, and resource allocation.
+
+- Helm automates the deployment and configuration of the containers, simplifying the management process.
+
+
+.. figure:: Container_image.png
+   :width: 300
+   :alt: Containerization of DU, CU stub & RIC stub
+
+   Figure 28 - Containerization of DU, CU stub & RIC stub
+
+Addition Functionality
+-----------------------
+
+Tool for FAPI message decoder
++++++++++++++++++++++++++++++
+
+- This tool decodes FAPI messages exchanged between the DU and L1.
+
+Tool for Memory leak
++++++++++++++++++++++
+
+- The tool detects the memory leaks in the ODU code.
+
