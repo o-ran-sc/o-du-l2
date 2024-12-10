@@ -6,7 +6,7 @@
 API-Docs
 ########
 
-This is the API-docs for J release o-du/l2.
+This is the API-docs for K release o-du/l2.
 
 .. contents::
    :depth: 3
@@ -296,7 +296,7 @@ Note: DU APP module consist functionality related to F1 Handler, E2 Handler and 
 |            +-------------------------------+-----------------+-----------+-----------------------------------------+
 |            |Cell Configuration Request     | Additional API  |           |Configures cell information at MAC.      | 
 |            +-------------------------------+-----------------+-----------+-----------------------------------------+
-|            |Cell Configuration Response    | Additional API  |           |Response to cell Cfg Req from DUAPP      |    
+|            |Cell Configuration Response    | Additional API  |           |Response to cell Cfg Req from DUAPP      |  
 |            +-------------------------------+-----------------+-----------+-----------------------------------------+
 |            |Cell Delete Request            | Additional API  |           |Deletes cell information at MAC.         | 
 |            +-------------------------------+-----------------+-----------+-----------------------------------------+
@@ -380,7 +380,7 @@ Note: DU APP module consist functionality related to F1 Handler, E2 Handler and 
 |**DU APP**  +-------------------------------+-----------------+-----------+-----------------------------------------+
 |  & **RLC** |UL-RRC Message Delivery Report | Aligned         |11.2.5.9   |                                         | 
 |            +-------------------------------+-----------------+-----------+-----------------------------------------+
-|            |RLC Max Retransmission Reached | Not Implemented |11.2.5.10  |                                         | 
+|            |RLC Max Retransmission Reached | Aligned         |11.2.5.10  |                                         | 
 |            +-------------------------------+-----------------+-----------+-----------------------------------------+
 |            |UL-RLC Re-establishment Request| Not Implemented |11.2.5.11  |                                         | 
 |            +-------------------------------+-----------------+-----------+-----------------------------------------+
