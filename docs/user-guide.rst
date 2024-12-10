@@ -4,7 +4,7 @@
 User Guide
 ***********
 
-This is the user guide for J release of O-DU/l2.
+This is the user guide for K release of O-DU/l2.
 Follow installation-guide to get all the dependencies ready.
 
 .. contents::
@@ -254,3 +254,185 @@ E. How to execute the Health Check using netopeer-cli : get alarm-list
 
 The XML output is a list of active alarms in the O-DU High system.
 
+F. Running the DU, CU Stub and RIC Stub in containerization mode
+-----------------------------------------------------------------
+
+1. Pre-requisite for Running in Containerization Mode
+
+   - Install Docker
+
+   - Set Up Kubernetes Cluster Using Minikube and Use Docker as the Driver
+
+
+2. Steps to Run the DU, CU Stub, and RIC Stub in Containerization Mode
+    a. Clone and compile the Code
+        - Create a directory:
+            i. mkdir ODU_CONTAINER
+
+        - Navigate to the directory:
+            i. cd ODU_CONTAINER
+
+        - Clone the repository:
+            i. git clone "https://gerrit.o-ran-sc.org/r/o-du/l2"
+
+        - Compilation steps are mentioned in section d.
+
+   b. Set Docker Environment
+        - Set up Docker environment for Minikube:
+            i. eval $(minikube docker-env)
+
+   c. Generate Docker Images
+        - Navigate to the l2 directory:
+            i. cd l2
+
+        - Build the Docker images:
+            i.   docker build -f Dockerfile.cu -t new-cu-container:v1 .
+            ii.  docker build -f Dockerfile.ric -t new-ric-container:v1 .
+            iii. docker build -f Dockerfile.du -t new-du-container:v1 .
+
+   d. Check Docker Images
+        - Run the following command to check if the Docker images are created:
+            i. docker images
+
+   e. Deploy with Helm
+        - Go to the container/cu_helm directory and deploy the ocu chart:
+            i.  cd container/cu_helm
+            ii. helm install ocu cu
+
+        - Go to the du_helm directory and deploy the odu chart:
+            i.  cd ../du_helm
+            ii. helm install odu du
+
+        - Go to the ric_helm directory and deploy the ric chart:
+            i.  cd ../ric_helm
+            ii. helm install ric ric
+
+   f. Get Pod, Deployment, and Service Info
+        - Run the following command to get information about the pod, deployment, and service:
+            i. kubectl get all
+
+   g. Run the Pods in Separate Terminals
+        - Terminal 1 (CU Pod):
+            i. kubectl exec -it <CU_POD_NAME> -- bash
+            ii. ./cu-docker-entrypoint.sh
+            iii. cd /root/l2/build/odu/bin
+            iv. ./cu_stub/cu_stub
+
+        - Terminal 2 (RIC Pod):
+            i. kubectl exec -it <RIC_POD_NAME> -- bash
+            ii. ./ric-docker-entrypoint.sh
+            iii. cd /root/l2/build/odu/bin
+            iv. ./ric_stub/ric_stub
+
+        - Terminal 3 (DU Pod):
+            i. kubectl exec -it <DU_POD_NAME> -- bash
+            ii. ./docker-entrypoint.sh
+            iii. cd /root/l2/bin
+            iv. ./odu/odu
+
+G. Steps to run FAPI decoder
+-----------------------------
+
+1. Enable the Platform flag in the main makefile
+    - Location: `l2/build/odu/makefile`
+    - Add `-DFAPI_DECODER` to the `PLTFRM_FLAGS` line. It should look like:
+      `PLTFRM_FLAGS = -UMSPD -DODU -DINTEL_FAPI -DODU_MEMORY_DEBUG_LOG -DFAPI_DECODER`
+
+2. Compile and generate all binaries
+    - Binaries to compile:
+        - ODU
+        - CU_STUB
+        - RIC_STUB
+
+3. Go to the `l2/tools/Fapi_Decoder` directory and compile the decoder
+    - Run the following command: `gcc -o decoder decoder.c`
+
+4. Execute binaries and capture logs
+    - Step 1: Open four terminals:
+        - Terminal 1: Execute the RIC binary.
+        - Terminal 2: Execute the CU binary.
+        - Terminal 3: Execute the ODU binary.
+        - Terminal 4: Capture the logs at the decoder and run `./decoder`.
+    - Step 2: Execute the RIC and CU binaries in Terminal 1 and Terminal 2.
+    - Step 3: Run the decoder in Terminal 4 using the `./decoder` command.
+    - Step 4: Execute the ODU binary in Terminal 3 after completing the previous steps.
+
+H. Steps to run the memory leak tool
+-------------------------------------
+
+1. Enable the Platform flag in the main makefile
+    - Location: l2/build/odu/makefile
+        - Add -DODU_MEMORY_DEBUG_LOG to the PLTFRM_FLAGS line:
+            PLTFRM_FLAGS = -UMSPD -DODU -DINTEL_FAPI -DODU_MEMORY_DEBUG_LOG
+
+2. Enable the CLA Use-case (Enable the Cell Down scenario)
+    - A hack to enable the complete scenario from Cell Up to Down so that memory status can be captured:
+        - This ensures that memory allocation and deallocation are tracked throughout the Cell Up and Cell Down process.
+        - The goal is to log memory usage and status for debugging or analysis during the transition from Cell Up to Cell Down.
+
+    Files to change:
+        - File 1: l2/src/du_app/du_egtp.c
+            - In the egtpRecvMsg() function:
+                - Disable the infinite while loop in the EGTP receiver thread.
+        
+        - File 2: l2/src/du_app/du_f1ap_msg_hdl.c
+            - In the BuildAndSendUeCtxtRsp() function:
+                - Inside the case "UE_CTXT_MOD" action type, add:
+                  BuildAndSendDUConfigUpdate(SERV_CELL_TO_DELETE);
+
+3. Compile and generate all binaries
+    - Binaries to compile:
+        - ODU
+        - CU_STUB
+        - RIC_STUB
+
+4. Execute binaries and capture logs
+    - Step 1: Execute RIC and CU binaries.
+    - Step 2: Before running the ODU binary:
+        - Capture logs using the script command.
+
+5. Complete CELL Down and stop capturing logs
+    - Once the CELL Down process completes in the ODU console:
+        - Stop/kill the ODU binary.
+        - Exit log capture.
+
+6. Download console logs
+    - Save the logs to your system (e.g., Desktop).
+
+7. Analyze ODU console logs
+    - Download TextAnalysisTool.NET.exe
+    - Open the log in the tool:
+        - File -> Open
+    - Filter ALLOC and FREE logs:
+        - Filters -> Add New Filters
+            - Add ALLOC and FREE filters.
+        - View -> Show only Filtered Lines
+        - Copy filtered results to separate Excel sheets.
+    - Split data into columns in Excel:
+        - Data -> Text to Columns
+            - Step 1: Choose Delimited
+            - Step 2: Select Tabs, Semicolon, and Comma
+            - Step 3: Click Finish
+        - Copy columns C and D (Size and Address).
+
+8. Generate memory logs
+    - Go to l2/tools/Memory_Leak_Detector
+    - Delete old files:
+        - freeoutput.txt
+        - allocoutput.txt
+    - Copy data to files:
+        - Paste columns C and D into:(Refer above 7th point)
+            - alloc.txt
+            - free.txt
+        - Remove double spaces:
+            - `:%s/  / /g (execute twice)`
+    - Compile the program 
+        - `gcc -o scan.out scan.c`
+    - Execute the program:
+        - `./scan.out`
+
+9. Analyze outputs logs
+    - freeoutput.txt should be empty.
+        - If there is any address present in freeoutput.txt then check the address and resolve the dangling pointer issue.
+    - allocoutput.txt may show some initial allocations.
+        - If there is any address present in allocoutput.txt then check the address and free the memory allocation.
