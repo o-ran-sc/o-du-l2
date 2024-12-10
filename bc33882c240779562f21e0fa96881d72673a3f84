@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cc16fff_eb6e1959",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-10T07:45:27Z",
+      "side": 1,
+      "message": "you can edit it as K release documentation",
+      "revId": "bc33882c240779562f21e0fa96881d72673a3f84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4eb1839d_18609a29",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-10T07:45:27Z",
+      "side": 1,
+      "message": "date has to be edited to today",
+      "range": {
+        "startLine": 21,
+        "startChar": 7,
+        "endLine": 21,
+        "endChar": 9
+      },
+      "revId": "bc33882c240779562f21e0fa96881d72673a3f84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c337f94c_8a066a2a",
+        "filename": "docs/installation-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-10T07:45:27Z",
+      "side": 1,
+      "message": "this is also wrong. It has to be 2024",
+      "range": {
+        "startLine": 24,
+        "startChar": 2,
+        "endLine": 24,
+        "endChar": 6
+      },
+      "revId": "bc33882c240779562f21e0fa96881d72673a3f84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "198c3621_ac56d1f4",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-10T07:45:27Z",
+      "side": 1,
+      "message": "change it to K release tag. it will be 11.0.1?",
+      "range": {
+        "startLine": 69,
+        "startChar": 61,
+        "endLine": 69,
+        "endChar": 67
+      },
+      "revId": "bc33882c240779562f21e0fa96881d72673a3f84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18237060_6ca3bc99",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-10T07:45:27Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 74,
+        "startChar": 57,
+        "endLine": 74,
+        "endChar": 63
+      },
+      "revId": "bc33882c240779562f21e0fa96881d72673a3f84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "162e4be8_b7d21c07",
+        "filename": "docs/user-guide.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-10T07:45:27Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 79,
+        "startChar": 49,
+        "endLine": 79,
+        "endChar": 55
+      },
+      "revId": "bc33882c240779562f21e0fa96881d72673a3f84",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
