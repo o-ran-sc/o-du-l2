@@ -72,6 +72,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf8c2a51_664fd06f",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1461,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-26T10:34:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0163285_95e9665f",
+      "range": {
+        "startLine": 1461,
+        "startChar": 17,
+        "endLine": 1461,
+        "endChar": 34
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f23620e2_0baa480f",
@@ -121,6 +145,24 @@
       "side": 1,
       "message": "This case is for sometimes UE has only UL data, and this moment, we still have to initialize the slice control block.\nTo make the resetting valid, we moved the else condition to the end of the function, this is how it works:\n\nif there is no UE to be scheduled, then reset the slice control block.",
       "parentUuid": "f23620e2_0baa480f",
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99018c66_91941e26",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1490,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-26T10:34:11Z",
+      "side": 1,
+      "message": "yes if you want to make it for only UL then we need to check for the same and ensure that a particular UE has only UL data... this check which was put earlier could be applicable for UE which has DL data also.",
+      "parentUuid": "259759db_01ac9e00",
       "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -243,6 +285,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19be5a34_4358b1ef",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 1689,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-26T10:34:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76f759c5_ad37b9e4",
+      "range": {
+        "startLine": 1689,
+        "startChar": 15,
+        "endLine": 1689,
+        "endChar": 22
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18465dd3_114b0872",
@@ -314,6 +380,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22a9f530_da4a2b2c",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2007,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-26T10:34:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f501fdbe_ddf95603",
+      "range": {
+        "startLine": 2007,
+        "startChar": 15,
+        "endLine": 2007,
+        "endChar": 23
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b432523_629d2371",
@@ -375,6 +465,30 @@
       "side": 1,
       "message": "OK",
       "parentUuid": "1b432523_629d2371",
+      "range": {
+        "startLine": 2196,
+        "startChar": 32,
+        "endLine": 2196,
+        "endChar": 34
+      },
+      "revId": "9aa05d135e89b6442277d25067da0e66d9d9e5bc",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bf2f6fd_e5237f87",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 8
+      },
+      "lineNbr": 2196,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2024-12-26T10:34:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8eb0b351_9f16f29e",
       "range": {
         "startLine": 2196,
         "startChar": 32,
