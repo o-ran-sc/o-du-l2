@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ea7566fb_5ea81c42",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2025-01-06T04:57:46Z",
+      "side": 1,
+      "message": "Can you please ensure the code is running all the sceanrios properly. Did we test it with all the corner scenarios. If yes, can you please elaborate on the test cases ran by you and their results?",
+      "parentUuid": "5b6ecce6_402855f4",
+      "revId": "31af2ae79dd28f71951b92772273728c5cd35fa1",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4ff76067_6d904553",
         "filename": "src/5gnrsch/sch.c",
         "patchSetId": 6

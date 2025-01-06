@@ -36,6 +36,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a52505d8_afd929c0",
+        "filename": "build/Testing/Temporary/LastTest_20241112-0910.log",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2025-01-06T04:57:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc35f6c5_e51917e4",
+      "revId": "e67cfdc33bad31bd1c106312b0c7563fc6220465",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1037762b_cd7af014",
@@ -131,6 +149,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e6ac367_f4789ce1",
+        "filename": "src/5gnrmac/mac_slot_ind.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2025-01-06T04:57:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d61adcfb_eb420157",
+      "range": {
+        "startLine": 174,
+        "startChar": 28,
+        "endLine": 174,
+        "endChar": 33
+      },
+      "revId": "e67cfdc33bad31bd1c106312b0c7563fc6220465",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2c8e6b6_0f40939f",
@@ -144,6 +186,24 @@
       "writtenOn": "2024-12-05T05:41:45Z",
       "side": 1,
       "message": "why it is not enabled here? schSliceBasedUlScheduling?",
+      "revId": "e67cfdc33bad31bd1c106312b0c7563fc6220465",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b41b8bcb_45282572",
+        "filename": "src/5gnrsch/sch_slice_based.c",
+        "patchSetId": 9
+      },
+      "lineNbr": 1499,
+      "author": {
+        "id": 1001425
+      },
+      "writtenOn": "2025-01-06T04:57:46Z",
+      "side": 1,
+      "message": "please check",
+      "parentUuid": "f2c8e6b6_0f40939f",
       "revId": "e67cfdc33bad31bd1c106312b0c7563fc6220465",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     }
