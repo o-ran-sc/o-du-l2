@@ -756,10 +756,11 @@ typedef struct {
 // Updated per 5G FAPI 
     typedef struct {
         fapi_msg_t header;
-        uint8_t number_of_tlvs;
 #ifndef OAI_TESTING
+        uint8_t number_of_tlvs;
         uint8_t pad[3];
 #endif
+        uint16_t number_of_tlvs; //The TLV count exceeds the range of uint8_t, thus updated it to uint16_t. 
         fapi_uint32_tlv_t tlvs[FAPI_MAX_NUM_TLVS_CONFIG];   // 5G FAPI Table 3-17
 #ifdef OAI_TESTING
     } __attribute__((packed))  fapi_config_req_t;
