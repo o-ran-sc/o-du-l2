@@ -94,6 +94,8 @@ void freeWlsBlockList(uint8_t idx);
 void LwrMacEnqueueWlsBlock();
 void LwrMacRecvPhyMsg();
 void LwrMacStartWlsRcvr();
+void packUint32Tlv(uint8_t *out, uint32_t *totalLen, uint16_t tag, size_t dataSize, uint32_t data);
+void packUint16Tlv(uint8_t *out, uint32_t *totalLen, uint16_t tag, size_t dataSize, uint16_t data);
 #endif /* INTEL_WLS_MEM */
 
 uint8_t LwrMacSendToL1(void *msg);
