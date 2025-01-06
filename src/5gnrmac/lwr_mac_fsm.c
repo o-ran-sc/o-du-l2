@@ -2090,9 +2090,9 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
       DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for config req");
       return RFAILED;
    }
+   memset(cfgReqQElem, 0, sizeof(fapi_api_queue_elem_t)+totalCfgReqMsgLen);
    FILL_FAPI_LIST_ELEM(cfgReqQElem, NULLP, FAPI_CONFIG_REQUEST, 1,  totalCfgReqMsgLen);
    configReq = (fapi_config_req_t *)(cfgReqQElem + 1);
-   memset(configReq, 0, sizeof(fapi_config_req_t));
    fillMsgHeader(&configReq->header, FAPI_CONFIG_REQUEST, totalCfgReqMsgLen);
    configReq->number_of_tlvs = totalTlv;
    msgLen = sizeof(configReq->number_of_tlvs);

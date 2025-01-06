@@ -194,6 +194,195 @@ void freeWlsBlockList(uint8_t idx)
    }
 }
 
+#ifdef OAI_TESTING 
+#if 0
+//I will remove this in next gerrit
+void hexdump1(void *data, uint32_t size) 
+{
+        DU_LOG("\nPBORLA size %u\n", size);
+    const unsigned char *byte = (const unsigned char *)data;
+    for (size_t i = 0; i < size; i++) {
+        printf("%02x ", byte[i]);
+        if ((i + 1) % 16 == 0) {
+            printf(" ");
+        }
+    }
+    printf("\n");
+}
+#endif
+uint8_t* packConfigReq(p_fapi_api_queue_elem_t cfgReqElem, uint32_t *len) 
+{
+    uint8_t *mBuf = NULL;
+    uint8_t *out = NULL;
+    uint32_t msgLen = 0;
+    fapi_config_req_t *configReq = NULL;
+    uint16_t totalTlv = 0;
+
+    LWR_MAC_ALLOC(mBuf, sizeof(fapi_config_req_t));
+    if (mBuf == NULL) 
+    {
+        DU_LOG("Memory allocation failed");
+        return NULL;
+    }
+
+    out = mBuf;
+    memset(mBuf, 0, sizeof(fapi_config_req_t));
+
+    configReq = (fapi_config_req_t *)(cfgReqElem + 1);
+
+    CMCHKPKLEN(oduPackPostUInt8, configReq->header.numMsg, &out, &msgLen);
+    CMCHKPKLEN(oduPackPostUInt8, configReq->header.opaque, &out, &msgLen);
+    CMCHKPKLEN(oduPackPostUInt16, configReq->header.msg_id, &out, &msgLen);
+    CMCHKPKLEN(oduPackPostUInt32, configReq->header.length, &out, &msgLen);
+
+    totalTlv = configReq->number_of_tlvs;
+    uint8_t randmTlvCnt=  25;//OAI does not verify the TLV number
+    CMCHKPKLEN(oduPackPostUInt8, randmTlvCnt, &out, &msgLen);
+
+    for(uint16_t idx=0;idx<totalTlv;idx++)
+    {
+	    fapi_uint32_tlv_t tlv =configReq->tlvs[idx];
+	
+	    CMCHKPKLEN(oduPackPostUInt16, tlv.tl.tag, &out, &msgLen);
+	    CMCHKPKLEN(oduPackPostUInt16, tlv.tl.length, &out, &msgLen);
+	    switch(reverseBytes16(tlv.tl.length))
+	    {
+		    case 1:
+			    {
+				    uint8_t val=tlv.value;
+				    CMCHKPKLEN(oduPackPostUInt8, val, &out, &msgLen);
+				    CMCHKPKLEN(oduPackPostUInt8, 0, &out, &msgLen);
+				    CMCHKPKLEN(oduPackPostUInt8, 0, &out, &msgLen);
+				    CMCHKPKLEN(oduPackPostUInt8, 0, &out, &msgLen);
+				    break;
+			    }
+		    case 2:
+			    {
+				    uint16_t val=tlv.value;
+				    CMCHKPKLEN(oduPackPostUInt16, val, &out, &msgLen);
+				    CMCHKPKLEN(oduPackPostUInt16, 0, &out, &msgLen);
+				    break;
+			    }
+		    case 4:
+			    {
+				    uint32_t val=tlv.value;
+				    CMCHKPKLEN(oduPackPostUInt32, val, &out, &msgLen);
+				    break;
+			    }
+
+
+	    }
+    }
+	
+    *len = msgLen;
+    if(msgLen != sizeof(configReq->header.length))
+    {
+	    *((uint32_t *)(mBuf + 4)) = reverseBytes32(msgLen);
+    }
+    addWlsBlockToFree(mBuf, sizeof(fapi_config_req_t), (lwrMacCb.phySlotIndCntr-1));
+    return mBuf;
+}
+
+uint8_t *packStartReq(p_fapi_api_queue_elem_t startReqElem, uint32_t *len)
+{
+    uint8_t *mBuf = NULL;
+    uint16_t totalLen = 0;
+    uint8_t *out = NULL;
+    fapi_start_req_t *startReq = NULL;
+
+    
+    LWR_MAC_ALLOC(mBuf, sizeof(fapi_start_req_t));
+    if (mBuf == NULL) 
+    {
+        DU_LOG("Memory allocation failed");
+        return NULL;
+    }
+
+    out = mBuf;  
+
+    memset(mBuf, 0, sizeof(fapi_start_req_t));
+
+    startReq = (fapi_start_req_t *)(startReqElem + 1);  
+
+    
+    CMCHKPKLEN(oduPackPostUInt8, startReq->header.numMsg, &out, &totalLen);
+    CMCHKPKLEN(oduPackPostUInt8, startReq->header.opaque, &out, &totalLen);
+    CMCHKPKLEN(oduPackPostUInt16, startReq->header.msg_id, &out, &totalLen);
+    CMCHKPKLEN(oduPackPostUInt32, startReq->header.length, &out, &totalLen);
+
+    *len = totalLen;  
+    if(totalLen != sizeof(startReq->header.length))
+    {
+	    *((uint32_t *)(mBuf + 4)) = reverseBytes32(totalLen);
+    }
+    addWlsBlockToFree(mBuf, sizeof(fapi_start_req_t), (lwrMacCb.phySlotIndCntr-1));
+    return mBuf;  
+}
+
+uint8_t * packHeaderbuffer(p_fapi_api_queue_elem_t  headerElem, uint32_t *len)
+{
+
+   uint8_t *mBuf = NULLP;
+   Pst pst;
+   uint16_t totalLen = 0;
+   fapi_msg_header_t *msgHeader = NULLP;
+
+   LWR_MAC_ALLOC(mBuf, ( sizeof(fapi_msg_header_t)));
+   
+   msgHeader= (fapi_msg_header_t*)(headerElem+ 1);
+   CMCHKPKLEN(oduPackPostUInt8, msgHeader->num_msg, &mBuf, &totalLen);
+   CMCHKPKLEN(oduPackPostUInt8, msgHeader->handle, &mBuf, &totalLen);
+
+   *len=totalLen;
+    addWlsBlockToFree(mBuf, sizeof(fapi_msg_header_t), (lwrMacCb.phySlotIndCntr-1));
+   return mBuf;
+}
+
+uint8_t *processAndSendMsg(p_fapi_api_queue_elem_t currMsg, uint32_t *msgLen)
+{
+    uint8_t *mBuf = NULL;
+    uint32_t len = 0;
+
+    switch (currMsg->msg_type)
+    {
+        case FAPI_CONFIG_REQUEST:
+            mBuf = packConfigReq(currMsg, &len);
+            break;
+        case FAPI_START_REQUEST:
+            mBuf = packStartReq(currMsg, &len);
+            break;
+#if 0
+        case FAPI_DL_TTI_REQUEST:
+            mBuf = buildAndSendDlTtiReq(currMsg, &len);
+            hexdump1(mBuf, len);  // Debugging: View the buffer contents
+            break;
+        case FAPI_UL_TTI_REQUEST:
+            mBuf = buildAndSendUlTtiReq(currMsg, &len);
+            break;
+        case FAPI_UL_DCI_REQUEST:
+            mBuf = buildAndSendUlDciReqBuffer(currMsg, &len);
+            break;
+        case FAPI_TX_DATA_REQUEST:
+            mBuf = buildAndSendTxDataReqBuffer(currMsg, &len);
+            break;
+#endif
+        default:
+            mBuf = packHeaderbuffer(currMsg, &len);
+            break;
+    }
+
+    if (mBuf == NULL)
+    {
+        DU_LOG("\nERROR  -->  LWR MAC : Failed to build message buffer for msg_type %d", currMsg->msg_type);
+        return NULL;
+    }
+
+    *msgLen = len;
+    return mBuf;
+}
+
+#endif
+
 /*******************************************************************
  *
  * @brief Receives msg from L1 
@@ -327,6 +516,7 @@ uint8_t LwrMacSendToL1(void *msg)
    mtGetWlsHdl(&wlsHdlr);
    if(msg)
    {
+#ifndef OAI_TESTING 
       currMsg = (p_fapi_api_queue_elem_t)msg;
       msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
       addWlsBlockToFree(currMsg, msgLen, (lwrMacCb.phySlotIndCntr-1));
@@ -372,6 +562,48 @@ uint8_t LwrMacSendToL1(void *msg)
 	    currMsg = NULLP;
 	 }
       }
+#else
+      uint8_t *mBuf = NULL;
+      uint32_t totalNewBufLen = 0;
+      currMsg = (p_fapi_api_queue_elem_t)msg;
+
+      mBuf = processAndSendMsg(currMsg, &totalNewBufLen);
+      if (mBuf == NULL) {
+	      return RFAILED;
+      }
+
+      ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, mBuf), totalNewBufLen, currMsg->msg_type, WLS_SG_FIRST);
+      if (ret != 0) {
+	      return RFAILED;
+      }
+
+      currMsg = currMsg->p_next;
+      while (currMsg)
+      {
+	      totalNewBufLen = 0;
+	      mBuf = processAndSendMsg(currMsg, &totalNewBufLen);
+	      if (mBuf == NULL) {
+		      return RFAILED;
+	      }
+
+	      ret = WLS_Put(wlsHdlr, WLS_VA2PA(wlsHdlr, mBuf), totalNewBufLen, currMsg->msg_type, (currMsg->p_next == NULLP) ? WLS_SG_LAST : WLS_SG_NEXT);
+	      if (ret != 0) {
+		      return RFAILED;
+	      }
+
+	      currMsg = currMsg->p_next;
+      }
+	
+      currMsg = (p_fapi_api_queue_elem_t)msg;
+      while(currMsg)
+      {
+	      p_fapi_api_queue_elem_t nextMsg = currMsg->p_next;
+	      msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
+	      LWR_MAC_FREE(currMsg, msgLen);
+	      currMsg = nextMsg;
+      }
+
+#endif
    }
 #else
    p_fapi_api_queue_elem_t nextMsg = NULLP;
@@ -381,18 +613,18 @@ uint8_t LwrMacSendToL1(void *msg)
    currMsg = (p_fapi_api_queue_elem_t)msg;
    while(currMsg)
    {
-      nextMsg = currMsg->p_next;
-      msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
-      if((currMsg->msg_type != FAPI_VENDOR_MSG_HEADER_IND) && \
-	    (currMsg->msg_type != FAPI_VENDOR_MESSAGE))
-      {
-	 l1ProcessFapiRequest(currMsg->msg_type, msgLen, currMsg);
-      }
-      else
-      {
-	 LWR_MAC_FREE(currMsg, msgLen);   
-      }
-      currMsg = nextMsg;
+	   nextMsg = currMsg->p_next;
+	   msgLen = currMsg->msg_len + sizeof(fapi_api_queue_elem_t);
+	   if((currMsg->msg_type != FAPI_VENDOR_MSG_HEADER_IND) && \
+			   (currMsg->msg_type != FAPI_VENDOR_MESSAGE))
+	   {
+		   l1ProcessFapiRequest(currMsg->msg_type, msgLen, currMsg);
+	   }
+	   else
+	   {
+		   LWR_MAC_FREE(currMsg, msgLen);   
+	   }
+	   currMsg = nextMsg;
    }
 #endif
 #endif
