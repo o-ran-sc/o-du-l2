@@ -279,7 +279,7 @@ uint8_t LwrMacSendToL1(void *msg)
    uint32_t msgLen =0;
    p_fapi_api_queue_elem_t currMsg = NULLP;
 
-#ifdef CALL_FLOW_DEBUG_LOG   
+#ifndef CALL_FLOW_DEBUG_LOG   
    char message[100];
 
    currMsg = (p_fapi_api_queue_elem_t)msg;
