@@ -859,6 +859,97 @@ Buffer *mBuf                /* message buffer */
 } /* end of SUnpkF64 */
 #endif /* SS_FLOAT */
 
+#ifdef OAI_TESTING
+/*
+*
+*       Fun:   oduPackPostUInt8
+*
+*       Desc:  This function packs an unsigned 8 bit value into a message.
+*
+*       Ret:   ROK      - ok
+*              RFAILED  - failed, general (optional)
+*              ROUTRES  - failed, out of resources (optional)
+*
+*       Notes: None
+*
+*       File:  ss_pack.c
+*
+*/
+uint8_t oduPackPostUInt8
+(
+ uint8_t in, uint8_t **out, uint16_t *total_length
+)
+{
+	uint8_t *pOut = *out;
+	pOut[0] = in;
+        (*out) += 1;
+        (*total_length) += 1;  // Increment the total length by 1
+        return ROK;
+} /* end of oduPackPostUInt8 */
+
+/*
+*
+*       Fun:   oduPackPostUInt16
+*
+*       Desc:  This function packs an unsigned 16 bit value into a message.
+*
+*       Ret:   ROK      - ok
+*              RFAILED  - failed, general (optional)
+*              ROUTRES  - failed, out of resources (optional)
+*
+*       Notes: None
+*
+*       File:  ss_pack.c
+*
+*/
+
+uint8_t oduPackPostUInt16
+(
+ uint16_t in, uint8_t **out, uint16_t *total_length
+)
+{
+	 uint8_t *pOut = *out;
+
+        pOut[1] = (in & 0xFF00) >> 8;
+        pOut[0] = (in & 0xFF);
+        (*out) += 2;
+        (*total_length) += 2;  // Increment the total length by 2i
+        return ROK;
+} /* end of oduPackPostUInt16 */
+
+/*
+*
+*       Fun:   oduPackPostUInt32
+*
+*       Desc:  This function packs an unsigned 32 bit value into a message.
+*
+*       Ret:   ROK      - ok
+*              RFAILED  - failed, general (optional)
+*              ROUTRES  - failed, out of resources (optional)
+*
+*       Notes: None
+*
+*       File:  ss_pack.c
+*
+*/
+
+uint8_t  oduPackPostUInt32( uint32_t in, uint8_t **out, uint16_t *total_length)
+{
+	uint8_t *pOut = *out;
+
+	pOut[3] = (in & 0xFF000000) >> 24;
+	pOut[2] = (in & 0xFF0000) >> 16;
+	pOut[1] = (in & 0xFF00) >> 8;
+	pOut[0] = (in & 0xFF);
+	(*out) += 4;
+
+	(*total_length) += 4;  // Increment the total length by 4
+	return ROK;
+
+} /* end of oduPackPostUInt32 */
+
+#endif
+
 /**********************************************************************
          End of file
  **********************************************************************/

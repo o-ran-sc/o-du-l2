@@ -847,6 +847,15 @@
          return (ret); \
    }
 
+#ifdef OAI_TESTING
+#define CMCHKPKLEN(func, val, mBuf, len) \
+   { \
+      uint8_t ret; \
+      if ((ret = func(val, mBuf, len)) != ROK) \
+         return (ret); \
+   }
+#endif
+
 #define CMCHKPKLOG(func, val, mBuf, errCode, pst) \
    { \
       S16 ret; \
@@ -877,6 +886,15 @@
 
 #define CMCHKPK(func, val, mBuf) \
    func(val, mBuf);
+
+#ifdef OAI_TESTING
+#define CMCHKPKLEN(func, val, mBuf, len) \
+   { \
+      uint8_t ret; \
+      if ((ret = func(val, mBuf, len)) != ROK) \
+         return (ret); \
+   }
+#endif
 
 #define CMCHKPKLOG(func, val, mBuf, errCode, pst) \
    func(val, mBuf);
