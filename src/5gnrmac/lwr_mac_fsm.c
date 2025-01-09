@@ -2005,6 +2005,668 @@ uint8_t lwr_mac_procIqSamplesReqEvt(void *msg)
 #endif
 	
 #ifdef OAI_TESTING
+#if 0
+void hexdump1(void *data, uint32_t size)
+{
+        DU_LOG("\nPBORLA size %u\n", size);
+    const unsigned char *byte = (const unsigned char *)data;
+    for (size_t i = 0; i < size; i++) {
+        printf("%02x ", byte[i]);
+        if ((i + 1) % 16 == 0) {
+            printf(" ");
+        }
+    }
+    printf("\n");
+}
+#endif
+
+/*******************************************************************
+ *
+ * @brief Pack and send DL TTI message to OAI L1
+ *
+ * @details
+ *
+ *    Function : packDlTtiReq
+ *
+ *    Functionality:
+ *         -Pack and send DL TTI message to OAI L1
+ *
+ * @params[in] fapi_dl_tti_req_t *dlTtiReq,uint8_t *out , uint32_t *len
+ * @return Void
+ *
+ * ****************************************************************/
+
+void packDlTtiReq(fapi_dl_tti_req_t *dlTtiReq,uint8_t *out , uint32_t *len)
+{
+	uint8_t pduIdx = 0, freqIdx = 0, dciIndex = 0, ueGrpIdx = 0;
+	uint8_t numBytes = 0, ret = ROK;
+	uint32_t totalLen=0,lenIdx=0, lenDifference=0;
+	uint8_t *mBuf = out;
+
+	//header
+	CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->header.numMsg, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->header.opaque, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt16,dlTtiReq->header.msg_id, &mBuf, &totalLen);
+	dlTtiReq->header.length = totalLen;  // Update header length with the total length
+
+	CMCHKPKLEN(oduPackPostUInt32,dlTtiReq->header.length, &mBuf, &totalLen);
+
+
+	CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->sfn, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->slot, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->nPdus, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->nGroup, &mBuf, &totalLen);
+	for(pduIdx = 0; pduIdx < dlTtiReq->nPdus; pduIdx++)
+	{
+		CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pduType, &mBuf, &totalLen);
+		CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pduSize, &mBuf, &totalLen);
+		lenIdx=totalLen;
+		switch(reverseBytes16(dlTtiReq->pdus[pduIdx].pduType))
+		{
+			case FAPI_PDCCH_PDU_TYPE:
+				{
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.bwpSize, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.bwpStart, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.subCarrierSpacing, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.cyclicPrefix, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.startSymbolIndex, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.durationSymbols, &mBuf, &totalLen);
+					for(freqIdx = 0; freqIdx < 6; freqIdx++)
+					{
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.freqDomainResource[freqIdx], &mBuf, &totalLen);
+					}
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.cceRegMappingType, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.regBundleSize, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.interleaverSize, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.coreSetType, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.shiftIndex, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.precoderGranularity, &mBuf, &totalLen);
+
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.numDlDci, &mBuf, &totalLen);
+					// Extract the pdcch_pdu fields for the given pduIdx
+
+					for(dciIndex = 0; dciIndex <  reverseBytes16(dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.numDlDci); dciIndex++)
+					{
+						dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].scramblingId =0;
+						CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].rnti, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].scramblingId, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].scramblingRnti, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].cceIndex, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].aggregationLevel, &mBuf, &totalLen);
+
+						fapi_precoding_bmform_t *preCodingAndBeamforming= &dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].pc_and_bform;
+
+						CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(preCodingAndBeamforming->numPrgs), &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(preCodingAndBeamforming->prgSize), &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, preCodingAndBeamforming->digBfInterfaces, &mBuf, &totalLen);
+
+						for(uint16_t prgIdx = 0; prgIdx < preCodingAndBeamforming->numPrgs; prgIdx++)
+						{
+							CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->pmi_bfi[prgIdx].pmIdx, &mBuf, &totalLen);
+							for(uint8_t digBfIdx = 0; digBfIdx < preCodingAndBeamforming->digBfInterfaces; digBfIdx++)
+							{
+								CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->pmi_bfi[prgIdx].beamIdx[digBfIdx].beamidx, &mBuf, &totalLen);
+							}
+						}
+
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].beta_pdcch_1_0, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].powerControlOffsetSS, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].payloadSizeBits, &mBuf, &totalLen);
+						numBytes = reverseBytes16(dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].payloadSizeBits) / 8;
+						if(reverseBytes16(dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].payloadSizeBits) % 8)
+							numBytes += 1;
+						for(uint8_t payloadIdx = 0; payloadIdx < numBytes; payloadIdx++)
+						{
+							CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].payload[payloadIdx], &mBuf, &totalLen);
+						}
+					}
+					lenDifference=totalLen- lenIdx;
+					*((uint16_t *)(out + lenIdx-2)) = reverseBytes16(lenDifference);
+					break;
+				}
+
+			case FAPI_PDSCH_PDU_TYPE:
+				{
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.pduBitMap, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.rnti, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.pdu_index, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.bwpSize, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.bwpStart, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.subCarrierSpacing, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.cyclicPrefix, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.nrOfCodeWords, &mBuf, &totalLen);
+
+					for(uint8_t cwIdx = 0; cwIdx <  dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.nrOfCodeWords; cwIdx++)
+					{
+						CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.cwInfo[cwIdx].targetCodeRate, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.cwInfo[cwIdx].qamModOrder, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.cwInfo[cwIdx].mcsIndex, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.cwInfo[cwIdx].mcsTable, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.cwInfo[cwIdx].rvIndex, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt32, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.cwInfo[cwIdx].tbSize, &mBuf, &totalLen);
+					}
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.dataScramblingId, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.nrOfLayers, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.transmissionScheme, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.refPoint, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.dlDmrsSymbPos, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.dmrsConfigType, &mBuf, &totalLen);
+
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.dlDmrsScramblingId, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.scid, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.numDmrsCdmGrpsNoData, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.dmrsPorts, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.resourceAlloc, &mBuf, &totalLen);
+					for(uint8_t rbBitMapIdx = 0; rbBitMapIdx < 36; rbBitMapIdx++)
+					{
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.rbBitmap[rbBitMapIdx], &mBuf, &totalLen);
+					}
+
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.rbStart, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.rbSize, &mBuf, &totalLen);
+
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.vrbToPrbMapping, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.startSymbIndex, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.nrOfSymbols, &mBuf, &totalLen);
+					if (reverseBytes16(dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.pduBitMap) & 0b1)
+					{
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.ptrsPortIndex, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.ptrsTimeDensity, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.ptrsFreqDensity, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.ptrsReOffset, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.nEpreRatioOfPdschToPtrs, &mBuf, &totalLen);
+					}
+					
+               fapi_precoding_bmform_t *preCodingAndBeamforming= &dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.preCodingAndBeamforming;
+					CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(preCodingAndBeamforming->numPrgs), &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(preCodingAndBeamforming->prgSize), &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, preCodingAndBeamforming->digBfInterfaces, &mBuf, &totalLen);
+
+					for(uint16_t prgIdx = 0; prgIdx < (preCodingAndBeamforming->numPrgs); prgIdx++)
+					{
+						CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->pmi_bfi[prgIdx].pmIdx, &mBuf, &totalLen);
+						for(uint8_t digBfIdx = 0; digBfIdx < (preCodingAndBeamforming->digBfInterfaces); digBfIdx++)
+						{
+							CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->pmi_bfi[prgIdx].beamIdx[digBfIdx].beamidx, &mBuf, &totalLen);
+						}
+					}
+
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.powerControlOffset, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.powerControlOffsetSS, &mBuf, &totalLen);
+					if (reverseBytes16(dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.pduBitMap)  & 0b10)
+					{
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.isLastCbPresent, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.isInlineTbCrc, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt32, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.dlTbCrc, &mBuf, &totalLen);
+					}
+               dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.maintParamV3.ldpcBaseGraph=1;
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.maintParamV3.ldpcBaseGraph, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt32, dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.maintParamV3.tbSizeLbrmBytes, &mBuf, &totalLen);
+					lenDifference=totalLen- lenIdx;
+					*((uint16_t *)(out + lenIdx-2)) = reverseBytes16(lenDifference);
+					break;
+				}
+
+			case FAPI_PBCH_PDU_TYPE:
+				{
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.ssb_pdu.physCellId, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.ssb_pdu.betaPss, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.ssb_pdu.ssbBlockIndex, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.ssb_pdu.ssbSubCarrierOffset, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, dlTtiReq->pdus[pduIdx].pdu.ssb_pdu.ssbOffsetPointA, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->pdus[pduIdx].pdu.ssb_pdu.bchPayloadFlag, &mBuf, &totalLen);
+
+					CMCHKPKLEN(oduPackPostUInt32, dlTtiReq->pdus[pduIdx].pdu.ssb_pdu.bchPayload.bchPayload, &mBuf, &totalLen);
+					fapi_precoding_bmform_t *preCodingAndBeamforming= &dlTtiReq->pdus[pduIdx].pdu.ssb_pdu.preCodingAndBeamforming;
+					CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->numPrgs, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->prgSize, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, preCodingAndBeamforming->digBfInterfaces, &mBuf, &totalLen);
+
+					for(uint16_t prgIdx = 0; prgIdx < reverseBytes16(preCodingAndBeamforming->numPrgs); prgIdx++)
+					{
+						CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->pmi_bfi[prgIdx].pmIdx, &mBuf, &totalLen);
+						for(uint8_t digBfIdx = 0; digBfIdx < (preCodingAndBeamforming->digBfInterfaces); digBfIdx++)
+						{
+							CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->pmi_bfi[prgIdx].beamIdx[digBfIdx].beamidx, &mBuf, &totalLen);
+						}
+					}
+					lenDifference=totalLen- lenIdx;
+					*((uint16_t *)(out + lenIdx-2)) = reverseBytes16(lenDifference);
+
+					break;
+				}
+			default:
+				{
+					return NULLP;
+				}
+		}
+	}
+	for(ueGrpIdx = 0; ueGrpIdx < dlTtiReq->nGroup; ueGrpIdx++)
+	{
+		CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->ue_grp_info[ueGrpIdx].nUe, &mBuf, &totalLen);
+
+		for(uint8_t ueIdx = 0; ueIdx < dlTtiReq->ue_grp_info[ueGrpIdx].nUe; ueIdx++)
+		{
+			CMCHKPKLEN(oduPackPostUInt8, dlTtiReq->ue_grp_info[ueGrpIdx].pduIdx[ueIdx], &mBuf, &totalLen);
+		}
+	}
+	if(totalLen !=sizeof(fapi_dl_tti_req_t))
+	{
+		*((uint32_t *)(out + 4)) = reverseBytes32(totalLen);
+	}
+
+	*len=totalLen;
+
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and send UL TTI message to OAI L1
+ *
+ * @details
+ *
+ *    Function : packUlTtiReq
+ *
+ *    Functionality:
+ *         -Pack and send UL TTI message to OAI L1
+ *
+ * @params[in] fapi_ul_tti_req_t *ulTti,uint8_t *out, uint32_t *len
+ * @return Void
+ *
+ * ****************************************************************/
+
+void packUlTtiReq(fapi_ul_tti_req_t *ulTtiReq,uint8_t *out, uint32_t *len)
+{
+	uint8_t pduIdx = 0, ueGrpIdx = 0, ret = ROK;
+	uint32_t lenIdx=0, lenDifference=0, totalLen=0;
+
+
+	uint8_t *mBuf = out;
+	CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->header.numMsg, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->header.opaque, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt16,ulTtiReq->header.msg_id, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt32,ulTtiReq->header.length, &mBuf, &totalLen);
+
+	CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->sfn, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->slot, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->nPdus, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->rachPresent, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->nUlsch, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->nUlcch, &mBuf, &totalLen);
+	CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->nGroup, &mBuf, &totalLen);
+
+	for(pduIdx = 0; pduIdx < ulTtiReq->nPdus; pduIdx++)
+	{
+		CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pduType, &mBuf, &totalLen);
+		CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pduSize, &mBuf, &totalLen);
+		lenIdx=totalLen;
+		switch(reverseBytes16(ulTtiReq->pdus[pduIdx].pduType))
+		{
+			case FAPI_PRACH_PDU_TYPE:
+				{
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.prach_pdu.physCellId, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.prach_pdu.numPrachOcas, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.prach_pdu.prachFormat, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.prach_pdu.numRa, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.prach_pdu.prachStartSymbol, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.prach_pdu.numCs, &mBuf, &totalLen);
+					fapi_ul_rx_bmform_pdu_t *ulBmform=&ulTtiReq->pdus[pduIdx].pdu.prach_pdu.beamforming;
+					CMCHKPKLEN(oduPackPostUInt8, ulBmform->trp_scheme, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulBmform->numPrgs, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulBmform->prgSize, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulBmform->digBfInterface, &mBuf, &totalLen);
+
+					for(uint8_t prgIdx = 0; prgIdx < reverseBytes16(ulBmform->numPrgs); prgIdx++)
+					{
+						for(uint8_t digBfIdx = 0; digBfIdx < ulBmform->digBfInterface; digBfIdx++)
+						{
+							CMCHKPKLEN(oduPackPostUInt16, ulBmform->rx_bfi[prgIdx].beamIdx[digBfIdx].beamidx, &mBuf, &totalLen);
+						}
+					}
+					lenDifference=totalLen- lenIdx;
+					*((uint16_t *)(out + lenIdx-2)) = reverseBytes16(lenDifference);
+					break;
+				}
+			case FAPI_PUSCH_PDU_TYPE:
+				{
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.rnti, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt32, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.handle, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.bwpSize, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.bwpStart, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.subCarrierSpacing, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.cyclicPrefix, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.targetCodeRate, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.qamModOrder, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.mcsIndex, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.mcsTable, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.transformPrecoding, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dataScramblingId, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.nrOfLayers, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.ulDmrsSymbPos, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dmrsConfigType, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.ulDmrsScramblingId, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschIdentity, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.scid, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.numDmrsCdmGrpsNoData, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dmrsPorts, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.resourceAlloc, &mBuf, &totalLen);
+					for(uint8_t rbBitMapIdx = 0; rbBitMapIdx < 36; rbBitMapIdx++)
+					{
+						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.rbBitmap[rbBitMapIdx], &mBuf, &totalLen);
+					}
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.rbStart, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.rbSize, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.vrbToPrbMapping, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.frequencyHopping, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.txDirectCurrentLocation, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.uplinkFrequencyShift7p5khz, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.startSymbIndex, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.nrOfSymbols, &mBuf, &totalLen);
+
+					//Fill fapi_pusch_data_t
+					if(reverseBytes16(ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap &0x01))
+					{
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.rvIndex, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.harqProcessId, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.newDataIndicator, &mBuf, &totalLen);
+
+					CMCHKPKLEN(oduPackPostUInt32, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.tbSize, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.numCb, &mBuf, &totalLen);
+					for(int i=0;i<reverseBytes16(ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.numCb);i++)
+					{
+						//TODO - Above loop length must be cb length= (numCB+7)/8;
+						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.cbPresentAndPosition[i], &mBuf, &totalLen);
+					}
+					}
+					//Fill fapi_pusch_uci_t
+					if(reverseBytes16(ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap &0x02))
+					{
+						CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.harqAckBitLength, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.csiPart1BitLength, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.csiPart2BitLength, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.alphaScaling, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.betaOffsetHarqAck, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.betaOffsetCsi1, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.betaOffsetCsi2, &mBuf, &totalLen);
+					}
+
+					//Fill fapi_pusch_ptrs_t
+					if(reverseBytes16(ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap &0x04))
+					{
+						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.numPtrsPorts, &mBuf, &totalLen);
+						for(uint8_t portIdx = 0; portIdx < ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.numPtrsPorts; portIdx++)
+						{
+							CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.ptrsInfo[portIdx].ptrsPortIndex, &mBuf, &totalLen);
+							CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.ptrsInfo[portIdx].ptrsDmrsPort, &mBuf, &totalLen);
+							CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.ptrsInfo[portIdx].ptrsReOffset, &mBuf, &totalLen);
+						}
+						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.ptrsTimeDensity, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.ptrsFreqDensity, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.ulPtrsPower, &mBuf, &totalLen);
+					}
+					//Fill fapi_dfts_ofdm_t
+					if(reverseBytes16(ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap &0x08))
+					{
+						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dftsOfdm.lowPaprGroupNumber, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dftsOfdm.lowPaprSequenceNumber, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dftsOfdm.ulPtrsSampleDensity, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dftsOfdm.ulPtrsTimeDensityTransformPrecoding, &mBuf, &totalLen);
+					}
+
+					//Fill fapi_ul_rx_bmform_pdu_t
+					fapi_ul_rx_bmform_pdu_t *ulBmform=&ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.beamforming;
+					CMCHKPKLEN(oduPackPostUInt8, ulBmform->trp_scheme, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulBmform->numPrgs, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulBmform->prgSize, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulBmform->digBfInterface, &mBuf, &totalLen);
+
+					for(uint8_t prgIdx = 0; prgIdx < reverseBytes16(ulBmform->numPrgs); prgIdx++)
+					{
+						for(uint8_t digBfIdx = 0; digBfIdx < ulBmform->digBfInterface; digBfIdx++)
+						{
+							CMCHKPKLEN(oduPackPostUInt16, ulBmform->rx_bfi[prgIdx].beamIdx[digBfIdx].beamidx, &mBuf, &totalLen);
+						}
+					}
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.maintParamV3.ldpcBaseGraph, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt32, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.maintParamV3.tbSizeLbrmBytes, &mBuf, &totalLen);
+					lenDifference=totalLen- lenIdx;
+					*((uint16_t *)(out + lenIdx-2)) = reverseBytes16(lenDifference);
+					break;
+				}
+			case FAPI_PUCCH_PDU_TYPE:
+				{
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.rnti, &mBuf, &totalLen);
+
+					CMCHKPKLEN(oduPackPostUInt32, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.handle, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.bwpSize, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.bwpStart, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.subCarrierSpacing, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.cyclicPrefix, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.formatType, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.multiSlotTxIndicator, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.pi2Bpsk, &mBuf, &totalLen);
+
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.prbStart, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.prbSize, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.startSymbolIndex, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.nrOfSymbols, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.freqHopFlag, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.secondHopPrb, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.groupHopFlag, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.sequenceHopFlag, &mBuf, &totalLen);
+
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.hoppingId, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.initialCyclicShift, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.dataScramblingId, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.timeDomainOccIdx, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.preDftOccIdx, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.preDftOccLen, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.addDmrsFlag, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.dmrsScramblingId, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.dmrsCyclicShift, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.srFlag, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.bitLenHarq, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.bitLenCsiPart1, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.bitLenCsiPart2, &mBuf, &totalLen);
+
+					//Fill fapi_ul_rx_bmform_pdu_t
+					fapi_ul_rx_bmform_pdu_t *ulBmform=&ulTtiReq->pdus[pduIdx].pdu.pucch_pdu.beamforming;
+					CMCHKPKLEN(oduPackPostUInt8, ulBmform->trp_scheme, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulBmform->numPrgs, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, ulBmform->prgSize, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt8, ulBmform->digBfInterface, &mBuf, &totalLen);
+
+					for(uint8_t prgIdx = 0; prgIdx < reverseBytes16(ulBmform->numPrgs); prgIdx++)
+					{
+						for(uint8_t digBfIdx = 0; digBfIdx < ulBmform->digBfInterface; digBfIdx++)
+						{
+							CMCHKPKLEN(oduPackPostUInt16, ulBmform->rx_bfi[prgIdx].beamIdx[digBfIdx].beamidx, &mBuf, &totalLen);
+						}
+					}
+					lenDifference=totalLen- lenIdx;
+					*((uint16_t *)(out + lenIdx-2)) = reverseBytes16(lenDifference);
+					break;
+				}
+			default:
+				{
+					return RFAILED;
+				}
+		}
+	}
+
+	for(ueGrpIdx = 0; ueGrpIdx < ulTtiReq->nGroup; ueGrpIdx++)
+	{
+		CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->ueGrpInfo[ueGrpIdx].nUe, &mBuf, &totalLen);
+		for(uint8_t ueIdx = 0; ueIdx < ulTtiReq->ueGrpInfo[ueGrpIdx].nUe; ueIdx++)
+		{
+			CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->ueGrpInfo[ueGrpIdx].pduIdx[ueIdx], &mBuf, &totalLen);
+		}
+	}
+
+	*len=totalLen;
+	if(totalLen != sizeof(fapi_ul_tti_req_t))
+	{
+		*((uint32_t *)(out + 4)) = reverseBytes32(totalLen);
+	}
+
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and send TX Data Req message to OAI L1
+ *
+ * @details
+ *
+ *    Function : packTxDataReqBuffer
+ *
+ *    Functionality:
+ *         -Pack and send TX Data Req message to OAI L1
+ *
+ * @params[in] fapi_tx_data_req_t *txdata, uint8_t *mBuf ,uint32_t *len
+ * @return Void
+ *
+ * ****************************************************************/
+
+void packTxDataReqBuffer(fapi_tx_data_req_t *txDataReq, uint8_t *mBuf ,uint32_t *len)
+{
+        uint16_t pduIdx = 0;
+        uint8_t ret = ROK;
+        uint16_t payloadSize = 0;
+        uint32_t totalLen = 0;
+
+        uint8_t *out = mBuf;
+
+        CMCHKPKLEN(oduPackPostUInt8, txDataReq->header.numMsg, &out, &totalLen);
+        CMCHKPKLEN(oduPackPostUInt8, txDataReq->header.opaque, &out, &totalLen);
+        CMCHKPKLEN(oduPackPostUInt16, txDataReq->header.msg_id, &out, &totalLen);
+        CMCHKPKLEN(oduPackPostUInt32, txDataReq->header.length, &out, &totalLen);
+
+        CMCHKPKLEN(oduPackPostUInt16, txDataReq->sfn, &out, &totalLen);
+        CMCHKPKLEN(oduPackPostUInt16, txDataReq->slot, &out, &totalLen);
+        CMCHKPKLEN(oduPackPostUInt16, txDataReq->num_pdus, &out, &totalLen);
+
+        for (pduIdx = 0; pduIdx <reverseBytes16( txDataReq->num_pdus); pduIdx++)
+        {
+
+                CMCHKPKLEN(oduPackPostUInt32, txDataReq->pdu_desc[pduIdx].pdu_length, &out, &totalLen);
+                CMCHKPKLEN(oduPackPostUInt16, txDataReq->pdu_desc[pduIdx].pdu_index, &out, &totalLen);
+                CMCHKPKLEN(oduPackPostUInt32, txDataReq->pdu_desc[pduIdx].num_tlvs, &out, &totalLen);
+
+                for (uint32_t tlvIdx = 0; tlvIdx < reverseBytes32(txDataReq->pdu_desc[pduIdx].num_tlvs); tlvIdx++)
+                {
+
+                        CMCHKPKLEN(oduPackPostUInt16, txDataReq->pdu_desc[pduIdx].tlvs[tlvIdx].tag, &out, &totalLen);
+                        CMCHKPKLEN(oduPackPostUInt32, txDataReq->pdu_desc[pduIdx].tlvs[tlvIdx].length, &out, &totalLen);
+
+                        payloadSize = reverseBytes32(txDataReq->pdu_desc[pduIdx].tlvs[tlvIdx].length);
+                        for (uint32_t payloadByte = 0; payloadByte < payloadSize; payloadByte++)
+                        {
+				//TODO- CHeck
+                                //CMCHKPKLEN(oduPackPostUInt32, txDataReq->pdu_desc[pduIdx].tlvs[tlvIdx].value.direct[payloadByte], &out, &totalLen);
+                                CMCHKPKLEN(oduPackPostUInt8, txDataReq->pdu_desc[pduIdx].tlvs[tlvIdx].value.direct[payloadByte], &out, &totalLen);
+                        }
+                }
+        }
+
+	*len = totalLen;
+	if(totalLen != sizeof(fapi_tx_data_req_t))
+	{
+		*((uint32_t *)(mBuf + 4)) = reverseBytes32(totalLen);
+	}
+}
+
+/*******************************************************************
+ *
+ * @brief Pack and send Config Req message to OAI L1
+ *
+ * @details
+ *
+ *    Function : packConfigReq
+ *
+ *    Functionality:
+ *         -Pack and send Config Req message to OAI L1
+ *
+ * @params[in] fapi_config_req_t *configReq,uint8_t *mBuf,uint32_t *len
+ * @return Void
+ *
+ * ****************************************************************/
+
+void packConfigReq(fapi_config_req_t *configReq,  uint8_t *mBuf, uint32_t *len)
+{
+    uint8_t *out = mBuf;
+    uint32_t msgLen = 0;
+    uint16_t totalTlv = 0;
+    uint16_t tlvSize=10;//uint16_t [5]
+    uint16_t value[5] = {0,273,0,0,0};
+
+    CMCHKPKLEN(oduPackPostUInt8, configReq->header.numMsg, &out, &msgLen);
+    CMCHKPKLEN(oduPackPostUInt8, configReq->header.opaque, &out, &msgLen);
+    CMCHKPKLEN(oduPackPostUInt16, configReq->header.msg_id, &out, &msgLen);
+    CMCHKPKLEN(oduPackPostUInt32, configReq->header.length, &out, &msgLen);
+
+    totalTlv = configReq->number_of_tlvs;
+    uint8_t randmTlvCnt=  25; //This value is randomly assigned
+    CMCHKPKLEN(oduPackPostUInt8, randmTlvCnt, &out, &msgLen);
+
+    for(uint16_t idx=0;idx<totalTlv;idx++)
+    {
+            fapi_uint32_tlv_t tlv =configReq->tlvs[idx];
+
+            CMCHKPKLEN(oduPackPostUInt16, tlv.tl.tag, &out, &msgLen);
+            CMCHKPKLEN(oduPackPostUInt16, tlv.tl.length, &out, &msgLen);
+            switch(reverseBytes16(tlv.tl.length))
+            {
+                    case 1:
+                            {
+                                    uint8_t val=tlv.value;
+                                    CMCHKPKLEN(oduPackPostUInt8, val, &out, &msgLen);
+                                    CMCHKPKLEN(oduPackPostUInt8, 0, &out, &msgLen);
+                                    CMCHKPKLEN(oduPackPostUInt8, 0, &out, &msgLen);
+                                    CMCHKPKLEN(oduPackPostUInt8, 0, &out, &msgLen);
+                                    break;
+                            }
+                    case 2:
+                            {
+                                    uint16_t val=tlv.value;
+                                    CMCHKPKLEN(oduPackPostUInt16, val, &out, &msgLen);
+                                    CMCHKPKLEN(oduPackPostUInt16, 0, &out, &msgLen);
+                                    break;
+                            }
+                    case 4:
+                            {
+                                    uint32_t val=tlv.value;
+                                    CMCHKPKLEN(oduPackPostUInt32, val, &out, &msgLen);
+                                    break;
+                            }
+
+
+            }
+    }
+    // adding dlGridSize and ulGridSize tlv
+    CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(FAPI_DL_GRIDSIZE_TAG), &out, &msgLen);
+    CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(tlvSize), &out, &msgLen);
+    for(uint8_t arrIdx=0;arrIdx<5;arrIdx++)
+    {
+	    CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(value[arrIdx]), &out, &msgLen);
+    }
+    CMCHKPKLEN(oduPackPostUInt16, 0, &out, &msgLen);
+
+    CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(FAPI_UL_GRID_SIZE_TAG), &out, &msgLen);
+    CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(tlvSize), &out, &msgLen);
+    for(uint8_t arrIdx=0;arrIdx<5;arrIdx++)
+    {
+	    CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(value[arrIdx]), &out, &msgLen);
+    }
+    CMCHKPKLEN(oduPackPostUInt16, 0, &out, &msgLen);
+    
+    *len = msgLen;
+    if(msgLen != sizeof(configReq->header.length))
+    {
+            *((uint32_t *)(mBuf + 4)) = reverseBytes32(msgLen);
+    }
+}
+
 #define TLV_ALIGN(_tlv_size) (32-_tlv_size)
 /*******************************************************************
  *
@@ -2083,15 +2745,7 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
    totalCfgReqMsgLen += sizeof(configReq->header) + sizeof( configReq->number_of_tlvs) + totalTlv*sizeof(fapi_uint32_tlv_t);
    
    /* Fill FAPI config req */
-   LWR_MAC_ALLOC(cfgReqQElem,(sizeof(fapi_api_queue_elem_t)+totalCfgReqMsgLen));
-
-   if(!cfgReqQElem)
-   {
-      DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for config req");
-      return RFAILED;
-   }
-   FILL_FAPI_LIST_ELEM(cfgReqQElem, NULLP, FAPI_CONFIG_REQUEST, 1,  totalCfgReqMsgLen);
-   configReq = (fapi_config_req_t *)(cfgReqQElem + 1);
+   LWR_MAC_ALLOC(configReq, sizeof(fapi_config_req_t));
    memset(configReq, 0, sizeof(fapi_config_req_t));
    fillMsgHeader(&configReq->header, FAPI_CONFIG_REQUEST, totalCfgReqMsgLen);
    configReq->number_of_tlvs = totalTlv;
@@ -2246,6 +2900,19 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
    /* fill DMRS Type A Pos */
    // fillTlvs(&configReq->tlvs[index++], FAPI_DMRS_TYPE_A_POS_TAG,           \
    sizeof(uint8_t), macCfgParams.ssbCfg.dmrsTypeAPos, &msgLen);
+   uint32_t  bufferLen=0;
+   uint8_t mBuf[2500];
+   packConfigReq(configReq, mBuf, &bufferLen);
+   //hexdump1(mBuf, bufferLen);
+   LWR_MAC_ALLOC(cfgReqQElem,(sizeof(fapi_api_queue_elem_t)+bufferLen));
+
+   if(!cfgReqQElem)
+   {
+	   DU_LOG("\nERROR  -->  LWR_MAC: Memory allocation failed for config req");
+	   return RFAILED;
+   }
+   FILL_FAPI_LIST_ELEM(cfgReqQElem, NULLP, FAPI_CONFIG_REQUEST, 1,  bufferLen);
+   memcpy((uint8_t *)(cfgReqQElem +1), mBuf, bufferLen);
 
    /* Fill message header */
    LWR_MAC_ALLOC(headerElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_msg_header_t)));
@@ -2263,6 +2930,7 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
    
    DU_LOG("\nDEBUG  -->  LWR_MAC: Sending Config Request to Phy");
    LwrMacSendToL1(headerElem);
+   LWR_MAC_FREE(configReq, sizeof(fapi_config_req_t));
    return ROK;
 #endif
 }
@@ -2813,15 +3481,19 @@ uint8_t fillSsbPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, MacCellCfg *macCellCfg,
       setMibPdu(macCellCfg->ssbCfg.mibPdu, &mibPayload, sfn);
 #ifdef OAI_TESTING 
       dlTtiReqPdu->pdu.ssb_pdu.bchPayload.bchPayload = reverseBytes32(mibPayload);
+      dlTtiReqPdu->pdu.ssb_pdu.preCodingAndBeamforming.numPrgs = reverseBytes16(1);
+      dlTtiReqPdu->pdu.ssb_pdu.preCodingAndBeamforming.prgSize = reverseBytes16(275);
+      dlTtiReqPdu->pdu.ssb_pdu.preCodingAndBeamforming.digBfInterfaces = 1;
+      dlTtiReqPdu->pdu.ssb_pdu.preCodingAndBeamforming.pmi_bfi[0].pmIdx = reverseBytes16(0);
+      dlTtiReqPdu->pdu.ssb_pdu.preCodingAndBeamforming.pmi_bfi[0].beamIdx[0].beamidx = reverseBytes16(macCellCfg->ssbCfg.beamId[0]);
 #else
       dlTtiReqPdu->pdu.ssb_pdu.bchPayload.bchPayload = (mibPayload);
-#endif
       dlTtiReqPdu->pdu.ssb_pdu.preCodingAndBeamforming.numPrgs = 0;
       dlTtiReqPdu->pdu.ssb_pdu.preCodingAndBeamforming.prgSize = 0;
       dlTtiReqPdu->pdu.ssb_pdu.preCodingAndBeamforming.digBfInterfaces = 0;
       dlTtiReqPdu->pdu.ssb_pdu.preCodingAndBeamforming.pmi_bfi[0].pmIdx = 0;
-      dlTtiReqPdu->pdu.ssb_pdu.preCodingAndBeamforming. \
-	 pmi_bfi[0].beamIdx[0].beamidx = macCellCfg->ssbCfg.beamId[0];
+      dlTtiReqPdu->pdu.ssb_pdu.preCodingAndBeamforming.pmi_bfi[0].beamIdx[0].beamidx = macCellCfg->ssbCfg.beamId[0];
+#endif
       return ROK;
    }
    return RFAILED;
@@ -2877,10 +3549,12 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
       dlDciPtr[0].rnti = reverseBytes16(sib1PdcchInfo->dci[0].rnti);
       dlDciPtr[0].scramblingId = reverseBytes16(sib1PdcchInfo->dci[0].scramblingId);    
       dlDciPtr[0].scramblingRnti = reverseBytes16(sib1PdcchInfo->dci[0].scramblingRnti);
-      dlDciPtr[0].pc_and_bform.numPrgs = reverseBytes16(sib1PdcchInfo->dci[0].beamPdcchInfo.numPrgs);
-      dlDciPtr[0].pc_and_bform.prgSize = reverseBytes16(sib1PdcchInfo->dci[0].beamPdcchInfo.prgSize);
+      dlDciPtr[0].pc_and_bform.numPrgs = reverseBytes16(0);
+      dlDciPtr[0].pc_and_bform.prgSize = reverseBytes16(0);
+      dlDciPtr[0].pc_and_bform.digBfInterfaces = 1;
       dlDciPtr[0].pc_and_bform.pmi_bfi[0].pmIdx = reverseBytes16(sib1PdcchInfo->dci[0].beamPdcchInfo.prg[0].pmIdx);
       dlDciPtr[0].pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = reverseBytes16(sib1PdcchInfo->dci[0].beamPdcchInfo.prg[0].beamIdx[0]);
+      dlDciPtr[0].powerControlOffsetSS = 1;
 #else
       dlDciPtr[0].rnti = sib1PdcchInfo->dci[0].rnti;
       dlDciPtr[0].scramblingId = sib1PdcchInfo->dci[0].scramblingId;    
@@ -2889,12 +3563,12 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
       dlDciPtr[0].pc_and_bform.prgSize = sib1PdcchInfo->dci[0].beamPdcchInfo.prgSize;
       dlDciPtr[0].pc_and_bform.pmi_bfi[0].pmIdx = sib1PdcchInfo->dci[0].beamPdcchInfo.prg[0].pmIdx;
       dlDciPtr[0].pc_and_bform.pmi_bfi[0].beamIdx[0].beamidx = sib1PdcchInfo->dci[0].beamPdcchInfo.prg[0].beamIdx[0];
+      dlDciPtr[0].pc_and_bform.digBfInterfaces = sib1PdcchInfo->dci[0].beamPdcchInfo.digBfInterfaces;
+      dlDciPtr[0].powerControlOffsetSS = sib1PdcchInfo->dci[0].txPdcchPower.powerControlOffsetSS;
 #endif
       dlDciPtr[0].cceIndex = sib1PdcchInfo->dci[0].cceIndex;
       dlDciPtr[0].aggregationLevel = sib1PdcchInfo->dci[0].aggregLevel;
-      dlDciPtr[0].pc_and_bform.digBfInterfaces = sib1PdcchInfo->dci[0].beamPdcchInfo.digBfInterfaces;
       dlDciPtr[0].beta_pdcch_1_0 = sib1PdcchInfo->dci[0].txPdcchPower.beta_pdcch_1_0;           
-      dlDciPtr[0].powerControlOffsetSS = sib1PdcchInfo->dci[0].txPdcchPower.powerControlOffsetSS;
 
       /* Calculating freq domain resource allocation field value and size
        * coreset0Size = Size of coreset 0
@@ -3850,15 +4524,16 @@ void fillPdschPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_pdu
       dlTtiReqPdu->pdu.pdsch_pdu.vrbToPrbMapping = pdschInfo->pdschFreqAlloc.vrbPrbMapping;
       dlTtiReqPdu->pdu.pdsch_pdu.startSymbIndex = pdschInfo->pdschTimeAlloc.startSymb;
       dlTtiReqPdu->pdu.pdsch_pdu.nrOfSymbols = pdschInfo->pdschTimeAlloc.numSymb;
-      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.digBfInterfaces = pdschInfo->beamPdschInfo.digBfInterfaces;
       dlTtiReqPdu->pdu.pdsch_pdu.powerControlOffset = pdschInfo->txPdschPower.powerControlOffset;  
       dlTtiReqPdu->pdu.pdsch_pdu.powerControlOffsetSS = pdschInfo->txPdschPower.powerControlOffsetSS;
 #ifdef OAI_TESTING 
-      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.numPrgs = reverseBytes16(pdschInfo->beamPdschInfo.numPrgs);
-      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.prgSize = reverseBytes16(pdschInfo->beamPdschInfo.prgSize);
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.digBfInterfaces = 1;
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.numPrgs = reverseBytes16(0);
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.prgSize = reverseBytes16(0);
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].pmIdx = reverseBytes16(pdschInfo->beamPdschInfo.prg[0].pmIdx);
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].beamIdx[0].beamidx = reverseBytes16(pdschInfo->beamPdschInfo.prg[0].beamIdx[0]);
 #else
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.digBfInterfaces = pdschInfo->beamPdschInfo.digBfInterfaces;
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.numPrgs = pdschInfo->beamPdschInfo.numPrgs;
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.prgSize = pdschInfo->beamPdschInfo.prgSize;
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].pmIdx = pdschInfo->beamPdschInfo.prg[0].pmIdx;
@@ -4064,7 +4739,7 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCel
    void * wlsHdlr = NULLP;
 #endif
    uint8_t tlvPaddingLen =get_tlv_padding(macCellCfg->cellCfg.sib1Cfg.sib1PduLen);
-   uint16_t totalLen= macCellCfg->cellCfg.sib1Cfg.sib1PduLen+tlvPaddingLen;
+   uint16_t totalLen= macCellCfg->cellCfg.sib1Cfg.sib1PduLen+tlvPaddingLen+4;
 
    pduDesc[pduIndex].pdu_length = totalLen; 
 #ifdef OAI_TESTING
@@ -4664,16 +5339,12 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo,  p_fapi_api_queue_elem_t pr
        * {numPdus, nGroup} = 2 * sizeof(uint8_t), total number of pdu supproted = numPdus*sizeof(fapi_dl_tti_req_pdu_t)
        * and number of Group supported = ngroup * sizeof(fapi_ue_info_t) */
 
-      msgLen=sizeof(fapi_msg_t)+ (2*sizeof(uint16_t)) + (2*sizeof(uint8_t)) + (nPdus*sizeof(fapi_dl_tti_req_pdu_t)) + (nGroup * sizeof(fapi_ue_info_t));
+//      msgLen=sizeof(fapi_msg_t)+ (2*sizeof(uint16_t)) + (2*sizeof(uint8_t)) + (nPdus*sizeof(fapi_dl_tti_req_pdu_t)) + (nGroup * sizeof(fapi_ue_info_t));
 
-      LWR_MAC_ALLOC(dlTtiElem, (sizeof(fapi_api_queue_elem_t) + msgLen));
-      if(dlTtiElem)
+      LWR_MAC_ALLOC(dlTtiReq, (sizeof(fapi_dl_tti_req_t)));
+      if(dlTtiReq)
       {
-         FILL_FAPI_LIST_ELEM(dlTtiElem, NULLP, FAPI_DL_TTI_REQUEST, 1, msgLen);
-         
-         /* Fill Dl TTI Request */
-         dlTtiReq = (fapi_dl_tti_req_t *)(dlTtiElem +1);
-         memset(dlTtiReq, 0, msgLen);
+         memset(dlTtiReq, 0, sizeof(fapi_dl_tti_req_t));
          fillMsgHeader(&dlTtiReq->header, FAPI_DL_TTI_REQUEST, msgLen);
          dlTtiReq->sfn  = reverseBytes16(dlTtiReqTimingInfo.sfn);
          dlTtiReq->slot = reverseBytes16(dlTtiReqTimingInfo.slot);
@@ -4811,8 +5482,22 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo,  p_fapi_api_queue_elem_t pr
 #ifdef ODU_SLOT_IND_DEBUG_LOG
             DU_LOG("\nDEBUG  -->  LWR_MAC: Sending DL TTI Request");
 #endif
+	    uint32_t  bufferLen=0;
+	    uint8_t mBuf[2500];
+	    packDlTtiReq(dlTtiReq, mBuf, &bufferLen);
+	    LWR_MAC_ALLOC(dlTtiElem, (sizeof(fapi_api_queue_elem_t)  + bufferLen));
+	    if(dlTtiElem==NULLP)
+	    {
+		    DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for DL TTI Request");
+		    return RFAILED;
+	    }
+	    FILL_FAPI_LIST_ELEM(dlTtiElem, NULLP, FAPI_DL_TTI_REQUEST, 1, bufferLen);
+
+	    memcpy((uint8_t *)( dlTtiElem +1), mBuf, bufferLen);
 	    prevElemt->p_next = dlTtiElem;
-         }
+	    LWR_MAC_FREE(dlTtiReq, (sizeof(fapi_dl_tti_req_t)));
+	    //LWR_MAC_FREE(mBuf, sizeof(fapi_dl_tti_req_t));
+	 }
          if(macCb.macCell[cellIdx]->state == CELL_TO_BE_STOPPED)
          {
             /* Intel L1 expects UL_DCI.request following DL_TTI.request */
@@ -4979,6 +5664,9 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
    MsgLen = sizeof(fapi_msg_t)+ (3*sizeof(uint16_t)) + (nPdu*sizeof(fapi_tx_pdu_desc_t));
    if(nPdu > 0)
    {
+	   LWR_MAC_ALLOC(txDataReq, (sizeof(fapi_tx_data_req_t)));
+	   memset(txDataReq, 0, MsgLen);
+#if 0
       LWR_MAC_ALLOC(txDataElem, (sizeof(fapi_api_queue_elem_t) + MsgLen));
       if(txDataElem == NULLP)
       {
@@ -4988,8 +5676,8 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
 
       FILL_FAPI_LIST_ELEM(txDataElem, NULLP, FAPI_TX_DATA_REQUEST, 1, MsgLen);
       txDataReq = (fapi_tx_data_req_t *)(txDataElem +1);
-      memset(txDataReq, 0, MsgLen);
-      fillMsgHeader(&txDataReq->header, FAPI_TX_DATA_REQUEST, MsgLen);
+#endif
+      fillMsgHeader(&txDataReq->header, FAPI_TX_DATA_REQUEST, sizeof(fapi_tx_data_req_t));
 
       txDataReq->sfn  = reverseBytes16(currTimingInfo.sfn);
       txDataReq->slot = reverseBytes16(currTimingInfo.slot);
@@ -5048,8 +5736,24 @@ uint16_t sendTxDataReq(SlotTimingInfo currTimingInfo, MacDlSlot *dlSlot, p_fapi_
       DU_LOG("\nDEBUG  -->  LWR_MAC: After reversing total number pdu %u = ", txDataReq->num_pdus);
 
       /* Fill message header */
+      uint32_t  bufferLen=0;
+      uint8_t mBuf[2500];
+      packTxDataReqBuffer(txDataReq, mBuf, &bufferLen);
+      LWR_MAC_ALLOC(txDataElem, (sizeof(fapi_api_queue_elem_t) + bufferLen));
+      if(txDataElem == NULLP)
+      {
+	      DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for TX data Request");
+	      return RFAILED;
+      }
+
+      FILL_FAPI_LIST_ELEM(txDataElem, NULLP, FAPI_TX_DATA_REQUEST, 1, bufferLen);
+      memcpy((uint8_t *)( txDataElem +1), mBuf, bufferLen);
+
+
       DU_LOG("\nDEBUG  -->  LWR_MAC: Sending TX DATA Request\n");
       prevElem->p_next = txDataElem;
+      LWR_MAC_FREE(txDataReq, (sizeof(fapi_tx_data_req_t)));
+     // LWR_MAC_FREE(mBuf, (sizeof(fapi_tx_data_req_t)));
    }
 #endif
 #endif
@@ -5450,12 +6154,9 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
       ADD_DELTA_TO_TIME(currTimingInfo,ulTtiReqTimingInfo,gConfigInfo.gPhyDeltaUl, macCb.macCell[cellIdx]->numOfSlots);
       currUlSlot = &macCb.macCell[cellIdx]->ulSlot[ulTtiReqTimingInfo.slot % macCb.macCell[cellIdx]->numOfSlots];
 
-      LWR_MAC_ALLOC(ulTtiElem, (sizeof(fapi_api_queue_elem_t) + sizeof(fapi_ul_tti_req_t)));
-      if(ulTtiElem)
+      LWR_MAC_ALLOC(ulTtiReq, (sizeof(fapi_ul_tti_req_t)));
+      if(ulTtiReq)
       {
-         FILL_FAPI_LIST_ELEM(ulTtiElem, NULLP, FAPI_UL_TTI_REQUEST, 1, \
-               sizeof(fapi_ul_tti_req_t));
-         ulTtiReq = (fapi_ul_tti_req_t *)(ulTtiElem +1);
          memset(ulTtiReq, 0, sizeof(fapi_ul_tti_req_t));
          fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, sizeof(fapi_ul_tti_req_t));
          ulTtiReq->sfn  = ulTtiReqTimingInfo.sfn;
@@ -5505,12 +6206,26 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
             ulTtiReq->ueGrpInfo[ulTtiReq->nGroup].nUe = MAX_NUM_UE_PER_TTI;
             ulTtiReq->nGroup++;
          } 
+	 
+	 uint32_t  bufferLen=0;
+	 uint8_t mBuf[2500];
+	 packUlTtiReq(ulTtiElem, mBuf, &bufferLen);
+	 LWR_MAC_ALLOC(ulTtiElem, (sizeof(fapi_api_queue_elem_t)  + bufferLen));
+	 if(ulTtiElem==NULLP)
+	 {
 
+		 DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for UL TTI Request");
+		 return RFAILED;
+	 }
+	 FILL_FAPI_LIST_ELEM(ulTtiElem, NULLP, FAPI_UL_TTI_REQUEST, 1, bufferLen);
+
+	 memcpy((uint8_t *)( ulTtiElem +1), mBuf, bufferLen);
 #ifdef ODU_SLOT_IND_DEBUG_LOG
          DU_LOG("\nDEBUG  -->  LWR_MAC: Sending UL TTI Request");
 #endif
          prevElem->p_next = ulTtiElem;
 
+         LWR_MAC_FREE(ulTtiReq, (sizeof(fapi_ul_tti_req_t)));
          memset(currUlSlot, 0, sizeof(MacUlSlot));
          return ROK;
       }
@@ -5562,14 +6277,12 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
        * sizeof(fapi_ue_info_t) */
 
       msgLen=sizeof(fapi_msg_t)+ (2*sizeof(uint16_t)) + (5*sizeof(uint8_t)) + (nPdus*sizeof(fapi_ul_tti_req_pdu_t)) + sizeof(fapi_ue_info_t);
-      
-      LWR_MAC_ALLOC(ulTtiElem, (sizeof(fapi_api_queue_elem_t) + msgLen));
-      if(ulTtiElem)
+     
+      LWR_MAC_ALLOC(ulTtiReq, (sizeof(fapi_ul_tti_req_t)));
+      if(ulTtiReq)
       {
-         FILL_FAPI_LIST_ELEM(ulTtiElem, NULLP, FAPI_UL_TTI_REQUEST, 1, msgLen);
-             
-         ulTtiReq = (fapi_ul_tti_req_t *)(ulTtiElem +1);
-         memset(ulTtiReq, 0, msgLen);
+         memset(ulTtiReq, 0, sizeof(fapi_ul_tti_req_t));
+
          fillMsgHeader(&ulTtiReq->header, FAPI_UL_TTI_REQUEST, msgLen);
          ulTtiReq->sfn  = reverseBytes16(ulTtiReqTimingInfo.sfn);
          ulTtiReq->slot = reverseBytes16(ulTtiReqTimingInfo.slot);
@@ -5617,12 +6330,28 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
             ulTtiReq->ueGrpInfo[ulTtiReq->nGroup].nUe = MAX_NUM_UE_PER_TTI;
             ulTtiReq->nGroup++;
          }
+	 uint32_t  bufferLen=0;
+	 uint8_t mBuf[2500];
+	 packUlTtiReq(ulTtiReq, mBuf, &bufferLen);
+	 LWR_MAC_ALLOC(ulTtiElem, (sizeof(fapi_api_queue_elem_t)  + bufferLen));
+	 if(ulTtiElem==NULLP)
+	 {
+
+		 DU_LOG("\nERROR  -->  LWR_MAC: Failed to allocate memory for UL TTI Request");
+		 return RFAILED;
+	 }
+	 FILL_FAPI_LIST_ELEM(ulTtiElem, NULLP, FAPI_UL_TTI_REQUEST, 1, bufferLen);
+
+	 memcpy((uint8_t *)( ulTtiElem +1), mBuf, bufferLen);
 #ifdef ODU_SLOT_IND_DEBUG_LOG
-         DU_LOG("\nDEBUG  -->  LWR_MAC: Sending UL TTI Request");
+	 DU_LOG("\nDEBUG  -->  LWR_MAC: Sending UL TTI Request");
 #endif
-         prevElem->p_next = ulTtiElem;
-         memset(currUlSlot, 0, sizeof(MacUlSlot));
-         return ROK;
+	 prevElem->p_next = ulTtiElem;
+
+	 LWR_MAC_FREE(ulTtiReq, (sizeof(fapi_ul_tti_req_t)));
+	 memset(currUlSlot, 0, sizeof(MacUlSlot));
+	 return ROK;
+
       }
       else
       {
