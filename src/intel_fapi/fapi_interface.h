@@ -214,7 +214,7 @@ extern "C" {
 #define FAPI_MAX_NUMBER_OF_CODEWORDS_PER_PDU                2   // Based on MAX_DL_CODEWORD
 // Based on (MAX_NUM_PDSCH*MAX_DL_CODEWORD + MAX_NUM_PDCCH + MAX_NUM_SRS +
 // 1 PBCH/SLOT)
-#define FAPI_MAX_NUMBER_DL_PDUS_PER_TTI                     129
+#define FAPI_MAX_NUMBER_DL_PDUS_PER_TTI                     15
 
 #define FAPI_MAX_NUMBER_OF_UES_PER_TTI                      16  // Per common_ran_parameters.h
 // Based on Max Tb size of 1376264 bits + 24 crc over (8848-24) and O/H
@@ -336,7 +336,7 @@ typedef struct {
 	union
 	{
 		uint32_t *ptr;         // TLV with unsigned 32 bit value
-		uint32_t direct[380];         // TLV with unsigned 32 bit value
+		uint32_t direct[1000];         // TLV with unsigned 32 bit value
 	}value;
 #ifdef OAI_TESTING
     } __attribute__((packed))  fapi_uint32_ptr_tlv_t;
@@ -756,10 +756,11 @@ typedef struct {
 // Updated per 5G FAPI 
     typedef struct {
         fapi_msg_t header;
-        uint8_t number_of_tlvs;
 #ifndef OAI_TESTING
+        uint16_t number_of_tlvs;
         uint8_t pad[3];
 #endif
+        uint8_t number_of_tlvs;
         fapi_uint32_tlv_t tlvs[FAPI_MAX_NUM_TLVS_CONFIG];   // 5G FAPI Table 3-17
 #ifdef OAI_TESTING
     } __attribute__((packed))  fapi_config_req_t;
@@ -942,6 +943,14 @@ typedef struct {
     } fapi_codeword_pdu_t;
 #endif
 
+#ifdef OAI_TESTING
+typedef struct 
+{
+       uint8_t ldpcBaseGraph;
+       uint32_t tbSizeLbrmBytes;
+} __attribute__((packed))fapi_pdsch_maintenance_param_v3;
+#endif
+
     // Updated per 5G FAPI
     typedef struct {
         uint16_t pduBitMap;
@@ -992,6 +1001,8 @@ typedef struct {
         uint8_t nrOfDmrsSymbols;
         uint8_t dmrsAddPos;
         uint8_t pad2;
+#else
+	fapi_pdsch_maintenance_param_v3 maintParamV3;
 #endif
 #ifdef OAI_TESTING
     } __attribute__((packed)) fapi_dl_pdsch_pdu_t;
@@ -1195,6 +1206,10 @@ typedef struct {
 
 // Updated per 5G FAPI
     typedef struct {
+#ifdef OAI_TESTING
+            uint8_t trp_scheme;
+#endif
+
         uint16_t numPrgs;
         uint16_t prgSize;
         uint8_t digBfInterface;
