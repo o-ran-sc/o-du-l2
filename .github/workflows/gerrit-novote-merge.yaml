@@ -86,7 +86,7 @@ jobs:
       GERRIT_REFSPEC: ${{ inputs.GERRIT_REFSPEC }}
       JDK_VERSION: "17"
       # yamllint disable-line rule:line-length
-      PRE_BUILD_SCRIPT_URL: "https://raw.githubusercontent.com/o-ran-sc/ci-management/master/jjb/com-log/setup-com-log-build-deb.sh"
+      PRE_BUILD_SCRIPT_URL: "https://github.com/o-ran-sc/o-du-l2/blob/master/setup-com-log-build-deb.sh"
       SONAR_ARGS: >
         -Dsonar.organization=o-ran-sc
         -Dsonar.projectKey=o-ran-sc_o-du-l2
