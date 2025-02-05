@@ -18,6 +18,24 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1f51c3a_86dd93fd",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2022,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2025-02-05T07:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f80df4ad_48b826be",
+      "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ff3abfb_fd18fd6b",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-01-31T06:41:24Z",
       "side": 1,
       "message": "can we use the enum here?",
+      "range": {
+        "startLine": 2050,
+        "startChar": 8,
+        "endLine": 2050,
+        "endChar": 9
+      },
+      "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ad450cc_343885a8",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2050,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2025-02-05T07:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ff3abfb_fd18fd6b",
       "range": {
         "startLine": 2050,
         "startChar": 8,
@@ -64,6 +106,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db0d0204_508b776e",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2084,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2025-02-05T07:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bfdf6d21_df8fba81",
+      "range": {
+        "startLine": 2084,
+        "startChar": 43,
+        "endLine": 2084,
+        "endChar": 58
+      },
+      "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d0e07e5_32282cfe",
@@ -77,6 +143,30 @@
       "writtenOn": "2025-01-31T06:41:24Z",
       "side": 1,
       "message": "can we do hardcoding in fill function",
+      "range": {
+        "startLine": 2098,
+        "startChar": 49,
+        "endLine": 2098,
+        "endChar": 57
+      },
+      "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2601dca4_d6e5c61a",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2098,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2025-02-05T07:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d0e07e5_32282cfe",
       "range": {
         "startLine": 2098,
         "startChar": 49,
@@ -110,6 +200,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40af405e_d2fab9b0",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2170,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2025-02-05T07:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d9408ff_18effdf4",
+      "range": {
+        "startLine": 2170,
+        "startChar": 40,
+        "endLine": 2170,
+        "endChar": 55
+      },
+      "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6d65335_77c10366",
@@ -123,6 +237,24 @@
       "writtenOn": "2025-01-31T06:41:24Z",
       "side": 1,
       "message": "msg title?",
+      "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb1209de_a95e40c5",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2253,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2025-02-05T07:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d65335_77c10366",
       "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -150,6 +282,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec8ea4b5_6cf09b33",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2281,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2025-02-05T07:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ef9e8a0_011ff2b7",
+      "range": {
+        "startLine": 2281,
+        "startChar": 8,
+        "endLine": 2281,
+        "endChar": 9
+      },
+      "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc0f3776_f02ea941",
@@ -163,6 +319,24 @@
       "writtenOn": "2025-01-31T06:41:24Z",
       "side": 1,
       "message": "can we remove line of code in #if 0",
+      "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa992098_36425fe6",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2676,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2025-02-05T07:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc0f3776_f02ea941",
       "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -190,6 +364,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eafc51f8_2be3020f",
+        "filename": "src/5gnrmac/lwr_mac_fsm.c",
+        "patchSetId": 5
+      },
+      "lineNbr": 2871,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2025-02-05T07:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "169369fe_5639231d",
+      "range": {
+        "startLine": 2871,
+        "startChar": 5,
+        "endLine": 2871,
+        "endChar": 17
+      },
+      "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dbca5b5e_f8a231f9",
@@ -203,6 +401,24 @@
       "writtenOn": "2025-01-31T06:41:24Z",
       "side": 1,
       "message": "why this change?",
+      "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01caca4f_590f49c8",
+        "filename": "src/cm/common_def.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2025-02-05T07:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbca5b5e_f8a231f9",
       "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
@@ -230,6 +446,30 @@
       "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77f8fabe_d7823df2",
+        "filename": "src/cm/mac_sch_interface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2025-02-05T07:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c2cecea_4b547f55",
+      "range": {
+        "startLine": 105,
+        "startChar": 8,
+        "endLine": 105,
+        "endChar": 27
+      },
+      "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "318290a6_1670e1aa",
@@ -243,6 +483,30 @@
       "writtenOn": "2025-01-31T06:41:24Z",
       "side": 1,
       "message": "can we bifurcate this change for OAI_TESTING",
+      "range": {
+        "startLine": 217,
+        "startChar": 8,
+        "endLine": 217,
+        "endChar": 60
+      },
+      "revId": "4f530345d289ab55f995783664df2ae2cd0bbc8a",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46b6c21c_4d7e3f9b",
+        "filename": "src/intel_fapi/fapi_interface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000472
+      },
+      "writtenOn": "2025-02-05T07:00:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "318290a6_1670e1aa",
       "range": {
         "startLine": 217,
         "startChar": 8,
