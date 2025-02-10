@@ -4,43 +4,6 @@ name: Gerrit Merge
 # yamllint disable-line rule:truthy
 on:
   workflow_dispatch:
-    inputs:
-      GERRIT_BRANCH:
-        description: "Branch that change is against"
-        required: true
-        type: string
-      GERRIT_CHANGE_ID:
-        description: "The ID for the change"
-        required: true
-        type: string
-      GERRIT_CHANGE_NUMBER:
-        description: "The Gerrit number"
-        required: true
-        type: string
-      GERRIT_CHANGE_URL:
-        description: "URL to the change"
-        required: true
-        type: string
-      GERRIT_EVENT_TYPE:
-        description: "Type of Gerrit event"
-        required: true
-        type: string
-      GERRIT_PATCHSET_NUMBER:
-        description: "The patch number for the change"
-        required: true
-        type: string
-      GERRIT_PATCHSET_REVISION:
-        description: "The revision sha"
-        required: true
-        type: string
-      GERRIT_PROJECT:
-        description: "Project in Gerrit"
-        required: true
-        type: string
-      GERRIT_REFSPEC:
-        description: "Gerrit refspec of change"
-        required: true
-        type: string
     secrets:
       SONAR_TOKEN:
         description: "Sonar Cloud access token"
@@ -52,68 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  notify:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Notify job start
-        # yamllint disable-line rule:line-length
-        uses: lfit/gerrit-review-action@9627b9a144f2a2cad70707ddfae87c87dce60729  # v0.8
-        with:
-          host: ${{ vars.GERRIT_SERVER }}
-          username: ${{ vars.GERRIT_SSH_USER }}
-          key: ${{ secrets.GERRIT_SSH_PRIVKEY }}
-          known_hosts: ${{ vars.GERRIT_KNOWN_HOSTS }}
-          gerrit-change-number: ${{ inputs.GERRIT_CHANGE_NUMBER }}
-          gerrit-patchset-number: ${{ inputs.GERRIT_PATCHSET_NUMBER }}
-          vote-type: clear
-          comment-only: true
-      - name: Allow replication
-        run: sleep 10s
-
-  call-cmake-sonarcloud:
-    needs: notify
+  reuse-sonarqube-cloud:
     # yamllint disable-line rule:line-length
-    uses: lfit/releng-reusable-workflows/.github/workflows/composed-cmake-sonar-cloud.yaml@main
-    with:
-      GERRIT_BRANCH: ${{ inputs.GERRIT_BRANCH }}
-      GERRIT_CHANGE_ID: ${{ inputs.GERRIT_CHANGE_ID }}
-      GERRIT_CHANGE_NUMBER: ${{ inputs.GERRIT_CHANGE_NUMBER }}
-      GERRIT_CHANGE_URL: ${{ inputs.GERRIT_CHANGE_URL }}
-      GERRIT_EVENT_TYPE: ${{ inputs.GERRIT_EVENT_TYPE }}
-      GERRIT_PATCHSET_NUMBER: ${{ inputs.GERRIT_PATCHSET_NUMBER }}
-      GERRIT_PATCHSET_REVISION: ${{ inputs.GERRIT_PATCHSET_REVISION }}
-      GERRIT_PROJECT: ${{ inputs.GERRIT_PROJECT }}
-      GERRIT_REFSPEC: ${{ inputs.GERRIT_REFSPEC }}
-      JDK_VERSION: "17"
-      # yamllint disable-line rule:line-length
-      PRE_BUILD_SCRIPT_URL: "https://raw.githubusercontent.com/o-ran-sc/ci-management/master/jjb/com-log/setup-com-log-build-deb.sh" 
-      SONAR_ARGS: >
-        -Dsonar.organization=o-ran-sc
-        -Dsonar.projectKey=o-ran-sc_o-du-l2
-        -Dsonar.projectName=o-du-l2
-        -Dsonar.build.sourceEncoding=UTF-8
-        -Dsonar.sources=src
-        -Dsonar.cfamily.build-wrapper-output="${GITHUB_WORKSPACE}/bw-output"
-        -Dsonar.cfamily.gcov.reportsPath=test
+    uses: lfit/releng-reusable-workflows/.github/workflows/reuse-sonarqube-cloud.yaml@0f26b956d7d4bef97a5ef0099a142eb7c9242d1c # 2025-02-10
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-  report-status:
-    if: ${{ always() }}
-    needs: [notify, call-cmake-sonarcloud]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get workflow conclusion
-        uses: technote-space/workflow-conclusion-action@v3
-      - name: Report workflow conclusion
-        # yamllint disable-line rule:line-length
-        uses: lfit/gerrit-review-action@9627b9a144f2a2cad70707ddfae87c87dce60729  # v0.8
-        with:
-          host: ${{ vars.GERRIT_SERVER }}
-          username: ${{ vars.GERRIT_SSH_USER }}
-          key: ${{ secrets.GERRIT_SSH_PRIVKEY }}
-          known_hosts: ${{ vars.GERRIT_KNOWN_HOSTS }}
-          gerrit-change-number: ${{ inputs.GERRIT_CHANGE_NUMBER }}
-          gerrit-patchset-number: ${{ inputs.GERRIT_PATCHSET_NUMBER }}
-          vote-type: ${{ env.WORKFLOW_CONCLUSION }}
-          comment-only: true
