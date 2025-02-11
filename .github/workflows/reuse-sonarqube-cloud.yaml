@@ -1,0 +1,58 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2024 The Linux Foundation
+
+# Runs a SonarQube Cloud scan
+name: "[R] SonarQube Cloud"
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+    inputs:
+      # Optional
+      SONAR_ROOT_CERT:
+        description: "Server root certificate PEM encoded"
+        type: string
+        required: false
+      BUILD_WRAPPER_URL:
+        # yamllint disable-line rule:line-length
+        # e.g. https://raw.githubusercontent.com/o-ran-sc/ci-management/refs/heads/master/jjb/com-golog/prescan-golog-go-ubuntu.sh
+        description: "Download location of build wrapper/script"
+        type: string
+        required: false
+      BUILD_WRAPPER_OUT_DIR:
+        description: "Filesystem location of build outputs"
+        type: string
+        required: false
+      SONAR_HOST_URL:
+        description: "Uploads scans to the given host URL"
+        type: string
+        required: false
+        default: "https://sonarcloud.io"
+      LC_ALL:
+        # yamllint disable-line rule:line-length
+        description: "Change when code character set is outside the range of en_US.UTF-8"
+        type: string
+        required: false
+        default: "en_US.UTF-8"
+    # Re-usable workflow requires secrets be explicitly passed
+    secrets:
+      SONAR_TOKEN:
+        description: "SonarQube API key/token"
+        required: true
+
+jobs:
+  sonarqube-cloud:
+    name: "Scan"
+    runs-on: ubuntu-24.04
+    steps:
+      - name: "SonarQube Cloud Scan"
+        # yamllint disable-line rule:line-length
+        uses: ./.github/actions/sonarqube-cloud-scan-action
+        with:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_ROOT_CERT: ${{ inputs.SONAR_ROOT_CERT }}
+          BUILD_WRAPPER_URL: ${{ inputs.BUILD_WRAPPER_URL }}
+          BUILD_WRAPPER_OUT_DIR: ${{ inputs.BUILD_WRAPPER_OUT_DIR }}
+          SONAR_HOST_URL: ${{ inputs.SONAR_HOST_URL }}
+          LC_ALL: ${{ inputs.LC_ALL }}

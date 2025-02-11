@@ -1,0 +1,162 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2024 The Linux Foundation
+
+# sonarqube-cloud-scan-action
+name: "🔐 SonarCube Cloud Scan"
+description: "Performs a SonarQube Cloud scan and uploads the results"
+
+# yamllint disable-line rule:line-length
+# See: https://docs.sonarsource.com/sonarqube-server/latest/project-administration/analysis-scope/
+# Create a file at the top of the repository called:
+#   sonar-project.properties
+# e.g. For Python projects, define directories for source code and tests:
+# sonar.sources = src/
+# sonar.tests = test/
+
+inputs:
+  # Mandatory
+  SONAR_TOKEN:
+    description: "SonarQube API key/token"
+    required: true
+  # Optional
+  SONAR_ROOT_CERT:
+    description: "Server root certificate PEM encoded"
+    required: false
+  BUILD_WRAPPER_URL:
+    # yamllint disable-line rule:line-length
+    # e.g. https://raw.githubusercontent.com/o-ran-sc/ci-management/refs/heads/master/jjb/com-golog/prescan-golog-go-ubuntu.sh
+    description: "Download location of build wrapper/script"
+    type: string
+    required: false
+  BUILD_WRAPPER_OUT_DIR:
+    description: "Filesystem location of build outputs"
+    type: string
+    required: false
+  SONAR_HOST_URL:
+    description: "Uploads scans to the given host URL"
+    type: string
+    required: false
+    default: "https://sonarcloud.io"
+  LC_ALL:
+    # yamllint disable-line rule:line-length
+    description: "Change when code character set is outside the range of en_US.UTF-8"
+    type: string
+    required: false
+    default: "en_US.UTF-8"
+
+runs:
+  using: "composite"
+  steps:
+    # yamllint disable-line rule:line-length
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      with:
+        # Disabling shallow clones is recommended
+        # This improves the relevancy of reporting output
+        fetch-depth: 0
+
+    - name: "Repository metadata"
+      id: repository-metadata
+      # yamllint disable-line rule:line-length
+      uses: lfit/releng-reusable-workflows/.github/actions/repository-metadata-action@a54eb06d062f1ddfb4fbeb9655c185482fe1d375 # 2025-02-05
+
+    - name: "Check for SonarQube project configuration"
+      id: sonar-project-properties
+      # yamllint disable-line rule:line-length
+      uses: lfit/releng-reusable-workflows/.github/actions/path-check-action@a54eb06d062f1ddfb4fbeb9655c185482fe1d375 # 2025-02-05
+      with:
+        path: "sonar-project.properties"
+
+    - name: "Check for SonarQube project configuration"
+      id: sonarcloud-properties
+      # yamllint disable-line rule:line-length
+      uses: lfit/releng-reusable-workflows/.github/actions/path-check-action@a54eb06d062f1ddfb4fbeb9655c185482fe1d375 # 2025-02-05
+      with:
+        path: ".sonarcloud.properties"
+
+    # yamllint disable rule:line-length
+
+    - name: "Warning: missing SonarQube configuration"
+      if:
+        # yamllint disable-line rule:line-length
+        steps.sonar-project-properties.outputs.type != 'file' && steps.sonarcloud-properties.outputs.type != 'file'
+      shell: bash
+      run: |
+        # SonarQube configuration warning
+        echo "⚠️ Repository is missing a SonarQube configuration file"
+        echo "Check the documentation for further details:"
+        echo "https://docs.sonarsource.com/sonarqube-cloud/advanced-setup/analysis-parameters/"
+        echo "### ⚠️ Repository is missing a SonarQube configuration file" >> "$GITHUB_STEP_SUMMARY"
+        echo "Check the documentation for further details:" >> "$GITHUB_STEP_SUMMARY"
+        echo "https://docs.sonarsource.com/sonarqube-cloud/advanced-setup/analysis-parameters/" \
+          >> "$GITHUB_STEP_SUMMARY"
+        # Create an ephemeral configuration file
+        echo "sonar.organization=${{ steps.repository-metadata.outputs.repository_owner }} > sonar-project.properties
+        echo "sonar.projectKey=${{ steps.repository-metadata.outputs.repository_name }}" >> sonar-project.properties
+        echo "Created: sonar-project.properties"
+        echo "Containing:"
+        cat sonar-project.properties
+
+    - name: "SonarQube configuration present"
+      if:
+        # yamllint disable-line rule:line-length
+        steps.sonar-project-properties.outputs.type != 'file' || steps.sonarcloud-properties.outputs.type != 'file'
+      shell: bash
+      run: |
+        # SonarQube configuration present
+        echo "SonarQube configuration present ✅"
+        echo "### SonarQube configuration present ✅" >> "$GITHUB_STEP_SUMMARY"
+
+    - name: "Check build wrapper URL"
+      id: url-validity-check-action
+      if: inputs.BUILD_WRAPPER_URL != ''
+      # yamllint disable-line rule:line-length
+      uses: lfit/releng-reusable-workflows/.github/actions/url-validity-check-action@a54eb06d062f1ddfb4fbeb9655c185482fe1d375 # 2025-02-05
+      with:
+        url: ${{ inputs.build_wrapper_url }}
+
+    - name: Install build wrapper
+      if: inputs.BUILD_WRAPPER_URL != ''
+      # yamllint disable-line rule:line-length
+      uses: SonarSource/sonarqube-scan-action/install-build-wrapper@bfd4e558cda28cda6b5defafb9232d191be8c203 # v4.2.1
+
+    - name: Run Build Wrapper
+      if: inputs.BUILD_WRAPPER_URL != ''
+      shell: bash
+      run: |
+        # Run Build Wrapper 🛠️
+        WGET_CMD=$(which wget)
+        if [ ! -x "$WGET_CMD" ]; then
+          echo "WGET command was not available ❌"; exit 1
+        fi
+        "$WGET_CMD" -q "$BUILD_WRAPPER_URL"
+        BUILD_SCRIPT=$(basename ${{ inputs.BUILD_WRAPPER_URL }})
+        chmod u+x "$BUILD_SCRIPT"
+        if [ -n "${{ inputs.BUILD_WRAPPER_OUT_DIR }}" ]; then
+          BUILD_WRAPPER_OUT_DIR="${{ inputs.BUILD_WRAPPER_OUT_DIR }}"
+        elif [ -n "${{ env.BUILD_WRAPPER_OUT_DIR }}" ]; then
+          BUILD_WRAPPER_OUT_DIR="${{ env.BUILD_WRAPPER_OUT_DIR }}"
+        fi
+        if [ -z "$BUILD_WRAPPER_OUT_DIR" ]; then
+          build-wrapper-linux-x86-64 "$BUILD_SCRIPT"
+        else
+          build-wrapper-linux-x86-64 --out-dir "$BUILD_WRAPPER_OUT_DIR" "$BUILD_SCRIPT"
+        fi
+
+    - name: SonarQube Scan
+      # yamllint disable-line rule:line-length
+      uses: SonarSource/sonarqube-scan-action@bfd4e558cda28cda6b5defafb9232d191be8c203 # v4.2.1
+      env:
+        SONAR_TOKEN: ${{ inputs.sonar_token }}
+        SONAR_HOST_URL: ${{ inputs.sonar_host_url }}
+        SONAR_ROOT_CERT: ${{ inputs.sonar_root_cert }}
+        LC_ALL: ${{ inputs.LC_ALL }}
+
+    - name: "Print summary/job output"
+      shell: bash
+      # yamllint disable rule:line-length
+      run: |
+        # Print summary/job output
+        # ToDo: Update the link below
+        echo "## 🔐 SonarQube Cloud Scan Results Updated" >> "$GITHUB_STEP_SUMMARY"
+        echo "🔗 https://sonarcloud.io/project/overview?id=${{ steps.repository-metadata.outputs.repository_owner }}_${{ steps.repository-metadata.outputs.repository_name }}" >> "$GITHUB_STEP_SUMMARY"
