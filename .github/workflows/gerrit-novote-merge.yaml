@@ -70,31 +70,11 @@ jobs:
       - name: Allow replication
         run: sleep 10s
 
-  call-cmake-sonarcloud:
+  call-cmake-sonarqube-cloud:
     needs: notify
+    name: "SonarQube Cloud"
     # yamllint disable-line rule:line-length
-    uses: lfit/releng-reusable-workflows/.github/workflows/composed-cmake-sonar-cloud.yaml@main
-    with:
-      GERRIT_BRANCH: ${{ inputs.GERRIT_BRANCH }}
-      GERRIT_CHANGE_ID: ${{ inputs.GERRIT_CHANGE_ID }}
-      GERRIT_CHANGE_NUMBER: ${{ inputs.GERRIT_CHANGE_NUMBER }}
-      GERRIT_CHANGE_URL: ${{ inputs.GERRIT_CHANGE_URL }}
-      GERRIT_EVENT_TYPE: ${{ inputs.GERRIT_EVENT_TYPE }}
-      GERRIT_PATCHSET_NUMBER: ${{ inputs.GERRIT_PATCHSET_NUMBER }}
-      GERRIT_PATCHSET_REVISION: ${{ inputs.GERRIT_PATCHSET_REVISION }}
-      GERRIT_PROJECT: ${{ inputs.GERRIT_PROJECT }}
-      GERRIT_REFSPEC: ${{ inputs.GERRIT_REFSPEC }}
-      JDK_VERSION: "17"
-      # yamllint disable-line rule:line-length
-      PRE_BUILD_SCRIPT_URL: "https://raw.githubusercontent.com/o-ran-sc/ci-management/master/jjb/com-log/setup-com-log-build-deb.sh" 
-      SONAR_ARGS: >
-        -Dsonar.organization=o-ran-sc
-        -Dsonar.projectKey=o-ran-sc_o-du-l2
-        -Dsonar.projectName=o-du-l2
-        -Dsonar.build.sourceEncoding=UTF-8
-        -Dsonar.sources=src
-        -Dsonar.cfamily.build-wrapper-output="${GITHUB_WORKSPACE}/bw-output"
-        -Dsonar.cfamily.gcov.reportsPath=test
+    uses: lfit/releng-reusable-workflows/.github/workflows/reuse-sonarqube-cloud.yaml@main
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
