@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53ffdf05_c0f22bcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001777
+      },
+      "writtenOn": "2025-02-13T09:36:41Z",
+      "side": 1,
+      "message": "Fixes the workflow dependency error:\nInvalid workflow file: .github/workflows/gerrit-novote-merge.yaml#L83\nThe workflow is not valid. .github/workflows/gerrit-novote-merge.yaml (Line: 83, Col: 21): Job \u0027report-status\u0027 depends on unknown job \u0027call-cmake-sonarcloud\u0027.",
+      "revId": "5af46c159ff5b87208c03559b095cbfe3a297b3d",
+      "serverId": "84e4e190-e623-4c37-9eda-58b1937c1b53"
+    }
+  ]
+}
