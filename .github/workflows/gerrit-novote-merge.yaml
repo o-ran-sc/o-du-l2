@@ -80,7 +80,7 @@ jobs:
 
   report-status:
     if: ${{ always() }}
-    needs: [notify, call-cmake-sonarcloud]
+    needs: [notify, call-cmake-sonarqube-cloud]
     runs-on: ubuntu-latest
     steps:
       - name: Get workflow conclusion
