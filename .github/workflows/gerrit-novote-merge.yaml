@@ -77,6 +77,10 @@ jobs:
     uses: lfit/releng-reusable-workflows/.github/workflows/reuse-sonarqube-cloud.yaml@main
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    with:
+      # yamllint disable-line rule:line-length
+      build_wrapper_url: "https://raw.githubusercontent.com/o-ran-sc/o-du-l2/refs/heads/main/sonarqube-cloud-build.sh"
+      build_wrapper_out_dir: build/odu/bin/
 
   report-status:
     if: ${{ always() }}
