@@ -133,7 +133,7 @@ uint8_t calculateSlotPatternLength(uint8_t scs, uint8_t periodicity);
 /* Functions declarations : Resource allocation handler */
 uint16_t schCalcTbSize(uint32_t payLoadSize);
 uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols);
-uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols);
+uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols, uint16_t *targeCodeRate, uint8_t* qam);
 bool fillPrbBitmap(uint64_t *prbBitmap, uint16_t startPrb, uint16_t numPrb);
 CmLList* isPrbAvailable(CmLListCp *freePrbBlockList, uint16_t startPrb, uint16_t numPrb);
 void removeAllocatedPrbFromFreePrbList(CmLListCp *freePrbBlockList, CmLList *node, \

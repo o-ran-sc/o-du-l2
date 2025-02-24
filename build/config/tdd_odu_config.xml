@@ -60,17 +60,17 @@
          <SSB_PERIODICITY>20</SSB_PERIODICITY>
          <SSB_PBCH_PWR>0</SSB_PBCH_PWR>
          <DL_CFG_COMMON>
-            <NR_FREQ_BAND>1</NR_FREQ_BAND>
-            <OFFSET_TO_POINT_A>24</OFFSET_TO_POINT_A>
-            <FREQ_LOC_BW>28875</FREQ_LOC_BW>
+            <NR_FREQ_BAND>78</NR_FREQ_BAND>
+            <OFFSET_TO_POINT_A>252</OFFSET_TO_POINT_A>
+            <FREQ_LOC_BW>1099</FREQ_LOC_BW>
             <SCS_SPEC_CARRIER>
                <SSB_SUBCARRIER_OFFSET>0</SSB_SUBCARRIER_OFFSET>
                <NR_SCS>1</NR_SCS>
-               <SCS_BW>100</SCS_BW>
+               <SCS_BW>273</SCS_BW>
             </SCS_SPEC_CARRIER>
             <PDCCH_CFG_COMMON>
                <PRESENT>2</PRESENT>
-               <CORESET_0_INDEX>0</CORESET_0_INDEX>
+               <CORESET_0_INDEX>12</CORESET_0_INDEX>
                <SEARCHSPACE_0_INDEX>0</SEARCHSPACE_0_INDEX>
                <PDCCH_SEARCH_SPACE_ID>1</PDCCH_SEARCH_SPACE_ID>
                <PDCCH_CTRL_RSRC_SET_ID>0</PDCCH_CTRL_RSRC_SET_ID>
@@ -97,14 +97,14 @@
                   <PDSCH_TIME_DOM_RSRC_ALLOC>
                      <K0>0</K0>
                      <MAP_TYPE>0</MAP_TYPE>
-                     <PDSCH_START_SYMBOL>3</PDSCH_START_SYMBOL>
-                     <PDSCH_LENGTH_SYMBOL>11</PDSCH_LENGTH_SYMBOL>
+                     <PDSCH_START_SYMBOL>1</PDSCH_START_SYMBOL>
+                     <PDSCH_LENGTH_SYMBOL>13</PDSCH_LENGTH_SYMBOL>
                   </PDSCH_TIME_DOM_RSRC_ALLOC>
                   <PDSCH_TIME_DOM_RSRC_ALLOC>
                      <K0>1</K0>
                      <MAP_TYPE>0</MAP_TYPE>
-                     <PDSCH_START_SYMBOL>3</PDSCH_START_SYMBOL>
-                     <PDSCH_LENGTH_SYMBOL>11</PDSCH_LENGTH_SYMBOL>
+                     <PDSCH_START_SYMBOL>1</PDSCH_START_SYMBOL>
+                     <PDSCH_LENGTH_SYMBOL>13</PDSCH_LENGTH_SYMBOL>
                   </PDSCH_TIME_DOM_RSRC_ALLOC>
                </PDSCH_TIME_DOM_RSRC_ALLOC_LIST>
             </PDSCH_CFG_COMMON>
@@ -130,7 +130,7 @@
             <SCS_SPEC_CARRIER>
                <SSB_SUBCARRIER_OFFSET>0</SSB_SUBCARRIER_OFFSET>
                <NR_SCS>1</NR_SCS>
-               <SCS_BW>100</SCS_BW>
+               <SCS_BW>273</SCS_BW>
             </SCS_SPEC_CARRIER>
             <RACH_CFG_COMMON>
                <PRESENT>2</PRESENT>
@@ -193,9 +193,9 @@
    <MIB_PARAMS>
       <SYS_FRAME_NUM>0</SYS_FRAME_NUM>
       <SUB_CARR_SPACE>1</SUB_CARR_SPACE>
-      <SSB_SC_OFFSET>0</SSB_SC_OFFSET>
+      <SSB_SC_OFFSET>12</SSB_SC_OFFSET>
       <DMRS_TYPEA_POSITION>0</DMRS_TYPEA_POSITION>
-      <CORESET_0_INDEX>0</CORESET_0_INDEX>
+      <CORESET_0_INDEX>12</CORESET_0_INDEX>
       <SEARCHSPACE_0_INDEX>0</SEARCHSPACE_0_INDEX>
       <CELL_BARRED>1</CELL_BARRED>
       <INTRA_FREQ_RESELECT>1</INTRA_FREQ_RESELECT>
@@ -218,7 +218,7 @@
                  </MNC>
                </PLMN>
             </NR_CGI>
-            <NR_PCI>1</NR_PCI>
+            <NR_PCI>0</NR_PCI>
             <F1_SRVD_PLMN>
                <PLMN>
                   <MCC>
@@ -428,7 +428,7 @@
                </SNSSAI_LIST>
             </F1_SLICE_SUPP_LST>
          </PLMN_INFO>
-         <NR_PCI>1</NR_PCI>
+         <NR_PCI>0</NR_PCI>
          <TAC>1</TAC>
          <SSB_FREQUENCY>3000000</SSB_FREQUENCY>
          <NR_SCS>1</NR_SCS>
@@ -440,7 +440,7 @@
                <PAGING_OCC>44</PAGING_OCC>
             </SCH_PAGE_CFG>
             <PDCCH_CONFIG_SIB1>
-               <CORESET_ZERO_INDEX>0</CORESET_ZERO_INDEX>
+               <CORESET_ZERO_INDEX>12</CORESET_ZERO_INDEX>
                <SEARCH_SPACE_ZERO_INDEX>0</SEARCH_SPACE_ZERO_INDEX>
             </PDCCH_CONFIG_SIB1>
          </SIB1_CELL_CFG>
@@ -519,9 +519,9 @@
       <SSB_CFG>
          <SSB_PBSC_PWR>0</SSB_PBSC_PWR>
          <SCS_CMN>1</SCS_CMN>  <!--SCS_30-->
-         <SSB_OFFSET_PT_A>24</SSB_OFFSET_PT_A>
+         <SSB_OFFSET_PT_A>252</SSB_OFFSET_PT_A>
          <SSB_PERIOD>2</SSB_PERIOD>
-         <SSB_SC_OFFSET>0</SSB_SC_OFFSET>
+         <SSB_SC_OFFSET>12</SSB_SC_OFFSET>
          <SSB_MASK_LIST>
             <SSB_MASK>1</SSB_MASK>
          </SSB_MASK_LIST>

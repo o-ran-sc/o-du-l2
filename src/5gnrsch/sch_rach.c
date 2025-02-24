@@ -456,7 +456,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
    }
    cell->schUlSlotInfo[msg3SlotTime.slot]->puschPres = true;
    tbSize = 0;  /* since nPrb has been incremented, recalculating tbSize */
-   tbSize = schCalcTbSizeFromNPrb(numRb, mcs, NUM_PDSCH_SYMBOL);
+   tbSize = schCalcTbSizeFromNPrb(numRb, mcs, NUM_PDSCH_SYMBOL, NULLP, NULLP);
    tbSize = tbSize / 8 ; /*bits to byte conversion*/
 
    schUlSlotInfo->schPuschInfo[ueId - 1]->harqProcId        = msg3HqProc->procId;

@@ -61,6 +61,7 @@
 #include "BCCH-DL-SCH-Message.h"
 #include "du_f1ap_conversions.h"
 #include "du_sys_info_hdl.h"
+#include "UE-TimersAndConstants.h"
 
 void FreeSib1Msg(SIB1_t *sib1Msg);
 uint8_t FreqInfoUlret = RFAILED;
@@ -2373,6 +2374,19 @@ uint8_t BuildServCellCfgCommonSib(ServingCellConfigCommonSIB_t *srvCellCfg)
    return ROK;
 }
 
+uint8_t BuildUeTimerAndConstants(UE_TimersAndConstants_t *ue_TimersAndConstants)
+{
+   ue_TimersAndConstants->t300 = UE_TimersAndConstants__t300_ms400;
+   ue_TimersAndConstants->t301 = UE_TimersAndConstants__t301_ms400;
+   ue_TimersAndConstants->t310 = UE_TimersAndConstants__t310_ms2000;
+   ue_TimersAndConstants->n310 = UE_TimersAndConstants__n310_n10;
+   ue_TimersAndConstants->t311 = UE_TimersAndConstants__t311_ms3000;
+   ue_TimersAndConstants->n311 = UE_TimersAndConstants__n311_n1;
+   ue_TimersAndConstants->t319 = UE_TimersAndConstants__t319_ms400;
+   
+   return ROK; 
+}
+
 /*******************************************************************
  *
  * @brief Builds SIB message in Served Cell Info
@@ -2501,6 +2515,8 @@ uint8_t BuildSib1Msg()
       {
          break;
       }
+      DU_ALLOC(sib1Msg->ue_TimersAndConstants, sizeof(UE_TimersAndConstants_t));
+      ret1 = BuildUeTimerAndConstants(sib1Msg->ue_TimersAndConstants);
 
       xer_fprint(stdout, &asn_DEF_BCCH_DL_SCH_Message, &bcchMsg);
 
@@ -3156,6 +3172,8 @@ void FreeSib1Msg(SIB1_t *sib1Msg)
 
                                                 DU_FREE(sib1Msg->servingCellConfigCommon,
                                                       sizeof(ServingCellConfigCommonSIB_t));
+                                                DU_FREE(sib1Msg->ue_TimersAndConstants, \
+								 sizeof(UE_TimersAndConstants_t));
                                              }
                                              //TODO PBORLA
                                              if(sib1Msg->si_SchedulingInfo->schedulingInfoList.list.array)

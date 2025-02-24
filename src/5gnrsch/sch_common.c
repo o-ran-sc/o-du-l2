@@ -78,7 +78,7 @@ uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstA
    }
 
    schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
-   ssbStartPrb = cell->cellCfg.ssbSubcOffset; //+Kssb
+   ssbStartPrb = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA + ceil(cell->cellCfg.ssbSubcOffset/12); //+Kssb
    ssbStartSymb = cell->ssbStartSymbArr[dlBrdcstAlloc->ssbIdxSupported-1]; /*since we are supporting only 1 ssb beam */
 
    /* Assign interface structure */
