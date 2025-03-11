@@ -95,11 +95,7 @@
 #define PUCCH_FORMAT_3 3 
 #define PUCCH_FORMAT_4 4
 
-#ifdef OAI_TESTING
 #define DEFAULT_MCS 4
-#else
-#define DEFAULT_MCS 4
-#endif
 
 #define BANDWIDTH_20MHZ 20
 #define BANDWIDTH_100MHZ 100

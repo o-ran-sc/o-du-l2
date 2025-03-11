@@ -2740,7 +2740,7 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
    DU_LOG("\nINFO   --> LWR_MAC: CONFIG_REQ: numberofTDDSlot in MAX_PERIOICITY(10ms) = %d", numSlotsInMaxPeriodicity);
    DU_LOG("\nINFO   --> LWR_MAC: CONFIG_REQ: numberofTDDSlot in CURRENT PERIOICITY(enumVal = %d) = %d\n", macCfgParams.tddCfg.tddPeriod, numSlotsInCurrPeriodicity);
    //configReq->number_of_tlvs = 25 + 1 + MAX_TDD_PERIODICITY_SLOTS * MAX_SYMB_PER_SLOT;
-   totalTlv = 25 + 1+ numSlotsInMaxPeriodicity * MAX_SYMB_PER_SLOT;
+   totalTlv = 26 + 1+ numSlotsInMaxPeriodicity * MAX_SYMB_PER_SLOT;
 #endif
    /* totalCfgReqMsgLen = size of config req's msg header + size of tlv supporting + size of tlv supporting *sizeof(fapi_uint32_tlv_t)   */
    totalCfgReqMsgLen += sizeof(configReq->header) + sizeof( configReq->number_of_tlvs) + totalTlv*sizeof(fapi_uint32_tlv_t);
@@ -2794,8 +2794,8 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
          sizeof(uint8_t), macCfgParams.ssbCfg.scsCmn << TLV_ALIGN(8), &msgLen);
 
    /* fill PRACH configuration */
-   //fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_SEQUENCE_LENGTH_TAG,     \
-   sizeof(uint8_t), macCfgParams.prachCfg.prachSeqLen, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_SEQUENCE_LENGTH_TAG,     \
+   sizeof(uint8_t), macCfgParams.prachCfg.prachSeqLen << TLV_ALIGN(8), &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_SUBC_SPACING_TAG,        \
          sizeof(uint8_t), convertScsValToScsEnum(macCfgParams.prachCfg.prachSubcSpacing) << TLV_ALIGN(8), &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_RESTRICTED_SET_CONFIG_TAG,     \
