@@ -5842,7 +5842,7 @@ void printDuConfig()
    DU_LOG("SSB Subcarrier Offset %d\n", ssbCfg->ssbScOffset);
    for (ssbMaskIdx = 0; ssbMaskIdx < SSB_MASK_SIZE; ssbMaskIdx++)
    {
-      DU_LOG("SSB Mask[%d] :%d\n", ssbMaskIdx, ssbCfg->ssbMask[ssbMaskIdx]);
+      DU_LOG("SSB Mask[%d] :%x\n", ssbMaskIdx, ssbCfg->ssbMask[ssbMaskIdx]);
    }
    DU_LOG("Beam ID %d\n", ssbCfg->beamId[0]);
    DU_LOG("BETA PSS %d\n", ssbCfg->betaPss);

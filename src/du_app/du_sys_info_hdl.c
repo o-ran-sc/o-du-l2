@@ -1854,7 +1854,8 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
                   }
                case RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_oneHalf:
                   {
-                     //TODO
+                     setup->ssb_perRACH_OccasionAndCB_PreamblesPerSSB->choice.one = \
+                        convertCbPreamblePerSsbValueToEnum(duRachCfg.numCbPreamblePerSsb);
                      break;
                   }
                case RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_one:
@@ -2324,7 +2325,7 @@ uint8_t BuildServCellCfgCommonSib(ServingCellConfigCommonSIB_t *srvCellCfg)
 
    /* SSB Position in Burst */
    ssbPosInBurst = &srvCellCfg->ssb_PositionsInBurst.inOneGroup;
-   ssbPosInBurst->size = 1;
+   ssbPosInBurst->size = 4;
    DU_ALLOC(ssbPosInBurst->buf, ssbPosInBurst->size * sizeof(uint8_t));
    if(!ssbPosInBurst->buf)
    {
