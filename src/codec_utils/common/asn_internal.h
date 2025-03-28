@@ -42,8 +42,7 @@ int get_asn1c_environment_version(void);	/* Run-time version */
  */
 #ifndef	ASN_DEBUG	/* If debugging code is not defined elsewhere... */
 #if	ASN_EMIT_DEBUG == 1	/* And it was asked to emit this code... */
-#if !defined(BELL_LABS) /* Bell Labs */
-  //#if __STDC_VERSION__ >= 199901L
+#if __STDC_VERSION__ >= 199901L
 #ifdef	ASN_THREAD_SAFE
 /* Thread safety requires sacrifice in output indentation:
  * Retain empty definition of ASN_DEBUG_INDENT_ADD. */
@@ -53,12 +52,6 @@ int get_asn1c_environment_version(void);	/* Run-time version */
 int asn_debug_indent;
 #define ASN_DEBUG_INDENT_ADD(i) do { asn_debug_indent += i; } while(0)
 #endif	/* ASN_THREAD_SAFE */
-#if defined(BELL_LABS) /* Bell Labs version */
-extern int logAsn1c(const char *filename, int linenumber, const char *format, ...);  
-#define	ASN_DEBUG(fmt, args...)	do {		        \
-    (void) logAsn1c(__FILE__, __LINE__, fmt, ##args);	\
-  } while(0)
-#else  
 #define	ASN_DEBUG(fmt, args...)	do {			\
 		int adi = asn_debug_indent;		\
 		while(adi--) fprintf(stderr, " ");	\
@@ -66,7 +59,6 @@ extern int logAsn1c(const char *filename, int linenumber, const char *format, ..
 		fprintf(stderr, " (%s:%d)\n",		\
 			__FILE__, __LINE__);		\
 	} while(0)
-#endif /* BELL_LABS */  
 #else	/* !C99 */
 void CC_PRINTFLIKE(1, 2) ASN_DEBUG_f(const char *fmt, ...);
 #define	ASN_DEBUG	ASN_DEBUG_f

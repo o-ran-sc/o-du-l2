@@ -1,860 +1,845 @@
 ASN_MODULE_SRCS=	\
-	../F1_output/F1AP-PDU.c	\
-	../F1_output/InitiatingMessage.c	\
-	../F1_output/SuccessfulOutcome.c	\
-	../F1_output/UnsuccessfulOutcome.c	\
-	../F1_output/Reset.c	\
-	../F1_output/ResetType.c	\
-	../F1_output/ResetAll.c	\
-	../F1_output/UE-associatedLogicalF1-ConnectionListRes.c	\
-	../F1_output/ResetAcknowledge.c	\
-	../F1_output/UE-associatedLogicalF1-ConnectionListResAck.c	\
-	../F1_output/ErrorIndication.c	\
-	../F1_output/F1SetupRequest.c	\
-	../F1_output/GNB-DU-Served-Cells-List.c	\
-	../F1_output/F1SetupResponse.c	\
-	../F1_output/Cells-to-be-Activated-List.c	\
-	../F1_output/F1SetupFailure.c	\
-	../F1_output/GNBDUConfigurationUpdate.c	\
-	../F1_output/Served-Cells-To-Add-List.c	\
-	../F1_output/Served-Cells-To-Modify-List.c	\
-	../F1_output/Served-Cells-To-Delete-List.c	\
-	../F1_output/Cells-Status-List.c	\
-	../F1_output/Dedicated-SIDelivery-NeededUE-List.c	\
-	../F1_output/GNBDUConfigurationUpdateAcknowledge.c	\
-	../F1_output/GNBDUConfigurationUpdateFailure.c	\
-	../F1_output/GNBCUConfigurationUpdate.c	\
-	../F1_output/Cells-to-be-Deactivated-List.c	\
-	../F1_output/GNB-CU-TNL-Association-To-Add-List.c	\
-	../F1_output/GNB-CU-TNL-Association-To-Remove-List.c	\
-	../F1_output/GNB-CU-TNL-Association-To-Update-List.c	\
-	../F1_output/Cells-to-be-Barred-List.c	\
-	../F1_output/Protected-EUTRA-Resources-List.c	\
-	../F1_output/GNBCUConfigurationUpdateAcknowledge.c	\
-	../F1_output/Cells-Failed-to-be-Activated-List.c	\
-	../F1_output/GNB-CU-TNL-Association-Setup-List.c	\
-	../F1_output/GNB-CU-TNL-Association-Failed-To-Setup-List.c	\
-	../F1_output/GNBCUConfigurationUpdateFailure.c	\
-	../F1_output/GNBDUResourceCoordinationRequest.c	\
-	../F1_output/GNBDUResourceCoordinationResponse.c	\
-	../F1_output/UEContextSetupRequest.c	\
-	../F1_output/Candidate-SpCell-List.c	\
-	../F1_output/SCell-ToBeSetup-List.c	\
-	../F1_output/SRBs-ToBeSetup-List.c	\
-	../F1_output/DRBs-ToBeSetup-List.c	\
-	../F1_output/UEContextSetupResponse.c	\
-	../F1_output/DRBs-Setup-List.c	\
-	../F1_output/SRBs-FailedToBeSetup-List.c	\
-	../F1_output/DRBs-FailedToBeSetup-List.c	\
-	../F1_output/SCell-FailedtoSetup-List.c	\
-	../F1_output/SRBs-Setup-List.c	\
-	../F1_output/UEContextSetupFailure.c	\
-	../F1_output/Potential-SpCell-List.c	\
-	../F1_output/UEContextReleaseRequest.c	\
-	../F1_output/UEContextReleaseCommand.c	\
-	../F1_output/UEContextReleaseComplete.c	\
-	../F1_output/UEContextModificationRequest.c	\
-	../F1_output/SCell-ToBeSetupMod-List.c	\
-	../F1_output/SCell-ToBeRemoved-List.c	\
-	../F1_output/SRBs-ToBeSetupMod-List.c	\
-	../F1_output/DRBs-ToBeSetupMod-List.c	\
-	../F1_output/DRBs-ToBeModified-List.c	\
-	../F1_output/SRBs-ToBeReleased-List.c	\
-	../F1_output/DRBs-ToBeReleased-List.c	\
-	../F1_output/UEContextModificationResponse.c	\
-	../F1_output/DRBs-SetupMod-List.c	\
-	../F1_output/DRBs-Modified-List.c	\
-	../F1_output/SRBs-SetupMod-List.c	\
-	../F1_output/SRBs-Modified-List.c	\
-	../F1_output/DRBs-FailedToBeModified-List.c	\
-	../F1_output/SRBs-FailedToBeSetupMod-List.c	\
-	../F1_output/DRBs-FailedToBeSetupMod-List.c	\
-	../F1_output/SCell-FailedtoSetupMod-List.c	\
-	../F1_output/Associated-SCell-List.c	\
-	../F1_output/UEContextModificationFailure.c	\
-	../F1_output/UEContextModificationRequired.c	\
-	../F1_output/DRBs-Required-ToBeModified-List.c	\
-	../F1_output/DRBs-Required-ToBeReleased-List.c	\
-	../F1_output/SRBs-Required-ToBeReleased-List.c	\
-	../F1_output/UEContextModificationConfirm.c	\
-	../F1_output/DRBs-ModifiedConf-List.c	\
-	../F1_output/UEContextModificationRefuse.c	\
-	../F1_output/WriteReplaceWarningRequest.c	\
-	../F1_output/Cells-To-Be-Broadcast-List.c	\
-	../F1_output/WriteReplaceWarningResponse.c	\
-	../F1_output/Cells-Broadcast-Completed-List.c	\
-	../F1_output/PWSCancelRequest.c	\
-	../F1_output/Broadcast-To-Be-Cancelled-List.c	\
-	../F1_output/PWSCancelResponse.c	\
-	../F1_output/Cells-Broadcast-Cancelled-List.c	\
-	../F1_output/UEInactivityNotification.c	\
-	../F1_output/DRB-Activity-List.c	\
-	../F1_output/InitialULRRCMessageTransfer.c	\
-	../F1_output/DLRRCMessageTransfer.c	\
-	../F1_output/ULRRCMessageTransfer.c	\
-	../F1_output/PrivateMessage.c	\
-	../F1_output/SystemInformationDeliveryCommand.c	\
-	../F1_output/Paging.c	\
-	../F1_output/PagingCell-list.c	\
-	../F1_output/Notify.c	\
-	../F1_output/DRB-Notify-List.c	\
-	../F1_output/PWSRestartIndication.c	\
-	../F1_output/NR-CGI-List-For-Restart-List.c	\
-	../F1_output/PWSFailureIndication.c	\
-	../F1_output/PWS-Failed-NR-CGI-List.c	\
-	../F1_output/GNBDUStatusIndication.c	\
-	../F1_output/RRCDeliveryReport.c	\
-	../F1_output/AllocationAndRetentionPriority.c	\
-	../F1_output/Associated-SCell-Item.c	\
-	../F1_output/AvailablePLMNList.c	\
-	../F1_output/AvailablePLMNList-Item.c	\
-	../F1_output/AveragingWindow.c	\
-	../F1_output/BitRate.c	\
-	../F1_output/BearerTypeChange.c	\
-	../F1_output/ServedPLMNs-List.c	\
-	../F1_output/ServedPLMNs-Item.c	\
-	../F1_output/Cancel-all-Warning-Messages-Indicator.c	\
-	../F1_output/Candidate-SpCell-Item.c	\
-	../F1_output/Cause.c	\
-	../F1_output/CauseMisc.c	\
-	../F1_output/CauseProtocol.c	\
-	../F1_output/CauseRadioNetwork.c	\
-	../F1_output/CauseTransport.c	\
-	../F1_output/CellGroupConfig.c	\
-	../F1_output/Cell-Direction.c	\
-	../F1_output/Cells-Failed-to-be-Activated-List-Item.c	\
-	../F1_output/Cells-Status-Item.c	\
-	../F1_output/Cells-To-Be-Broadcast-Item.c	\
-	../F1_output/Cells-Broadcast-Completed-Item.c	\
-	../F1_output/Broadcast-To-Be-Cancelled-Item.c	\
-	../F1_output/Cells-Broadcast-Cancelled-Item.c	\
-	../F1_output/Cells-to-be-Activated-List-Item.c	\
-	../F1_output/Cells-to-be-Deactivated-List-Item.c	\
-	../F1_output/Cells-to-be-Barred-Item.c	\
-	../F1_output/CellBarred.c	\
-	../F1_output/CellULConfigured.c	\
-	../F1_output/CNUEPagingIdentity.c	\
-	../F1_output/CP-TransportLayerAddress.c	\
-	../F1_output/CriticalityDiagnostics.c	\
-	../F1_output/CriticalityDiagnostics-IE-List.c	\
-	../F1_output/CriticalityDiagnostics-IE-Item.c	\
-	../F1_output/C-RNTI.c	\
-	../F1_output/CUtoDURRCInformation.c	\
-	../F1_output/DCBasedDuplicationConfigured.c	\
-	../F1_output/Dedicated-SIDelivery-NeededUE-Item.c	\
-	../F1_output/DLUPTNLInformation-ToBeSetup-List.c	\
-	../F1_output/DLUPTNLInformation-ToBeSetup-Item.c	\
-	../F1_output/DRB-Activity-Item.c	\
-	../F1_output/DRB-Activity.c	\
-	../F1_output/DRBID.c	\
-	../F1_output/DRBs-FailedToBeModified-Item.c	\
-	../F1_output/DRBs-FailedToBeSetup-Item.c	\
-	../F1_output/DRBs-FailedToBeSetupMod-Item.c	\
-	../F1_output/DRB-Information.c	\
-	../F1_output/DRBs-Modified-Item.c	\
-	../F1_output/DRBs-ModifiedConf-Item.c	\
-	../F1_output/DRB-Notify-Item.c	\
-	../F1_output/DRBs-Required-ToBeModified-Item.c	\
-	../F1_output/DRBs-Required-ToBeReleased-Item.c	\
-	../F1_output/DRBs-Setup-Item.c	\
-	../F1_output/DRBs-SetupMod-Item.c	\
-	../F1_output/DRBs-ToBeModified-Item.c	\
-	../F1_output/DRBs-ToBeReleased-Item.c	\
-	../F1_output/DRBs-ToBeSetup-Item.c	\
-	../F1_output/DRBs-ToBeSetupMod-Item.c	\
-	../F1_output/DRXCycle.c	\
-	../F1_output/DRX-Config.c	\
-	../F1_output/DRXConfigurationIndicator.c	\
-	../F1_output/DRX-LongCycleStartOffset.c	\
-	../F1_output/DUtoCURRCContainer.c	\
-	../F1_output/DUtoCURRCInformation.c	\
-	../F1_output/DuplicationActivation.c	\
-	../F1_output/DuplicationIndication.c	\
-	../F1_output/Dynamic5QIDescriptor.c	\
-	../F1_output/Endpoint-IP-address-and-port.c	\
-	../F1_output/ExtendedAvailablePLMN-List.c	\
-	../F1_output/ExtendedAvailablePLMN-Item.c	\
-	../F1_output/ExtendedServedPLMNs-List.c	\
-	../F1_output/ExtendedServedPLMNs-Item.c	\
-	../F1_output/EUTRACells-List.c	\
-	../F1_output/EUTRACells-List-item.c	\
-	../F1_output/EUTRA-Cell-ID.c	\
-	../F1_output/EUTRA-Coex-FDD-Info.c	\
-	../F1_output/EUTRA-Coex-Mode-Info.c	\
-	../F1_output/EUTRA-Coex-TDD-Info.c	\
-	../F1_output/EUTRA-CyclicPrefixDL.c	\
-	../F1_output/EUTRA-CyclicPrefixUL.c	\
-	../F1_output/EUTRA-PRACH-Configuration.c	\
-	../F1_output/EUTRA-SpecialSubframe-Info.c	\
-	../F1_output/EUTRA-SpecialSubframePatterns.c	\
-	../F1_output/EUTRA-SubframeAssignment.c	\
-	../F1_output/EUTRA-Transmission-Bandwidth.c	\
-	../F1_output/EUTRANQoS.c	\
-	../F1_output/ExecuteDuplication.c	\
-	../F1_output/ExtendedEARFCN.c	\
-	../F1_output/EUTRA-Mode-Info.c	\
-	../F1_output/EUTRA-NR-CellResourceCoordinationReq-Container.c	\
-	../F1_output/EUTRA-NR-CellResourceCoordinationReqAck-Container.c	\
-	../F1_output/EUTRA-FDD-Info.c	\
-	../F1_output/EUTRA-TDD-Info.c	\
-	../F1_output/FDD-Info.c	\
-	../F1_output/Flows-Mapped-To-DRB-List.c	\
-	../F1_output/Flows-Mapped-To-DRB-Item.c	\
-	../F1_output/FreqBandNrItem.c	\
-	../F1_output/FullConfiguration.c	\
-	../F1_output/GBR-QosInformation.c	\
-	../F1_output/GBR-QoSFlowInformation.c	\
-	../F1_output/GNB-CUSystemInformation.c	\
-	../F1_output/GNB-CU-TNL-Association-Setup-Item.c	\
-	../F1_output/GNB-CU-TNL-Association-Failed-To-Setup-Item.c	\
-	../F1_output/GNB-CU-TNL-Association-To-Add-Item.c	\
-	../F1_output/GNB-CU-TNL-Association-To-Remove-Item.c	\
-	../F1_output/GNB-CU-TNL-Association-To-Update-Item.c	\
-	../F1_output/GNB-CU-UE-F1AP-ID.c	\
-	../F1_output/GNB-DU-UE-F1AP-ID.c	\
-	../F1_output/GNB-DU-ID.c	\
-	../F1_output/GNB-CU-Name.c	\
-	../F1_output/GNB-DU-Name.c	\
-	../F1_output/GNB-DU-Served-Cells-Item.c	\
-	../F1_output/GNB-DU-System-Information.c	\
-	../F1_output/GNB-DUConfigurationQuery.c	\
-	../F1_output/GNBDUOverloadInformation.c	\
-	../F1_output/GTP-TEID.c	\
-	../F1_output/GTPTunnel.c	\
-	../F1_output/HandoverPreparationInformation.c	\
-	../F1_output/IgnoreResourceCoordinationContainer.c	\
-	../F1_output/InactivityMonitoringRequest.c	\
-	../F1_output/InactivityMonitoringResponse.c	\
-	../F1_output/LCID.c	\
-	../F1_output/LongDRXCycleLength.c	\
-	../F1_output/MaskedIMEISV.c	\
-	../F1_output/MaxDataBurstVolume.c	\
-	../F1_output/MaxPacketLossRate.c	\
-	../F1_output/MIB-message.c	\
-	../F1_output/MeasConfig.c	\
-	../F1_output/MeasGapConfig.c	\
-	../F1_output/MeasurementTimingConfiguration.c	\
-	../F1_output/NeedforGap.c	\
-	../F1_output/NGRANAllocationAndRetentionPriority.c	\
-	../F1_output/NR-CGI-List-For-Restart-Item.c	\
-	../F1_output/NonDynamic5QIDescriptor.c	\
-	../F1_output/Notification-Cause.c	\
-	../F1_output/NotificationControl.c	\
-	../F1_output/NRFreqInfo.c	\
-	../F1_output/NRCGI.c	\
-	../F1_output/NR-Mode-Info.c	\
-	../F1_output/NRCellIdentity.c	\
-	../F1_output/NRNRB.c	\
-	../F1_output/NRPCI.c	\
-	../F1_output/NRSCS.c	\
-	../F1_output/NumberOfBroadcasts.c	\
-	../F1_output/NumberofBroadcastRequest.c	\
-	../F1_output/OffsetToPointA.c	\
-	../F1_output/PacketDelayBudget.c	\
-	../F1_output/PacketErrorRate.c	\
-	../F1_output/PER-Scalar.c	\
-	../F1_output/PER-Exponent.c	\
-	../F1_output/PagingCell-Item.c	\
-	../F1_output/PagingDRX.c	\
-	../F1_output/PagingIdentity.c	\
-	../F1_output/PagingOrigin.c	\
-	../F1_output/PagingPriority.c	\
-	../F1_output/PDCP-SN.c	\
-	../F1_output/PDCPSNLength.c	\
-	../F1_output/PDUSessionID.c	\
-	../F1_output/Ph-InfoSCG.c	\
-	../F1_output/PLMN-Identity.c	\
-	../F1_output/Pre-emptionCapability.c	\
-	../F1_output/Pre-emptionVulnerability.c	\
-	../F1_output/PriorityLevel.c	\
-	../F1_output/ProtectedEUTRAResourceIndication.c	\
-	../F1_output/Protected-EUTRA-Resources-Item.c	\
-	../F1_output/Potential-SpCell-Item.c	\
-	../F1_output/PWS-Failed-NR-CGI-Item.c	\
-	../F1_output/PWSSystemInformation.c	\
-	../F1_output/QCI.c	\
-	../F1_output/QoS-Characteristics.c	\
-	../F1_output/QoSFlowIdentifier.c	\
-	../F1_output/QoSFlowLevelQoSParameters.c	\
-	../F1_output/QoSFlowMappingIndication.c	\
-	../F1_output/QoSInformation.c	\
-	../F1_output/RANAC.c	\
-	../F1_output/RANUEPagingIdentity.c	\
-	../F1_output/RAT-FrequencyPriorityInformation.c	\
-	../F1_output/RAT-FrequencySelectionPriority.c	\
-	../F1_output/Reestablishment-Indication.c	\
-	../F1_output/RequestedBandCombinationIndex.c	\
-	../F1_output/RequestedFeatureSetEntryIndex.c	\
-	../F1_output/RequestedP-MaxFR2.c	\
-	../F1_output/RequestType.c	\
-	../F1_output/ResourceCoordinationEUTRACellInfo.c	\
-	../F1_output/ResourceCoordinationTransferInformation.c	\
-	../F1_output/ResourceCoordinationTransferContainer.c	\
-	../F1_output/RepetitionPeriod.c	\
-	../F1_output/RLCFailureIndication.c	\
-	../F1_output/RLCMode.c	\
-	../F1_output/RLC-Status.c	\
-	../F1_output/RRCContainer.c	\
-	../F1_output/RRCDeliveryStatus.c	\
-	../F1_output/RRCDeliveryStatusRequest.c	\
-	../F1_output/RRCReconfigurationCompleteIndicator.c	\
-	../F1_output/RRC-Version.c	\
-	../F1_output/SCell-FailedtoSetup-Item.c	\
-	../F1_output/SCell-FailedtoSetupMod-Item.c	\
-	../F1_output/SCell-ToBeRemoved-Item.c	\
-	../F1_output/SCell-ToBeSetup-Item.c	\
-	../F1_output/SCell-ToBeSetupMod-Item.c	\
-	../F1_output/SCellIndex.c	\
-	../F1_output/SIBType-PWS.c	\
-	../F1_output/SelectedBandCombinationIndex.c	\
-	../F1_output/SelectedFeatureSetEntryIndex.c	\
-	../F1_output/Latest-RRC-Version-Enhanced.c	\
-	../F1_output/CG-ConfigInfo.c	\
-	../F1_output/ServCellIndex.c	\
-	../F1_output/ServingCellMO.c	\
-	../F1_output/Served-Cell-Information.c	\
-	../F1_output/Served-Cells-To-Add-Item.c	\
-	../F1_output/Served-Cells-To-Delete-Item.c	\
-	../F1_output/Served-Cells-To-Modify-Item.c	\
-	../F1_output/Served-EUTRA-Cells-Information.c	\
-	../F1_output/Service-State.c	\
-	../F1_output/Service-Status.c	\
-	../F1_output/ShortDRXCycleLength.c	\
-	../F1_output/ShortDRXCycleTimer.c	\
-	../F1_output/SIB1-message.c	\
-	../F1_output/SItype.c	\
-	../F1_output/SItype-List.c	\
-	../F1_output/SItype-Item.c	\
-	../F1_output/SibtypetobeupdatedListItem.c	\
-	../F1_output/SliceSupportList.c	\
-	../F1_output/SliceSupportItem.c	\
-	../F1_output/SNSSAI.c	\
-	../F1_output/SpectrumSharingGroupID.c	\
-	../F1_output/SRBID.c	\
-	../F1_output/SRBs-FailedToBeSetup-Item.c	\
-	../F1_output/SRBs-FailedToBeSetupMod-Item.c	\
-	../F1_output/SRBs-Modified-Item.c	\
-	../F1_output/SRBs-Required-ToBeReleased-Item.c	\
-	../F1_output/SRBs-Setup-Item.c	\
-	../F1_output/SRBs-SetupMod-Item.c	\
-	../F1_output/SRBs-ToBeReleased-Item.c	\
-	../F1_output/SRBs-ToBeSetup-Item.c	\
-	../F1_output/SRBs-ToBeSetupMod-Item.c	\
-	../F1_output/SUL-Information.c	\
-	../F1_output/SubscriberProfileIDforRFP.c	\
-	../F1_output/SULAccessIndication.c	\
-	../F1_output/SupportedSULFreqBandItem.c	\
-	../F1_output/FiveGS-TAC.c	\
-	../F1_output/Configured-EPS-TAC.c	\
-	../F1_output/TDD-Info.c	\
-	../F1_output/TimeToWait.c	\
-	../F1_output/TNLAssociationUsage.c	\
-	../F1_output/TransportLayerAddress.c	\
-	../F1_output/TransactionID.c	\
-	../F1_output/Transmission-Bandwidth.c	\
-	../F1_output/TransmissionActionIndicator.c	\
-	../F1_output/TypeOfError.c	\
-	../F1_output/UE-associatedLogicalF1-ConnectionItem.c	\
-	../F1_output/UEAssistanceInformation.c	\
-	../F1_output/UE-CapabilityRAT-ContainerList.c	\
-	../F1_output/UEIdentityIndexValue.c	\
-	../F1_output/ULConfiguration.c	\
-	../F1_output/ULUEConfiguration.c	\
-	../F1_output/ULUPTNLInformation-ToBeSetup-List.c	\
-	../F1_output/ULUPTNLInformation-ToBeSetup-Item.c	\
-	../F1_output/UplinkTxDirectCurrentListInformation.c	\
-	../F1_output/UPTransportLayerInformation.c	\
-	../F1_output/Criticality.c	\
-	../F1_output/Presence.c	\
-	../F1_output/PrivateIE-ID.c	\
-	../F1_output/ProcedureCode.c	\
-	../F1_output/ProtocolExtensionID.c	\
-	../F1_output/ProtocolIE-ID.c	\
-	../F1_output/TriggeringMessage.c	\
-	../F1_output/ProtocolIE-Container.c	\
-	../F1_output/ProtocolIE-SingleContainer.c	\
-	../F1_output/ProtocolIE-Field.c	\
-	../F1_output/ProtocolIE-ContainerPair.c	\
-	../F1_output/ProtocolIE-FieldPair.c	\
-	../F1_output/ProtocolExtensionContainer.c	\
-	../F1_output/ProtocolExtensionField.c	\
-	../F1_output/PrivateIE-Container.c	\
-	../F1_output/PrivateIE-Field.c
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/F1AP-PDU.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/InitiatingMessage.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SuccessfulOutcome.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UnsuccessfulOutcome.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Reset.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ResetType.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ResetAll.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UE-associatedLogicalF1-ConnectionListRes.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ResetAcknowledge.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UE-associatedLogicalF1-ConnectionListResAck.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ErrorIndication.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/F1SetupRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DU-Served-Cells-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/F1SetupResponse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-to-be-Activated-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/F1SetupFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUConfigurationUpdate.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cells-To-Add-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cells-To-Modify-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cells-To-Delete-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Status-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Dedicated-SIDelivery-NeededUE-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUConfigurationUpdateAcknowledge.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUConfigurationUpdateFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBCUConfigurationUpdate.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-to-be-Deactivated-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-To-Add-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-To-Remove-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-To-Update-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-to-be-Barred-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Protected-EUTRA-Resources-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBCUConfigurationUpdateAcknowledge.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Failed-to-be-Activated-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-Setup-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-Failed-To-Setup-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBCUConfigurationUpdateFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUResourceCoordinationRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUResourceCoordinationResponse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextSetupRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Candidate-SpCell-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-ToBeSetup-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-ToBeSetup-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeSetup-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextSetupResponse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Setup-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-FailedToBeSetup-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-FailedToBeSetup-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-FailedtoSetup-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-Setup-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextSetupFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Potential-SpCell-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextReleaseRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextReleaseCommand.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextReleaseComplete.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextModificationRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-ToBeSetupMod-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-ToBeRemoved-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-ToBeSetupMod-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeSetupMod-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeModified-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-ToBeReleased-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeReleased-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextModificationResponse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-SetupMod-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Modified-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-SetupMod-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-Modified-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-FailedToBeModified-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-FailedToBeSetupMod-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-FailedToBeSetupMod-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-FailedtoSetupMod-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Associated-SCell-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextModificationFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextModificationRequired.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Required-ToBeModified-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Required-ToBeReleased-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-Required-ToBeReleased-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextModificationConfirm.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ModifiedConf-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextModificationRefuse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/WriteReplaceWarningRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-To-Be-Broadcast-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/WriteReplaceWarningResponse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Broadcast-Completed-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWSCancelRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Broadcast-To-Be-Cancelled-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWSCancelResponse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Broadcast-Cancelled-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEInactivityNotification.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRB-Activity-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/InitialULRRCMessageTransfer.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DLRRCMessageTransfer.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ULRRCMessageTransfer.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PrivateMessage.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SystemInformationDeliveryCommand.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Paging.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PagingCell-list.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Notify.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRB-Notify-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWSRestartIndication.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NR-CGI-List-For-Restart-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWSFailureIndication.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWS-Failed-NR-CGI-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUStatusIndication.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RRCDeliveryReport.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/AllocationAndRetentionPriority.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Associated-SCell-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/AvailablePLMNList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/AvailablePLMNList-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/AveragingWindow.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/BitRate.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/BearerTypeChange.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ServedPLMNs-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ServedPLMNs-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cancel-all-Warning-Messages-Indicator.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Candidate-SpCell-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cause.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CauseMisc.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CauseProtocol.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CauseRadioNetwork.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CauseTransport.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CellGroupConfig.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cell-Direction.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Failed-to-be-Activated-List-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Status-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-To-Be-Broadcast-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Broadcast-Completed-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Broadcast-To-Be-Cancelled-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Broadcast-Cancelled-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-to-be-Activated-List-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-to-be-Deactivated-List-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-to-be-Barred-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CellBarred.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CellULConfigured.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CNUEPagingIdentity.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CP-TransportLayerAddress.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CriticalityDiagnostics.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CriticalityDiagnostics-IE-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CriticalityDiagnostics-IE-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/C-RNTI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CUtoDURRCInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DCBasedDuplicationConfigured.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Dedicated-SIDelivery-NeededUE-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DLUPTNLInformation-ToBeSetup-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DLUPTNLInformation-ToBeSetup-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRB-Activity-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRB-Activity.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-FailedToBeModified-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-FailedToBeSetup-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-FailedToBeSetupMod-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRB-Information.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Modified-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ModifiedConf-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRB-Notify-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Required-ToBeModified-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Required-ToBeReleased-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Setup-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-SetupMod-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeModified-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeReleased-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeSetup-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeSetupMod-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRXCycle.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRX-Config.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRXConfigurationIndicator.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRX-LongCycleStartOffset.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DUtoCURRCContainer.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DUtoCURRCInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DuplicationActivation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DuplicationIndication.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Dynamic5QIDescriptor.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Endpoint-IP-address-and-port.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ExtendedAvailablePLMN-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ExtendedAvailablePLMN-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ExtendedServedPLMNs-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ExtendedServedPLMNs-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRACells-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRACells-List-item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-Cell-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-Coex-FDD-Info.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-Coex-Mode-Info.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-Coex-TDD-Info.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-CyclicPrefixDL.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-CyclicPrefixUL.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-PRACH-Configuration.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-SpecialSubframe-Info.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-SpecialSubframePatterns.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-SubframeAssignment.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-Transmission-Bandwidth.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRANQoS.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ExecuteDuplication.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ExtendedEARFCN.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-Mode-Info.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-NR-CellResourceCoordinationReq-Container.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-NR-CellResourceCoordinationReqAck-Container.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-FDD-Info.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-TDD-Info.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/FDD-Info.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Flows-Mapped-To-DRB-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Flows-Mapped-To-DRB-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/FreqBandNrItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/FullConfiguration.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GBR-QosInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GBR-QoSFlowInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CUSystemInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-Setup-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-Failed-To-Setup-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-To-Add-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-To-Remove-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-To-Update-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-UE-F1AP-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DU-UE-F1AP-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DU-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-Name.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DU-Name.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DU-Served-Cells-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DU-System-Information.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DUConfigurationQuery.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUOverloadInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GTP-TEID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GTPTunnel.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/HandoverPreparationInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/IgnoreResourceCoordinationContainer.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/InactivityMonitoringRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/InactivityMonitoringResponse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/LCID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/LongDRXCycleLength.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MaskedIMEISV.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MaxDataBurstVolume.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MaxPacketLossRate.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MIB-message.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MeasConfig.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MeasGapConfig.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MeasurementTimingConfiguration.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NeedforGap.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NGRANAllocationAndRetentionPriority.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NR-CGI-List-For-Restart-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NonDynamic5QIDescriptor.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Notification-Cause.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NotificationControl.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NRFreqInfo.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NRCGI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NR-Mode-Info.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NRCellIdentity.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NRNRB.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NRPCI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NRSCS.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NumberOfBroadcasts.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NumberofBroadcastRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/OffsetToPointA.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PacketDelayBudget.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PacketErrorRate.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PER-Scalar.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PER-Exponent.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PagingCell-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PagingDRX.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PagingIdentity.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PagingOrigin.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PagingPriority.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PDCP-SN.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PDCPSNLength.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PDUSessionID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Ph-InfoSCG.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PLMN-Identity.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Pre-emptionCapability.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Pre-emptionVulnerability.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PriorityLevel.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtectedEUTRAResourceIndication.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Protected-EUTRA-Resources-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Potential-SpCell-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWS-Failed-NR-CGI-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWSSystemInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/QCI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/QoS-Characteristics.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/QoSFlowIdentifier.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/QoSFlowLevelQoSParameters.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/QoSFlowMappingIndication.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/QoSInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RANAC.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RANUEPagingIdentity.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RAT-FrequencyPriorityInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RAT-FrequencySelectionPriority.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Reestablishment-Indication.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RequestedBandCombinationIndex.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RequestedFeatureSetEntryIndex.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RequestedP-MaxFR2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RequestType.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ResourceCoordinationEUTRACellInfo.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ResourceCoordinationTransferInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ResourceCoordinationTransferContainer.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RepetitionPeriod.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RLCFailureIndication.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RLCMode.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RLC-Status.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RRCContainer.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RRCDeliveryStatus.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RRCDeliveryStatusRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RRCReconfigurationCompleteIndicator.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RRC-Version.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-FailedtoSetup-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-FailedtoSetupMod-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-ToBeRemoved-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-ToBeSetup-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-ToBeSetupMod-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCellIndex.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SIBType-PWS.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SelectedBandCombinationIndex.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SelectedFeatureSetEntryIndex.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Latest-RRC-Version-Enhanced.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CG-ConfigInfo.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ServCellIndex.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ServingCellMO.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cell-Information.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cells-To-Add-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cells-To-Delete-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cells-To-Modify-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-EUTRA-Cells-Information.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Service-State.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Service-Status.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ShortDRXCycleLength.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ShortDRXCycleTimer.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SIB1-message.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SItype.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SItype-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SItype-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SibtypetobeupdatedListItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SliceSupportList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SliceSupportItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SNSSAI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SpectrumSharingGroupID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-FailedToBeSetup-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-FailedToBeSetupMod-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-Modified-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-Required-ToBeReleased-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-Setup-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-SetupMod-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-ToBeReleased-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-ToBeSetup-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-ToBeSetupMod-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SUL-Information.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SubscriberProfileIDforRFP.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SULAccessIndication.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SupportedSULFreqBandItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/FiveGS-TAC.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Configured-EPS-TAC.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TDD-Info.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TimeToWait.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TNLAssociationUsage.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TransportLayerAddress.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TransactionID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Transmission-Bandwidth.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TransmissionActionIndicator.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TypeOfError.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UE-associatedLogicalF1-ConnectionItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEAssistanceInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UE-CapabilityRAT-ContainerList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEIdentityIndexValue.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ULConfiguration.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ULUEConfiguration.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ULUPTNLInformation-ToBeSetup-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ULUPTNLInformation-ToBeSetup-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UplinkTxDirectCurrentListInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UPTransportLayerInformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Criticality.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Presence.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PrivateIE-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProcedureCode.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolExtensionID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolIE-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TriggeringMessage.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolIE-Container.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolIE-SingleContainer.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolIE-Field.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolIE-ContainerPair.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolIE-FieldPair.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolExtensionContainer.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolExtensionField.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PrivateIE-Container.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PrivateIE-Field.c
 
 ASN_MODULE_HDRS=	\
-	../F1_output/F1AP-PDU.h	\
-	../F1_output/InitiatingMessage.h	\
-	../F1_output/SuccessfulOutcome.h	\
-	../F1_output/UnsuccessfulOutcome.h	\
-	../F1_output/Reset.h	\
-	../F1_output/ResetType.h	\
-	../F1_output/ResetAll.h	\
-	../F1_output/UE-associatedLogicalF1-ConnectionListRes.h	\
-	../F1_output/ResetAcknowledge.h	\
-	../F1_output/UE-associatedLogicalF1-ConnectionListResAck.h	\
-	../F1_output/ErrorIndication.h	\
-	../F1_output/F1SetupRequest.h	\
-	../F1_output/GNB-DU-Served-Cells-List.h	\
-	../F1_output/F1SetupResponse.h	\
-	../F1_output/Cells-to-be-Activated-List.h	\
-	../F1_output/F1SetupFailure.h	\
-	../F1_output/GNBDUConfigurationUpdate.h	\
-	../F1_output/Served-Cells-To-Add-List.h	\
-	../F1_output/Served-Cells-To-Modify-List.h	\
-	../F1_output/Served-Cells-To-Delete-List.h	\
-	../F1_output/Cells-Status-List.h	\
-	../F1_output/Dedicated-SIDelivery-NeededUE-List.h	\
-	../F1_output/GNBDUConfigurationUpdateAcknowledge.h	\
-	../F1_output/GNBDUConfigurationUpdateFailure.h	\
-	../F1_output/GNBCUConfigurationUpdate.h	\
-	../F1_output/Cells-to-be-Deactivated-List.h	\
-	../F1_output/GNB-CU-TNL-Association-To-Add-List.h	\
-	../F1_output/GNB-CU-TNL-Association-To-Remove-List.h	\
-	../F1_output/GNB-CU-TNL-Association-To-Update-List.h	\
-	../F1_output/Cells-to-be-Barred-List.h	\
-	../F1_output/Protected-EUTRA-Resources-List.h	\
-	../F1_output/GNBCUConfigurationUpdateAcknowledge.h	\
-	../F1_output/Cells-Failed-to-be-Activated-List.h	\
-	../F1_output/GNB-CU-TNL-Association-Setup-List.h	\
-	../F1_output/GNB-CU-TNL-Association-Failed-To-Setup-List.h	\
-	../F1_output/GNBCUConfigurationUpdateFailure.h	\
-	../F1_output/GNBDUResourceCoordinationRequest.h	\
-	../F1_output/GNBDUResourceCoordinationResponse.h	\
-	../F1_output/UEContextSetupRequest.h	\
-	../F1_output/Candidate-SpCell-List.h	\
-	../F1_output/SCell-ToBeSetup-List.h	\
-	../F1_output/SRBs-ToBeSetup-List.h	\
-	../F1_output/DRBs-ToBeSetup-List.h	\
-	../F1_output/UEContextSetupResponse.h	\
-	../F1_output/DRBs-Setup-List.h	\
-	../F1_output/SRBs-FailedToBeSetup-List.h	\
-	../F1_output/DRBs-FailedToBeSetup-List.h	\
-	../F1_output/SCell-FailedtoSetup-List.h	\
-	../F1_output/SRBs-Setup-List.h	\
-	../F1_output/UEContextSetupFailure.h	\
-	../F1_output/Potential-SpCell-List.h	\
-	../F1_output/UEContextReleaseRequest.h	\
-	../F1_output/UEContextReleaseCommand.h	\
-	../F1_output/UEContextReleaseComplete.h	\
-	../F1_output/UEContextModificationRequest.h	\
-	../F1_output/SCell-ToBeSetupMod-List.h	\
-	../F1_output/SCell-ToBeRemoved-List.h	\
-	../F1_output/SRBs-ToBeSetupMod-List.h	\
-	../F1_output/DRBs-ToBeSetupMod-List.h	\
-	../F1_output/DRBs-ToBeModified-List.h	\
-	../F1_output/SRBs-ToBeReleased-List.h	\
-	../F1_output/DRBs-ToBeReleased-List.h	\
-	../F1_output/UEContextModificationResponse.h	\
-	../F1_output/DRBs-SetupMod-List.h	\
-	../F1_output/DRBs-Modified-List.h	\
-	../F1_output/SRBs-SetupMod-List.h	\
-	../F1_output/SRBs-Modified-List.h	\
-	../F1_output/DRBs-FailedToBeModified-List.h	\
-	../F1_output/SRBs-FailedToBeSetupMod-List.h	\
-	../F1_output/DRBs-FailedToBeSetupMod-List.h	\
-	../F1_output/SCell-FailedtoSetupMod-List.h	\
-	../F1_output/Associated-SCell-List.h	\
-	../F1_output/UEContextModificationFailure.h	\
-	../F1_output/UEContextModificationRequired.h	\
-	../F1_output/DRBs-Required-ToBeModified-List.h	\
-	../F1_output/DRBs-Required-ToBeReleased-List.h	\
-	../F1_output/SRBs-Required-ToBeReleased-List.h	\
-	../F1_output/UEContextModificationConfirm.h	\
-	../F1_output/DRBs-ModifiedConf-List.h	\
-	../F1_output/UEContextModificationRefuse.h	\
-	../F1_output/WriteReplaceWarningRequest.h	\
-	../F1_output/Cells-To-Be-Broadcast-List.h	\
-	../F1_output/WriteReplaceWarningResponse.h	\
-	../F1_output/Cells-Broadcast-Completed-List.h	\
-	../F1_output/PWSCancelRequest.h	\
-	../F1_output/Broadcast-To-Be-Cancelled-List.h	\
-	../F1_output/PWSCancelResponse.h	\
-	../F1_output/Cells-Broadcast-Cancelled-List.h	\
-	../F1_output/UEInactivityNotification.h	\
-	../F1_output/DRB-Activity-List.h	\
-	../F1_output/InitialULRRCMessageTransfer.h	\
-	../F1_output/DLRRCMessageTransfer.h	\
-	../F1_output/ULRRCMessageTransfer.h	\
-	../F1_output/PrivateMessage.h	\
-	../F1_output/SystemInformationDeliveryCommand.h	\
-	../F1_output/Paging.h	\
-	../F1_output/PagingCell-list.h	\
-	../F1_output/Notify.h	\
-	../F1_output/DRB-Notify-List.h	\
-	../F1_output/PWSRestartIndication.h	\
-	../F1_output/NR-CGI-List-For-Restart-List.h	\
-	../F1_output/PWSFailureIndication.h	\
-	../F1_output/PWS-Failed-NR-CGI-List.h	\
-	../F1_output/GNBDUStatusIndication.h	\
-	../F1_output/RRCDeliveryReport.h	\
-	../F1_output/AllocationAndRetentionPriority.h	\
-	../F1_output/Associated-SCell-Item.h	\
-	../F1_output/AvailablePLMNList.h	\
-	../F1_output/AvailablePLMNList-Item.h	\
-	../F1_output/AveragingWindow.h	\
-	../F1_output/BitRate.h	\
-	../F1_output/BearerTypeChange.h	\
-	../F1_output/ServedPLMNs-List.h	\
-	../F1_output/ServedPLMNs-Item.h	\
-	../F1_output/Cancel-all-Warning-Messages-Indicator.h	\
-	../F1_output/Candidate-SpCell-Item.h	\
-	../F1_output/Cause.h	\
-	../F1_output/CauseMisc.h	\
-	../F1_output/CauseProtocol.h	\
-	../F1_output/CauseRadioNetwork.h	\
-	../F1_output/CauseTransport.h	\
-	../F1_output/CellGroupConfig.h	\
-	../F1_output/Cell-Direction.h	\
-	../F1_output/Cells-Failed-to-be-Activated-List-Item.h	\
-	../F1_output/Cells-Status-Item.h	\
-	../F1_output/Cells-To-Be-Broadcast-Item.h	\
-	../F1_output/Cells-Broadcast-Completed-Item.h	\
-	../F1_output/Broadcast-To-Be-Cancelled-Item.h	\
-	../F1_output/Cells-Broadcast-Cancelled-Item.h	\
-	../F1_output/Cells-to-be-Activated-List-Item.h	\
-	../F1_output/Cells-to-be-Deactivated-List-Item.h	\
-	../F1_output/Cells-to-be-Barred-Item.h	\
-	../F1_output/CellBarred.h	\
-	../F1_output/CellULConfigured.h	\
-	../F1_output/CNUEPagingIdentity.h	\
-	../F1_output/CP-TransportLayerAddress.h	\
-	../F1_output/CriticalityDiagnostics.h	\
-	../F1_output/CriticalityDiagnostics-IE-List.h	\
-	../F1_output/CriticalityDiagnostics-IE-Item.h	\
-	../F1_output/C-RNTI.h	\
-	../F1_output/CUtoDURRCInformation.h	\
-	../F1_output/DCBasedDuplicationConfigured.h	\
-	../F1_output/Dedicated-SIDelivery-NeededUE-Item.h	\
-	../F1_output/DLUPTNLInformation-ToBeSetup-List.h	\
-	../F1_output/DLUPTNLInformation-ToBeSetup-Item.h	\
-	../F1_output/DRB-Activity-Item.h	\
-	../F1_output/DRB-Activity.h	\
-	../F1_output/DRBID.h	\
-	../F1_output/DRBs-FailedToBeModified-Item.h	\
-	../F1_output/DRBs-FailedToBeSetup-Item.h	\
-	../F1_output/DRBs-FailedToBeSetupMod-Item.h	\
-	../F1_output/DRB-Information.h	\
-	../F1_output/DRBs-Modified-Item.h	\
-	../F1_output/DRBs-ModifiedConf-Item.h	\
-	../F1_output/DRB-Notify-Item.h	\
-	../F1_output/DRBs-Required-ToBeModified-Item.h	\
-	../F1_output/DRBs-Required-ToBeReleased-Item.h	\
-	../F1_output/DRBs-Setup-Item.h	\
-	../F1_output/DRBs-SetupMod-Item.h	\
-	../F1_output/DRBs-ToBeModified-Item.h	\
-	../F1_output/DRBs-ToBeReleased-Item.h	\
-	../F1_output/DRBs-ToBeSetup-Item.h	\
-	../F1_output/DRBs-ToBeSetupMod-Item.h	\
-	../F1_output/DRXCycle.h	\
-	../F1_output/DRX-Config.h	\
-	../F1_output/DRXConfigurationIndicator.h	\
-	../F1_output/DRX-LongCycleStartOffset.h	\
-	../F1_output/DUtoCURRCContainer.h	\
-	../F1_output/DUtoCURRCInformation.h	\
-	../F1_output/DuplicationActivation.h	\
-	../F1_output/DuplicationIndication.h	\
-	../F1_output/Dynamic5QIDescriptor.h	\
-	../F1_output/Endpoint-IP-address-and-port.h	\
-	../F1_output/ExtendedAvailablePLMN-List.h	\
-	../F1_output/ExtendedAvailablePLMN-Item.h	\
-	../F1_output/ExtendedServedPLMNs-List.h	\
-	../F1_output/ExtendedServedPLMNs-Item.h	\
-	../F1_output/EUTRACells-List.h	\
-	../F1_output/EUTRACells-List-item.h	\
-	../F1_output/EUTRA-Cell-ID.h	\
-	../F1_output/EUTRA-Coex-FDD-Info.h	\
-	../F1_output/EUTRA-Coex-Mode-Info.h	\
-	../F1_output/EUTRA-Coex-TDD-Info.h	\
-	../F1_output/EUTRA-CyclicPrefixDL.h	\
-	../F1_output/EUTRA-CyclicPrefixUL.h	\
-	../F1_output/EUTRA-PRACH-Configuration.h	\
-	../F1_output/EUTRA-SpecialSubframe-Info.h	\
-	../F1_output/EUTRA-SpecialSubframePatterns.h	\
-	../F1_output/EUTRA-SubframeAssignment.h	\
-	../F1_output/EUTRA-Transmission-Bandwidth.h	\
-	../F1_output/EUTRANQoS.h	\
-	../F1_output/ExecuteDuplication.h	\
-	../F1_output/ExtendedEARFCN.h	\
-	../F1_output/EUTRA-Mode-Info.h	\
-	../F1_output/EUTRA-NR-CellResourceCoordinationReq-Container.h	\
-	../F1_output/EUTRA-NR-CellResourceCoordinationReqAck-Container.h	\
-	../F1_output/EUTRA-FDD-Info.h	\
-	../F1_output/EUTRA-TDD-Info.h	\
-	../F1_output/FDD-Info.h	\
-	../F1_output/Flows-Mapped-To-DRB-List.h	\
-	../F1_output/Flows-Mapped-To-DRB-Item.h	\
-	../F1_output/FreqBandNrItem.h	\
-	../F1_output/FullConfiguration.h	\
-	../F1_output/GBR-QosInformation.h	\
-	../F1_output/GBR-QoSFlowInformation.h	\
-	../F1_output/GNB-CUSystemInformation.h	\
-	../F1_output/GNB-CU-TNL-Association-Setup-Item.h	\
-	../F1_output/GNB-CU-TNL-Association-Failed-To-Setup-Item.h	\
-	../F1_output/GNB-CU-TNL-Association-To-Add-Item.h	\
-	../F1_output/GNB-CU-TNL-Association-To-Remove-Item.h	\
-	../F1_output/GNB-CU-TNL-Association-To-Update-Item.h	\
-	../F1_output/GNB-CU-UE-F1AP-ID.h	\
-	../F1_output/GNB-DU-UE-F1AP-ID.h	\
-	../F1_output/GNB-DU-ID.h	\
-	../F1_output/GNB-CU-Name.h	\
-	../F1_output/GNB-DU-Name.h	\
-	../F1_output/GNB-DU-Served-Cells-Item.h	\
-	../F1_output/GNB-DU-System-Information.h	\
-	../F1_output/GNB-DUConfigurationQuery.h	\
-	../F1_output/GNBDUOverloadInformation.h	\
-	../F1_output/GTP-TEID.h	\
-	../F1_output/GTPTunnel.h	\
-	../F1_output/HandoverPreparationInformation.h	\
-	../F1_output/IgnoreResourceCoordinationContainer.h	\
-	../F1_output/InactivityMonitoringRequest.h	\
-	../F1_output/InactivityMonitoringResponse.h	\
-	../F1_output/LCID.h	\
-	../F1_output/LongDRXCycleLength.h	\
-	../F1_output/MaskedIMEISV.h	\
-	../F1_output/MaxDataBurstVolume.h	\
-	../F1_output/MaxPacketLossRate.h	\
-	../F1_output/MIB-message.h	\
-	../F1_output/MeasConfig.h	\
-	../F1_output/MeasGapConfig.h	\
-	../F1_output/MeasurementTimingConfiguration.h	\
-	../F1_output/NeedforGap.h	\
-	../F1_output/NGRANAllocationAndRetentionPriority.h	\
-	../F1_output/NR-CGI-List-For-Restart-Item.h	\
-	../F1_output/NonDynamic5QIDescriptor.h	\
-	../F1_output/Notification-Cause.h	\
-	../F1_output/NotificationControl.h	\
-	../F1_output/NRFreqInfo.h	\
-	../F1_output/NRCGI.h	\
-	../F1_output/NR-Mode-Info.h	\
-	../F1_output/NRCellIdentity.h	\
-	../F1_output/NRNRB.h	\
-	../F1_output/NRPCI.h	\
-	../F1_output/NRSCS.h	\
-	../F1_output/NumberOfBroadcasts.h	\
-	../F1_output/NumberofBroadcastRequest.h	\
-	../F1_output/OffsetToPointA.h	\
-	../F1_output/PacketDelayBudget.h	\
-	../F1_output/PacketErrorRate.h	\
-	../F1_output/PER-Scalar.h	\
-	../F1_output/PER-Exponent.h	\
-	../F1_output/PagingCell-Item.h	\
-	../F1_output/PagingDRX.h	\
-	../F1_output/PagingIdentity.h	\
-	../F1_output/PagingOrigin.h	\
-	../F1_output/PagingPriority.h	\
-	../F1_output/PDCP-SN.h	\
-	../F1_output/PDCPSNLength.h	\
-	../F1_output/PDUSessionID.h	\
-	../F1_output/Ph-InfoSCG.h	\
-	../F1_output/PLMN-Identity.h	\
-	../F1_output/Pre-emptionCapability.h	\
-	../F1_output/Pre-emptionVulnerability.h	\
-	../F1_output/PriorityLevel.h	\
-	../F1_output/ProtectedEUTRAResourceIndication.h	\
-	../F1_output/Protected-EUTRA-Resources-Item.h	\
-	../F1_output/Potential-SpCell-Item.h	\
-	../F1_output/PWS-Failed-NR-CGI-Item.h	\
-	../F1_output/PWSSystemInformation.h	\
-	../F1_output/QCI.h	\
-	../F1_output/QoS-Characteristics.h	\
-	../F1_output/QoSFlowIdentifier.h	\
-	../F1_output/QoSFlowLevelQoSParameters.h	\
-	../F1_output/QoSFlowMappingIndication.h	\
-	../F1_output/QoSInformation.h	\
-	../F1_output/RANAC.h	\
-	../F1_output/RANUEPagingIdentity.h	\
-	../F1_output/RAT-FrequencyPriorityInformation.h	\
-	../F1_output/RAT-FrequencySelectionPriority.h	\
-	../F1_output/Reestablishment-Indication.h	\
-	../F1_output/RequestedBandCombinationIndex.h	\
-	../F1_output/RequestedFeatureSetEntryIndex.h	\
-	../F1_output/RequestedP-MaxFR2.h	\
-	../F1_output/RequestType.h	\
-	../F1_output/ResourceCoordinationEUTRACellInfo.h	\
-	../F1_output/ResourceCoordinationTransferInformation.h	\
-	../F1_output/ResourceCoordinationTransferContainer.h	\
-	../F1_output/RepetitionPeriod.h	\
-	../F1_output/RLCFailureIndication.h	\
-	../F1_output/RLCMode.h	\
-	../F1_output/RLC-Status.h	\
-	../F1_output/RRCContainer.h	\
-	../F1_output/RRCDeliveryStatus.h	\
-	../F1_output/RRCDeliveryStatusRequest.h	\
-	../F1_output/RRCReconfigurationCompleteIndicator.h	\
-	../F1_output/RRC-Version.h	\
-	../F1_output/SCell-FailedtoSetup-Item.h	\
-	../F1_output/SCell-FailedtoSetupMod-Item.h	\
-	../F1_output/SCell-ToBeRemoved-Item.h	\
-	../F1_output/SCell-ToBeSetup-Item.h	\
-	../F1_output/SCell-ToBeSetupMod-Item.h	\
-	../F1_output/SCellIndex.h	\
-	../F1_output/SIBType-PWS.h	\
-	../F1_output/SelectedBandCombinationIndex.h	\
-	../F1_output/SelectedFeatureSetEntryIndex.h	\
-	../F1_output/Latest-RRC-Version-Enhanced.h	\
-	../F1_output/CG-ConfigInfo.h	\
-	../F1_output/ServCellIndex.h	\
-	../F1_output/ServingCellMO.h	\
-	../F1_output/Served-Cell-Information.h	\
-	../F1_output/Served-Cells-To-Add-Item.h	\
-	../F1_output/Served-Cells-To-Delete-Item.h	\
-	../F1_output/Served-Cells-To-Modify-Item.h	\
-	../F1_output/Served-EUTRA-Cells-Information.h	\
-	../F1_output/Service-State.h	\
-	../F1_output/Service-Status.h	\
-	../F1_output/ShortDRXCycleLength.h	\
-	../F1_output/ShortDRXCycleTimer.h	\
-	../F1_output/SIB1-message.h	\
-	../F1_output/SItype.h	\
-	../F1_output/SItype-List.h	\
-	../F1_output/SItype-Item.h	\
-	../F1_output/SibtypetobeupdatedListItem.h	\
-	../F1_output/SliceSupportList.h	\
-	../F1_output/SliceSupportItem.h	\
-	../F1_output/SNSSAI.h	\
-	../F1_output/SpectrumSharingGroupID.h	\
-	../F1_output/SRBID.h	\
-	../F1_output/SRBs-FailedToBeSetup-Item.h	\
-	../F1_output/SRBs-FailedToBeSetupMod-Item.h	\
-	../F1_output/SRBs-Modified-Item.h	\
-	../F1_output/SRBs-Required-ToBeReleased-Item.h	\
-	../F1_output/SRBs-Setup-Item.h	\
-	../F1_output/SRBs-SetupMod-Item.h	\
-	../F1_output/SRBs-ToBeReleased-Item.h	\
-	../F1_output/SRBs-ToBeSetup-Item.h	\
-	../F1_output/SRBs-ToBeSetupMod-Item.h	\
-	../F1_output/SUL-Information.h	\
-	../F1_output/SubscriberProfileIDforRFP.h	\
-	../F1_output/SULAccessIndication.h	\
-	../F1_output/SupportedSULFreqBandItem.h	\
-	../F1_output/FiveGS-TAC.h	\
-	../F1_output/Configured-EPS-TAC.h	\
-	../F1_output/TDD-Info.h	\
-	../F1_output/TimeToWait.h	\
-	../F1_output/TNLAssociationUsage.h	\
-	../F1_output/TransportLayerAddress.h	\
-	../F1_output/TransactionID.h	\
-	../F1_output/Transmission-Bandwidth.h	\
-	../F1_output/TransmissionActionIndicator.h	\
-	../F1_output/TypeOfError.h	\
-	../F1_output/UE-associatedLogicalF1-ConnectionItem.h	\
-	../F1_output/UEAssistanceInformation.h	\
-	../F1_output/UE-CapabilityRAT-ContainerList.h	\
-	../F1_output/UEIdentityIndexValue.h	\
-	../F1_output/ULConfiguration.h	\
-	../F1_output/ULUEConfiguration.h	\
-	../F1_output/ULUPTNLInformation-ToBeSetup-List.h	\
-	../F1_output/ULUPTNLInformation-ToBeSetup-Item.h	\
-	../F1_output/UplinkTxDirectCurrentListInformation.h	\
-	../F1_output/UPTransportLayerInformation.h	\
-	../F1_output/Criticality.h	\
-	../F1_output/Presence.h	\
-	../F1_output/PrivateIE-ID.h	\
-	../F1_output/ProcedureCode.h	\
-	../F1_output/ProtocolExtensionID.h	\
-	../F1_output/ProtocolIE-ID.h	\
-	../F1_output/TriggeringMessage.h	\
-	../F1_output/ProtocolIE-Container.h	\
-	../F1_output/ProtocolIE-SingleContainer.h	\
-	../F1_output/ProtocolIE-Field.h	\
-	../F1_output/ProtocolIE-ContainerPair.h	\
-	../F1_output/ProtocolIE-FieldPair.h	\
-	../F1_output/ProtocolExtensionContainer.h	\
-	../F1_output/ProtocolExtensionField.h	\
-	../F1_output/PrivateIE-Container.h	\
-	../F1_output/PrivateIE-Field.h
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/F1AP-PDU.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/InitiatingMessage.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SuccessfulOutcome.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UnsuccessfulOutcome.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Reset.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ResetType.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ResetAll.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UE-associatedLogicalF1-ConnectionListRes.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ResetAcknowledge.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UE-associatedLogicalF1-ConnectionListResAck.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ErrorIndication.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/F1SetupRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DU-Served-Cells-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/F1SetupResponse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-to-be-Activated-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/F1SetupFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUConfigurationUpdate.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cells-To-Add-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cells-To-Modify-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cells-To-Delete-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Status-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Dedicated-SIDelivery-NeededUE-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUConfigurationUpdateAcknowledge.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUConfigurationUpdateFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBCUConfigurationUpdate.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-to-be-Deactivated-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-To-Add-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-To-Remove-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-To-Update-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-to-be-Barred-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Protected-EUTRA-Resources-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBCUConfigurationUpdateAcknowledge.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Failed-to-be-Activated-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-Setup-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-Failed-To-Setup-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBCUConfigurationUpdateFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUResourceCoordinationRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUResourceCoordinationResponse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextSetupRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Candidate-SpCell-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-ToBeSetup-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-ToBeSetup-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeSetup-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextSetupResponse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Setup-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-FailedToBeSetup-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-FailedToBeSetup-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-FailedtoSetup-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-Setup-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextSetupFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Potential-SpCell-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextReleaseRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextReleaseCommand.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextReleaseComplete.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextModificationRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-ToBeSetupMod-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-ToBeRemoved-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-ToBeSetupMod-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeSetupMod-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeModified-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-ToBeReleased-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeReleased-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextModificationResponse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-SetupMod-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Modified-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-SetupMod-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-Modified-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-FailedToBeModified-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-FailedToBeSetupMod-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-FailedToBeSetupMod-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-FailedtoSetupMod-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Associated-SCell-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextModificationFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextModificationRequired.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Required-ToBeModified-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Required-ToBeReleased-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-Required-ToBeReleased-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextModificationConfirm.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ModifiedConf-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEContextModificationRefuse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/WriteReplaceWarningRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-To-Be-Broadcast-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/WriteReplaceWarningResponse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Broadcast-Completed-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWSCancelRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Broadcast-To-Be-Cancelled-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWSCancelResponse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Broadcast-Cancelled-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEInactivityNotification.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRB-Activity-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/InitialULRRCMessageTransfer.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DLRRCMessageTransfer.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ULRRCMessageTransfer.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PrivateMessage.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SystemInformationDeliveryCommand.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Paging.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PagingCell-list.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Notify.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRB-Notify-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWSRestartIndication.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NR-CGI-List-For-Restart-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWSFailureIndication.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWS-Failed-NR-CGI-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUStatusIndication.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RRCDeliveryReport.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/AllocationAndRetentionPriority.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Associated-SCell-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/AvailablePLMNList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/AvailablePLMNList-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/AveragingWindow.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/BitRate.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/BearerTypeChange.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ServedPLMNs-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ServedPLMNs-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cancel-all-Warning-Messages-Indicator.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Candidate-SpCell-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cause.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CauseMisc.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CauseProtocol.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CauseRadioNetwork.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CauseTransport.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CellGroupConfig.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cell-Direction.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Failed-to-be-Activated-List-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Status-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-To-Be-Broadcast-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Broadcast-Completed-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Broadcast-To-Be-Cancelled-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-Broadcast-Cancelled-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-to-be-Activated-List-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-to-be-Deactivated-List-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Cells-to-be-Barred-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CellBarred.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CellULConfigured.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CNUEPagingIdentity.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CP-TransportLayerAddress.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CriticalityDiagnostics.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CriticalityDiagnostics-IE-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CriticalityDiagnostics-IE-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/C-RNTI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CUtoDURRCInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DCBasedDuplicationConfigured.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Dedicated-SIDelivery-NeededUE-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DLUPTNLInformation-ToBeSetup-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DLUPTNLInformation-ToBeSetup-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRB-Activity-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRB-Activity.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-FailedToBeModified-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-FailedToBeSetup-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-FailedToBeSetupMod-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRB-Information.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Modified-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ModifiedConf-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRB-Notify-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Required-ToBeModified-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Required-ToBeReleased-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-Setup-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-SetupMod-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeModified-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeReleased-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeSetup-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRBs-ToBeSetupMod-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRXCycle.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRX-Config.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRXConfigurationIndicator.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DRX-LongCycleStartOffset.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DUtoCURRCContainer.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DUtoCURRCInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DuplicationActivation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/DuplicationIndication.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Dynamic5QIDescriptor.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Endpoint-IP-address-and-port.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ExtendedAvailablePLMN-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ExtendedAvailablePLMN-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ExtendedServedPLMNs-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ExtendedServedPLMNs-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRACells-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRACells-List-item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-Cell-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-Coex-FDD-Info.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-Coex-Mode-Info.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-Coex-TDD-Info.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-CyclicPrefixDL.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-CyclicPrefixUL.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-PRACH-Configuration.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-SpecialSubframe-Info.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-SpecialSubframePatterns.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-SubframeAssignment.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-Transmission-Bandwidth.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRANQoS.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ExecuteDuplication.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ExtendedEARFCN.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-Mode-Info.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-NR-CellResourceCoordinationReq-Container.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-NR-CellResourceCoordinationReqAck-Container.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-FDD-Info.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/EUTRA-TDD-Info.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/FDD-Info.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Flows-Mapped-To-DRB-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Flows-Mapped-To-DRB-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/FreqBandNrItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/FullConfiguration.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GBR-QosInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GBR-QoSFlowInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CUSystemInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-Setup-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-Failed-To-Setup-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-To-Add-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-To-Remove-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-TNL-Association-To-Update-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-UE-F1AP-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DU-UE-F1AP-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DU-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-CU-Name.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DU-Name.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DU-Served-Cells-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DU-System-Information.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNB-DUConfigurationQuery.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GNBDUOverloadInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GTP-TEID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/GTPTunnel.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/HandoverPreparationInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/IgnoreResourceCoordinationContainer.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/InactivityMonitoringRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/InactivityMonitoringResponse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/LCID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/LongDRXCycleLength.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MaskedIMEISV.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MaxDataBurstVolume.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MaxPacketLossRate.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MIB-message.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MeasConfig.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MeasGapConfig.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/MeasurementTimingConfiguration.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NeedforGap.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NGRANAllocationAndRetentionPriority.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NR-CGI-List-For-Restart-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NonDynamic5QIDescriptor.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Notification-Cause.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NotificationControl.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NRFreqInfo.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NRCGI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NR-Mode-Info.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NRCellIdentity.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NRNRB.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NRPCI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NRSCS.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NumberOfBroadcasts.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NumberofBroadcastRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/OffsetToPointA.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PacketDelayBudget.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PacketErrorRate.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PER-Scalar.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PER-Exponent.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PagingCell-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PagingDRX.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PagingIdentity.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PagingOrigin.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PagingPriority.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PDCP-SN.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PDCPSNLength.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PDUSessionID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Ph-InfoSCG.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PLMN-Identity.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Pre-emptionCapability.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Pre-emptionVulnerability.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PriorityLevel.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtectedEUTRAResourceIndication.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Protected-EUTRA-Resources-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Potential-SpCell-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWS-Failed-NR-CGI-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PWSSystemInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/QCI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/QoS-Characteristics.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/QoSFlowIdentifier.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/QoSFlowLevelQoSParameters.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/QoSFlowMappingIndication.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/QoSInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RANAC.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RANUEPagingIdentity.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RAT-FrequencyPriorityInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RAT-FrequencySelectionPriority.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Reestablishment-Indication.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RequestedBandCombinationIndex.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RequestedFeatureSetEntryIndex.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RequestedP-MaxFR2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RequestType.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ResourceCoordinationEUTRACellInfo.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ResourceCoordinationTransferInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ResourceCoordinationTransferContainer.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RepetitionPeriod.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RLCFailureIndication.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RLCMode.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RLC-Status.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RRCContainer.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RRCDeliveryStatus.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RRCDeliveryStatusRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RRCReconfigurationCompleteIndicator.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/RRC-Version.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-FailedtoSetup-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-FailedtoSetupMod-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-ToBeRemoved-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-ToBeSetup-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCell-ToBeSetupMod-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SCellIndex.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SIBType-PWS.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SelectedBandCombinationIndex.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SelectedFeatureSetEntryIndex.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Latest-RRC-Version-Enhanced.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/CG-ConfigInfo.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ServCellIndex.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ServingCellMO.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cell-Information.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cells-To-Add-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cells-To-Delete-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-Cells-To-Modify-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Served-EUTRA-Cells-Information.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Service-State.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Service-Status.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ShortDRXCycleLength.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ShortDRXCycleTimer.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SIB1-message.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SItype.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SItype-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SItype-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SibtypetobeupdatedListItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SliceSupportList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SliceSupportItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SNSSAI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SpectrumSharingGroupID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-FailedToBeSetup-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-FailedToBeSetupMod-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-Modified-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-Required-ToBeReleased-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-Setup-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-SetupMod-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-ToBeReleased-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-ToBeSetup-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SRBs-ToBeSetupMod-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SUL-Information.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SubscriberProfileIDforRFP.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SULAccessIndication.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/SupportedSULFreqBandItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/FiveGS-TAC.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Configured-EPS-TAC.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TDD-Info.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TimeToWait.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TNLAssociationUsage.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TransportLayerAddress.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TransactionID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Transmission-Bandwidth.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TransmissionActionIndicator.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TypeOfError.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UE-associatedLogicalF1-ConnectionItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEAssistanceInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UE-CapabilityRAT-ContainerList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UEIdentityIndexValue.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ULConfiguration.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ULUEConfiguration.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ULUPTNLInformation-ToBeSetup-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ULUPTNLInformation-ToBeSetup-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UplinkTxDirectCurrentListInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/UPTransportLayerInformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Criticality.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/Presence.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PrivateIE-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProcedureCode.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolExtensionID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolIE-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/TriggeringMessage.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolIE-Container.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolIE-SingleContainer.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolIE-Field.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolIE-ContainerPair.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolIE-FieldPair.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolExtensionContainer.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ProtocolExtensionField.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PrivateIE-Container.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PrivateIE-Field.h
 
-ASN_MODULE_HDRS+=../F1_output/ANY.h
-ASN_MODULE_SRCS+=../F1_output/ANY.c
-ASN_MODULE_HDRS+=../F1_output/OCTET_STRING.h
-ASN_MODULE_HDRS+=../F1_output/OPEN_TYPE.h
-ASN_MODULE_SRCS+=../F1_output/OPEN_TYPE.c
-ASN_MODULE_HDRS+=../F1_output/constr_CHOICE.h
-ASN_MODULE_HDRS+=../F1_output/BOOLEAN.h
-ASN_MODULE_SRCS+=../F1_output/BOOLEAN.c
-ASN_MODULE_HDRS+=../F1_output/INTEGER.h
-ASN_MODULE_SRCS+=../F1_output/INTEGER.c
-ASN_MODULE_HDRS+=../F1_output/NativeEnumerated.h
-ASN_MODULE_SRCS+=../F1_output/NativeEnumerated.c
-ASN_MODULE_HDRS+=../F1_output/NativeInteger.h
-ASN_MODULE_SRCS+=../F1_output/NativeInteger.c
-ASN_MODULE_HDRS+=../F1_output/OBJECT_IDENTIFIER.h
-ASN_MODULE_SRCS+=../F1_output/OBJECT_IDENTIFIER.c
-ASN_MODULE_HDRS+=../F1_output/PrintableString.h
-ASN_MODULE_SRCS+=../F1_output/PrintableString.c
-ASN_MODULE_HDRS+=../F1_output/asn_SEQUENCE_OF.h
-ASN_MODULE_SRCS+=../F1_output/asn_SEQUENCE_OF.c
-ASN_MODULE_HDRS+=../F1_output/asn_SET_OF.h
-ASN_MODULE_SRCS+=../F1_output/asn_SET_OF.c
-ASN_MODULE_SRCS+=../F1_output/constr_CHOICE.c
-ASN_MODULE_HDRS+=../F1_output/constr_SEQUENCE.h
-ASN_MODULE_SRCS+=../F1_output/constr_SEQUENCE.c
-ASN_MODULE_HDRS+=../F1_output/constr_SEQUENCE_OF.h
-ASN_MODULE_SRCS+=../F1_output/constr_SEQUENCE_OF.c
-ASN_MODULE_HDRS+=../F1_output/constr_SET_OF.h
-ASN_MODULE_SRCS+=../F1_output/constr_SET_OF.c
-ASN_MODULE_HDRS+=../F1_output/asn_application.h
-ASN_MODULE_SRCS+=../F1_output/asn_application.c
-ASN_MODULE_HDRS+=../F1_output/asn_ioc.h
-ASN_MODULE_HDRS+=../F1_output/asn_system.h
-ASN_MODULE_HDRS+=../F1_output/asn_codecs.h
-ASN_MODULE_HDRS+=../F1_output/asn_internal.h
-ASN_MODULE_SRCS+=../F1_output/asn_internal.c
-ASN_MODULE_HDRS+=../F1_output/asn_random_fill.h
-ASN_MODULE_SRCS+=../F1_output/asn_random_fill.c
-ASN_MODULE_HDRS+=../F1_output/asn_bit_data.h
-ASN_MODULE_SRCS+=../F1_output/asn_bit_data.c
-ASN_MODULE_SRCS+=../F1_output/OCTET_STRING.c
-ASN_MODULE_HDRS+=../F1_output/BIT_STRING.h
-ASN_MODULE_SRCS+=../F1_output/BIT_STRING.c
-ASN_MODULE_SRCS+=../F1_output/asn_codecs_prim.c
-ASN_MODULE_HDRS+=../F1_output/asn_codecs_prim.h
-ASN_MODULE_HDRS+=../F1_output/ber_tlv_length.h
-ASN_MODULE_SRCS+=../F1_output/ber_tlv_length.c
-ASN_MODULE_HDRS+=../F1_output/ber_tlv_tag.h
-ASN_MODULE_SRCS+=../F1_output/ber_tlv_tag.c
-ASN_MODULE_HDRS+=../F1_output/ber_decoder.h
-ASN_MODULE_SRCS+=../F1_output/ber_decoder.c
-ASN_MODULE_HDRS+=../F1_output/der_encoder.h
-ASN_MODULE_SRCS+=../F1_output/der_encoder.c
-ASN_MODULE_HDRS+=../F1_output/constr_TYPE.h
-ASN_MODULE_SRCS+=../F1_output/constr_TYPE.c
-ASN_MODULE_HDRS+=../F1_output/constraints.h
-ASN_MODULE_SRCS+=../F1_output/constraints.c
-ASN_MODULE_HDRS+=../F1_output/xer_support.h
-ASN_MODULE_SRCS+=../F1_output/xer_support.c
-ASN_MODULE_HDRS+=../F1_output/xer_decoder.h
-ASN_MODULE_SRCS+=../F1_output/xer_decoder.c
-ASN_MODULE_HDRS+=../F1_output/xer_encoder.h
-ASN_MODULE_SRCS+=../F1_output/xer_encoder.c
-ASN_MODULE_HDRS+=../F1_output/per_support.h
-ASN_MODULE_SRCS+=../F1_output/per_support.c
-ASN_MODULE_HDRS+=../F1_output/per_decoder.h
-ASN_MODULE_SRCS+=../F1_output/per_decoder.c
-ASN_MODULE_HDRS+=../F1_output/per_encoder.h
-ASN_MODULE_SRCS+=../F1_output/per_encoder.c
-ASN_MODULE_HDRS+=../F1_output/per_opentype.h
-ASN_MODULE_SRCS+=../F1_output/per_opentype.c
-ASN_MODULE_HDRS+=../F1_output/oer_decoder.h
-ASN_MODULE_HDRS+=../F1_output/oer_encoder.h
-ASN_MODULE_HDRS+=../F1_output/oer_support.h
-ASN_MODULE_SRCS+=../F1_output/oer_decoder.c
-ASN_MODULE_SRCS+=../F1_output/oer_encoder.c
-ASN_MODULE_SRCS+=../F1_output/oer_support.c
-ASN_MODULE_SRCS+=../F1_output/OPEN_TYPE_oer.c
-ASN_MODULE_SRCS+=../F1_output/INTEGER_oer.c
-ASN_MODULE_SRCS+=../F1_output/BIT_STRING_oer.c
-ASN_MODULE_SRCS+=../F1_output/OCTET_STRING_oer.c
-ASN_MODULE_SRCS+=../F1_output/NativeInteger_oer.c
-ASN_MODULE_SRCS+=../F1_output/NativeEnumerated_oer.c
-ASN_MODULE_SRCS+=../F1_output/constr_CHOICE_oer.c
-ASN_MODULE_SRCS+=../F1_output/constr_SEQUENCE_oer.c
-ASN_MODULE_SRCS+=../F1_output/constr_SET_OF_oer.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ANY.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ANY.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/OCTET_STRING.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/OPEN_TYPE.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/OPEN_TYPE.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/constr_CHOICE.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/BOOLEAN.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/BOOLEAN.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/INTEGER.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/INTEGER.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NativeEnumerated.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NativeEnumerated.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NativeInteger.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/NativeInteger.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/OBJECT_IDENTIFIER.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/OBJECT_IDENTIFIER.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PrintableString.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/PrintableString.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_SET_OF.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_SET_OF.c
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/constr_CHOICE.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/constr_SEQUENCE.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/constr_SEQUENCE.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/constr_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/constr_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/constr_SET_OF.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/constr_SET_OF.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_application.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_application.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_ioc.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_system.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_codecs.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_internal.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_internal.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_random_fill.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_random_fill.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_bit_data.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_bit_data.c
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/OCTET_STRING.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/BIT_STRING.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/BIT_STRING.c
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_codecs_prim.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/asn_codecs_prim.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ber_tlv_length.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ber_tlv_length.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ber_tlv_tag.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ber_tlv_tag.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ber_decoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/ber_decoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/der_encoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/der_encoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/constr_TYPE.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/constr_TYPE.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/constraints.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/constraints.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/xer_support.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/xer_support.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/xer_decoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/xer_decoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/xer_encoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/xer_encoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/per_support.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/per_support.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/per_decoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/per_decoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/per_encoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/per_encoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/per_opentype.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/per_opentype.c
 
-ASN_MODULE_CFLAGS=
+ASN_MODULE_CFLAGS=-DASN_DISABLE_BER_SUPPORT -DASN_DISABLE_OER_SUPPORT 
 
 lib_LTLIBRARIES+=libasncodec.la
 libasncodec_la_SOURCES=$(ASN_MODULE_SRCS) $(ASN_MODULE_HDRS)
-libasncodec_la_CPPFLAGS=-I$(top_srcdir)/../F1_output/
+libasncodec_la_CPPFLAGS=-I$(top_srcdir)//root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/F1AP/
 libasncodec_la_CFLAGS=$(ASN_MODULE_CFLAGS)
 libasncodec_la_LDFLAGS=-lm

@@ -123,10 +123,10 @@ asn_enc_rval_t
 BOOLEAN_encode_der(const asn_TYPE_descriptor_t *td, const void *sptr,
                    int tag_mode, ber_tlv_tag_t tag, asn_app_consume_bytes_f *cb,
                    void *app_key) {
-	asn_enc_rval_t erval = {0,0,0};
-	const BOOLEAN_t *st = (const BOOLEAN_t *)sptr;
+    asn_enc_rval_t erval;
+    const BOOLEAN_t *st = (const BOOLEAN_t *)sptr;
 
-	erval.encoded = der_write_tags(td, 1, tag_mode, 0, tag, cb, app_key);
+    erval.encoded = der_write_tags(td, 1, tag_mode, 0, tag, cb, app_key);
 	if(erval.encoded == -1) {
 		erval.failed_type = td;
 		erval.structure_ptr = sptr;

@@ -571,7 +571,7 @@ INTEGER_encode_xer(const asn_TYPE_descriptor_t *td, const void *sptr,
                    int ilevel, enum xer_encoder_flags_e flags,
                    asn_app_consume_bytes_f *cb, void *app_key) {
     const INTEGER_t *st = (const INTEGER_t *)sptr;
-	asn_enc_rval_t er = {0,0,0};
+	asn_enc_rval_t er;
 
 	(void)ilevel;
 	(void)flags;
@@ -708,9 +708,9 @@ asn_enc_rval_t
 INTEGER_encode_uper(const asn_TYPE_descriptor_t *td,
                     const asn_per_constraints_t *constraints, const void *sptr,
                     asn_per_outp_t *po) {
-	const asn_INTEGER_specifics_t *specs =
-        	(const asn_INTEGER_specifics_t *)td->specifics;
-	asn_enc_rval_t er = {0,0,0};
+    const asn_INTEGER_specifics_t *specs =
+        (const asn_INTEGER_specifics_t *)td->specifics;
+    asn_enc_rval_t er;
 	const INTEGER_t *st = (const INTEGER_t *)sptr;
 	const uint8_t *buf;
 	const uint8_t *end;
@@ -777,24 +777,12 @@ INTEGER_encode_uper(const asn_TYPE_descriptor_t *td,
 		/* #11.5.6 -> #11.3 */
 		ASN_DEBUG("Encoding integer %ld (%lu) with range %d bits",
 			value, value - ct->lower_bound, ct->range_bits);
-	if(specs && specs->field_unsigned) {
-		if (  ((unsigned long)ct->lower_bound > (unsigned long)(ct->upper_bound)
-		   || ((unsigned long)value < (unsigned long)ct->lower_bound))
-		   || ((unsigned long)value > (unsigned long)ct->upper_bound)
-		) {
-			ASN_DEBUG("Value %lu to-be-encoded is outside the bounds [%lu, %lu]!",
-				value, ct->lower_bound, ct->upper_bound);
-			ASN__ENCODE_FAILED;
-		}
- 		v = (unsigned long)value - (unsigned long)ct->lower_bound;
- 	} else {
- 		if(per_long_range_rebase(value, ct->lower_bound, ct->upper_bound, &v)) {
- 			ASN__ENCODE_FAILED;
- 		}
-	}
+        if(per_long_range_rebase(value, ct->lower_bound, ct->upper_bound, &v)) {
+            ASN__ENCODE_FAILED;
+        }
         if(uper_put_constrained_whole_number_u(po, v, ct->range_bits))
-		ASN__ENCODE_FAILED;
-	ASN__ENCODED_OK(er);
+            ASN__ENCODE_FAILED;
+		ASN__ENCODED_OK(er);
 	}
 
 	if(ct && ct->lower_bound) {
@@ -973,7 +961,7 @@ INTEGER_encode_aper(const asn_TYPE_descriptor_t *td,
                     const asn_per_constraints_t *constraints,
                     const void *sptr, asn_per_outp_t *po) {
 	const asn_INTEGER_specifics_t *specs = (const asn_INTEGER_specifics_t *)td->specifics;
-	asn_enc_rval_t er = {0,0,0};
+	asn_enc_rval_t er;
 	const INTEGER_t *st = (const INTEGER_t *)sptr;
 	const uint8_t *buf;
 	const uint8_t *end;
