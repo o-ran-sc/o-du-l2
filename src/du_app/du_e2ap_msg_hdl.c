@@ -7381,7 +7381,7 @@ void FreeRicSubscriptionDeleteRequired(E2AP_PDU_t *e2apMsg, CmLListCp *ricSubsTo
    uint8_t ieIdx = 0, arrIdx = 0;
    RICsubscriptionDeleteRequired_t *ricSubsDelRqd = NULLP;
    RICsubscriptionDeleteRequired_IEs_t *ricSubsDelRqdIe = NULLP;
-   RICsubscription_List_withCause_t *ricSubsList = NULLP;
+   RICsubscription_List_withCauseE2_t *ricSubsList = NULLP;
    CmLList *subsNode = NULLP;
 
    if(e2apMsg)
@@ -7400,12 +7400,12 @@ void FreeRicSubscriptionDeleteRequired(E2AP_PDU_t *e2apMsg, CmLListCp *ricSubsTo
                   {
                      case ProtocolIE_IDE2_id_RICsubscriptionToBeRemoved:
                         {
-                           ricSubsList = &ricSubsDelRqdIe->value.choice.RICsubscription_List_withCause;
+                           ricSubsList = &ricSubsDelRqdIe->value.choice.RICsubscription_List_withCauseE2;
                            if(ricSubsList->list.array)
                            {
                               for(arrIdx = 0; arrIdx < ricSubsList->list.count; arrIdx++)
                               {
-                                 DU_FREE(ricSubsList->list.array[ieIdx], sizeof(RICsubscription_withCause_ItemIEs_t));
+                                 DU_FREE(ricSubsList->list.array[ieIdx], sizeof(RICsubscription_withCauseE2_ItemIEs_t));
                               }
                               DU_FREE(ricSubsList->list.array, ricSubsList->list.size);
                            }
@@ -7450,16 +7450,16 @@ void FreeRicSubscriptionDeleteRequired(E2AP_PDU_t *e2apMsg, CmLListCp *ricSubsTo
  * @return void
  *
  ******************************************************************/
-uint8_t fillRicSubsListWithCause(RICsubscription_List_withCause_t *ricSubsList, CmLListCp ricSubsToBeDelList)
+uint8_t fillRicSubsListWithCause(RICsubscription_List_withCauseE2_t *ricSubsList, CmLListCp ricSubsToBeDelList)
 {
    uint16_t ieIdx = 0;
    CmLList *subsNode = NULLP;
    RicSubscription *subsInfo = NULLP;
-   RICsubscription_withCause_ItemIEs_t *subsItemIe = NULLP;
-   RICsubscription_withCause_Item_t *subsItem = NULLP;
+   RICsubscription_withCauseE2_ItemIEs_t *subsItemIe = NULLP;
+   RICsubscription_withCauseE2_Item_t *subsItem = NULLP;
 
    ricSubsList->list.count = ricSubsToBeDelList.count;
-   ricSubsList->list.size = ricSubsList->list.count * sizeof(RICsubscription_withCause_ItemIEs_t *);
+   ricSubsList->list.size = ricSubsList->list.count * sizeof(RICsubscription_withCauseE2_ItemIEs_t *);
    DU_ALLOC(ricSubsList->list.array, ricSubsList->list.size);
    if(!ricSubsList->list.array)
    {
@@ -7471,19 +7471,19 @@ uint8_t fillRicSubsListWithCause(RICsubscription_List_withCause_t *ricSubsList, 
    while(subsNode && (ieIdx < ricSubsList->list.count))
    {
       subsInfo = (RicSubscription *)subsNode->node;
-      DU_ALLOC(ricSubsList->list.array[ieIdx], sizeof(RICsubscription_withCause_ItemIEs_t));
+      DU_ALLOC(ricSubsList->list.array[ieIdx], sizeof(RICsubscription_withCauseE2_ItemIEs_t));
       if(!ricSubsList->list.array[ieIdx])
       {
          DU_LOG("\nERROR  -->  E2AP : %s: Memory allocation for E2AP-PDU failed at line %d",__func__, __LINE__);
          return RFAILED;
       }
 
-      subsItemIe = (RICsubscription_withCause_ItemIEs_t *)ricSubsList->list.array[ieIdx];
-      subsItemIe->id = ProtocolIE_IDE2_id_RICsubscription_withCause_Item;
+      subsItemIe = (RICsubscription_withCauseE2_ItemIEs_t *)ricSubsList->list.array[ieIdx];
+      subsItemIe->id = ProtocolIE_IDE2_id_RICsubscription_withCauseE2_Item;
       subsItemIe->criticality = CriticalityE2_ignore;
-      subsItemIe->value.present = RICsubscription_withCause_ItemIEs__value_PR_RICsubscription_withCause_Item;
+      subsItemIe->value.present = RICsubscription_withCauseE2_ItemIEs__value_PR_RICsubscription_withCauseE2_Item;
 
-      subsItem = & subsItemIe->value.choice.RICsubscription_withCause_Item;
+      subsItem = & subsItemIe->value.choice.RICsubscription_withCauseE2_Item;
       subsItem->ricRequestID.ricRequestorID = subsInfo->requestId.requestorId;
       subsItem->ricRequestID.ricInstanceID = subsInfo->requestId.instanceId;
       subsItem->ranFunctionID = subsInfo->ranFuncId;
@@ -7597,8 +7597,8 @@ uint8_t BuildAndSendRicSubscriptionDeleteRequired()
       ricSubsDelRqdIe = ricSubsDelRqd->protocolIEs.list.array[ieIdx];
       ricSubsDelRqdIe->id = ProtocolIE_IDE2_id_RICsubscriptionToBeRemoved;
       ricSubsDelRqdIe->criticality = CriticalityE2_ignore;
-      ricSubsDelRqdIe->value.present = RICsubscriptionDeleteRequired_IEs__value_PR_RICsubscription_List_withCause;
-      if(fillRicSubsListWithCause(&ricSubsDelRqdIe->value.choice.RICsubscription_List_withCause, ricSubsToBeDelList)\
+      ricSubsDelRqdIe->value.present = RICsubscriptionDeleteRequired_IEs__value_PR_RICsubscription_List_withCauseE2;
+      if(fillRicSubsListWithCause(&ricSubsDelRqdIe->value.choice.RICsubscription_List_withCauseE2, ricSubsToBeDelList)\
             != ROK)
       {
          DU_LOG("\nERROR  -->  E2AP : %s: Failed to fill RIC Subscription list with cause", __func__);

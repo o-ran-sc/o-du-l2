@@ -923,6 +923,13 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
    searchSpace->nrofCandidates->aggregationLevel8 = duPdcchCfg.numCandAggLvl8;
    searchSpace->nrofCandidates->aggregationLevel16 = duPdcchCfg.numCandAggLvl16;
 
+#if 1
+   DU_ALLOC(searchSpace->searchSpaceType, sizeof(*(searchSpace->searchSpaceType)));
+   DU_ALLOC(searchSpace->searchSpaceType->choice.common, sizeof(*(searchSpace->searchSpaceType->choice.common)));
+   DU_ALLOC(searchSpace->searchSpaceType->choice.common->dci_Format0_0_AndFormat1_0, sizeof(*(searchSpace->searchSpaceType->choice.common->dci_Format0_0_AndFormat1_0)));
+   searchSpace->searchSpaceType->present = 1; 
+
+#endif
 /* Commented due to ASN decode failure in wireshark.
  * Parameters like dci_Format0_0_AndFormat1_0 which are pointer to a structure that 
  * does not have any member parameter lead to decode failure in wireshark. 

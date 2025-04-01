@@ -18,7 +18,7 @@ SEQUENCE_OF_encode_der(const asn_TYPE_descriptor_t *td, const void *ptr,
 	const asn_anonymous_sequence_ *list = _A_CSEQUENCE_FROM_VOID(ptr);
 	size_t computed_size = 0;
 	ssize_t encoding_size = 0;
-	asn_enc_rval_t erval = {0,0,0};
+	asn_enc_rval_t erval;
 	int edx;
 
 	ASN_DEBUG("Estimating size of SEQUENCE OF %s", td->name);
@@ -91,7 +91,7 @@ asn_enc_rval_t
 SEQUENCE_OF_encode_xer(const asn_TYPE_descriptor_t *td, const void *sptr,
                        int ilevel, enum xer_encoder_flags_e flags,
                        asn_app_consume_bytes_f *cb, void *app_key) {
-    asn_enc_rval_t er = {0,0,0};
+    asn_enc_rval_t er;
     const asn_SET_OF_specifics_t *specs = (const asn_SET_OF_specifics_t *)td->specifics;
     const asn_TYPE_member_t *elm = td->elements;
     const asn_anonymous_sequence_ *list = _A_CSEQUENCE_FROM_VOID(sptr);
@@ -107,7 +107,7 @@ SEQUENCE_OF_encode_xer(const asn_TYPE_descriptor_t *td, const void *sptr,
     er.encoded = 0;
 
     for(i = 0; i < list->count; i++) {
-        asn_enc_rval_t tmper = {0,0,0};
+        asn_enc_rval_t tmper;
         void *memb_ptr = list->array[i];
         if(!memb_ptr) continue;
 
@@ -147,7 +147,7 @@ SEQUENCE_OF_encode_uper(const asn_TYPE_descriptor_t *td,
                         const void *sptr, asn_per_outp_t *po) {
     const asn_anonymous_sequence_ *list;
 	const asn_per_constraint_t *ct;
-	asn_enc_rval_t er = {0,0,0};
+	asn_enc_rval_t er;
 	const asn_TYPE_member_t *elm = td->elements;
 	size_t encoded_edx;
 
@@ -231,7 +231,7 @@ SEQUENCE_OF_encode_aper(const asn_TYPE_descriptor_t *td,
                         const void *sptr, asn_per_outp_t *po) {
 	const asn_anonymous_sequence_ *list;
 	const asn_per_constraint_t *ct;
-	asn_enc_rval_t er = {0,0,0};
+	asn_enc_rval_t er;
 	asn_TYPE_member_t *elm = td->elements;
 	int seq;
 

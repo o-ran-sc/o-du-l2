@@ -66,7 +66,7 @@ NativeEnumerated_encode_xer(const asn_TYPE_descriptor_t *td, const void *sptr,
                             asn_app_consume_bytes_f *cb, void *app_key) {
     const asn_INTEGER_specifics_t *specs =
         (const asn_INTEGER_specifics_t *)td->specifics;
-    asn_enc_rval_t er = {0,0,0};
+    asn_enc_rval_t er;
     const long *native = (const long *)sptr;
     const asn_INTEGER_enum_map_t *el;
 
@@ -97,7 +97,7 @@ NativeEnumerated_decode_uper(const asn_codec_ctx_t *opt_codec_ctx,
     const asn_INTEGER_specifics_t *specs = td->specifics;
     asn_dec_rval_t rval = { RC_OK, 0 };
 	long *native = (long *)*sptr;
-	const asn_per_constraint_t *ct = NULL;
+	const asn_per_constraint_t *ct;
 	long value;
 
 	(void)opt_codec_ctx;
@@ -115,7 +115,7 @@ NativeEnumerated_decode_uper(const asn_codec_ctx_t *opt_codec_ctx,
 
 	ASN_DEBUG("Decoding %s as NativeEnumerated", td->name);
 
-	if(ct && ct->flags & APC_EXTENSIBLE) {
+	if(ct->flags & APC_EXTENSIBLE) {
 		int inext = per_get_few_bits(pd, 1);
 		if(inext < 0) ASN__DECODE_STARVED;
 		if(inext) ct = 0;
@@ -161,11 +161,11 @@ asn_enc_rval_t
 NativeEnumerated_encode_uper(const asn_TYPE_descriptor_t *td,
                              const asn_per_constraints_t *constraints,
                              const void *sptr, asn_per_outp_t *po) {
-	const asn_INTEGER_specifics_t *specs =
+    const asn_INTEGER_specifics_t *specs =
         (const asn_INTEGER_specifics_t *)td->specifics;
-	asn_enc_rval_t er = {0,0,0};
+    asn_enc_rval_t er;
 	long native, value;
-	const asn_per_constraint_t *ct = NULL;
+	const asn_per_constraint_t *ct;
 	int inext = 0;
 	asn_INTEGER_enum_map_t key;
 	const asn_INTEGER_enum_map_t *kf;
@@ -193,13 +193,13 @@ NativeEnumerated_encode_uper(const asn_TYPE_descriptor_t *td,
 	}
 	value = kf - specs->value2enum;
 
-	if(ct && ct->range_bits >= 0) {
+	if(ct->range_bits >= 0) {
 		int cmpWith = specs->extension
 				? specs->extension - 1 : specs->map_count;
 		if(value >= cmpWith)
 			inext = 1;
 	}
-	if(ct && ct->flags & APC_EXTENSIBLE) {
+	if(ct->flags & APC_EXTENSIBLE) {
 		if(per_put_few_bits(po, inext, 1))
 			ASN__ENCODE_FAILED;
 		if(inext) ct = 0;
@@ -236,7 +236,7 @@ NativeEnumerated_decode_aper(const asn_codec_ctx_t *opt_codec_ctx,
 	const asn_INTEGER_specifics_t *specs = (const asn_INTEGER_specifics_t *)td->specifics;
 	asn_dec_rval_t rval = { RC_OK, 0 };
 	long *native = (long *)*sptr;
-	const asn_per_constraint_t *ct = NULL;
+	const asn_per_constraint_t *ct;
 	long value;
 
 	(void)opt_codec_ctx;
@@ -254,7 +254,7 @@ NativeEnumerated_decode_aper(const asn_codec_ctx_t *opt_codec_ctx,
 
 	ASN_DEBUG("Decoding %s as NativeEnumerated", td->name);
 
-	if(ct && ct->flags & APC_EXTENSIBLE) {
+	if(ct->flags & APC_EXTENSIBLE) {
 		int inext = per_get_few_bits(pd, 1);
 		if(inext < 0) ASN__DECODE_STARVED;
 		if(inext) ct = 0;
@@ -300,9 +300,9 @@ NativeEnumerated_encode_aper(const asn_TYPE_descriptor_t *td,
                              const asn_per_constraints_t *constraints,
                              const void *sptr, asn_per_outp_t *po) {
 	const asn_INTEGER_specifics_t *specs = (const asn_INTEGER_specifics_t *)td->specifics;
-	asn_enc_rval_t er = {0,0,0};
+	asn_enc_rval_t er;
 	long native, value;
-	const asn_per_constraint_t *ct = NULL;
+	const asn_per_constraint_t *ct;
 	int inext = 0;
 	asn_INTEGER_enum_map_t key;
 	asn_INTEGER_enum_map_t *kf;
@@ -331,13 +331,13 @@ NativeEnumerated_encode_aper(const asn_TYPE_descriptor_t *td,
 	}
 	value = kf - specs->value2enum;
 
-	if(ct && ct->range_bits >= 0) {
+	if(ct->range_bits >= 0) {
 		int cmpWith = specs->extension
 		              ? specs->extension - 1 : specs->map_count;
 		if(value >= cmpWith)
 			inext = 1;
 	}
-	if(ct && ct->flags & APC_EXTENSIBLE) {
+	if(ct->flags & APC_EXTENSIBLE) {
 		if(per_put_few_bits(po, inext, 1))
 			ASN__ENCODE_FAILED;
 		if(inext) ct = 0;

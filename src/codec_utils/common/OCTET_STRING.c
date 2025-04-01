@@ -157,7 +157,7 @@ OS__add_stack_el(struct _stack *st) {
 		nel = (struct _stack_el *)CALLOC(1, sizeof(struct _stack_el));
 		if(nel == NULL)
 			return NULL;
-
+	
 		if(st->tail) {
 			/* Increase a subcontainment depth */
 			nel->cont_level = st->tail->cont_level + 1;
@@ -539,7 +539,7 @@ asn_enc_rval_t
 OCTET_STRING_encode_der(const asn_TYPE_descriptor_t *td, const void *sptr,
                         int tag_mode, ber_tlv_tag_t tag,
                         asn_app_consume_bytes_f *cb, void *app_key) {
-    asn_enc_rval_t er = { 0, 0, 0 };
+    asn_enc_rval_t er;
 	const asn_OCTET_STRING_specifics_t *specs = td->specifics
 				? (const asn_OCTET_STRING_specifics_t *)td->specifics
 				: &asn_SPC_OCTET_STRING_specs;
@@ -603,7 +603,7 @@ OCTET_STRING_encode_xer(const asn_TYPE_descriptor_t *td, const void *sptr,
                         asn_app_consume_bytes_f *cb, void *app_key) {
     const char * const h2c = "0123456789ABCDEF";
 	const OCTET_STRING_t *st = (const OCTET_STRING_t *)sptr;
-	asn_enc_rval_t er = { 0, 0, 0 };
+	asn_enc_rval_t er;
 	char scratch[16 * 3 + 4];
 	char *p = scratch;
 	uint8_t *buf;
@@ -745,7 +745,7 @@ OCTET_STRING__handle_control_chars(void *struct_ptr, const void *chunk_buf, size
 			return 0;
 		}
 	}
-
+	
 	return -1;	/* No, it's not */
 }
 
@@ -753,8 +753,8 @@ asn_enc_rval_t
 OCTET_STRING_encode_xer_utf8(const asn_TYPE_descriptor_t *td, const void *sptr,
                              int ilevel, enum xer_encoder_flags_e flags,
                              asn_app_consume_bytes_f *cb, void *app_key) {
-	const OCTET_STRING_t *st = (const OCTET_STRING_t *)sptr;
-	asn_enc_rval_t er = { 0, 0, 0 };
+    const OCTET_STRING_t *st = (const OCTET_STRING_t *)sptr;
+	asn_enc_rval_t er;
 	uint8_t *buf, *end;
 	uint8_t *ss;	/* Sequence start */
 	ssize_t encoded_len = 0;
@@ -1802,7 +1802,7 @@ OCTET_STRING_decode_aper(const asn_codec_ctx_t *opt_codec_ctx,
 			(long)csiz->effective_bits, (long)raw_len,
 			repeat ? "repeat" : "once", td->name);
 
-		if ((st->size > 2) || (csiz->lower_bound != csiz->upper_bound)) { /* X.691 #16.11 */
+		if (raw_len > 2) { /* X.691 #16 NOTE 1 */
 			if (aper_get_align(pd) < 0)
 				RETURN(RC_FAIL);
 		}
@@ -1956,9 +1956,7 @@ OCTET_STRING_encode_aper(const asn_TYPE_descriptor_t *td,
 		        ret = aper_put_length(po, csiz->upper_bound - csiz->lower_bound + 1, sizeinunits - csiz->lower_bound);
 		        if(ret) ASN__ENCODE_FAILED;
 		}
-		/* EB MOD
-                   AFAIU if lb != ub it is aligned whatever the number of bits */
-		if ((st->size > 2) || (csiz->lower_bound != csiz->upper_bound)) { /* X.691 #16.11 */
+		if (st->size > 2) { /* X.691 #16 NOTE 1 */
 			if (aper_put_align(po) < 0)
 				ASN__ENCODE_FAILED;
 		}

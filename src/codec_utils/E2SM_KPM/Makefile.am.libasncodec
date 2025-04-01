@@ -1,330 +1,391 @@
 ASN_MODULE_SRCS=	\
-	./../../E2_output/E2SM_KPM_v3.0_output/CGI.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/NR-CGI.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/PLMNIdentity.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/NRCellIdentity.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/EUTRACellIdentity.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/EUTRA-CGI.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/SD.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/S-NSSAI.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/SST.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/FiveQI.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/QCI.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/QosFlowIdentifier.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RANfunction-Name.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RIC-Format-Type.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RIC-Style-Type.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RIC-Style-Name.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-NG-ENB-DU.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-EN-GNB.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-ENB.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GUMMEI.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MME-Group-ID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MME-Code.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GlobalENB-ID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/ENB-ID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MME-UE-S1AP-ID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/ENB-UE-X2AP-ID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/ENB-UE-X2AP-ID-Extension.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB-DU.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB-CU-UP.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-NG-ENB.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/NGENB-CU-UE-W1AP-ID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/AMF-UE-NGAP-ID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GUAMI.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/AMFRegionID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/AMFSetID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/AMFPointer.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB-CU-F1AP-ID-List.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB-CU-CP-F1AP-ID-Item.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GNB-CU-UE-F1AP-ID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB-CU-CP-E1AP-ID-List.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB-CU-CP-E1AP-ID-Item.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GNB-CU-CP-UE-E1AP-ID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RANUEID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/NG-RANnodeUEXnAPID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GlobalGNB-ID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GNB-ID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GlobalNGRANNodeID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GlobalNgENB-ID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/NgENB-ID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/TimeStamp.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/BinIndex.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/BinRangeValue.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GranularityPeriod.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/LogicalOR.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementType.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementTypeName.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementTypeID.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementLabel.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/TestCondInfo.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/TestCond-Type.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/TestCond-Expression.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/TestCond-Value.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/BinRangeDefinition.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/BinRangeList.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/BinRangeItem.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/DistMeasurementBinRangeList.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/DistMeasurementBinRangeItem.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementInfoList.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementInfoItem.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/LabelInfoList.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/LabelInfoItem.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementData.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementDataItem.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementRecord.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementRecordItem.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementInfo-Action-List.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementInfo-Action-Item.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementCondList.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementCondItem.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementCondUEidList.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementCondUEidItem.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingCondList.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingCondItem.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingCondItem-Choice.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidList.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidItem.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidPerGP.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidPerGP-Item.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidList-PerGP.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidItem-PerGP.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUeCondPerSubList.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUeCondPerSubItem.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidPerSubList.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidPerSubItem.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEMeasurementReportList.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEMeasurementReportItem.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-EventTriggerDefinition.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-EventTriggerDefinition-Format1.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-ActionDefinition.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-ActionDefinition-Format1.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-ActionDefinition-Format2.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-ActionDefinition-Format3.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-ActionDefinition-Format4.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-ActionDefinition-Format5.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-IndicationHeader.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-IndicationHeader-Format1.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-IndicationMessage.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-IndicationMessage-Format1.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-IndicationMessage-Format2.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-IndicationMessage-Format3.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-RANfunction-Description.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RIC-EventTriggerStyle-Item.c	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RIC-ReportStyle-Item.c
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/TimeStamp.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BinIndex.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BinRangeValue.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GranularityPeriod.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/LogicalOR.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementType.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementTypeName.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementTypeID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementLabel.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/TestCondInfo.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/TestCond-Type.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/TestCond-Expression.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/TestCond-Value.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BinRangeDefinition.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BinRangeList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BinRangeItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/DistMeasurementBinRangeList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/DistMeasurementBinRangeItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementInfoList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementInfoItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/LabelInfoList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/LabelInfoItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementData.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementDataItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementRecord.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementRecordItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementInfo-Action-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementInfo-Action-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementCondList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementCondItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementCondUEidList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementCondUEidItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingCondList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingCondItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingCondItem-Choice.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidPerGP.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidPerGP-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidList-PerGP.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidItem-PerGP.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUeCondPerSubList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUeCondPerSubItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidPerSubList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidPerSubItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEMeasurementReportList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEMeasurementReportItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-EventTriggerDefinition.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-EventTriggerDefinition-Format1.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-ActionDefinition.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-ActionDefinition-Format1.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-ActionDefinition-Format2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-ActionDefinition-Format3.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-ActionDefinition-Format4.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-ActionDefinition-Format5.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-IndicationHeader.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-IndicationHeader-Format1.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-IndicationMessage.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-IndicationMessage-Format1.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-IndicationMessage-Format2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-IndicationMessage-Format3.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-RANfunction-Description.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RIC-EventTriggerStyle-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RIC-ReportStyle-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/CGI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/CoreCPID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceIdentifier.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-NG.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-Xn.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-F1.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-E1.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-S1.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-X2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-W1.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/Interface-MessageID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceType.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GroupID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/QoSID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RANfunction-Name.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RIC-Format-Type.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RIC-Style-Type.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RIC-Style-Name.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RRC-MessageID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RRCclass-LTE.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RRCclass-NR.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ServingCell-ARFCN.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ServingCell-PCI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB-CU-CP-E1AP-ID-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB-CU-CP-E1AP-ID-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB-CU-F1AP-ID-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB-CU-CP-F1AP-ID-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB-DU.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB-CU-UP.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-NG-ENB.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-NG-ENB-DU.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-EN-GNB.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-ENB.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ENB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GlobalENB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GUMMEI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MME-Group-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MME-Code.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MME-UE-S1AP-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/QCI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/SubscriberProfileIDforRFP.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/EN-GNB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ENB-UE-X2AP-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ENB-UE-X2AP-ID-Extension.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E-UTRA-ARFCN.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E-UTRA-PCI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E-UTRA-TAC.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GlobalenGNB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NGENB-CU-UE-W1AP-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NGENB-DU-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/AMFPointer.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/AMFRegionID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/AMFSetID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/AMF-UE-NGAP-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/EUTRACellIdentity.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/EUTRA-CGI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/FiveQI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GlobalGNB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GlobalNgENB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GNB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GUAMI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/IndexToRFSP.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NgENB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NRCellIdentity.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NR-CGI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/PLMNIdentity.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/QosFlowIdentifier.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/SD.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/S-NSSAI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/SST.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NG-RANnodeUEXnAPID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GlobalNGRANNodeID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GNB-CU-CP-UE-E1AP-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GNB-CU-UP-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/FiveGS-TAC.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/FreqBandNrItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GNB-CU-UE-F1AP-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GNB-DU-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NR-PCI.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NR-ARFCN.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NRFrequencyBand-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NRFrequencyBandItem.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NRFrequencyInfo.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NRFrequencyShift7p5khz.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RANUEID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/SupportedSULBandList.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/SupportedSULFreqBandItem.c
 
 ASN_MODULE_HDRS=	\
-	./../../E2_output/E2SM_KPM_v3.0_output/CGI.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/NR-CGI.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/PLMNIdentity.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/NRCellIdentity.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/EUTRACellIdentity.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/EUTRA-CGI.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/SD.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/S-NSSAI.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/SST.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/FiveQI.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/QCI.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/QosFlowIdentifier.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RANfunction-Name.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RIC-Format-Type.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RIC-Style-Type.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RIC-Style-Name.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-NG-ENB-DU.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-EN-GNB.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-ENB.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GUMMEI.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MME-Group-ID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MME-Code.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GlobalENB-ID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/ENB-ID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MME-UE-S1AP-ID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/ENB-UE-X2AP-ID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/ENB-UE-X2AP-ID-Extension.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB-DU.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB-CU-UP.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-NG-ENB.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/NGENB-CU-UE-W1AP-ID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/AMF-UE-NGAP-ID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GUAMI.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/AMFRegionID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/AMFSetID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/AMFPointer.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB-CU-F1AP-ID-List.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB-CU-CP-F1AP-ID-Item.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GNB-CU-UE-F1AP-ID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB-CU-CP-E1AP-ID-List.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEID-GNB-CU-CP-E1AP-ID-Item.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GNB-CU-CP-UE-E1AP-ID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RANUEID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/NG-RANnodeUEXnAPID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GlobalGNB-ID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GNB-ID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GlobalNGRANNodeID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GlobalNgENB-ID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/NgENB-ID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/TimeStamp.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/BinIndex.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/BinRangeValue.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/GranularityPeriod.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/LogicalOR.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementType.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementTypeName.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementTypeID.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementLabel.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/TestCondInfo.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/TestCond-Type.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/TestCond-Expression.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/TestCond-Value.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/BinRangeDefinition.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/BinRangeList.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/BinRangeItem.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/DistMeasurementBinRangeList.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/DistMeasurementBinRangeItem.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementInfoList.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementInfoItem.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/LabelInfoList.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/LabelInfoItem.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementData.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementDataItem.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementRecord.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementRecordItem.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementInfo-Action-List.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementInfo-Action-Item.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementCondList.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementCondItem.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementCondUEidList.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MeasurementCondUEidItem.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingCondList.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingCondItem.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingCondItem-Choice.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidList.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidItem.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidPerGP.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidPerGP-Item.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidList-PerGP.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidItem-PerGP.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUeCondPerSubList.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUeCondPerSubItem.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidPerSubList.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/MatchingUEidPerSubItem.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEMeasurementReportList.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/UEMeasurementReportItem.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-EventTriggerDefinition.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-EventTriggerDefinition-Format1.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-ActionDefinition.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-ActionDefinition-Format1.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-ActionDefinition-Format2.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-ActionDefinition-Format3.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-ActionDefinition-Format4.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-ActionDefinition-Format5.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-IndicationHeader.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-IndicationHeader-Format1.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-IndicationMessage.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-IndicationMessage-Format1.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-IndicationMessage-Format2.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-IndicationMessage-Format3.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/E2SM-KPM-RANfunction-Description.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RIC-EventTriggerStyle-Item.h	\
-	./../../E2_output/E2SM_KPM_v3.0_output/RIC-ReportStyle-Item.h
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/TimeStamp.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BinIndex.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BinRangeValue.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GranularityPeriod.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/LogicalOR.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementType.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementTypeName.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementTypeID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementLabel.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/TestCondInfo.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/TestCond-Type.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/TestCond-Expression.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/TestCond-Value.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BinRangeDefinition.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BinRangeList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BinRangeItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/DistMeasurementBinRangeList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/DistMeasurementBinRangeItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementInfoList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementInfoItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/LabelInfoList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/LabelInfoItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementData.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementDataItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementRecord.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementRecordItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementInfo-Action-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementInfo-Action-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementCondList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementCondItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementCondUEidList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MeasurementCondUEidItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingCondList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingCondItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingCondItem-Choice.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidPerGP.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidPerGP-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidList-PerGP.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidItem-PerGP.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUeCondPerSubList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUeCondPerSubItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidPerSubList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MatchingUEidPerSubItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEMeasurementReportList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEMeasurementReportItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-EventTriggerDefinition.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-EventTriggerDefinition-Format1.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-ActionDefinition.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-ActionDefinition-Format1.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-ActionDefinition-Format2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-ActionDefinition-Format3.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-ActionDefinition-Format4.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-ActionDefinition-Format5.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-IndicationHeader.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-IndicationHeader-Format1.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-IndicationMessage.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-IndicationMessage-Format1.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-IndicationMessage-Format2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-IndicationMessage-Format3.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E2SM-KPM-RANfunction-Description.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RIC-EventTriggerStyle-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RIC-ReportStyle-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/CGI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/CoreCPID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceIdentifier.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-NG.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-Xn.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-F1.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-E1.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-S1.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-X2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceID-W1.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/Interface-MessageID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/InterfaceType.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GroupID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/QoSID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RANfunction-Name.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RIC-Format-Type.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RIC-Style-Type.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RIC-Style-Name.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RRC-MessageID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RRCclass-LTE.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RRCclass-NR.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ServingCell-ARFCN.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ServingCell-PCI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB-CU-CP-E1AP-ID-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB-CU-CP-E1AP-ID-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB-CU-F1AP-ID-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB-CU-CP-F1AP-ID-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB-DU.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-GNB-CU-UP.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-NG-ENB.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-NG-ENB-DU.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-EN-GNB.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/UEID-ENB.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ENB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GlobalENB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GUMMEI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MME-Group-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MME-Code.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/MME-UE-S1AP-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/QCI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/SubscriberProfileIDforRFP.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/EN-GNB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ENB-UE-X2AP-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ENB-UE-X2AP-ID-Extension.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E-UTRA-ARFCN.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E-UTRA-PCI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/E-UTRA-TAC.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GlobalenGNB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NGENB-CU-UE-W1AP-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NGENB-DU-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/AMFPointer.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/AMFRegionID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/AMFSetID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/AMF-UE-NGAP-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/EUTRACellIdentity.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/EUTRA-CGI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/FiveQI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GlobalGNB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GlobalNgENB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GNB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GUAMI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/IndexToRFSP.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NgENB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NRCellIdentity.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NR-CGI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/PLMNIdentity.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/QosFlowIdentifier.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/SD.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/S-NSSAI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/SST.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NG-RANnodeUEXnAPID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GlobalNGRANNodeID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GNB-CU-CP-UE-E1AP-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GNB-CU-UP-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/FiveGS-TAC.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/FreqBandNrItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GNB-CU-UE-F1AP-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/GNB-DU-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NR-PCI.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NR-ARFCN.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NRFrequencyBand-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NRFrequencyBandItem.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NRFrequencyInfo.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NRFrequencyShift7p5khz.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/RANUEID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/SupportedSULBandList.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/SupportedSULFreqBandItem.h
 
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/OPEN_TYPE.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/OPEN_TYPE.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/constr_CHOICE.h
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/BOOLEAN.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/BOOLEAN.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/INTEGER.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/INTEGER.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/NULL.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/NULL.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/NativeEnumerated.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/NativeEnumerated.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/NativeInteger.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/NativeInteger.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/NativeReal.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/NativeReal.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/REAL.h
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/PrintableString.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/PrintableString.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/OCTET_STRING.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/REAL.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_SEQUENCE_OF.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_SEQUENCE_OF.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_SET_OF.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_SET_OF.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/constr_CHOICE.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/constr_SEQUENCE.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/constr_SEQUENCE.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/constr_SEQUENCE_OF.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/constr_SEQUENCE_OF.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/constr_SET_OF.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/constr_SET_OF.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_application.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_application.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_ioc.h
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_system.h
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_codecs.h
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_internal.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_internal.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_random_fill.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_random_fill.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_bit_data.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_bit_data.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/OCTET_STRING.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/BIT_STRING.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/BIT_STRING.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_codecs_prim.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/asn_codecs_prim.h
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/ber_tlv_length.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/ber_tlv_length.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/ber_tlv_tag.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/ber_tlv_tag.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/ber_decoder.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/ber_decoder.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/der_encoder.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/der_encoder.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/constr_TYPE.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/constr_TYPE.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/constraints.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/constraints.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/xer_support.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/xer_support.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/xer_decoder.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/xer_decoder.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/xer_encoder.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/xer_encoder.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/per_support.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/per_support.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/per_decoder.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/per_decoder.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/per_encoder.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/per_encoder.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/per_opentype.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/per_opentype.c
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/oer_decoder.h
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/oer_encoder.h
-ASN_MODULE_HDRS+=./../../E2_output/E2SM_KPM_v3.0_output/oer_support.h
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/oer_decoder.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/oer_encoder.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/oer_support.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/OPEN_TYPE_oer.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/INTEGER_oer.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/BIT_STRING_oer.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/OCTET_STRING_oer.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/NativeInteger_oer.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/NativeEnumerated_oer.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/constr_CHOICE_oer.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/constr_SEQUENCE_oer.c
-ASN_MODULE_SRCS+=./../../E2_output/E2SM_KPM_v3.0_output/constr_SET_OF_oer.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/OPEN_TYPE.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/OPEN_TYPE.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/constr_CHOICE.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BOOLEAN.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BOOLEAN.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/INTEGER.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/INTEGER.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NULL.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NULL.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NativeEnumerated.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NativeEnumerated.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NativeInteger.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NativeInteger.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NativeReal.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/NativeReal.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/REAL.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/PrintableString.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/PrintableString.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/OCTET_STRING.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/REAL.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_SET_OF.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_SET_OF.c
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/constr_CHOICE.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/constr_SEQUENCE.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/constr_SEQUENCE.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/constr_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/constr_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/constr_SET_OF.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/constr_SET_OF.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_application.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_application.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_ioc.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_system.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_codecs.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_internal.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_internal.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_random_fill.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_random_fill.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_bit_data.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_bit_data.c
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/OCTET_STRING.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BIT_STRING.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/BIT_STRING.c
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_codecs_prim.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/asn_codecs_prim.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ber_tlv_length.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ber_tlv_length.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ber_tlv_tag.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ber_tlv_tag.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ber_decoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/ber_decoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/der_encoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/der_encoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/constr_TYPE.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/constr_TYPE.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/constraints.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/constraints.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/xer_support.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/xer_support.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/xer_decoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/xer_decoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/xer_encoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/xer_encoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/per_support.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/per_support.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/per_decoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/per_decoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/per_encoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/per_encoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/per_opentype.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/per_opentype.c
 
-ASN_MODULE_CFLAGS=
+ASN_MODULE_CFLAGS=-DASN_DISABLE_BER_SUPPORT -DASN_DISABLE_OER_SUPPORT 
 
 lib_LTLIBRARIES+=libasncodec.la
 libasncodec_la_SOURCES=$(ASN_MODULE_SRCS) $(ASN_MODULE_HDRS)
-libasncodec_la_CPPFLAGS=-I$(top_srcdir)/./../../E2_output/E2SM_KPM_v3.0_output/
+libasncodec_la_CPPFLAGS=-I$(top_srcdir)//root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2SM_KPM/
 libasncodec_la_CFLAGS=$(ASN_MODULE_CFLAGS)
 libasncodec_la_LDFLAGS=-lm

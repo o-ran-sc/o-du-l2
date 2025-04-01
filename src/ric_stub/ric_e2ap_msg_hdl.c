@@ -5470,8 +5470,8 @@ uint8_t ProcRicSubsDeleteReqd(uint32_t duId, RICsubscriptionDeleteRequired_t *ri
    CmLList *ricSubsNode = NULLP;
 
    RICsubscriptionDeleteRequired_IEs_t *ricSubsDelRqdIe = NULLP;
-   RICsubscription_List_withCause_t *ricSubsList = NULLP;
-   RICsubscription_withCause_Item_t *subsItem = NULLP;
+   RICsubscription_List_withCauseE2_t *ricSubsList = NULLP;
+   RICsubscription_withCauseE2_Item_t *subsItem = NULLP;
 
    memset(&ricReqId, 0, sizeof(RicRequestId));
 
@@ -5495,11 +5495,11 @@ uint8_t ProcRicSubsDeleteReqd(uint32_t duId, RICsubscriptionDeleteRequired_t *ri
       {
          case ProtocolIE_IDE2_id_RICsubscriptionToBeRemoved:
          {
-            ricSubsList = &ricSubsDelRqdIe->value.choice.RICsubscription_List_withCause;
+            ricSubsList = &ricSubsDelRqdIe->value.choice.RICsubscription_List_withCauseE2;
             for(arrIdx = 0; arrIdx < ricSubsList->list.count; arrIdx++)
             {
-               subsItem = &(((RICsubscription_withCause_ItemIEs_t *)ricSubsList->list.array[arrIdx])->\
-                  value.choice.RICsubscription_withCause_Item);
+               subsItem = &(((RICsubscription_withCauseE2_ItemIEs_t *)ricSubsList->list.array[arrIdx])->\
+                  value.choice.RICsubscription_withCauseE2_Item);
                ranFuncDb = fetchRanFuncFromRanFuncId(duDb, subsItem->ranFunctionID);
                if(!ranFuncDb)
                {
