@@ -1,480 +1,465 @@
 ASN_MODULE_SRCS=	\
-	../../E2_v3.0_output/E2AP-PDU.c	\
-	../../E2_v3.0_output/InitiatingMessageE2.c	\
-	../../E2_v3.0_output/SuccessfulOutcomeE2.c	\
-	../../E2_v3.0_output/UnsuccessfulOutcomeE2.c	\
-	../../E2_v3.0_output/RICsubscriptionRequest.c	\
-	../../E2_v3.0_output/RICsubscriptionDetails.c	\
-	../../E2_v3.0_output/RICactions-ToBeSetup-List.c	\
-	../../E2_v3.0_output/RICaction-ToBeSetup-Item.c	\
-	../../E2_v3.0_output/RICsubscriptionResponse.c	\
-	../../E2_v3.0_output/RICaction-Admitted-List.c	\
-	../../E2_v3.0_output/RICaction-Admitted-Item.c	\
-	../../E2_v3.0_output/RICaction-NotAdmitted-List.c	\
-	../../E2_v3.0_output/RICaction-NotAdmitted-Item.c	\
-	../../E2_v3.0_output/RICsubscriptionFailure.c	\
-	../../E2_v3.0_output/RICsubscriptionDeleteRequest.c	\
-	../../E2_v3.0_output/RICsubscriptionDeleteResponse.c	\
-	../../E2_v3.0_output/RICsubscriptionDeleteFailure.c	\
-	../../E2_v3.0_output/RICsubscriptionDeleteRequired.c	\
-	../../E2_v3.0_output/RICsubscription-List-withCause.c	\
-	../../E2_v3.0_output/RICsubscription-withCause-Item.c	\
-	../../E2_v3.0_output/RICsubscriptionModificationRequest.c	\
-	../../E2_v3.0_output/RICactions-ToBeRemovedForModification-List.c	\
-	../../E2_v3.0_output/RICaction-ToBeRemovedForModification-Item.c	\
-	../../E2_v3.0_output/RICactions-ToBeModifiedForModification-List.c	\
-	../../E2_v3.0_output/RICaction-ToBeModifiedForModification-Item.c	\
-	../../E2_v3.0_output/RICactions-ToBeAddedForModification-List.c	\
-	../../E2_v3.0_output/RICaction-ToBeAddedForModification-Item.c	\
-	../../E2_v3.0_output/RICsubscriptionModificationResponse.c	\
-	../../E2_v3.0_output/RICactions-RemovedForModification-List.c	\
-	../../E2_v3.0_output/RICaction-RemovedForModification-Item.c	\
-	../../E2_v3.0_output/RICactions-FailedToBeRemovedForModification-List.c	\
-	../../E2_v3.0_output/RICaction-FailedToBeRemovedForModification-Item.c	\
-	../../E2_v3.0_output/RICactions-ModifiedForModification-List.c	\
-	../../E2_v3.0_output/RICaction-ModifiedForModification-Item.c	\
-	../../E2_v3.0_output/RICactions-FailedToBeModifiedForModification-List.c	\
-	../../E2_v3.0_output/RICaction-FailedToBeModifiedForModification-Item.c	\
-	../../E2_v3.0_output/RICactions-AddedForModification-List.c	\
-	../../E2_v3.0_output/RICaction-AddedForModification-Item.c	\
-	../../E2_v3.0_output/RICactions-FailedToBeAddedForModification-List.c	\
-	../../E2_v3.0_output/RICaction-FailedToBeAddedForModification-Item.c	\
-	../../E2_v3.0_output/RICsubscriptionModificationFailure.c	\
-	../../E2_v3.0_output/RICsubscriptionModificationRequired.c	\
-	../../E2_v3.0_output/RICactions-RequiredToBeModified-List.c	\
-	../../E2_v3.0_output/RICaction-RequiredToBeModified-Item.c	\
-	../../E2_v3.0_output/RICactions-RequiredToBeRemoved-List.c	\
-	../../E2_v3.0_output/RICaction-RequiredToBeRemoved-Item.c	\
-	../../E2_v3.0_output/RICsubscriptionModificationConfirm.c	\
-	../../E2_v3.0_output/RICactions-ConfirmedForModification-List.c	\
-	../../E2_v3.0_output/RICaction-ConfirmedForModification-Item.c	\
-	../../E2_v3.0_output/RICactions-RefusedToBeModified-List.c	\
-	../../E2_v3.0_output/RICaction-RefusedToBeModified-Item.c	\
-	../../E2_v3.0_output/RICactions-ConfirmedForRemoval-List.c	\
-	../../E2_v3.0_output/RICaction-ConfirmedForRemoval-Item.c	\
-	../../E2_v3.0_output/RICactions-RefusedToBeRemoved-List.c	\
-	../../E2_v3.0_output/RICaction-RefusedToBeRemoved-Item.c	\
-	../../E2_v3.0_output/RICsubscriptionModificationRefuse.c	\
-	../../E2_v3.0_output/RICindication.c	\
-	../../E2_v3.0_output/RICcontrolRequest.c	\
-	../../E2_v3.0_output/RICcontrolAcknowledge.c	\
-	../../E2_v3.0_output/RICcontrolFailure.c	\
-	../../E2_v3.0_output/RICQueryRequest.c	\
-	../../E2_v3.0_output/RICQueryResponse.c	\
-	../../E2_v3.0_output/RICQueryFailure.c	\
-	../../E2_v3.0_output/ErrorIndicationE2.c	\
-	../../E2_v3.0_output/E2setupRequest.c	\
-	../../E2_v3.0_output/E2setupResponse.c	\
-	../../E2_v3.0_output/E2setupFailure.c	\
-	../../E2_v3.0_output/E2connectionUpdate.c	\
-	../../E2_v3.0_output/E2connectionUpdate-List.c	\
-	../../E2_v3.0_output/E2connectionUpdate-Item.c	\
-	../../E2_v3.0_output/E2connectionUpdateRemove-List.c	\
-	../../E2_v3.0_output/E2connectionUpdateRemove-Item.c	\
-	../../E2_v3.0_output/E2connectionUpdateAcknowledge.c	\
-	../../E2_v3.0_output/E2connectionSetupFailed-List.c	\
-	../../E2_v3.0_output/E2connectionSetupFailed-Item.c	\
-	../../E2_v3.0_output/E2connectionUpdateFailure.c	\
-	../../E2_v3.0_output/E2nodeConfigurationUpdate.c	\
-	../../E2_v3.0_output/E2nodeComponentConfigAddition-List.c	\
-	../../E2_v3.0_output/E2nodeComponentConfigAddition-Item.c	\
-	../../E2_v3.0_output/E2nodeComponentConfigUpdate-List.c	\
-	../../E2_v3.0_output/E2nodeComponentConfigUpdate-Item.c	\
-	../../E2_v3.0_output/E2nodeComponentConfigRemoval-List.c	\
-	../../E2_v3.0_output/E2nodeComponentConfigRemoval-Item.c	\
-	../../E2_v3.0_output/E2nodeTNLassociationRemoval-List.c	\
-	../../E2_v3.0_output/E2nodeTNLassociationRemoval-Item.c	\
-	../../E2_v3.0_output/E2nodeConfigurationUpdateAcknowledge.c	\
-	../../E2_v3.0_output/E2nodeComponentConfigAdditionAck-List.c	\
-	../../E2_v3.0_output/E2nodeComponentConfigAdditionAck-Item.c	\
-	../../E2_v3.0_output/E2nodeComponentConfigUpdateAck-List.c	\
-	../../E2_v3.0_output/E2nodeComponentConfigUpdateAck-Item.c	\
-	../../E2_v3.0_output/E2nodeComponentConfigRemovalAck-List.c	\
-	../../E2_v3.0_output/E2nodeComponentConfigRemovalAck-Item.c	\
-	../../E2_v3.0_output/E2nodeConfigurationUpdateFailure.c	\
-	../../E2_v3.0_output/ResetRequestE2.c	\
-	../../E2_v3.0_output/ResetResponseE2.c	\
-	../../E2_v3.0_output/RICserviceUpdate.c	\
-	../../E2_v3.0_output/RANfunctions-List.c	\
-	../../E2_v3.0_output/RANfunction-Item.c	\
-	../../E2_v3.0_output/RANfunctionsID-List.c	\
-	../../E2_v3.0_output/RANfunctionID-Item.c	\
-	../../E2_v3.0_output/RICserviceUpdateAcknowledge.c	\
-	../../E2_v3.0_output/RANfunctionsIDcause-List.c	\
-	../../E2_v3.0_output/RANfunctionIDcause-Item.c	\
-	../../E2_v3.0_output/RICserviceUpdateFailure.c	\
-	../../E2_v3.0_output/RICserviceQuery.c	\
-	../../E2_v3.0_output/E2RemovalRequest.c	\
-	../../E2_v3.0_output/E2RemovalResponse.c	\
-	../../E2_v3.0_output/E2RemovalFailure.c	\
-	../../E2_v3.0_output/AMFName.c	\
-	../../E2_v3.0_output/CauseE2.c	\
-	../../E2_v3.0_output/CauseE2node.c	\
-	../../E2_v3.0_output/CauseE2Misc.c	\
-	../../E2_v3.0_output/CauseE2Protocol.c	\
-	../../E2_v3.0_output/CauseE2RICrequest.c	\
-	../../E2_v3.0_output/CauseE2RICservice.c	\
-	../../E2_v3.0_output/CauseE2Transport.c	\
-	../../E2_v3.0_output/CriticalityDiagnosticsE2.c	\
-	../../E2_v3.0_output/CriticalityDiagnostics-IE-ListE2.c	\
-	../../E2_v3.0_output/CriticalityDiagnostics-IE-ItemE2.c	\
-	../../E2_v3.0_output/E2nodeComponentConfiguration.c	\
-	../../E2_v3.0_output/E2nodeComponentConfigurationAck.c	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceType.c	\
-	../../E2_v3.0_output/E2nodeComponentID.c	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceE1.c	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceF1.c	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceNG.c	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceS1.c	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceX2.c	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceXn.c	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceW1.c	\
-	../../E2_v3.0_output/ENB-ID.c	\
-	../../E2_v3.0_output/ENB-ID-Choice.c	\
-	../../E2_v3.0_output/ENGNB-ID.c	\
-	../../E2_v3.0_output/GlobalE2node-ID.c	\
-	../../E2_v3.0_output/GlobalE2node-en-gNB-ID.c	\
-	../../E2_v3.0_output/GlobalE2node-eNB-ID.c	\
-	../../E2_v3.0_output/GlobalE2node-gNB-ID.c	\
-	../../E2_v3.0_output/GlobalE2node-ng-eNB-ID.c	\
-	../../E2_v3.0_output/GlobalENB-ID.c	\
-	../../E2_v3.0_output/GlobalenGNB-ID.c	\
-	../../E2_v3.0_output/GlobalgNB-ID.c	\
-	../../E2_v3.0_output/GlobalngeNB-ID.c	\
-	../../E2_v3.0_output/GlobalNG-RANNode-ID.c	\
-	../../E2_v3.0_output/GlobalRIC-ID.c	\
-	../../E2_v3.0_output/GNB-CU-UP-ID.c	\
-	../../E2_v3.0_output/GNB-DU-ID.c	\
-	../../E2_v3.0_output/GNB-ID-Choice.c	\
-	../../E2_v3.0_output/MMEname.c	\
-	../../E2_v3.0_output/NGENB-DU-ID.c	\
-	../../E2_v3.0_output/PLMN-Identity.c	\
-	../../E2_v3.0_output/RANfunctionDefinition.c	\
-	../../E2_v3.0_output/RANfunctionID.c	\
-	../../E2_v3.0_output/RANfunctionOID.c	\
-	../../E2_v3.0_output/RANfunctionRevision.c	\
-	../../E2_v3.0_output/RICactionDefinition.c	\
-	../../E2_v3.0_output/RICactionExecutionOrder.c	\
-	../../E2_v3.0_output/RICactionID.c	\
-	../../E2_v3.0_output/RICactionType.c	\
-	../../E2_v3.0_output/RICcallProcessID.c	\
-	../../E2_v3.0_output/RICcontrolAckRequest.c	\
-	../../E2_v3.0_output/RICcontrolHeader.c	\
-	../../E2_v3.0_output/RICcontrolMessage.c	\
-	../../E2_v3.0_output/RICcontrolOutcome.c	\
-	../../E2_v3.0_output/RICeventTriggerDefinition.c	\
-	../../E2_v3.0_output/RICindicationHeader.c	\
-	../../E2_v3.0_output/RICindicationMessage.c	\
-	../../E2_v3.0_output/RICindicationSN.c	\
-	../../E2_v3.0_output/RICindicationType.c	\
-	../../E2_v3.0_output/RICrequestID.c	\
-	../../E2_v3.0_output/RICsubscriptionTime.c	\
-	../../E2_v3.0_output/RICsubsequentAction.c	\
-	../../E2_v3.0_output/RICsubsequentActionType.c	\
-	../../E2_v3.0_output/RICqueryHeader.c	\
-	../../E2_v3.0_output/RICqueryDefinition.c	\
-	../../E2_v3.0_output/RICqueryOutcome.c	\
-	../../E2_v3.0_output/RICtimeToWait.c	\
-	../../E2_v3.0_output/TimeToWaitE2.c	\
-	../../E2_v3.0_output/TNLinformation.c	\
-	../../E2_v3.0_output/TNLusage.c	\
-	../../E2_v3.0_output/TransactionID.c	\
-	../../E2_v3.0_output/TypeOfErrorE2.c	\
-	../../E2_v3.0_output/CriticalityE2.c	\
-	../../E2_v3.0_output/PresenceE2.c	\
-	../../E2_v3.0_output/ProcedureCodeE2.c	\
-	../../E2_v3.0_output/ProtocolIE-IDE2.c	\
-	../../E2_v3.0_output/TriggeringMessageE2.c	\
-	../../E2_v3.0_output/ProtocolIE-ContainerE2.c	\
-	../../E2_v3.0_output/ProtocolIE-SingleContainerE2.c	\
-	../../E2_v3.0_output/ProtocolIE-FieldE2.c	\
-	../../E2_v3.0_output/ProtocolIE-ContainerPairE2.c	\
-	../../E2_v3.0_output/ProtocolIE-FieldPairE2.c	\
-	../../E2_v3.0_output/ProtocolIE-ContainerList.c	\
-	../../E2_v3.0_output/ProtocolIE-ContainerPairList.c
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2AP-PDU.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/InitiatingMessageE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/SuccessfulOutcomeE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/UnsuccessfulOutcomeE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionDetails.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ToBeSetup-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ToBeSetup-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionResponse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-Admitted-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-Admitted-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-NotAdmitted-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-NotAdmitted-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionDeleteRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionDeleteResponse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionDeleteFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionDeleteRequired.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscription-List-withCauseE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscription-withCauseE2-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionModificationRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ToBeRemovedForModification-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ToBeRemovedForModification-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ToBeModifiedForModification-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ToBeModifiedForModification-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ToBeAddedForModification-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ToBeAddedForModification-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionModificationResponse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-RemovedForModification-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-RemovedForModification-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-FailedToBeRemovedForModification-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-FailedToBeRemovedForModification-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ModifiedForModification-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ModifiedForModification-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-FailedToBeModifiedForModification-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-FailedToBeModifiedForModification-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-AddedForModification-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-AddedForModification-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-FailedToBeAddedForModification-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-FailedToBeAddedForModification-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionModificationFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionModificationRequired.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-RequiredToBeModified-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-RequiredToBeModified-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-RequiredToBeRemoved-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-RequiredToBeRemoved-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionModificationConfirm.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ConfirmedForModification-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ConfirmedForModification-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-RefusedToBeModified-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-RefusedToBeModified-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ConfirmedForRemoval-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ConfirmedForRemoval-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-RefusedToBeRemoved-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-RefusedToBeRemoved-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionModificationRefuse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICindication.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolAcknowledge.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICQueryRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICQueryResponse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICQueryFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ErrorIndicationE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2setupRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2setupResponse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2setupFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdate.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdate-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdate-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdateRemove-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdateRemove-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdateAcknowledge.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionSetupFailed-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionSetupFailed-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdateFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeConfigurationUpdate.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigAddition-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigAddition-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigUpdate-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigUpdate-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigRemoval-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigRemoval-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeTNLassociationRemoval-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeTNLassociationRemoval-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeConfigurationUpdateAcknowledge.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigAdditionAck-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigAdditionAck-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigUpdateAck-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigUpdateAck-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigRemovalAck-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigRemovalAck-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeConfigurationUpdateFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ResetRequestE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ResetResponseE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICserviceUpdate.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctions-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunction-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionsID-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionID-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICserviceUpdateAcknowledge.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionsIDcause-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionIDcause-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICserviceUpdateFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICserviceQuery.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2RemovalRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2RemovalResponse.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2RemovalFailure.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/AMFName.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2node.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2Misc.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2Protocol.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2RICrequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2RICservice.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2Transport.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CriticalityDiagnosticsE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CriticalityDiagnosticsE2-IE-List.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CriticalityDiagnosticsE2-IE-Item.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfiguration.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigurationAck.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceType.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceE1.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceF1.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceNG.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceS1.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceX2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceXn.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceW1.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ENB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ENB-ID-Choice.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ENGNB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalE2node-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalE2node-en-gNB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalE2node-eNB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalE2node-gNB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalE2node-ng-eNB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalENB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalenGNB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalgNB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalngeNB-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalNG-RANNode-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalRIC-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GNB-CU-UP-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GNB-DU-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GNB-ID-Choice.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/MMEname.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/NGENB-DU-ID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/PLMN-Identity.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionDefinition.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionOID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionRevision.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactionDefinition.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactionExecutionOrder.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactionID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactionType.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcallProcessID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolAckRequest.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolHeader.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolMessage.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolOutcome.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICeventTriggerDefinition.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICindicationHeader.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICindicationMessage.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICindicationSN.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICindicationType.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICrequestID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionTime.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubsequentAction.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubsequentActionType.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICqueryHeader.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICqueryDefinition.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICqueryOutcome.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICtimeToWait.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/TimeToWaitE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/TNLinformation.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/TNLusage.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/TransactionID.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/TypeOfError.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CriticalityE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/Presence.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProcedureCodeE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-IDE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/TriggeringMessage.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-ContainerE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-SingleContainerE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-FieldE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-ContainerPair.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-FieldPair.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-ContainerListE2.c	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-ContainerPairList.c
 
 ASN_MODULE_HDRS=	\
-	../../E2_v3.0_output/E2AP-PDU.h	\
-	../../E2_v3.0_output/InitiatingMessageE2.h	\
-	../../E2_v3.0_output/SuccessfulOutcomeE2.h	\
-	../../E2_v3.0_output/UnsuccessfulOutcomeE2.h	\
-	../../E2_v3.0_output/RICsubscriptionRequest.h	\
-	../../E2_v3.0_output/RICsubscriptionDetails.h	\
-	../../E2_v3.0_output/RICactions-ToBeSetup-List.h	\
-	../../E2_v3.0_output/RICaction-ToBeSetup-Item.h	\
-	../../E2_v3.0_output/RICsubscriptionResponse.h	\
-	../../E2_v3.0_output/RICaction-Admitted-List.h	\
-	../../E2_v3.0_output/RICaction-Admitted-Item.h	\
-	../../E2_v3.0_output/RICaction-NotAdmitted-List.h	\
-	../../E2_v3.0_output/RICaction-NotAdmitted-Item.h	\
-	../../E2_v3.0_output/RICsubscriptionFailure.h	\
-	../../E2_v3.0_output/RICsubscriptionDeleteRequest.h	\
-	../../E2_v3.0_output/RICsubscriptionDeleteResponse.h	\
-	../../E2_v3.0_output/RICsubscriptionDeleteFailure.h	\
-	../../E2_v3.0_output/RICsubscriptionDeleteRequired.h	\
-	../../E2_v3.0_output/RICsubscription-List-withCause.h	\
-	../../E2_v3.0_output/RICsubscription-withCause-Item.h	\
-	../../E2_v3.0_output/RICsubscriptionModificationRequest.h	\
-	../../E2_v3.0_output/RICactions-ToBeRemovedForModification-List.h	\
-	../../E2_v3.0_output/RICaction-ToBeRemovedForModification-Item.h	\
-	../../E2_v3.0_output/RICactions-ToBeModifiedForModification-List.h	\
-	../../E2_v3.0_output/RICaction-ToBeModifiedForModification-Item.h	\
-	../../E2_v3.0_output/RICactions-ToBeAddedForModification-List.h	\
-	../../E2_v3.0_output/RICaction-ToBeAddedForModification-Item.h	\
-	../../E2_v3.0_output/RICsubscriptionModificationResponse.h	\
-	../../E2_v3.0_output/RICactions-RemovedForModification-List.h	\
-	../../E2_v3.0_output/RICaction-RemovedForModification-Item.h	\
-	../../E2_v3.0_output/RICactions-FailedToBeRemovedForModification-List.h	\
-	../../E2_v3.0_output/RICaction-FailedToBeRemovedForModification-Item.h	\
-	../../E2_v3.0_output/RICactions-ModifiedForModification-List.h	\
-	../../E2_v3.0_output/RICaction-ModifiedForModification-Item.h	\
-	../../E2_v3.0_output/RICactions-FailedToBeModifiedForModification-List.h	\
-	../../E2_v3.0_output/RICaction-FailedToBeModifiedForModification-Item.h	\
-	../../E2_v3.0_output/RICactions-AddedForModification-List.h	\
-	../../E2_v3.0_output/RICaction-AddedForModification-Item.h	\
-	../../E2_v3.0_output/RICactions-FailedToBeAddedForModification-List.h	\
-	../../E2_v3.0_output/RICaction-FailedToBeAddedForModification-Item.h	\
-	../../E2_v3.0_output/RICsubscriptionModificationFailure.h	\
-	../../E2_v3.0_output/RICsubscriptionModificationRequired.h	\
-	../../E2_v3.0_output/RICactions-RequiredToBeModified-List.h	\
-	../../E2_v3.0_output/RICaction-RequiredToBeModified-Item.h	\
-	../../E2_v3.0_output/RICactions-RequiredToBeRemoved-List.h	\
-	../../E2_v3.0_output/RICaction-RequiredToBeRemoved-Item.h	\
-	../../E2_v3.0_output/RICsubscriptionModificationConfirm.h	\
-	../../E2_v3.0_output/RICactions-ConfirmedForModification-List.h	\
-	../../E2_v3.0_output/RICaction-ConfirmedForModification-Item.h	\
-	../../E2_v3.0_output/RICactions-RefusedToBeModified-List.h	\
-	../../E2_v3.0_output/RICaction-RefusedToBeModified-Item.h	\
-	../../E2_v3.0_output/RICactions-ConfirmedForRemoval-List.h	\
-	../../E2_v3.0_output/RICaction-ConfirmedForRemoval-Item.h	\
-	../../E2_v3.0_output/RICactions-RefusedToBeRemoved-List.h	\
-	../../E2_v3.0_output/RICaction-RefusedToBeRemoved-Item.h	\
-	../../E2_v3.0_output/RICsubscriptionModificationRefuse.h	\
-	../../E2_v3.0_output/RICindication.h	\
-	../../E2_v3.0_output/RICcontrolRequest.h	\
-	../../E2_v3.0_output/RICcontrolAcknowledge.h	\
-	../../E2_v3.0_output/RICcontrolFailure.h	\
-	../../E2_v3.0_output/RICQueryRequest.h	\
-	../../E2_v3.0_output/RICQueryResponse.h	\
-	../../E2_v3.0_output/RICQueryFailure.h	\
-	../../E2_v3.0_output/ErrorIndicationE2.h	\
-	../../E2_v3.0_output/E2setupRequest.h	\
-	../../E2_v3.0_output/E2setupResponse.h	\
-	../../E2_v3.0_output/E2setupFailure.h	\
-	../../E2_v3.0_output/E2connectionUpdate.h	\
-	../../E2_v3.0_output/E2connectionUpdate-List.h	\
-	../../E2_v3.0_output/E2connectionUpdate-Item.h	\
-	../../E2_v3.0_output/E2connectionUpdateRemove-List.h	\
-	../../E2_v3.0_output/E2connectionUpdateRemove-Item.h	\
-	../../E2_v3.0_output/E2connectionUpdateAcknowledge.h	\
-	../../E2_v3.0_output/E2connectionSetupFailed-List.h	\
-	../../E2_v3.0_output/E2connectionSetupFailed-Item.h	\
-	../../E2_v3.0_output/E2connectionUpdateFailure.h	\
-	../../E2_v3.0_output/E2nodeConfigurationUpdate.h	\
-	../../E2_v3.0_output/E2nodeComponentConfigAddition-List.h	\
-	../../E2_v3.0_output/E2nodeComponentConfigAddition-Item.h	\
-	../../E2_v3.0_output/E2nodeComponentConfigUpdate-List.h	\
-	../../E2_v3.0_output/E2nodeComponentConfigUpdate-Item.h	\
-	../../E2_v3.0_output/E2nodeComponentConfigRemoval-List.h	\
-	../../E2_v3.0_output/E2nodeComponentConfigRemoval-Item.h	\
-	../../E2_v3.0_output/E2nodeTNLassociationRemoval-List.h	\
-	../../E2_v3.0_output/E2nodeTNLassociationRemoval-Item.h	\
-	../../E2_v3.0_output/E2nodeConfigurationUpdateAcknowledge.h	\
-	../../E2_v3.0_output/E2nodeComponentConfigAdditionAck-List.h	\
-	../../E2_v3.0_output/E2nodeComponentConfigAdditionAck-Item.h	\
-	../../E2_v3.0_output/E2nodeComponentConfigUpdateAck-List.h	\
-	../../E2_v3.0_output/E2nodeComponentConfigUpdateAck-Item.h	\
-	../../E2_v3.0_output/E2nodeComponentConfigRemovalAck-List.h	\
-	../../E2_v3.0_output/E2nodeComponentConfigRemovalAck-Item.h	\
-	../../E2_v3.0_output/E2nodeConfigurationUpdateFailure.h	\
-	../../E2_v3.0_output/ResetRequestE2.h	\
-	../../E2_v3.0_output/ResetResponseE2.h	\
-	../../E2_v3.0_output/RICserviceUpdate.h	\
-	../../E2_v3.0_output/RANfunctions-List.h	\
-	../../E2_v3.0_output/RANfunction-Item.h	\
-	../../E2_v3.0_output/RANfunctionsID-List.h	\
-	../../E2_v3.0_output/RANfunctionID-Item.h	\
-	../../E2_v3.0_output/RICserviceUpdateAcknowledge.h	\
-	../../E2_v3.0_output/RANfunctionsIDcause-List.h	\
-	../../E2_v3.0_output/RANfunctionIDcause-Item.h	\
-	../../E2_v3.0_output/RICserviceUpdateFailure.h	\
-	../../E2_v3.0_output/RICserviceQuery.h	\
-	../../E2_v3.0_output/E2RemovalRequest.h	\
-	../../E2_v3.0_output/E2RemovalResponse.h	\
-	../../E2_v3.0_output/E2RemovalFailure.h	\
-	../../E2_v3.0_output/AMFName.h	\
-	../../E2_v3.0_output/CauseE2.h	\
-	../../E2_v3.0_output/CauseE2node.h	\
-	../../E2_v3.0_output/CauseE2Misc.h	\
-	../../E2_v3.0_output/CauseE2Protocol.h	\
-	../../E2_v3.0_output/CauseE2RICrequest.h	\
-	../../E2_v3.0_output/CauseE2RICservice.h	\
-	../../E2_v3.0_output/CauseE2Transport.h	\
-	../../E2_v3.0_output/CriticalityDiagnosticsE2.h	\
-	../../E2_v3.0_output/CriticalityDiagnostics-IE-ListE2.h	\
-	../../E2_v3.0_output/CriticalityDiagnostics-IE-ItemE2.h	\
-	../../E2_v3.0_output/E2nodeComponentConfiguration.h	\
-	../../E2_v3.0_output/E2nodeComponentConfigurationAck.h	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceType.h	\
-	../../E2_v3.0_output/E2nodeComponentID.h	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceE1.h	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceF1.h	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceNG.h	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceS1.h	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceX2.h	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceXn.h	\
-	../../E2_v3.0_output/E2nodeComponentInterfaceW1.h	\
-	../../E2_v3.0_output/ENB-ID.h	\
-	../../E2_v3.0_output/ENB-ID-Choice.h	\
-	../../E2_v3.0_output/ENGNB-ID.h	\
-	../../E2_v3.0_output/GlobalE2node-ID.h	\
-	../../E2_v3.0_output/GlobalE2node-en-gNB-ID.h	\
-	../../E2_v3.0_output/GlobalE2node-eNB-ID.h	\
-	../../E2_v3.0_output/GlobalE2node-gNB-ID.h	\
-	../../E2_v3.0_output/GlobalE2node-ng-eNB-ID.h	\
-	../../E2_v3.0_output/GlobalENB-ID.h	\
-	../../E2_v3.0_output/GlobalenGNB-ID.h	\
-	../../E2_v3.0_output/GlobalgNB-ID.h	\
-	../../E2_v3.0_output/GlobalngeNB-ID.h	\
-	../../E2_v3.0_output/GlobalNG-RANNode-ID.h	\
-	../../E2_v3.0_output/GlobalRIC-ID.h	\
-	../../E2_v3.0_output/GNB-CU-UP-ID.h	\
-	../../E2_v3.0_output/GNB-DU-ID.h	\
-	../../E2_v3.0_output/GNB-ID-Choice.h	\
-	../../E2_v3.0_output/MMEname.h	\
-	../../E2_v3.0_output/NGENB-DU-ID.h	\
-	../../E2_v3.0_output/PLMN-Identity.h	\
-	../../E2_v3.0_output/RANfunctionDefinition.h	\
-	../../E2_v3.0_output/RANfunctionID.h	\
-	../../E2_v3.0_output/RANfunctionOID.h	\
-	../../E2_v3.0_output/RANfunctionRevision.h	\
-	../../E2_v3.0_output/RICactionDefinition.h	\
-	../../E2_v3.0_output/RICactionExecutionOrder.h	\
-	../../E2_v3.0_output/RICactionID.h	\
-	../../E2_v3.0_output/RICactionType.h	\
-	../../E2_v3.0_output/RICcallProcessID.h	\
-	../../E2_v3.0_output/RICcontrolAckRequest.h	\
-	../../E2_v3.0_output/RICcontrolHeader.h	\
-	../../E2_v3.0_output/RICcontrolMessage.h	\
-	../../E2_v3.0_output/RICcontrolOutcome.h	\
-	../../E2_v3.0_output/RICeventTriggerDefinition.h	\
-	../../E2_v3.0_output/RICindicationHeader.h	\
-	../../E2_v3.0_output/RICindicationMessage.h	\
-	../../E2_v3.0_output/RICindicationSN.h	\
-	../../E2_v3.0_output/RICindicationType.h	\
-	../../E2_v3.0_output/RICrequestID.h	\
-	../../E2_v3.0_output/RICsubscriptionTime.h	\
-	../../E2_v3.0_output/RICsubsequentAction.h	\
-	../../E2_v3.0_output/RICsubsequentActionType.h	\
-	../../E2_v3.0_output/RICqueryHeader.h	\
-	../../E2_v3.0_output/RICqueryDefinition.h	\
-	../../E2_v3.0_output/RICqueryOutcome.h	\
-	../../E2_v3.0_output/RICtimeToWait.h	\
-	../../E2_v3.0_output/TimeToWaitE2.h	\
-	../../E2_v3.0_output/TNLinformation.h	\
-	../../E2_v3.0_output/TNLusage.h	\
-	../../E2_v3.0_output/TransactionID.h	\
-	../../E2_v3.0_output/TypeOfErrorE2.h	\
-	../../E2_v3.0_output/CriticalityE2.h	\
-	../../E2_v3.0_output/PresenceE2.h	\
-	../../E2_v3.0_output/ProcedureCodeE2.h	\
-	../../E2_v3.0_output/ProtocolIE-IDE2.h	\
-	../../E2_v3.0_output/TriggeringMessageE2.h	\
-	../../E2_v3.0_output/ProtocolIE-ContainerE2.h	\
-	../../E2_v3.0_output/ProtocolIE-SingleContainerE2.h	\
-	../../E2_v3.0_output/ProtocolIE-FieldE2.h	\
-	../../E2_v3.0_output/ProtocolIE-ContainerPairE2.h	\
-	../../E2_v3.0_output/ProtocolIE-FieldPairE2.h	\
-	../../E2_v3.0_output/ProtocolIE-ContainerList.h	\
-	../../E2_v3.0_output/ProtocolIE-ContainerPairList.h
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2AP-PDU.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/InitiatingMessageE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/SuccessfulOutcomeE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/UnsuccessfulOutcomeE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionDetails.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ToBeSetup-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ToBeSetup-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionResponse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-Admitted-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-Admitted-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-NotAdmitted-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-NotAdmitted-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionDeleteRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionDeleteResponse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionDeleteFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionDeleteRequired.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscription-List-withCauseE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscription-withCauseE2-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionModificationRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ToBeRemovedForModification-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ToBeRemovedForModification-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ToBeModifiedForModification-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ToBeModifiedForModification-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ToBeAddedForModification-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ToBeAddedForModification-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionModificationResponse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-RemovedForModification-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-RemovedForModification-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-FailedToBeRemovedForModification-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-FailedToBeRemovedForModification-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ModifiedForModification-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ModifiedForModification-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-FailedToBeModifiedForModification-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-FailedToBeModifiedForModification-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-AddedForModification-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-AddedForModification-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-FailedToBeAddedForModification-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-FailedToBeAddedForModification-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionModificationFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionModificationRequired.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-RequiredToBeModified-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-RequiredToBeModified-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-RequiredToBeRemoved-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-RequiredToBeRemoved-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionModificationConfirm.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ConfirmedForModification-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ConfirmedForModification-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-RefusedToBeModified-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-RefusedToBeModified-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-ConfirmedForRemoval-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-ConfirmedForRemoval-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactions-RefusedToBeRemoved-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICaction-RefusedToBeRemoved-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionModificationRefuse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICindication.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolAcknowledge.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICQueryRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICQueryResponse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICQueryFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ErrorIndicationE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2setupRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2setupResponse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2setupFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdate.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdate-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdate-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdateRemove-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdateRemove-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdateAcknowledge.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionSetupFailed-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionSetupFailed-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2connectionUpdateFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeConfigurationUpdate.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigAddition-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigAddition-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigUpdate-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigUpdate-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigRemoval-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigRemoval-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeTNLassociationRemoval-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeTNLassociationRemoval-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeConfigurationUpdateAcknowledge.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigAdditionAck-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigAdditionAck-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigUpdateAck-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigUpdateAck-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigRemovalAck-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigRemovalAck-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeConfigurationUpdateFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ResetRequestE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ResetResponseE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICserviceUpdate.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctions-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunction-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionsID-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionID-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICserviceUpdateAcknowledge.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionsIDcause-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionIDcause-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICserviceUpdateFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICserviceQuery.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2RemovalRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2RemovalResponse.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2RemovalFailure.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/AMFName.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2node.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2Misc.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2Protocol.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2RICrequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2RICservice.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CauseE2Transport.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CriticalityDiagnosticsE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CriticalityDiagnosticsE2-IE-List.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CriticalityDiagnosticsE2-IE-Item.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfiguration.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentConfigurationAck.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceType.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceE1.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceF1.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceNG.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceS1.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceX2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceXn.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/E2nodeComponentInterfaceW1.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ENB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ENB-ID-Choice.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ENGNB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalE2node-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalE2node-en-gNB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalE2node-eNB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalE2node-gNB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalE2node-ng-eNB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalENB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalenGNB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalgNB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalngeNB-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalNG-RANNode-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GlobalRIC-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GNB-CU-UP-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GNB-DU-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/GNB-ID-Choice.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/MMEname.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/NGENB-DU-ID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/PLMN-Identity.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionDefinition.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionOID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RANfunctionRevision.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactionDefinition.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactionExecutionOrder.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactionID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICactionType.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcallProcessID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolAckRequest.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolHeader.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolMessage.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICcontrolOutcome.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICeventTriggerDefinition.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICindicationHeader.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICindicationMessage.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICindicationSN.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICindicationType.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICrequestID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubscriptionTime.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubsequentAction.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICsubsequentActionType.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICqueryHeader.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICqueryDefinition.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICqueryOutcome.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/RICtimeToWait.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/TimeToWaitE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/TNLinformation.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/TNLusage.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/TransactionID.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/TypeOfError.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/CriticalityE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/Presence.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProcedureCodeE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-IDE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/TriggeringMessage.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-ContainerE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-SingleContainerE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-FieldE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-ContainerPair.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-FieldPair.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-ContainerListE2.h	\
+	/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ProtocolIE-ContainerPairList.h
 
-ASN_MODULE_HDRS+=../../E2_v3.0_output/ANY.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/ANY.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/OCTET_STRING.h
-ASN_MODULE_HDRS+=../../E2_v3.0_output/OPEN_TYPE.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/OPEN_TYPE.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/constr_CHOICE.h
-ASN_MODULE_HDRS+=../../E2_v3.0_output/INTEGER.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/INTEGER.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/NativeEnumerated.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/NativeEnumerated.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/NativeInteger.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/NativeInteger.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/PrintableString.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/PrintableString.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/asn_SEQUENCE_OF.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/asn_SEQUENCE_OF.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/asn_SET_OF.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/asn_SET_OF.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/constr_CHOICE.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/constr_SEQUENCE.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/constr_SEQUENCE.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/constr_SEQUENCE_OF.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/constr_SEQUENCE_OF.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/constr_SET_OF.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/constr_SET_OF.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/asn_application.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/asn_application.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/asn_ioc.h
-ASN_MODULE_HDRS+=../../E2_v3.0_output/asn_system.h
-ASN_MODULE_HDRS+=../../E2_v3.0_output/asn_codecs.h
-ASN_MODULE_HDRS+=../../E2_v3.0_output/asn_internal.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/asn_internal.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/asn_random_fill.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/asn_random_fill.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/asn_bit_data.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/asn_bit_data.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/OCTET_STRING.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/BIT_STRING.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/BIT_STRING.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/asn_codecs_prim.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/asn_codecs_prim.h
-ASN_MODULE_HDRS+=../../E2_v3.0_output/ber_tlv_length.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/ber_tlv_length.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/ber_tlv_tag.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/ber_tlv_tag.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/ber_decoder.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/ber_decoder.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/der_encoder.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/der_encoder.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/constr_TYPE.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/constr_TYPE.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/constraints.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/constraints.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/xer_support.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/xer_support.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/xer_decoder.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/xer_decoder.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/xer_encoder.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/xer_encoder.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/per_support.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/per_support.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/per_decoder.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/per_decoder.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/per_encoder.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/per_encoder.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/per_opentype.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/per_opentype.c
-ASN_MODULE_HDRS+=../../E2_v3.0_output/oer_decoder.h
-ASN_MODULE_HDRS+=../../E2_v3.0_output/oer_encoder.h
-ASN_MODULE_HDRS+=../../E2_v3.0_output/oer_support.h
-ASN_MODULE_SRCS+=../../E2_v3.0_output/oer_decoder.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/oer_encoder.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/oer_support.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/OPEN_TYPE_oer.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/INTEGER_oer.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/BIT_STRING_oer.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/OCTET_STRING_oer.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/NativeInteger_oer.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/NativeEnumerated_oer.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/constr_CHOICE_oer.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/constr_SEQUENCE_oer.c
-ASN_MODULE_SRCS+=../../E2_v3.0_output/constr_SET_OF_oer.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ANY.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ANY.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/OCTET_STRING.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/OPEN_TYPE.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/OPEN_TYPE.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/constr_CHOICE.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/INTEGER.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/INTEGER.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/NativeEnumerated.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/NativeEnumerated.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/NativeInteger.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/NativeInteger.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/PrintableString.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/PrintableString.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_SET_OF.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_SET_OF.c
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/constr_CHOICE.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/constr_SEQUENCE.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/constr_SEQUENCE.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/constr_SEQUENCE_OF.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/constr_SEQUENCE_OF.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/constr_SET_OF.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/constr_SET_OF.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_application.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_application.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_ioc.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_system.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_codecs.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_internal.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_internal.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_random_fill.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_random_fill.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_bit_data.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_bit_data.c
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/OCTET_STRING.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/BIT_STRING.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/BIT_STRING.c
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_codecs_prim.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/asn_codecs_prim.h
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ber_tlv_length.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ber_tlv_length.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ber_tlv_tag.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ber_tlv_tag.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ber_decoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/ber_decoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/der_encoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/der_encoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/constr_TYPE.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/constr_TYPE.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/constraints.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/constraints.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/xer_support.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/xer_support.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/xer_decoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/xer_decoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/xer_encoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/xer_encoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/per_support.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/per_support.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/per_decoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/per_decoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/per_encoder.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/per_encoder.c
+ASN_MODULE_HDRS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/per_opentype.h
+ASN_MODULE_SRCS+=/root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/per_opentype.c
 
-ASN_MODULE_CFLAGS=
+ASN_MODULE_CFLAGS=-DASN_DISABLE_BER_SUPPORT -DASN_DISABLE_OER_SUPPORT 
 
 lib_LTLIBRARIES+=libasncodec.la
 libasncodec_la_SOURCES=$(ASN_MODULE_SRCS) $(ASN_MODULE_HDRS)
-libasncodec_la_CPPFLAGS=-I$(top_srcdir)/../../E2_v3.0_output/
+libasncodec_la_CPPFLAGS=-I$(top_srcdir)//root/svaidhya/28March_ASN1_l2/l2/src/codec_utils/E2AP/
 libasncodec_la_CFLAGS=$(ASN_MODULE_CFLAGS)
 libasncodec_la_LDFLAGS=-lm

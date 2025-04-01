@@ -928,7 +928,6 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
  * does not have any member parameter lead to decode failure in wireshark. 
  * The issue has been reported to Nokia.
  * The following code will be uncommented once the issue is resolved */
-#if 0
    /* Search Space type and  DCI Format */
    DU_ALLOC(searchSpace->searchSpaceType, sizeof( struct SearchSpace__searchSpaceType));
    if(!searchSpace->searchSpaceType)
@@ -979,7 +978,6 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
             return RFAILED;
          }
    }
-#endif
 
    return ROK;
 }/* BuildCommonSerachSpaceList */
