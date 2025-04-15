@@ -1,0 +1,8 @@
+Verified+1: ORAN Required GHA <releng+oran.required.gha@linuxfoundation.org>
+Verified+1: Ankit Barve <anbarve@radisys.com>
+Code-Review+2: Ankit Barve <anbarve@radisys.com>
+Submitted-by: Sangeeta Vaidhyanathan <svaidhya@radisys.com>
+Submitted-at: Tue, 15 Apr 2025 06:52:22 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/o-du/l2/+/14318
+Project: o-du/l2
+Branch: refs/heads/oai-integration
