@@ -300,7 +300,7 @@ void schFillSlotConfig(SchCellCb *cell, TDDCfg tddCfg)
 {
    uint8_t slotIdx = 0, symbolIdx = 0;
 
-   for(slotIdx =0 ;slotIdx < MAX_TDD_PERIODICITY_SLOTS; slotIdx++) 
+   for(slotIdx =0 ;slotIdx < cell->numSlotsInPeriodicity; slotIdx++) 
    {
       for(symbolIdx = 0; symbolIdx < MAX_SYMB_PER_SLOT; symbolIdx++)
       {
@@ -312,8 +312,8 @@ void schFillSlotConfig(SchCellCb *cell, TDDCfg tddCfg)
          }
 
          /*Fill Full-FLEXI SLOT and as well as Flexi Symbols in 1 slot preceding FULL-UL slot*/ 
-         else if(slotIdx < (MAX_TDD_PERIODICITY_SLOTS - tddCfg.nrOfUlSlots -1) ||  \
-               (slotIdx == (MAX_TDD_PERIODICITY_SLOTS - tddCfg.nrOfUlSlots -1) && \
+         else if(slotIdx < (cell->numSlotsInPeriodicity - tddCfg.nrOfUlSlots -1) ||  \
+               (slotIdx == (cell->numSlotsInPeriodicity - tddCfg.nrOfUlSlots -1) && \
                 symbolIdx < (MAX_SYMB_PER_SLOT - tddCfg.nrOfUlSymbols)))
          {
               cell->slotCfg[slotIdx][symbolIdx] = FLEXI_SYMBOL; 

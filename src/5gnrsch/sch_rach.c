@@ -89,6 +89,7 @@ bool schCheckPrachOcc(SchCellCb *cell, SlotTimingInfo prachOccasionTimingInfo)
             return FALSE;
          }
 #endif
+         DU_LOG("\nINFO   --> SCH : PrachCfgIdx %d support UL slot:%d", prachCfgIdx,prachOccasionTimingInfo.slot);
          return TRUE;
       }
    }

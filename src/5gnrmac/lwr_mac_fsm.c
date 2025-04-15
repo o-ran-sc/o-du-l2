@@ -2806,8 +2806,8 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
          sizeof(uint8_t), macCfgParams.prachCfg.prachCfgIdx << TLV_ALIGN(8), &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_ROOT_SEQUENCE_INDEX_TAG, \
          sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].rootSeqIdx << TLV_ALIGN(16), &msgLen);
-   //fillTlvs(&configReq->tlvs[index++], FAPI_NUM_ROOT_SEQUENCES_TAG,        \
-   sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].numRootSeq, &msgLen);
+   fillTlvs(&configReq->tlvs[index++], FAPI_NUM_ROOT_SEQUENCES_TAG,        \
+   sizeof(uint8_t), macCfgParams.prachCfg.fdm[0].numRootSeq << TLV_ALIGN(8), &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_K1_TAG,                        \
          sizeof(uint16_t), macCfgParams.prachCfg.fdm[0].k1 << TLV_ALIGN(16), &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_PRACH_ZERO_CORR_CONF_TAG ,     \

@@ -563,10 +563,10 @@
          <NUM_PRACH_FDM>1</NUM_PRACH_FDM>
          <FDM_LIST>
             <FDM_INFO>
-               <ROOT_SEQ_IDX>0</ROOT_SEQ_IDX>
+               <ROOT_SEQ_IDX>1</ROOT_SEQ_IDX>
                <NUM_ROOT_SEQ>1</NUM_ROOT_SEQ>
                <K1>0</K1>
-               <ZERO_CORR_ZONE_CFG>4</ZERO_CORR_ZONE_CFG>
+               <ZERO_CORR_ZONE_CFG>12</ZERO_CORR_ZONE_CFG>
             </FDM_INFO>
          </FDM_LIST>
          <PRACH_RESTRICTED_SET_CFG>0</PRACH_RESTRICTED_SET_CFG>
@@ -579,11 +579,11 @@
          <RA_RSP_WINDOW>10</RA_RSP_WINDOW>
       </PRACH_CFG>
       <TDD_CFG>
-         <TDD_PERIODICITY>6</TDD_PERIODICITY>
-         <NUM_DL_SLOTS>7</NUM_DL_SLOTS>
-         <NUM_DL_SYMBOLS>12</NUM_DL_SYMBOLS>
-         <NUM_UL_SLOTS>2</NUM_UL_SLOTS>
-         <NUM_UL_SYMBOLS>1</NUM_UL_SYMBOLS>
+         <TDD_PERIODICITY>5</TDD_PERIODICITY>
+         <NUM_DL_SLOTS>3</NUM_DL_SLOTS>
+         <NUM_DL_SYMBOLS>6</NUM_DL_SYMBOLS>
+         <NUM_UL_SLOTS>1</NUM_UL_SLOTS>
+         <NUM_UL_SYMBOLS>4</NUM_UL_SYMBOLS>
       </TDD_CFG>
       <PRE_CODE_CFG>
          <NUM_LAYERS>1</NUM_LAYERS>
