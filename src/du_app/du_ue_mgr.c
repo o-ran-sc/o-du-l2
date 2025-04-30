@@ -778,7 +778,7 @@ uint8_t fillDefaultInitDlBwp(InitialDlBwp *initDlBwp)
          }
          if(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0)
          {
-            *(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0) = 1;
+            *(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0) = 0;
          }
          initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = MAPPING_TYPEA;
          initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbol = PDSCH_START_SYMBOL; 

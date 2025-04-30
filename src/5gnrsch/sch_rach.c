@@ -913,6 +913,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    uint8_t  dmrsStartSymbol, startSymbol, numSymbol ;
    uint16_t numRbs = 0;
    uint16_t tbSize = 0;
+   uint8_t freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    PdschCfg *pdsch;
 
    SchBwpDlCfg *initialBwp = &cell->cellCfg.dlCfgCommon.schInitialDlBwp;
@@ -942,16 +943,27 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    }
 
    /* fill BWP */
+#ifndef OAI_TESTING
    bwp->freqAlloc.numPrb   = initialBwp->bwp.freqAlloc.numPrb;
    bwp->freqAlloc.startPrb = initialBwp->bwp.freqAlloc.startPrb;
+   pdcch->coresetCfg.durationSymbols = numSymbols;
+#else
+   bwp->freqAlloc.numPrb   = 48;
+   bwp->freqAlloc.startPrb = 110;
+   pdcch->coresetCfg.durationSymbols = 1;
+#endif
    bwp->subcarrierSpacing  = initialBwp->bwp.scs;
    bwp->cyclicPrefix       = initialBwp->bwp.cyclicPrefix;
 
    /* fill the PDCCH PDU */
    pdcch->coresetCfg.startSymbolIndex = firstSymbol;
-   pdcch->coresetCfg.durationSymbols = numSymbols;
+#ifndef OAI_TESTING
    memcpy(pdcch->coresetCfg.freqDomainResource, \
       cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
+#else
+   freqDomainResource[0]=255; 
+   memcpy(pdcch->coresetCfg.freqDomainResource,freqDomainResource, FREQ_DOM_RSRC_SIZE);
+#endif
 
    pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
    pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
@@ -964,15 +976,15 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdcch->dci[0].rnti = cell->raReq[ueId-1]->raRnti; /* RA-RNTI */
    pdcch->dci[0].scramblingId = cell->cellCfg.phyCellId;
    pdcch->dci[0].scramblingRnti = 0;
-   pdcch->dci[0].cceIndex = 4; /* considering SIB1 is sent at cce 0-1-2-3 */
+   pdcch->dci[0].cceIndex = 0; /* considering SIB1 is sent at cce 0-1-2-3 */
    pdcch->dci[0].aggregLevel = 4;
-   pdcch->dci[0].beamPdcchInfo.numPrgs = 1;
-   pdcch->dci[0].beamPdcchInfo.prgSize = 1;
-   pdcch->dci[0].beamPdcchInfo.digBfInterfaces = 0;
+   pdcch->dci[0].beamPdcchInfo.numPrgs = 0;
+   pdcch->dci[0].beamPdcchInfo.prgSize = 0;
+   pdcch->dci[0].beamPdcchInfo.digBfInterfaces = 1;
    pdcch->dci[0].beamPdcchInfo.prg[0].pmIdx = 0;
    pdcch->dci[0].beamPdcchInfo.prg[0].beamIdx[0] = 0;
    pdcch->dci[0].txPdcchPower.beta_pdcch_1_0 = 0;
-   pdcch->dci[0].txPdcchPower.powerControlOffsetSS = 0;
+   pdcch->dci[0].txPdcchPower.powerControlOffsetSS = 1;
 
    pdsch = &pdcch->dci[0].pdschCfg;
    /* fill the PDSCH PDU */
@@ -983,31 +995,37 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdsch->numCodewords = 1;
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
    {
-      pdsch->codeword[cwCount].targetCodeRate = 308;
+      pdsch->codeword[cwCount].targetCodeRate = 1200;
       pdsch->codeword[cwCount].qamModOrder = 2;
-      pdsch->codeword[cwCount].mcsIndex = mcs; /* mcs configured to 4 */
+      pdsch->codeword[cwCount].mcsIndex = 0; /* mcs configured to 4 */
       pdsch->codeword[cwCount].mcsTable = 0;   /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
       /* RAR PDU length and FAPI payload header length */
       tbSize = schCalcTbSize(RAR_PAYLOAD_SIZE + TX_PAYLOAD_HDR_LEN);
       pdsch->codeword[cwCount].tbSize = tbSize;
+#ifdef OAI_TESTING
+      pdsch->codeword[cwCount].tbSize = 28;
+#endif
    }
    pdsch->dataScramblingId = cell->cellCfg.phyCellId;
    pdsch->numLayers = 1;
    pdsch->transmissionScheme = 0;
    pdsch->refPoint = 0;
-   pdsch->dmrs.dlDmrsSymbPos = DL_DMRS_SYMBOL_POS; 
+   pdsch->dmrs.dlDmrsSymbPos = 2180; 
    pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId = cell->cellCfg.phyCellId;
    pdsch->dmrs.scid = 0;
-   pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
-   pdsch->dmrs.dmrsPorts = 0;
+   pdsch->dmrs.numDmrsCdmGrpsNoData = 2;
+   pdsch->dmrs.dmrsPorts = 1;
    pdsch->dmrs.mappingType      = DMRS_MAP_TYPE_A;  /* Type-A */
    pdsch->dmrs.nrOfDmrsSymbols  = NUM_DMRS_SYMBOLS;
    pdsch->dmrs.dmrsAddPos       = DMRS_ADDITIONAL_POS;
 
    pdsch->pdschTimeAlloc.rowIndex = k0Index;
    pdsch->pdschTimeAlloc.startSymb = initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].startSymbol;
+#ifdef OAI_TESTING
+   pdsch->pdschTimeAlloc.startSymb = 1;
+#endif
    pdsch->pdschTimeAlloc.numSymb = initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol;
 
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
@@ -1016,6 +1034,10 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdsch->pdschFreqAlloc.numPrb = \
       schCalcNumPrb(tbSize, mcs, initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol);
 
+#ifdef OAI_TESTING
+   pdsch->pdschFreqAlloc.startPrb = 0;
+   pdsch->pdschFreqAlloc.numPrb = 8;
+#endif
    /* Find total symbols occupied including DMRS */
    dmrsStartSymbol = findDmrsStartSymbol(pdsch->dmrs.dlDmrsSymbPos);
    /* If there are no DRMS symbols, findDmrsStartSymbol() returns MAX_SYMB_PER_SLOT, 
@@ -1041,8 +1063,8 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
       return RFAILED;
    }
 
-   pdsch->beamPdschInfo.numPrgs = 1;
-   pdsch->beamPdschInfo.prgSize = 1;
+   pdsch->beamPdschInfo.numPrgs = 0;
+   pdsch->beamPdschInfo.prgSize = 0;
    pdsch->beamPdschInfo.digBfInterfaces = 0;
    pdsch->beamPdschInfo.prg[0].pmIdx = 0;
    pdsch->beamPdschInfo.prg[0].beamIdx[0] = 0;

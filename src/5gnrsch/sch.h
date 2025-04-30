@@ -37,7 +37,7 @@
 
 #define SCHED_DELTA 1
 #define BO_DELTA 1
-#define RAR_DELAY   2
+#define RAR_DELAY   1
 #define MSG4_DELAY  1
 #define PDSCH_START_RB 10
 /* Considering pdsch region from 3 to 13, DMRS exclued.
