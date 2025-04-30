@@ -205,23 +205,37 @@ uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
       return RFAILED;
    }
    rachInd->cellId = lwrMacCb.cellCb[0].cellId;
+#ifndef OAI_TESTING
    rachInd->timingInfo.sfn = fapiRachInd->sfn;
    rachInd->timingInfo.slot = fapiRachInd->slot;
+#else
+   rachInd->timingInfo.sfn = reverseBytes16(fapiRachInd->sfn);
+   rachInd->timingInfo.slot = reverseBytes16(fapiRachInd->slot);
+#endif
    rachInd->numPdu = fapiRachInd->numPdus;
    for(pduIdx=0; pduIdx < rachInd->numPdu; pduIdx++)
    {
       rachPdu = &rachInd->rachPdu[pduIdx];
+#ifndef OAI_TESTING
       rachPdu->pci = fapiRachInd->rachPdu[pduIdx].phyCellId;
+#else
+      rachPdu->pci = reverseBytes16(fapiRachInd->rachPdu[pduIdx].phyCellId);
+#endif
       rachPdu->symbolIdx = fapiRachInd->rachPdu[pduIdx].symbolIndex;
       rachPdu->slotIdx = fapiRachInd->rachPdu[pduIdx].slotIndex;
       rachPdu->freqIdx = fapiRachInd->rachPdu[pduIdx].freqIndex;
-      rachPdu->numPream = fapiRachInd->rachPdu[pduIdx].numPreamble; 
+      rachPdu->numPream = fapiRachInd->rachPdu[pduIdx].numPreamble;
       for(prmbleIdx=0; prmbleIdx<rachPdu->numPream; prmbleIdx++)
       {
 	 rachPdu->preamInfo[prmbleIdx].preamIdx = \
 	    fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].preambleIndex;
+#ifndef OAI_TESTING
 	 rachPdu->preamInfo[prmbleIdx].timingAdv = \
 	    fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].timingAdvance;
+#else
+	 rachPdu->preamInfo[prmbleIdx].timingAdv = \
+	    reverseBytes16(fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].timingAdvance);
+#endif
       }
    }
 

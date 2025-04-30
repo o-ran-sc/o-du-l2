@@ -2366,7 +2366,7 @@ void packUlTtiReq(fapi_ul_tti_req_t *ulTtiReq,uint8_t *out, uint32_t *len)
 					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.nrOfSymbols, &mBuf, &totalLen);
 
 					//Fill fapi_pusch_data_t
-					if(reverseBytes16(ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap &0x01))
+					if(reverseBytes16(ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap) &0x01)
 					{
 					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.rvIndex, &mBuf, &totalLen);
 					CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschData.harqProcessId, &mBuf, &totalLen);
@@ -2381,7 +2381,7 @@ void packUlTtiReq(fapi_ul_tti_req_t *ulTtiReq,uint8_t *out, uint32_t *len)
 					}
 					}
 					//Fill fapi_pusch_uci_t
-					if(reverseBytes16(ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap &0x02))
+					if(reverseBytes16(ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap) &0x02)
 					{
 						CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.harqAckBitLength, &mBuf, &totalLen);
 						CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschUci.csiPart1BitLength, &mBuf, &totalLen);
@@ -2393,7 +2393,7 @@ void packUlTtiReq(fapi_ul_tti_req_t *ulTtiReq,uint8_t *out, uint32_t *len)
 					}
 
 					//Fill fapi_pusch_ptrs_t
-					if(reverseBytes16(ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap &0x04))
+					if(reverseBytes16(ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap) &0x04)
 					{
 						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.numPtrsPorts, &mBuf, &totalLen);
 						for(uint8_t portIdx = 0; portIdx < ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.numPtrsPorts; portIdx++)
@@ -2407,7 +2407,7 @@ void packUlTtiReq(fapi_ul_tti_req_t *ulTtiReq,uint8_t *out, uint32_t *len)
 						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.puschPtrs.ulPtrsPower, &mBuf, &totalLen);
 					}
 					//Fill fapi_dfts_ofdm_t
-					if(reverseBytes16(ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap &0x08))
+					if(reverseBytes16(ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.pduBitMap) &0x08)
 					{
 						CMCHKPKLEN(oduPackPostUInt8, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dftsOfdm.lowPaprGroupNumber, &mBuf, &totalLen);
 						CMCHKPKLEN(oduPackPostUInt16, ulTtiReq->pdus[pduIdx].pdu.pusch_pdu.dftsOfdm.lowPaprSequenceNumber, &mBuf, &totalLen);
@@ -4905,13 +4905,13 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
    uint8_t tlvPaddingLen =get_tlv_padding(rarInfo->rarPduLen);
    uint16_t totalLen= rarInfo->rarPduLen +tlvPaddingLen;
    pduDesc[pduIndex].pdu_length = totalLen;
-   pduDesc[pduIndex].pdu_length = reverseBytes16(pduDesc[pduIndex].pdu_length);
+   pduDesc[pduIndex].pdu_length = reverseBytes32(pduDesc[pduIndex].pdu_length);
 
    pduDesc[pduIndex].pdu_index = reverseBytes16(pduIndex);
    pduDesc[pduIndex].num_tlvs = reverseBytes32(1);
    /* fill the TLV */
    pduDesc[pduIndex].tlvs[0].tag = reverseBytes16(FAPI_TX_DATA_PAYLOAD);
-   pduDesc[pduIndex].tlvs[0].length = reverseBytes16(rarInfo->rarPduLen);
+   pduDesc[pduIndex].tlvs[0].length = reverseBytes32(rarInfo->rarPduLen);
 
    memcpy(pduDesc[pduIndex].tlvs[0].value.direct, rarInfo->rarPdu, rarInfo->rarPduLen);
 
@@ -5922,7 +5922,7 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
 {
    if(ulTtiReqPdu != NULLP)
    {
-      memset(&ulTtiReqPdu->pdu.pusch_pdu, 0, sizeof(fapi_ul_pusch_pdu_t));
+//      memset(&ulTtiReqPdu->pdu.pusch_pdu, 0, sizeof(fapi_ul_pusch_pdu_t));
 #ifdef OAI_TESTING
       ulTtiReqPdu->pduType = reverseBytes16(PUSCH_PDU_TYPE);
       ulTtiReqPdu->pduSize = reverseBytes16(sizeof(fapi_ul_pusch_pdu_t));

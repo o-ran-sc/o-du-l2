@@ -966,9 +966,9 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdcch->dci[0].scramblingRnti = 0;
    pdcch->dci[0].cceIndex = 4; /* considering SIB1 is sent at cce 0-1-2-3 */
    pdcch->dci[0].aggregLevel = 4;
-   pdcch->dci[0].beamPdcchInfo.numPrgs = 1;
-   pdcch->dci[0].beamPdcchInfo.prgSize = 1;
-   pdcch->dci[0].beamPdcchInfo.digBfInterfaces = 0;
+   pdcch->dci[0].beamPdcchInfo.numPrgs = 0;
+   pdcch->dci[0].beamPdcchInfo.prgSize = 0;
+   pdcch->dci[0].beamPdcchInfo.digBfInterfaces = 1;
    pdcch->dci[0].beamPdcchInfo.prg[0].pmIdx = 0;
    pdcch->dci[0].beamPdcchInfo.prg[0].beamIdx[0] = 0;
    pdcch->dci[0].txPdcchPower.beta_pdcch_1_0 = 0;
