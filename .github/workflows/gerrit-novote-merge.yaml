@@ -82,9 +82,17 @@ jobs:
       build_wrapper_url: "https://raw.githubusercontent.com/o-ran-sc/o-du-l2/refs/heads/main/sonarqube-cloud-build.sh"
       build_wrapper_out_dir: build/odu/bin/
 
+  call-sonartype-lifecycle:
+    name: "Sonatype Lifecycle Scan"
+    needs: notify
+    # yamllint disable-line rule:line-length
+    uses: lfit/releng-reusable-workflows/.github/workflows/reuse-sonatype-lifecycle.yaml@ac846b1cfeaf3a7cac6f28413a5206afc9951464 # v0.2.11
+    secrets:
+      NEXUS_IQ_PASSWORD: ${{ secrets.NEXUS_IQ_PASSWORD }}
+
   report-status:
     if: ${{ always() }}
-    needs: [notify, call-cmake-sonarqube-cloud]
+    needs: [notify, call-cmake-sonarqube-cloud, call-sonartype-lifecycle]
     runs-on: ubuntu-latest
     steps:
       - name: Get workflow conclusion
