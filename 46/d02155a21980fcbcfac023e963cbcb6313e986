@@ -1,0 +1,11 @@
+Code-Review+1: Matthew Watkins <mwatkins@linuxfoundation.org>
+Verified+1: Ankit Barve <anbarve@radisys.com>
+Verified+1: Matthew Watkins <mwatkins@linuxfoundation.org>
+Verified+1: ORAN Required GHA <releng+oran.required.gha@linuxfoundation.org>
+Code-Review+2: Ankit Barve <anbarve@radisys.com>
+Submitted-by: Sangeeta Vaidhyanathan <svaidhya@radisys.com>
+Submitted-at: Thu, 15 May 2025 04:37:01 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/o-du/l2/+/14357
+Comments-Total: 5
+Project: o-du/l2
+Branch: refs/heads/oai-integration
