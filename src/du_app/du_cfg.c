@@ -5373,7 +5373,11 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
 uint8_t duReadCfg()
 {
 #ifdef NR_TDD
+#ifdef OAI_TESTING
+   const char *filename = "../build/config/tdd_odu_config_oaiIntg.xml";
+#else
    const char *filename = "../build/config/tdd_odu_config.xml";
+#endif
 #else
    const char *filename = "../build/config/fdd_odu_config.xml";
 #endif
@@ -5423,7 +5427,7 @@ uint8_t duReadCfg()
    /* Timer Registration request to system services */
    if (ODU_REG_TMR_MT(pst.srcEnt, pst.srcInst, duCb.duTimersInfo.tmrRes, duActvTmr) != ROK)
    {
-      DU_LOG("\nERROR  -->  DU_APP : Failed to register timer");
+      DU_LOG("\nERROR  -->  DU_APP : Failed to register timer\n");
       return RFAILED;
    }   
               
@@ -5842,7 +5846,7 @@ void printDuConfig()
    DU_LOG("SSB Subcarrier Offset %d\n", ssbCfg->ssbScOffset);
    for (ssbMaskIdx = 0; ssbMaskIdx < SSB_MASK_SIZE; ssbMaskIdx++)
    {
-      DU_LOG("SSB Mask[%d] :%d\n", ssbMaskIdx, ssbCfg->ssbMask[ssbMaskIdx]);
+      DU_LOG("SSB Mask[%d] :%x\n", ssbMaskIdx, ssbCfg->ssbMask[ssbMaskIdx]);
    }
    DU_LOG("Beam ID %d\n", ssbCfg->beamId[0]);
    DU_LOG("BETA PSS %d\n", ssbCfg->betaPss);

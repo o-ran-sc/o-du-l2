@@ -31,7 +31,11 @@
 #define SCH_SSB_NUM_PRB 21 /* One extra PRB as buffer */
 #define SCHED_DELTA 1
 #define BO_DELTA 1
+#ifdef OAI_TESTING
+#define RAR_DELAY   1
+#else
 #define RAR_DELAY   2
+#endif
 #define MSG4_DELAY  1
 #define PDSCH_START_RB 10
 /* Considering pdsch region from 3 to 13, DMRS exclued.

@@ -787,7 +787,11 @@ uint8_t fillDefaultInitDlBwp(InitialDlBwp *initDlBwp)
          }
          if(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0)
          {
+#ifdef OAI_TESTING
+            *(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0) = 0;
+#else
             *(initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].k0) = 1;
+#endif
          }
          initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].mappingType = MAPPING_TYPEA;
          initDlBwp->pdschCfg.timeDomRsrcAllociList[idx].startSymbol = PDSCH_START_SYMBOL; 

@@ -112,6 +112,9 @@ void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
    uint8_t bytePart1Size;
    uint8_t bytePart2Size;
 
+
+#ifndef OAI_TESTING
+   uint8_t temp;
    if(*bitPos + valSize <= 8)
    {
       bytePart1 = (uint8_t)val;
@@ -133,6 +136,29 @@ void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
       *bitPos = 0;
       fillDlDciPayload(buf, bytePos, bitPos, bytePart2, bytePart2Size);
    }
+#else
+   if(*bitPos + valSize <= 8)
+   {
+      bytePart1 = (uint8_t)val;
+      bytePart1 = ((~((~0) << valSize)) & bytePart1)<< (8 - (*bitPos + valSize));
+      buf[*bytePos] |= bytePart1;
+      *bitPos += valSize;
+   }
+   else if(*bitPos + valSize > 8)
+   {
+      bytePart1Size = 8 - *bitPos;
+      bytePart2Size = valSize - bytePart1Size;
+
+      bytePart1 = val >> bytePart2Size;
+
+      buf[*bytePos] |= bytePart1;
+      (*bytePos)--;
+      *bitPos = 0;
+      fillDlDciPayload(buf, bytePos, bitPos, val, bytePart2Size);
+   }
+   
+#endif
+
 }
 
 /*
@@ -277,6 +303,27 @@ uint8_t calcNumSlotsInCurrPeriodicity(DlUlTxPeriodicity tddPeriod, uint8_t numer
 
    return (periodicityInMsec * pow(2,numerology));
 }
+#endif
+
+#ifdef OAI_TESTING
+uint16_t reverseBytes16(uint16_t num) {
+    return (num >> 8) | (num << 8);
+}
+
+uint32_t reverseBytes32(uint32_t num) {
+    return ((num >> 24) & 0x000000FF) |
+           ((num >> 8) & 0x0000FF00) |
+           ((num << 8) & 0x00FF0000) |
+           ((num << 24) & 0xFF000000);
+}
+
+uint8_t get_tlv_padding(uint16_t tlv_length)
+{
+   DU_LOG("\nDEBUG  -->  LWR_MAC: get_tlv_padding tlv_length %lu = padding = %d\n",\
+                tlv_length, ((4 - (tlv_length % 4)) % 4));
+   return (4 - (tlv_length % 4)) % 4;
+}
+
 #endif
 
 /**********************************************************************

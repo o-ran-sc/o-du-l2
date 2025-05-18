@@ -61,6 +61,7 @@
 #include "BCCH-DL-SCH-Message.h"
 #include "du_f1ap_conversions.h"
 #include "du_sys_info_hdl.h"
+#include "UE-TimersAndConstants.h"
 
 void FreeSib1Msg(SIB1_t *sib1Msg);
 uint8_t FreqInfoUlret = RFAILED;
@@ -927,7 +928,6 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
  * does not have any member parameter lead to decode failure in wireshark. 
  * The issue has been reported to Nokia.
  * The following code will be uncommented once the issue is resolved */
-#if 0
    /* Search Space type and  DCI Format */
    DU_ALLOC(searchSpace->searchSpaceType, sizeof( struct SearchSpace__searchSpaceType));
    if(!searchSpace->searchSpaceType)
@@ -978,7 +978,6 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
             return RFAILED;
          }
    }
-#endif
 
    return ROK;
 }/* BuildCommonSerachSpaceList */
@@ -1853,7 +1852,8 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
                   }
                case RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_oneHalf:
                   {
-                     //TODO
+                     setup->ssb_perRACH_OccasionAndCB_PreamblesPerSSB->choice.one = \
+                        convertCbPreamblePerSsbValueToEnum(duRachCfg.numCbPreamblePerSsb);
                      break;
                   }
                case RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_one:
@@ -2323,7 +2323,7 @@ uint8_t BuildServCellCfgCommonSib(ServingCellConfigCommonSIB_t *srvCellCfg)
 
    /* SSB Position in Burst */
    ssbPosInBurst = &srvCellCfg->ssb_PositionsInBurst.inOneGroup;
-   ssbPosInBurst->size = 1;
+   ssbPosInBurst->size = 4;
    DU_ALLOC(ssbPosInBurst->buf, ssbPosInBurst->size * sizeof(uint8_t));
    if(!ssbPosInBurst->buf)
    {
@@ -2371,6 +2371,19 @@ uint8_t BuildServCellCfgCommonSib(ServingCellConfigCommonSIB_t *srvCellCfg)
       return RFAILED;
    }
    return ROK;
+}
+
+uint8_t BuildUeTimerAndConstants(UE_TimersAndConstants_t *ue_TimersAndConstants)
+{
+   ue_TimersAndConstants->t300 = UE_TimersAndConstants__t300_ms400;
+   ue_TimersAndConstants->t301 = UE_TimersAndConstants__t301_ms400;
+   ue_TimersAndConstants->t310 = UE_TimersAndConstants__t310_ms2000;
+   ue_TimersAndConstants->n310 = UE_TimersAndConstants__n310_n10;
+   ue_TimersAndConstants->t311 = UE_TimersAndConstants__t311_ms3000;
+   ue_TimersAndConstants->n311 = UE_TimersAndConstants__n311_n1;
+   ue_TimersAndConstants->t319 = UE_TimersAndConstants__t319_ms400;
+   
+   return ROK; 
 }
 
 /*******************************************************************
@@ -2501,6 +2514,8 @@ uint8_t BuildSib1Msg()
       {
          break;
       }
+      DU_ALLOC(sib1Msg->ue_TimersAndConstants, sizeof(UE_TimersAndConstants_t));
+      ret1 = BuildUeTimerAndConstants(sib1Msg->ue_TimersAndConstants);
 
       xer_fprint(stdout, &asn_DEF_BCCH_DL_SCH_Message, &bcchMsg);
 
@@ -3156,6 +3171,8 @@ void FreeSib1Msg(SIB1_t *sib1Msg)
 
                                                 DU_FREE(sib1Msg->servingCellConfigCommon,
                                                       sizeof(ServingCellConfigCommonSIB_t));
+                                                DU_FREE(sib1Msg->ue_TimersAndConstants, \
+								 sizeof(UE_TimersAndConstants_t));
                                              }
                                              //TODO PBORLA
                                              if(sib1Msg->si_SchedulingInfo->schedulingInfoList.list.array)

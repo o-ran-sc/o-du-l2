@@ -65,6 +65,11 @@ void convertFreqDomRsrcMapToIAPIFormat(uint8_t *sourceBitMap, uint8_t *destBitMa
 uint8_t calcNumSlotsInCurrPeriodicity(DlUlTxPeriodicity tddPeriod, uint8_t numerology);
 #endif
 
+#ifdef OAI_TESTING
+uint16_t reverseBytes16(uint16_t num);
+uint32_t reverseBytes32(uint32_t num);
+uint8_t get_tlv_padding(uint16_t tlv_length)
+#endif
 /**********************************************************************
          End of file
 **********************************************************************/
