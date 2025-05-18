@@ -44,6 +44,10 @@
    _currElem->time_stamp           = 0;\
 }
 
+#ifdef OAI_TESTING
+#define TLV_ALIGN(_tlv_size) (32-_tlv_size)
+#endif
+
 typedef enum{
    SI_RNTI_TYPE,
    RA_RNTI_TYPE,
@@ -69,10 +73,13 @@ uint8_t lwr_mac_procConfigRspEvt(void *msg);
 uint8_t lwr_mac_procStartReqEvt(void *msg);
 void sendToLowerMac(uint16_t, uint32_t, void *);
 void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
-uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo);
+uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t prevElemt);
 typedef uint8_t (*lwrMacFsmHdlr)(void *);
 void lwrMacLayerInit(Region region, Pool pool);
 
+#ifdef OAI_TESTING
+uint8_t processTtiReq(SlotTimingInfo currTimingInfo);
+#endif
 #endif
 
 /**********************************************************************
