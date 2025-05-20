@@ -550,7 +550,7 @@ uint8_t fillNrTddInfo(TDD_Info_t *tddInfo)
 
       freqInfo->freqBandListNr.list.array[freqBandListIdx]->freqBandIndicatorNr = duCfgParam.srvdCellLst[0].duCellInfo.\
       f1Mode.mode.tdd.nrFreqInfo.freqBand[0].nrFreqBand;
-
+#ifndef OAI_TESTING
       freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.count = elementCnt;
       freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.size = freqInfo->freqBandListNr.list.array[freqBandListIdx]->\
       supportedSULBandList.list.count * sizeof(SupportedSULFreqBandItem_t*);
@@ -576,8 +576,8 @@ uint8_t fillNrTddInfo(TDD_Info_t *tddInfo)
          freqInfo->freqBandListNr.list.array[freqBandListIdx]->supportedSULBandList.list.array[supportedBandIdx]->freqBandIndicatorNr =\
          duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.freqBand[0].sulBand[0];
       }
+#endif
    }
-
    tddInfo->transmission_Bandwidth.nRSCS = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrScs;
    tddInfo->transmission_Bandwidth.nRNRB = duCfgParam.srvdCellLst[0].duCellInfo.f1Mode.mode.tdd.nrFreqInfo.sulInfo.sulTxBw.nrb;
 

@@ -14,8 +14,8 @@
    <DU_ID>1</DU_ID>
    <DU_NAME>ORAN OAM DU</DU_NAME>
    <MAX_NUM_DRB>29</MAX_NUM_DRB>
-   <DU_IP_V4_ADDR>192.168.130.81</DU_IP_V4_ADDR>
-   <CU_IP_V4_ADDR>192.168.130.82</CU_IP_V4_ADDR>
+   <DU_IP_V4_ADDR>127.0.0.5</DU_IP_V4_ADDR>
+   <CU_IP_V4_ADDR>127.0.0.4</CU_IP_V4_ADDR>
    <RIC_IP_V4_ADDR>192.168.130.80</RIC_IP_V4_ADDR>
    <SCTP>
       <F1_SCTP_PORT>38472</F1_SCTP_PORT>
@@ -23,20 +23,20 @@
       <MAX_DU_PORT>2</MAX_DU_PORT>
    </SCTP>
    <EGTP>
-      <LOCAL_F1_EGTP_PORT>2152</LOCAL_F1_EGTP_PORT>
-      <DEST_F1_EGTP_PORT>2152</DEST_F1_EGTP_PORT>
+      <LOCAL_F1_EGTP_PORT>2153</LOCAL_F1_EGTP_PORT>
+      <DEST_F1_EGTP_PORT>2153</DEST_F1_EGTP_PORT>
       <MIN_TEID>1</MIN_TEID>
    </EGTP>
    <SIB1_PARAMS>
       <PLMN>
          <MCC>
-            <PLMN_MCC0>3</PLMN_MCC0>
-            <PLMN_MCC1>1</PLMN_MCC1>
+            <PLMN_MCC0>0</PLMN_MCC0>
+            <PLMN_MCC1>0</PLMN_MCC1>
             <PLMN_MCC2>1</PLMN_MCC2>
          </MCC>
          <MNC>
-         <PLMN_MNC0>4</PLMN_MNC0>
-         <PLMN_MNC1>8</PLMN_MNC1>
+         <PLMN_MNC0>0</PLMN_MNC0>
+         <PLMN_MNC1>1</PLMN_MNC1>
          <PLMN_MNC2>0</PLMN_MNC2>
          </MNC>
       </PLMN>
@@ -219,13 +219,13 @@
                <CELL_ID>1</CELL_ID>
                <PLMN>
                   <MCC>
-                     <PLMN_MCC0>3</PLMN_MCC0>
-                     <PLMN_MCC1>1</PLMN_MCC1>
+                     <PLMN_MCC0>0</PLMN_MCC0>
+                     <PLMN_MCC1>0</PLMN_MCC1>
                      <PLMN_MCC2>1</PLMN_MCC2>
                   </MCC>
                   <MNC>
-                     <PLMN_MNC0>4</PLMN_MNC0>
-                     <PLMN_MNC1>8</PLMN_MNC1>
+                     <PLMN_MNC0>0</PLMN_MNC0>
+                     <PLMN_MNC1>1</PLMN_MNC1>
                      <PLMN_MNC2>0</PLMN_MNC2>
                  </MNC>
                </PLMN>
@@ -234,25 +234,25 @@
             <F1_SRVD_PLMN>
                <PLMN>
                   <MCC>
-                     <PLMN_MCC0>3</PLMN_MCC0>
-                     <PLMN_MCC1>1</PLMN_MCC1>
+                     <PLMN_MCC0>0</PLMN_MCC0>
+                     <PLMN_MCC1>0</PLMN_MCC1>
                      <PLMN_MCC2>1</PLMN_MCC2>
                   </MCC>
                   <MNC>
-                     <PLMN_MNC0>4</PLMN_MNC0>
-                     <PLMN_MNC1>8</PLMN_MNC1>
+                     <PLMN_MNC0>0</PLMN_MNC0>
+                     <PLMN_MNC1>1</PLMN_MNC1>
                      <PLMN_MNC2>0</PLMN_MNC2>
                   </MNC>
                </PLMN>
                <EXT_PLMN>
                   <MCC>
-                     <PLMN_MCC0>3</PLMN_MCC0>
-                     <PLMN_MCC1>1</PLMN_MCC1>
+                     <PLMN_MCC0>0</PLMN_MCC0>
+                     <PLMN_MCC1>0</PLMN_MCC1>
                      <PLMN_MCC2>1</PLMN_MCC2>
                   </MCC>
                   <MNC>
-                     <PLMN_MNC0>4</PLMN_MNC0>
-                     <PLMN_MNC1>8</PLMN_MNC1>
+                     <PLMN_MNC0>0</PLMN_MNC0>
+                     <PLMN_MNC1>1</PLMN_MNC1>
                      <PLMN_MNC2>0</PLMN_MNC2>
                   </MNC>
                </EXT_PLMN>
@@ -363,25 +363,25 @@
          <F1_BRDCST_PLMN_INFO>
             <PLMN>
                <MCC>
-                  <PLMN_MCC0>3</PLMN_MCC0>
-                  <PLMN_MCC1>1</PLMN_MCC1>
+                  <PLMN_MCC0>0</PLMN_MCC0>
+                  <PLMN_MCC1>0</PLMN_MCC1>
                   <PLMN_MCC2>1</PLMN_MCC2>
                </MCC>
                <MNC>
-                  <PLMN_MNC0>4</PLMN_MNC0>
-                  <PLMN_MNC1>8</PLMN_MNC1>
+                  <PLMN_MNC0>0</PLMN_MNC0>
+                  <PLMN_MNC1>1</PLMN_MNC1>
                   <PLMN_MNC2>0</PLMN_MNC2>
                </MNC>
             </PLMN>
             <EXT_PLMN>
                <MCC>
-                  <PLMN_MCC0>3</PLMN_MCC0>
-                  <PLMN_MCC1>1</PLMN_MCC1>
+                  <PLMN_MCC0>0</PLMN_MCC0>
+                  <PLMN_MCC1>0</PLMN_MCC1>
                   <PLMN_MCC2>1</PLMN_MCC2>
                </MCC>
                <MNC>
-                  <PLMN_MNC0>4</PLMN_MNC0>
-                  <PLMN_MNC1>8</PLMN_MNC1>
+                  <PLMN_MNC0>0</PLMN_MNC0>
+                  <PLMN_MNC1>1</PLMN_MNC1>
                   <PLMN_MNC2>0</PLMN_MNC2>
                </MNC>
             </EXT_PLMN>
@@ -394,12 +394,12 @@
    <MAC_CELL_CFG>
       <CELL_ID>1</CELL_ID>
       <CARRIER_CFG>
-         <DL_BW>100</DL_BW>
+         <DL_BW>273</DL_BW>
          <NR_DL_ARFCN>623400</NR_DL_ARFCN>
-         <UL_BW>100</UL_BW>
+         <UL_BW>273</UL_BW>
          <NR_UL_ARFCN>623400</NR_UL_ARFCN>
-         <NUM_TX_ANT>1</NUM_TX_ANT>
-         <NUM_RX_ANT>1</NUM_RX_ANT>
+         <NUM_TX_ANT>2</NUM_TX_ANT>
+         <NUM_RX_ANT>2</NUM_RX_ANT>
       </CARRIER_CFG>
       <CELL_CFG>
          <MAC_OP_STATE>0</MAC_OP_STATE><!--OP_DISABLED-->
@@ -408,13 +408,13 @@
          <PLMN_INFO>
             <PLMN>
                <MCC>
-                  <PLMN_MCC0>3</PLMN_MCC0>
-                  <PLMN_MCC1>1</PLMN_MCC1>
+                  <PLMN_MCC0>0</PLMN_MCC0>
+                  <PLMN_MCC1>0</PLMN_MCC1>
                   <PLMN_MCC2>1</PLMN_MCC2>
                </MCC>
                <MNC>
-                  <PLMN_MNC0>4</PLMN_MNC0>
-                  <PLMN_MNC1>8</PLMN_MNC1>
+                  <PLMN_MNC0>0</PLMN_MNC0>
+                  <PLMN_MNC1>1</PLMN_MNC1>
                   <PLMN_MNC2>0</PLMN_MNC2>
                </MNC>
             </PLMN>
@@ -611,13 +611,13 @@
          <RRM_POLICY_MEMBER_LIST>
             <PLMN>
                <MCC>
-                  <PLMN_MCC0>3</PLMN_MCC0>
-                  <PLMN_MCC1>1</PLMN_MCC1>
+                  <PLMN_MCC0>0</PLMN_MCC0>
+                  <PLMN_MCC1>0</PLMN_MCC1>
                   <PLMN_MCC2>1</PLMN_MCC2>
                </MCC>
                <MNC>
-                  <PLMN_MNC0>4</PLMN_MNC0>
-                  <PLMN_MNC1>8</PLMN_MNC1>
+                  <PLMN_MNC0>0</PLMN_MNC0>
+                  <PLMN_MNC1>1</PLMN_MNC1>
                   <PLMN_MNC2>0</PLMN_MNC2>
                </MNC>
             </PLMN>

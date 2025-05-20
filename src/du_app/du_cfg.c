@@ -1333,7 +1333,11 @@ uint8_t fillDuSrvdCellSysInfo(F1DuSysInfo *sysInfo)
    sysInfo->mibLen = encBufSize;
 
    /* GNB DU System Info SIB1 msg */
+#ifdef OAI_TESTING
+   BuildSib1MsgForF1AP();
+#else
    BuildSib1Msg();
+#endif
    DU_ALLOC(sysInfo->sib1Msg, encBufSize);
    if(!(sysInfo->sib1Msg))
    {
@@ -2349,6 +2353,12 @@ uint8_t parseSib1CellCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Sib1CellCfg
       cur = cur -> next;
    }
 
+#ifdef OAI_TESTING
+   BuildSib1Msg();
+   DU_ALLOC_SHRABL_BUF(sib1CellCfg->sib1Pdu,encBufSize);
+   memcpy(sib1CellCfg->sib1Pdu, encBuf,encBufSize);
+   sib1CellCfg->sib1PduLen = encBufSize;
+#else
    sib1CellCfg->sib1PduLen = duCfgParam.srvdCellLst[0].duSysInfo.sib1Len;
    if(sib1CellCfg->sib1PduLen > 0)
    {
@@ -2360,6 +2370,7 @@ uint8_t parseSib1CellCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Sib1CellCfg
       }
       memcpy(sib1CellCfg->sib1Pdu, duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg, sib1CellCfg->sib1PduLen);
    }
+#endif
    return ROK;
 }
 
