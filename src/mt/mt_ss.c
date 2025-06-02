@@ -923,9 +923,15 @@ static int SOpenWlsIntf()
 {
    uint8_t i;
    void *hdl = NULLP;
+#ifndef OAI_TESTING
 #define WLS_DEVICE_NAME "wls0"
 
    char *my_argv[] = {"gnodeb", "-c3", "--proc-type=auto", "--file-prefix", "gnb0", "--iova-mode=pa"};
+#else
+#define WLS_DEVICE_NAME "wls"
+
+   char *my_argv[] = {"gnodeb", "-c3", "--proc-type=auto", "--file-prefix", "wls", "--iova-mode=pa"};
+#endif
    printf("\nCalling rte_eal_init: ");
    for (i = 0; i < RTE_DIM(my_argv); i++)
    {

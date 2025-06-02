@@ -112,8 +112,13 @@ uint8_t procSlotInd(fapi_slot_ind_t *fapiSlotInd)
    if(slotInd)
    {
       slotInd->cellId = lwrMacCb.cellCb[0].cellId; 
+#ifndef OAI_TESTING 
       slotInd->sfn = fapiSlotInd->sfn;
       slotInd->slot = fapiSlotInd->slot;
+#else
+      slotInd->sfn = reverseBytes16(fapiSlotInd->sfn);
+      slotInd->slot = reverseBytes16(fapiSlotInd->slot);
+#endif
       FILL_PST_LWR_MAC_TO_MAC(pst, EVENT_SLOT_IND_TO_MAC);
       pst.selector = ODU_SELECTOR_LWLC;
       ret = (*sendSlotIndOpts[pst.selector])(&pst, slotInd);
@@ -200,23 +205,37 @@ uint8_t procRachInd(fapi_rach_indication_t  *fapiRachInd)
       return RFAILED;
    }
    rachInd->cellId = lwrMacCb.cellCb[0].cellId;
+#ifndef OAI_TESTING
    rachInd->timingInfo.sfn = fapiRachInd->sfn;
    rachInd->timingInfo.slot = fapiRachInd->slot;
+#else
+   rachInd->timingInfo.sfn = reverseBytes16(fapiRachInd->sfn);
+   rachInd->timingInfo.slot = reverseBytes16(fapiRachInd->slot);
+#endif
    rachInd->numPdu = fapiRachInd->numPdus;
    for(pduIdx=0; pduIdx < rachInd->numPdu; pduIdx++)
    {
       rachPdu = &rachInd->rachPdu[pduIdx];
+#ifndef OAI_TESTING
       rachPdu->pci = fapiRachInd->rachPdu[pduIdx].phyCellId;
+#else
+      rachPdu->pci = reverseBytes16(fapiRachInd->rachPdu[pduIdx].phyCellId);
+#endif
       rachPdu->symbolIdx = fapiRachInd->rachPdu[pduIdx].symbolIndex;
       rachPdu->slotIdx = fapiRachInd->rachPdu[pduIdx].slotIndex;
       rachPdu->freqIdx = fapiRachInd->rachPdu[pduIdx].freqIndex;
-      rachPdu->numPream = fapiRachInd->rachPdu[pduIdx].numPreamble; 
+      rachPdu->numPream = fapiRachInd->rachPdu[pduIdx].numPreamble;
       for(prmbleIdx=0; prmbleIdx<rachPdu->numPream; prmbleIdx++)
       {
 	 rachPdu->preamInfo[prmbleIdx].preamIdx = \
 	    fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].preambleIndex;
+#ifndef OAI_TESTING
 	 rachPdu->preamInfo[prmbleIdx].timingAdv = \
 	    fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].timingAdvance;
+#else
+	 rachPdu->preamInfo[prmbleIdx].timingAdv = \
+	    reverseBytes16(fapiRachInd->rachPdu[pduIdx].preambleInfo[prmbleIdx].timingAdvance);
+#endif
       }
    }
 
@@ -263,26 +282,45 @@ uint8_t procCrcInd(fapi_crc_ind_t  *fapiCrcInd)
    }
 
    crcInd->cellId = lwrMacCb.cellCb[0].cellId;
+#ifndef OAI_TESTING
    crcInd->timingInfo.sfn = fapiCrcInd->sfn;
    crcInd->timingInfo.slot = fapiCrcInd->slot;
    crcInd->numCrc = fapiCrcInd->numCrcs;
+#else
+   crcInd->timingInfo.sfn = reverseBytes16(fapiCrcInd->sfn);
+   crcInd->timingInfo.slot = reverseBytes16(fapiCrcInd->slot);
+   crcInd->numCrc = reverseBytes16(fapiCrcInd->numCrcs);
+#endif
 
+   printf("\nCRC_IND, SANGEE: numCrc:%d",crcInd->numCrc);
    for(crcInfoIdx = 0; crcInfoIdx < crcInd->numCrc; crcInfoIdx++)
    {
       crcIndInfo = &crcInd->crcInfo[crcInfoIdx];
+#ifndef OAI_TESTING
       crcIndInfo->handle      = fapiCrcInd->crc[crcInfoIdx].handle;
       crcIndInfo->rnti        = fapiCrcInd->crc[crcInfoIdx].rnti;
+      crcIndInfo->numCb       = fapiCrcInd->crc[crcInfoIdx].numCb;
+#else
+      crcIndInfo->handle      = reverseBytes32(fapiCrcInd->crc[crcInfoIdx].handle);
+      crcIndInfo->rnti        = reverseBytes16(fapiCrcInd->crc[crcInfoIdx].rnti);
+      crcIndInfo->numCb       = reverseBytes16(fapiCrcInd->crc[crcInfoIdx].numCb);
+#endif
+      printf("\nCRC_IND, SANGEE: rnti:%d, numCB:%d",crcIndInfo->rnti,crcIndInfo->numCb);
       crcIndInfo->harqId      = fapiCrcInd->crc[crcInfoIdx].harqId;
       crcIndInfo->tbCrcStatus = fapiCrcInd->crc[crcInfoIdx].tbCrcStatus;
-      crcIndInfo->numCb       = fapiCrcInd->crc[crcInfoIdx].numCb;
-      for(crcStatusIdx = 0; crcStatusIdx < crcIndInfo->numCb; crcStatusIdx++)
+      for(crcStatusIdx = 0; crcStatusIdx < 1; crcStatusIdx++)
       {
 	 crcIndInfo->cbCrcStatus[crcStatusIdx] = \
 	    fapiCrcInd->crc[crcInfoIdx].cbCrcStatus[crcStatusIdx];
       }
       crcIndInfo->ul_cqi  = fapiCrcInd->crc[crcInfoIdx].ul_cqi;
+#ifndef OAI_TESTING
       crcIndInfo->timingAdvance = fapiCrcInd->crc[crcInfoIdx].timingAdvance;
       crcIndInfo->rssi = fapiCrcInd->crc[crcInfoIdx].rssi;
+#else
+      crcIndInfo->timingAdvance = reverseBytes16(fapiCrcInd->crc[crcInfoIdx].timingAdvance);
+      crcIndInfo->rssi = reverseBytes16(fapiCrcInd->crc[crcInfoIdx].rssi);
+#endif
    }
 
    /* Fill post and sent to MAC */
@@ -327,22 +365,36 @@ uint8_t procRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
    }
 
    rxDataInd->cellId = lwrMacCb.cellCb[0].cellId;
+#ifndef OAI_TESTING
    rxDataInd->timingInfo.sfn = fapiRxDataInd->sfn; 
    rxDataInd->timingInfo.slot = fapiRxDataInd->slot;
    rxDataInd->numPdus = fapiRxDataInd->numPdus;
-
+#else
+   rxDataInd->timingInfo.sfn = reverseBytes16(fapiRxDataInd->sfn); 
+   rxDataInd->timingInfo.slot = reverseBytes16(fapiRxDataInd->slot);
+   rxDataInd->numPdus = reverseBytes16(fapiRxDataInd->numPdus);
+#endif
    for(pduIdx = 0; pduIdx < rxDataInd->numPdus; pduIdx++)
    {
       pdu = &rxDataInd->pdus[pduIdx];
+#ifndef OAI_TESTING
       pdu->handle = fapiRxDataInd->pdus[pduIdx].handle;
       pdu->rnti = fapiRxDataInd->pdus[pduIdx].rnti;
-      pdu->harqId = fapiRxDataInd->pdus[pduIdx].harqId;
       pdu->pduLength = fapiRxDataInd->pdus[pduIdx].pdu_length;
-      pdu->ul_cqi = fapiRxDataInd->pdus[pduIdx].ul_cqi;
       pdu->timingAdvance = fapiRxDataInd->pdus[pduIdx].timingAdvance;
       pdu->rssi = fapiRxDataInd->pdus[pduIdx].rssi;
+#else
+      pdu->handle = reverseBytes32(fapiRxDataInd->pdus[pduIdx].handle);
+      pdu->rnti = reverseBytes16(fapiRxDataInd->pdus[pduIdx].rnti);
+      pdu->pduLength = reverseBytes16(fapiRxDataInd->pdus[pduIdx].pdu_length);
+      pdu->timingAdvance = reverseBytes16(fapiRxDataInd->pdus[pduIdx].timingAdvance);
+      pdu->rssi = reverseBytes16(fapiRxDataInd->pdus[pduIdx].rssi);
+#endif
+      pdu->harqId = fapiRxDataInd->pdus[pduIdx].harqId;
+      pdu->ul_cqi = fapiRxDataInd->pdus[pduIdx].ul_cqi;
 
       MAC_ALLOC_SHRABL_BUF(pdu->pduData, pdu->pduLength);
+      printf("\nSANGEE: procRxData, pdu->pduLength:%d, pdu->pduData:%p, fapiRxDataInd.pdu:%p", pdu->pduLength,pdu->pduData,fapiRxDataInd->pdus[pduIdx].pduData);
       memcpy(pdu->pduData, fapiRxDataInd->pdus[pduIdx].pduData, pdu->pduLength);
 #ifdef INTEL_WLS_MEM      
       /* Free WLS memory allocated for Rx PDU */
@@ -377,14 +429,21 @@ uint8_t fillUciIndPucchF0F1(UciPucchF0F1 *pduInfo, fapi_uci_o_pucch_f0f1_t *fapi
 
    uint8_t harqIdx;
    uint8_t ret = ROK;
-   
+
+#ifndef OAI_TESTING
    pduInfo->handle        = fapiPduInfo->handle;
-   pduInfo->pduBitmap     = fapiPduInfo->pduBitmap;
-   pduInfo->pucchFormat   = fapiPduInfo->pucchFormat;
-   pduInfo->ul_cqi        = fapiPduInfo->ul_cqi;
    pduInfo->crnti         = fapiPduInfo->rnti;
    pduInfo->timingAdvance = fapiPduInfo->timingAdvance;
    pduInfo->rssi          = fapiPduInfo->rssi;   
+#else
+   pduInfo->handle        = reverseBytes32(fapiPduInfo->handle);
+   pduInfo->crnti         = reverseBytes16(fapiPduInfo->rnti);
+   pduInfo->timingAdvance = reverseBytes16(fapiPduInfo->timingAdvance);
+   pduInfo->rssi          = reverseBytes16(fapiPduInfo->rssi);   
+#endif
+   pduInfo->pduBitmap     = fapiPduInfo->pduBitmap;
+   pduInfo->pucchFormat   = fapiPduInfo->pucchFormat;
+   pduInfo->ul_cqi        = fapiPduInfo->ul_cqi;
    if(fapiPduInfo->srInfo.srIndication)
    {
       pduInfo->srInfo.srIndPres = fapiPduInfo->srInfo.srIndication;
@@ -436,13 +495,24 @@ uint8_t procUciInd(fapi_uci_indication_t  *fapiUciInd)
    DU_LOG("\nDEBUG  -->  LWR_MAC: Processing UCI Indication");
    memset(macUciInd, 0, sizeof(UciInd));
    macUciInd->cellId = lwrMacCb.cellCb[0].cellId;
+#ifndef OAI_TESTING 
    macUciInd->slotInd.sfn = fapiUciInd->sfn; 
    macUciInd->slotInd.slot = fapiUciInd->slot;
    macUciInd->numUcis = fapiUciInd->numUcis;
-
+#else
+   macUciInd->slotInd.sfn = reverseBytes16(fapiUciInd->sfn); 
+   macUciInd->slotInd.slot = reverseBytes16(fapiUciInd->slot);
+   macUciInd->numUcis = reverseBytes16(fapiUciInd->numUcis);
+#endif
    for(pduIdx = 0; pduIdx < macUciInd->numUcis; pduIdx++)
    {
+#ifndef OAI_TESTING 
       macUciInd->pdus[pduIdx].pduType = fapiUciInd->uciPdu[pduIdx].pduType;
+      macUciInd->pdus[pduIdx].pduSize = fapiUciInd->uciPdu[pduIdx].pduSize;
+#else
+      macUciInd->pdus[pduIdx].pduType = reverseBytes16(fapiUciInd->uciPdu[pduIdx].pduType);
+      macUciInd->pdus[pduIdx].pduSize = reverseBytes16(fapiUciInd->uciPdu[pduIdx].pduSize);
+#endif
       switch(macUciInd->pdus[pduIdx].pduType)
       {
          case UCI_IND_PUSCH:
@@ -450,7 +520,6 @@ uint8_t procUciInd(fapi_uci_indication_t  *fapiUciInd)
          case UCI_IND_PUCCH_F0F1:
          {
             UciPucchF0F1 *pduInfo = NULLP;
-            macUciInd->pdus[pduIdx].pduSize = fapiUciInd->uciPdu[pduIdx].pduSize;
             pduInfo = &macUciInd->pdus[pduIdx].uci.uciPucchF0F1;
             ret = fillUciIndPucchF0F1(pduInfo, &fapiUciInd->uciPdu[pduIdx].uci.uciPucchF0F1);
          }
@@ -558,6 +627,10 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
    fapi_msg_t *header = NULLP;
    header = (fapi_msg_t *)msg;
 
+#ifdef OAI_TESTING 
+   header->msg_id = reverseBytes16(header->msg_id);
+   header->length = reverseBytes32(header->length);        
+#endif
 #ifdef CALL_FLOW_DEBUG_LOG 
    callFlowFromPhyToLwrMac(header->msg_id);
 #endif

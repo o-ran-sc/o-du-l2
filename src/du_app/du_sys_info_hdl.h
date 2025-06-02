@@ -32,6 +32,9 @@
 uint8_t BuildMibPdu();
 uint8_t BuildMibMsg();
 uint8_t BuildSib1Msg();
+#ifdef OAI_TESTING
+uint8_t BuildSib1MsgForF1AP();
+#endif
 uint8_t BuildBwpDlCommon(BWP_DownlinkCommon_t *bwp);
 uint8_t BuildBwpUlCommon(BWP_UplinkCommon_t *bwp);
 uint8_t BuildTddUlDlCfgComm(TDD_UL_DL_ConfigCommon_t *tddCfg);

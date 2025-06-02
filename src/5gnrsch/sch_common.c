@@ -78,7 +78,7 @@ uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstA
    }
 
    schDlSlotInfo = cell->schDlSlotInfo[slotTime.slot];
-   ssbStartPrb = cell->cellCfg.ssbSubcOffset; //+Kssb
+   ssbStartPrb = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA + ceil(cell->cellCfg.ssbSubcOffset/12); //+Kssb
    ssbStartSymb = cell->ssbStartSymbArr[dlBrdcstAlloc->ssbIdxSupported-1]; /*since we are supporting only 1 ssb beam */
 
    /* Assign interface structure */
@@ -93,6 +93,7 @@ uint8_t schBroadcastSsbAlloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcstA
       schDlSlotInfo->ssbInfo[idx] = ssbInfo;
    }
 
+   printf("\nSANGE: startPRb,numPrb:%d,%d, ssbStartSymb, numSym:%d,%d\n", ssbInfo.fdAlloc.startPrb, ssbInfo.fdAlloc.numPrb,ssbInfo.tdAlloc.startSymb,ssbInfo.tdAlloc.numSymb);
    if((allocatePrbDl(cell, slotTime, ssbStartSymb, SCH_SSB_NUM_SYMB, &ssbInfo.fdAlloc.startPrb, ssbInfo.fdAlloc.numPrb)) != ROK)
    {
        DU_LOG("\nERROR  -->  SCH: PRB allocation failed for SSB in SFN:SLOT [%d : %d]", slotTime.sfn, slotTime.slot);

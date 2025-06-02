@@ -74,7 +74,7 @@ endif
 # macro for output file name and makefile name
 #
 
-PLTFRM_FLAGS=-UMSPD -DODU -DINTEL_FAPI -UODU_MEMORY_DEBUG_LOG -DDEBUG_ASN_PRINT -UDEBUG_PRINT -DERROR_PRINT -USTART_DL_UL_DATA -UNR_DRX -UCALL_FLOW_DEBUG_LOG -UODU_SLOT_IND_DEBUG_LOG -UNFAPI_ENABLED -UTHREAD_AFFINITY -UMEM_SIZE_CHECK -UFAPI_DECODER -UCONTAINERIZE 
+PLTFRM_FLAGS=-UMSPD -DODU -DINTEL_FAPI -UODU_MEMORY_DEBUG_LOG -DDEBUG_ASN_PRINT -UDEBUG_PRINT -DERROR_PRINT -USTART_DL_UL_DATA -UNR_DRX -UCALL_FLOW_DEBUG_LOG -UODU_SLOT_IND_DEBUG_LOG -UNFAPI_ENABLED -DTHREAD_AFFINITY -UMEM_SIZE_CHECK -UFAPI_DECODER -UCONTAINERIZE 
 
 ifeq ($(MODE),TDD)
    PLTFRM_FLAGS += -DNR_TDD
@@ -88,7 +88,7 @@ ifeq ($(NODE),TEST_STUB)
 endif
 
 ifeq ($(PHY), INTEL_L1)
-	PLTFRM_FLAGS+=-DSS_USE_WLS_MEM -DINTEL_WLS_MEM -DDEBUG_MODE -DINTEL_L1_V20_03_ONWARDS 
+	PLTFRM_FLAGS+=-DSS_USE_WLS_MEM -DINTEL_WLS_MEM -DDEBUG_MODE -DINTEL_L1_V20_03_ONWARDS -DOAI_TESTING  
 ifeq ($(PHY_MODE),TIMER)
 	PLTFRM_FLAGS+=-DINTEL_TIMER_MODE
 endif
@@ -113,8 +113,8 @@ export I_OPTS
 L_OPTS+=-lnsl -lrt -lm -lpthread -lsctp -lxml2
 
 ifeq ($(PHY), INTEL_L1)
-	L_OPTS+=-L/root/Intel-L1-20.11.1/phy/wls_lib/ -lwls                         \
-        -lhugetlbfs -lnuma -ldl -L/root/Intel-L1-20.11.1/dpdk-20.11.1/build/lib                        \
+	L_OPTS+=-L/usr/local/lib -lwls                         \
+        -lhugetlbfs -lnuma -ldl -L/usr/local/lib/x86_64-linux-gnu                        \
         -lrte_gso -lrte_acl -lrte_hash -lrte_bbdev -lrte_ip_frag -lrte_bitratestats -lrte_ipsec        \
         -lrte_bpf -lrte_jobstats -lrte_telemetry -lrte_kni -lrte_kvargs -lrte_latencystats -lrte_port  \
         -lrte_lpm -lrte_power -lrte_mbuf -lrte_rawdev -lrte_member -lrte_cfgfile -lrte_mempool         \

@@ -49,17 +49,21 @@ uint8_t SchProcCrcInd(Pst *pst, CrcIndInfo *crcInd)
    SchUlHqProcCb *hqP = NULLP;
    Inst  schInst = pst->dstInst - SCH_INST_START;
    SchCellCb *cell = schCb[schInst].cells[schInst];
-   
+
+ printf("\nSANGEE , CRC_IND in SCH: numcrcInd:%d",crcInd->numCrcInd);  
    while(crcCnt < crcInd->numCrcInd)
    {
       GET_UE_ID(crcInd->crnti, ueId);
+      printf("\nCRC_IND,SANGEE:  UEID: %d, crcCnt:%d, raState:%d",ueId,crcCnt,cell->raCb[ueId-1].raState ); 
       if (cell->raCb[ueId-1].raState == SCH_RA_STATE_MSG3_PENDING)
       {
+         printf("\nCRC_IND,SANGEE: crcInd:%d, txCntr:%d cell->maxMsg3Tx:%d",crcInd->crcInd[crcCnt],cell->raCb[ueId-1].msg3HqProc.tbInfo.txCntr, cell->maxMsg3Tx); 
          if (crcInd->crcInd[crcCnt])
          {
             /* failure case*/
             if (cell->raCb[ueId-1].msg3HqProc.tbInfo.txCntr < cell->maxMsg3Tx)
             {
+	       printf("\nCRC_IND,SANGEE: CRCIND porcessing");
                cell->api->SchCrcInd(cell, ueId);
                cell->raCb[ueId - 1].retxMsg3HqProc = &cell->raCb[ueId - 1].msg3HqProc;
             }
@@ -70,6 +74,7 @@ uint8_t SchProcCrcInd(Pst *pst, CrcIndInfo *crcInd)
          }
          else
          {
+	       printf("\nCRC_IND,SANGEE: else raState = SCH_RA_STATE_MSG4_PENDING");
             /* pass case*/
             /*Dedicated preamble case need to be added*/
             cell->raCb[ueId-1].raState = SCH_RA_STATE_MSG4_PENDING;
@@ -78,6 +83,7 @@ uint8_t SchProcCrcInd(Pst *pst, CrcIndInfo *crcInd)
       }
       else
       {
+	       printf("\nCRC_IND,SANGEE:else else raState:%d",cell->raCb[ueId-1].raState);
          if (cell->ueCb[ueId-1].hqUlmap[crcInd->timingInfo.slot]->hqList.count == 0)
          {
             crcCnt++;
