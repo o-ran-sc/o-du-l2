@@ -28,15 +28,30 @@
 #define SCH_NUM_SC_PRB 12 /* number of SCs in a PRB */
 #define SCH_MAX_SSB_BEAM 8 /* since we are supporting only SCS=15KHz and 30KHz */
 #define SCH_SSB_NUM_SYMB 4
-#define SCH_SSB_NUM_PRB 21 /* One extra PRB as buffer */
+
+#ifdef OAI_TESTING
+   #define SCH_SSB_NUM_PRB 20 /* One extra PRB as buffer */
+#else
+   #define SCH_SSB_NUM_PRB 21 /* One extra PRB as buffer */
+#endif
+
 #define SCHED_DELTA 1
 #define BO_DELTA 1
+#ifndef OAI_TESTING
 #define RAR_DELAY   2
+#else
+#define RAR_DELAY   1
+#endif
 #define MSG4_DELAY  1
 #define PDSCH_START_RB 10
 /* Considering pdsch region from 3 to 13, DMRS exclued.
  * Overlapping of PDSCH DRMS and PDSCH not supported by Intel L1 */
-#define NUM_PDSCH_SYMBOL 11
+#ifdef OAI_TESTING
+   #define NUM_PDSCH_SYMBOL 10
+#else
+   #define NUM_PDSCH_SYMBOL 11
+#endif
+
 #define PUSCH_START_RB 15
 #define PUCCH_NUM_PRB_FORMAT_0_1_4 1  /* number of PRBs in freq domain, spec 38.213 - 9.2.1 */
 #define SI_RNTI 0xFFFF

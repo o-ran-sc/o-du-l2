@@ -195,6 +195,7 @@ uint8_t fapiMacCrcInd(Pst *pst, CrcInd *crcInd)
    crcIndInfo.timingInfo.sfn = crcInd->timingInfo.sfn;
    crcIndInfo.timingInfo.slot = crcInd->timingInfo.slot;
    crcIndInfo.numCrcInd = crcInd->crcInfo[0].numCb;
+   printf("\n SANGEE: CRC_IND: numCrcInd:%d",crcIndInfo.numCrcInd);
    crcIndInfo.crcInd[0] = crcInd->crcInfo[0].cbCrcStatus[0];
 
    MAC_FREE_SHRABL_BUF(pst->region, pst->pool, crcInd, sizeof(CrcInd));

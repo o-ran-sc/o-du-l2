@@ -61,6 +61,7 @@
 #include "BCCH-DL-SCH-Message.h"
 #include "du_f1ap_conversions.h"
 #include "du_sys_info_hdl.h"
+#include "UE-TimersAndConstants.h"
 
 void FreeSib1Msg(SIB1_t *sib1Msg);
 uint8_t FreqInfoUlret = RFAILED;
@@ -927,7 +928,6 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
  * does not have any member parameter lead to decode failure in wireshark. 
  * The issue has been reported to Nokia.
  * The following code will be uncommented once the issue is resolved */
-#if 0
    /* Search Space type and  DCI Format */
    DU_ALLOC(searchSpace->searchSpaceType, sizeof( struct SearchSpace__searchSpaceType));
    if(!searchSpace->searchSpaceType)
@@ -978,7 +978,6 @@ uint8_t BuildCommonSerachSpaceList( struct PDCCH_ConfigCommon__commonSearchSpace
             return RFAILED;
          }
    }
-#endif
 
    return ROK;
 }/* BuildCommonSerachSpaceList */
@@ -1853,7 +1852,8 @@ uint8_t  BuildRachCfgCommon(struct BWP_UplinkCommon__rach_ConfigCommon *rachCfg)
                   }
                case RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_oneHalf:
                   {
-                     //TODO
+                     setup->ssb_perRACH_OccasionAndCB_PreamblesPerSSB->choice.one = \
+                        convertCbPreamblePerSsbValueToEnum(duRachCfg.numCbPreamblePerSsb);
                      break;
                   }
                case RACH_ConfigCommon__ssb_perRACH_OccasionAndCB_PreamblesPerSSB_PR_one:
@@ -2323,7 +2323,11 @@ uint8_t BuildServCellCfgCommonSib(ServingCellConfigCommonSIB_t *srvCellCfg)
 
    /* SSB Position in Burst */
    ssbPosInBurst = &srvCellCfg->ssb_PositionsInBurst.inOneGroup;
+#ifndef OAI_TESTING
    ssbPosInBurst->size = 1;
+#else
+   ssbPosInBurst->size = 4;
+#endif
    DU_ALLOC(ssbPosInBurst->buf, ssbPosInBurst->size * sizeof(uint8_t));
    if(!ssbPosInBurst->buf)
    {
@@ -2373,6 +2377,166 @@ uint8_t BuildServCellCfgCommonSib(ServingCellConfigCommonSIB_t *srvCellCfg)
    return ROK;
 }
 
+uint8_t BuildUeTimerAndConstants(UE_TimersAndConstants_t *ue_TimersAndConstants)
+{
+   ue_TimersAndConstants->t300 = UE_TimersAndConstants__t300_ms400;
+   ue_TimersAndConstants->t301 = UE_TimersAndConstants__t301_ms400;
+   ue_TimersAndConstants->t310 = UE_TimersAndConstants__t310_ms2000;
+   ue_TimersAndConstants->n310 = UE_TimersAndConstants__n310_n10;
+   ue_TimersAndConstants->t311 = UE_TimersAndConstants__t311_ms3000;
+   ue_TimersAndConstants->n311 = UE_TimersAndConstants__n311_n1;
+   ue_TimersAndConstants->t319 = UE_TimersAndConstants__t319_ms400;
+   
+   return ROK; 
+}
+
+#ifdef OAI_TESTING
+uint8_t BuildSib1MsgForF1AP()
+{
+   SIB1_t                   *sib1Msg;
+   CellAccessRelatedInfo_t  *cellAccessInfo;
+   uint8_t                  elementCnt;
+   uint8_t                  ret1;
+   asn_enc_rval_t           encRetVal; 
+   uint8_t                  ret = RFAILED;
+
+   do
+   {
+      DU_ALLOC(sib1Msg, sizeof(SIB1_t));
+
+      elementCnt = ODU_VALUE_ONE;
+
+      /* Cell Selection Info */
+#if 0
+      DU_ALLOC(sib1Msg->cellSelectionInfo, sizeof(struct SIB1__cellSelectionInfo));
+      if(!sib1Msg->cellSelectionInfo)
+      {
+         DU_LOG("\nERROR  -->  DU APP: SIB1 Cell Selection Info memory allocation failed");
+         break;
+      }
+
+      sib1Msg->cellSelectionInfo->q_RxLevMin = 0;
+
+      DU_ALLOC(sib1Msg->cellSelectionInfo->q_RxLevMinSUL, sizeof(Q_RxLevMin_t));
+      if(!sib1Msg->cellSelectionInfo->q_RxLevMinSUL)
+      {
+         DU_LOG("\nERROR  -->  DU APP: BuildSib1Msg(): Memory allocation failed for q_RxLevMinSUL");
+         break;
+      }
+      *(sib1Msg->cellSelectionInfo->q_RxLevMinSUL) = -50;
+
+      DU_ALLOC(sib1Msg->cellSelectionInfo->q_QualMin, sizeof(Q_QualMin_t));
+      if(!sib1Msg->cellSelectionInfo->q_QualMin)
+      {
+         DU_LOG("\nERROR  -->  DU APP: BuildSib1Msg(): Memory allocation failed for q_QualMin");
+         break;
+      }
+      *(sib1Msg->cellSelectionInfo->q_QualMin) = -30;
+#endif 
+      /* PLMN list */
+      cellAccessInfo = &sib1Msg->cellAccessRelatedInfo;
+      cellAccessInfo->plmn_IdentityList.list.count = elementCnt;
+      cellAccessInfo->plmn_IdentityList.list.size = elementCnt * sizeof(PLMN_IdentityInfo_t *);
+
+      ret1 =  BuildPlmnList(cellAccessInfo);
+      if(ret1 != ROK)
+      {
+         break;
+      }
+      /* Connection Establish Failure Control */
+      DU_ALLOC(sib1Msg->connEstFailureControl, sizeof(ConnEstFailureControl_t));
+      if(!sib1Msg->connEstFailureControl)
+      {
+         DU_LOG("\nERROR  -->  DU APP: sib1Msg->connEstFailureControl memory allocation failure");
+         break;
+      }
+      sib1Msg->connEstFailureControl->connEstFailCount = duCfgParam.sib1Params.connEstFailCnt;
+      sib1Msg->connEstFailureControl->connEstFailOffsetValidity = duCfgParam.sib1Params.connEstFailOffValidity;
+      
+      DU_ALLOC(sib1Msg->connEstFailureControl->connEstFailOffset, sizeof(long));
+      if(!sib1Msg->connEstFailureControl->connEstFailOffset)
+      {
+         DU_LOG("\nERROR  -->  DU APP: BuildSib1Msg(): Memory allocation failed for connEstFailOffset");
+         break;
+      }
+      *(sib1Msg->connEstFailureControl->connEstFailOffset) = duCfgParam.sib1Params.connEstFailOffset;
+
+      /* SI Scheduling Info */
+      DU_ALLOC(sib1Msg->si_SchedulingInfo, sizeof(SI_SchedulingInfo_t));
+      if(!sib1Msg->si_SchedulingInfo)
+      {
+         DU_LOG("\nERROR  -->  DU APP: sib1Msg->si_SchedulingInfo memory allocation failure");
+         break;
+      } 
+      elementCnt = ODU_VALUE_ONE;
+      sib1Msg->si_SchedulingInfo->schedulingInfoList.list.count = elementCnt;
+      sib1Msg->si_SchedulingInfo->schedulingInfoList.list.size = elementCnt *
+         sizeof(struct SchedulingInfo *);
+      ret1 = BuildSiSchedInfoList(&sib1Msg->si_SchedulingInfo->schedulingInfoList);
+      if(ret1 != ROK)
+      {
+         break;
+      }
+      sib1Msg->si_SchedulingInfo->si_WindowLength = duCfgParam.sib1Params.siSchedInfo.winLen;
+
+      /* Serving Cell Config Common */
+      DU_ALLOC(sib1Msg->servingCellConfigCommon, sizeof(ServingCellConfigCommonSIB_t));
+      if(!sib1Msg->servingCellConfigCommon)
+      {
+         DU_LOG("\nERROR  -->  DU APP: sib1Msg->servingCellConfigCommon memory allocation failure");
+         break;
+      }
+      ret1 =  BuildServCellCfgCommonSib(sib1Msg->servingCellConfigCommon);
+      if(ret1 != ROK)
+      {
+         break;
+      }
+      DU_ALLOC(sib1Msg->ue_TimersAndConstants, sizeof(UE_TimersAndConstants_t));
+      ret1 = BuildUeTimerAndConstants(sib1Msg->ue_TimersAndConstants);
+#if 0
+      DU_ALLOC(sib1Msg->uac_BarringInfo, sizeof(struct SIB1__uac_BarringInfo));
+      DU_ALLOC(sib1Msg->uac_BarringInfo->uac_BarringPerPLMN_List, sizeof(struct UAC_BarringPerPLMN_List));
+      sib1Msg->uac_BarringInfo->uac_BarringPerPLMN_List->list.count = 1;
+      sib1Msg->uac_BarringInfo->uac_BarringPerPLMN_List->list.size = sizeof(struct UAC_BarringPerPLMN *);
+     DU_ALLOC(sib1Msg->uac_BarringInfo->uac_BarringPerPLMN_List->list.array,sib1Msg->uac_BarringInfo->uac_BarringPerPLMN_List->list.size);
+     DU_ALLOC(sib1Msg->uac_BarringInfo->uac_BarringPerPLMN_List->list.array[0], sizeof(struct UAC_BarringPerPLMN));
+    sib1Msg->uac_BarringInfo->uac_BarringPerPLMN_List->list.array[0]->plmn_IdentityIndex = 0;
+
+    DU_ALLOC(sib1Msg->useFullResumeID, sizeof(long));
+    *sib1Msg->useFullResumeID = 0;
+#endif
+    xer_fprint(stdout, &asn_DEF_SIB1, sib1Msg);
+
+      /* Encode the F1SetupRequest type as APER */
+      memset(encBuf, 0, ENC_BUF_MAX_LEN);
+      encBufSize = 0;
+      encRetVal = uper_encode(&asn_DEF_SIB1, 0, sib1Msg, PrepFinalEncBuf,\
+            encBuf);
+      printf("\nencbufSize: %d\n", encBufSize);
+      if(encRetVal.encoded == -1)
+      {
+         DU_LOG("\nERROR  -->  DU APP : Could not encode SIB1 structure (at %s)\n",\
+               encRetVal.failed_type ?
+               encRetVal.failed_type->name :
+               "unknown");
+         break;
+      }
+#ifdef DEBUG_ASN_PRINT
+      for(int i=0; i< encBufSize; i++)
+      {
+         printf("%x\t",encBuf[i]);
+      }
+      printf("\n");
+#endif
+      
+      ret = ROK;
+      break; 
+   }while(true);
+
+   FreeSib1Msg(sib1Msg);
+   return ret;
+}
+#endif
 /*******************************************************************
  *
  * @brief Builds SIB message in Served Cell Info
@@ -2501,6 +2665,8 @@ uint8_t BuildSib1Msg()
       {
          break;
       }
+      DU_ALLOC(sib1Msg->ue_TimersAndConstants, sizeof(UE_TimersAndConstants_t));
+      ret1 = BuildUeTimerAndConstants(sib1Msg->ue_TimersAndConstants);
 
       xer_fprint(stdout, &asn_DEF_BCCH_DL_SCH_Message, &bcchMsg);
 
@@ -3156,6 +3322,8 @@ void FreeSib1Msg(SIB1_t *sib1Msg)
 
                                                 DU_FREE(sib1Msg->servingCellConfigCommon,
                                                       sizeof(ServingCellConfigCommonSIB_t));
+                                                DU_FREE(sib1Msg->ue_TimersAndConstants, \
+								 sizeof(UE_TimersAndConstants_t));
                                              }
                                              //TODO PBORLA
                                              if(sib1Msg->si_SchedulingInfo->schedulingInfoList.list.array)

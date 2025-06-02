@@ -58,7 +58,7 @@
 	<nRPCI>1</nRPCI>
 	<ssbFrequency>3000000</ssbFrequency>
 	<ssbPeriodicity>20</ssbPeriodicity>
-	<ssbSubCarrierSpacing>15</ssbSubCarrierSpacing>
+	<ssbSubCarrierSpacing>30</ssbSubCarrierSpacing>
 	<ssbOffset>0</ssbOffset>
 	<ssbDuration>1</ssbDuration>
 	<nRSectorCarrierRef>CN=John Smith,OU=Sales,O=ACME Limited,L=Moab,ST=Utah,C=US</nRSectorCarrierRef>

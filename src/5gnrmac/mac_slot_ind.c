@@ -501,7 +501,11 @@ uint8_t macProcSlotInd(SlotTimingInfo slotInd)
    buildAndSendMuxPdu(slotInd);
 
    /* Trigger for DL TTI REQ */
-   fillDlTtiReq(slotInd);
+#ifndef OAI_TESTING 
+   fillDlTtiReq(slotInd, NULLP);
+#else
+   processTtiReq(slotInd);
+#endif
 
    return ROK;
 }  /* macProcSlotInd */
