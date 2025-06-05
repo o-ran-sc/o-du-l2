@@ -871,7 +871,7 @@ uint8_t sctpSend(Buffer *mBuf, uint8_t itfType)
 #ifdef CALL_FLOW_DEBUG_LOG
       DU_LOG("\nCall Flow: ENTSCTP -> CU : EVENT_F1AP_MSG_TO_CU\n");
 #endif
-      ret = cmInetSctpSendMsg(&f1Params.sockFd, &f1Params.destIpNetAddr, f1Params.destPort, &memInfo, mBuf, &len, 0, FALSE, 0, 0/*SCT_PROTID_NONE*/, RWOULDBLOCK);
+      ret = cmInetSctpSendMsg(&f1Params.sockFd, &f1Params.destIpNetAddr, f1Params.destPort, &memInfo, mBuf, &len, 0, FALSE, 0, 62, RWOULDBLOCK);
    }
 
    if(itfType == E2_INTERFACE)

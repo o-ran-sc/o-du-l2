@@ -930,11 +930,13 @@ CmLList* isPrbAvailable(CmLListCp *freePrbBlockList, uint16_t startPrb, uint16_t
          node = node->next;
          continue;
       }
-      
+     
+      printf("\nSANGE: freeBlock startPrb, endPrb: %d, %d",freeBlock->startPrb, freeBlock->endPrb); 
       /* Check if requested PRBs belong within the range of current free block */
       if(((startPrb >= freeBlock->startPrb) && (startPrb <= freeBlock->endPrb)) && \
          ((endPrb >= freeBlock->startPrb) && (endPrb <= freeBlock->endPrb)))
       {
+	      printf("\n node success:%p",node);
          return node;
       }
 
@@ -1102,7 +1104,7 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
 *  @param[in]  number of symbols
 *  @return   tbSize
 **/
-uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols)
+uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols, uint16_t *targeCodeRate, uint8_t *qam)
 {   
    uint8_t  qm     = mcsTable[mcs][1];
    uint16_t rValue = mcsTable[mcs][2];
@@ -1116,8 +1118,12 @@ uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols
    uint32_t c = 0;
    const uint8_t  numLayer = 1;
    const uint16_t numRbSc = 12;
+#ifndef OAI_TESTING
    const uint16_t numDmrsRes = 12;
-   const uint16_t sf = 1;
+#else
+   const uint16_t numDmrsRes = 36;
+#endif
+ // const uint16_t sf = 1;//04june
 //   uint16_t numPrbOvrHead = 0;
    
   /* formula used for calculation of rbSize, 38.214 section 5.1.3.2  *
@@ -1127,7 +1133,7 @@ uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols
 
    nreDash = MIN(156, ceil( (numRbSc * numSymbols) - numDmrsRes - 0));
    nre = nreDash * numPrb;
-   nInfo = ceil(nre * qm * numLayer * rValue/(1024.0 * sf));
+   nInfo = ceil(nre * qm * numLayer * (rValue *10/5)>>11);
 
    if(nInfo <= 3824)
    {
@@ -1161,6 +1167,11 @@ uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols
             tbSize = 8 * ceil((nInfoDash + 24)/(8)) - 24;
          }
       }
+   }
+   if(targeCodeRate != NULLP && qam != NULLP)
+   {
+      *targeCodeRate = rValue * 10;
+      *qam = qm;
    }
    return tbSize;
 }
@@ -1588,7 +1599,7 @@ uint32_t calculateEstimateTBSize(uint32_t reqBO, uint16_t mcsIdx, uint8_t numSym
    /*Loop Exit: Either estPRB reaches the maxRB or TBS is found greater than equal to reqBO*/
    do
    {
-      tbs = schCalcTbSizeFromNPrb(*estPrb, mcsIdx, numSymbols);
+      tbs = schCalcTbSizeFromNPrb(*estPrb, mcsIdx, numSymbols, NULLP, NULLP);
 
       /*TBS size calculated in above function is in Bits. 
        * So to convert it into Bytes , we right shift by 3. 

@@ -622,13 +622,19 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    uint8_t numSymbols = 0;
    uint8_t offset = 0;
    uint8_t oValue = 0;
+   uint8_t mcs = 0;
    //uint8_t numSearchSpacePerSlot = 0;
    uint8_t mValue = 0;
    uint8_t firstSymbol = 0; /* need to calculate using formula mentioned in 38.213 */
    uint8_t slotIndex = 0;
    uint8_t freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    uint16_t tbSize = 0;
+   uint16_t targetCodeRate = 0;
+   uint8_t qam = 0;
    uint8_t ssbIdx = 0;
+#ifdef OAI_TESTING
+   uint8_t freqIdx = 0;
+#endif
    PdcchCfg *pdcch;
    PdschCfg *pdsch;
    BwpCfg *bwp;
@@ -659,6 +665,7 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    slotIndex = (int)((oValue*pow(2, mu)) + floor(ssbIdx*mValue))%numSlots;
    sib1SchCfg->n0 = slotIndex;
 
+#ifndef OAI_TESTING
    /* fill BWP */
    switch(bandwidth)
    {
@@ -677,7 +684,11 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
 
    }
    bwp->freqAlloc.startPrb = 0;
-   bwp->subcarrierSpacing  = 0;         /* 15Khz */
+#else
+   bwp->freqAlloc.numPrb = numRbs;
+   bwp->freqAlloc.startPrb =  ((offsetPointA >> mu) - offset);
+#endif
+   bwp->subcarrierSpacing  = mu;         /* 15Khz */
    bwp->cyclicPrefix       = 0;              /* normal */
 
    /* fill the PDCCH PDU */
@@ -686,7 +697,15 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    pdcch->coresetCfg.durationSymbols = numSymbols;
    
    /* Fill Bitmap for PRBs in coreset */
+#ifndef OAI_TESTING
    fillCoresetFeqDomAllocMap(((offsetPointA-offset)/6), (numRbs/6), freqDomainResource);
+#else
+   freqDomainResource[0] = (numRbs < 48) ? 0xf0 : 0xff;
+   for(freqIdx = 1; freqIdx < FREQ_DOM_RSRC_SIZE; freqIdx++)
+   {
+      freqDomainResource[freqIdx] = (numRbs < (48 * (freqIdx + 1))) ? 0x00 : 0xff;
+   }
+#endif
    memcpy(pdcch->coresetCfg.freqDomainResource, freqDomainResource, FREQ_DOM_RSRC_SIZE);
 
    pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
@@ -701,13 +720,20 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    pdcch->dci[0].scramblingRnti = 0;
    pdcch->dci[0].cceIndex = 0;
    pdcch->dci[0].aggregLevel = 4;
+#ifndef OAI_TESTING
    pdcch->dci[0].beamPdcchInfo.numPrgs = 1;
    pdcch->dci[0].beamPdcchInfo.prgSize = 1;
    pdcch->dci[0].beamPdcchInfo.digBfInterfaces = 0;
+   pdcch->dci[0].txPdcchPower.powerControlOffsetSS = 0;
+#else
+   pdcch->dci[0].beamPdcchInfo.numPrgs = 0;
+   pdcch->dci[0].beamPdcchInfo.prgSize = 0;
+   pdcch->dci[0].beamPdcchInfo.digBfInterfaces = 1;
+   pdcch->dci[0].txPdcchPower.powerControlOffsetSS = 1;
+#endif
    pdcch->dci[0].beamPdcchInfo.prg[0].pmIdx = 0;
    pdcch->dci[0].beamPdcchInfo.prg[0].beamIdx[0] = 0;
    pdcch->dci[0].txPdcchPower.beta_pdcch_1_0= 0;
-   pdcch->dci[0].txPdcchPower.powerControlOffsetSS = 0;
    /* Storing pdschCfg pointer here. Required to access pdsch config while
       fillig up pdcch pdu */
    pdsch = &pdcch->dci[0].pdschCfg; 
@@ -718,25 +744,52 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    pdsch->rnti = 0xFFFF; /* SI-RNTI */
    pdsch->pduIndex = 0;
    pdsch->numCodewords = 1;
+   pdsch->pdschFreqAlloc.startPrb  = 0;
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
    {
-      pdsch->codeword[cwCount].targetCodeRate = 308;
-      pdsch->codeword[cwCount].qamModOrder = 2;
-      pdsch->codeword[cwCount].mcsIndex = DEFAULT_MCS;
+      mcs = DEFAULT_MCS;
+      pdsch->pdschFreqAlloc.numPrb = 0;
+      qam = 0;
+      targetCodeRate = 0;
+      do
+      {
+         if(pdsch->pdschFreqAlloc.numPrb < bwp->freqAlloc.numPrb)
+         {
+            pdsch->pdschFreqAlloc.numPrb++;
+         }
+         else
+         {
+           if(mcs < 10)
+           {
+              mcs++;
+           }
+	   else
+	      break;
+         }
+         tbSize = (schCalcTbSizeFromNPrb(pdsch->pdschFreqAlloc.numPrb, mcs, 10, &targetCodeRate, &qam) >> 3);
+      }while(sib1PduLen > tbSize);
+
+      pdsch->codeword[cwCount].targetCodeRate = targetCodeRate;
+      pdsch->codeword[cwCount].qamModOrder = qam;
+      pdsch->codeword[cwCount].mcsIndex = mcs;
       pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
-      tbSize = schCalcTbSize(sib1PduLen + TX_PAYLOAD_HDR_LEN);
       pdsch->codeword[cwCount].tbSize = tbSize;
    }
    pdsch->dataScramblingId                   = pci;
    pdsch->numLayers                          = 1;
    pdsch->transmissionScheme                 = 0;
+#ifndef OAI_TESTING
    pdsch->refPoint                           = 0;
+   pdsch->dmrs.numDmrsCdmGrpsNoData          = 1;
+#else
+   pdsch->refPoint                           = 1;
+   pdsch->dmrs.numDmrsCdmGrpsNoData          = 2;
+#endif
    pdsch->dmrs.dlDmrsSymbPos                 = DL_DMRS_SYMBOL_POS; 
    pdsch->dmrs.dmrsConfigType                = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId            = pci;
    pdsch->dmrs.scid                          = 0;
-   pdsch->dmrs.numDmrsCdmGrpsNoData          = 1;
    pdsch->dmrs.dmrsPorts                     = 0x0001;
    pdsch->dmrs.mappingType                   = DMRS_MAP_TYPE_A; /* Type-A */
    pdsch->dmrs.nrOfDmrsSymbols               = NUM_DMRS_SYMBOLS;
@@ -744,16 +797,25 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
 
    pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
    /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
+#ifndef OAI_TESTING
    pdsch->pdschFreqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB;
    pdsch->pdschFreqAlloc.numPrb    = schCalcNumPrb(tbSize, DEFAULT_MCS, NUM_PDSCH_SYMBOL);
+#endif
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
    pdsch->pdschTimeAlloc.rowIndex            = 1;
    /* This is Intel's requirement. PDSCH should start after PDSCH DRMS symbol */
-   pdsch->pdschTimeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
    pdsch->pdschTimeAlloc.numSymb   = NUM_PDSCH_SYMBOL;
+#ifndef OAI_TESTING
+   pdsch->pdschTimeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
    pdsch->beamPdschInfo.numPrgs              = 1;
    pdsch->beamPdschInfo.prgSize              = 1;
    pdsch->beamPdschInfo.digBfInterfaces      = 0;
+#else
+   pdsch->pdschTimeAlloc.startSymb = 2; /* spec-38.214, Table 5.1.2.1-1 */
+   pdsch->beamPdschInfo.numPrgs              = 0;
+   pdsch->beamPdschInfo.prgSize              = 0;
+   pdsch->beamPdschInfo.digBfInterfaces      = 1;
+#endif
    pdsch->beamPdschInfo.prg[0].pmIdx         = 0;
    pdsch->beamPdschInfo.prg[0].beamIdx[0]    = 0;
    pdsch->txPdschPower.powerControlOffset    = 0;
@@ -1351,67 +1413,94 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
 
       if(ssbOccasion && sib1Occasion)
       {
-         broadcastPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA; 
-         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB + cell->sib1SchCfg.sib1PdcchCfg.dci[0].pdschCfg.pdschFreqAlloc.numPrb -1;
-      }
-      else if(ssbOccasion)
-      {
-         broadcastPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA;
-         broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB -1;
-      }
-      else if(sib1Occasion)
-      {
-         broadcastPrbStart = cell->sib1SchCfg.sib1PdcchCfg.dci[0].pdschCfg.pdschFreqAlloc.startPrb;
-         broadcastPrbEnd = broadcastPrbStart + cell->sib1SchCfg.sib1PdcchCfg.dci[0].pdschCfg.pdschFreqAlloc.numPrb -1;
-      }
-
-      /* Iterate through all free PRB blocks */
-      freePrbNode = prbAlloc->freePrbBlockList.first; 
-      while(freePrbNode)
-      {
-         freePrbBlock = (FreePrbBlock *)freePrbNode->node; 
-
-         /* If broadcast message is scheduled in this slot, then check if its PRBs belong to the current free block.
-          * Since SSB/SIB1 PRB location is fixed, these PRBs cannot be allocated to other message in same slot */
-         if((ssbOccasion || sib1Occasion) && 
-            ((broadcastPrbStart >= freePrbBlock->startPrb) && (broadcastPrbStart <= freePrbBlock->endPrb)) && \
-            ((broadcastPrbEnd >= freePrbBlock->startPrb) && (broadcastPrbEnd <= freePrbBlock->endPrb)))
+         /* Iterate through all free PRB blocks */
+         freePrbNode = prbAlloc->freePrbBlockList.first; 
+         while(freePrbNode)
          {
-            /* Implmentation is done such that highest-numbered free-RB is allocated first */ 
-            if((freePrbBlock->endPrb > broadcastPrbEnd) && ((freePrbBlock->endPrb - broadcastPrbEnd) >= numPrb))
+            /* TODO: Check again;because a very rigid condition has been applied that 
+	     * freeBlock will be only between SSB and SIB1 when both ocassions are present and 
+	     * SIB1 is present on the lower end of PRB range and SSB on the uppermost end of the PRB range. 
+	     * This has to be made flexible.*/
+            freePrbBlock = (FreePrbBlock *)freePrbNode->node; 
+
+	    broadcastPrbEnd = cell->sib1SchCfg.sib1PdcchCfg.dci[0].pdschCfg.pdschFreqAlloc.startPrb + \
+			         cell->sib1SchCfg.sib1PdcchCfg.dci[0].pdschCfg.pdschFreqAlloc.numPrb - 1;
+	    broadcastPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA + ceil (cell->cellCfg.ssbSubcOffset/12);
+
+	    if((freePrbBlock->startPrb <= broadcastPrbStart) && (freePrbBlock->endPrb >=  broadcastPrbStart) &&\
+	       (freePrbBlock->startPrb <= broadcastPrbEnd) && (freePrbBlock->endPrb >= broadcastPrbEnd))
+	    {
+	       if (freePrbBlock->numFreePrb >= numPrb)
+	       {
+	          *startPrb = freePrbBlock->endPrb - numPrb +1;
+	       }
+        	break;  
+	    }
+	    freePrbNode = freePrbNode->next;
+ 	    continue; 
+	 }
+      }
+      else
+      {
+         if(ssbOccasion)
+         {
+            broadcastPrbStart = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA;
+            broadcastPrbEnd = broadcastPrbStart + SCH_SSB_NUM_PRB -1;
+         }
+         else if(sib1Occasion)
+         {
+            broadcastPrbStart = cell->sib1SchCfg.sib1PdcchCfg.dci[0].pdschCfg.pdschFreqAlloc.startPrb;
+            broadcastPrbEnd = broadcastPrbStart + cell->sib1SchCfg.sib1PdcchCfg.dci[0].pdschCfg.pdschFreqAlloc.numPrb -1;
+         }
+
+         /* Iterate through all free PRB blocks */
+         freePrbNode = prbAlloc->freePrbBlockList.first; 
+         while(freePrbNode)
+         {
+            freePrbBlock = (FreePrbBlock *)freePrbNode->node; 
+
+            /* If broadcast message is scheduled in this slot, then check if its PRBs belong to the current free block.
+             * Since SSB/SIB1 PRB location is fixed, these PRBs cannot be allocated to other message in same slot */
+            if((ssbOccasion || sib1Occasion) && 
+               ((broadcastPrbStart >= freePrbBlock->startPrb) && (broadcastPrbStart <= freePrbBlock->endPrb)) && \
+               ((broadcastPrbEnd >= freePrbBlock->startPrb) && (broadcastPrbEnd <= freePrbBlock->endPrb)))
             {
-               /* If sufficient free PRBs are available above bradcast message then,
-                * endPrb = freePrbBlock->endPrb
-                * startPrb = endPrb - numPrb +1;
-                */
-               *startPrb = freePrbBlock->endPrb - numPrb +1;
-               break;
-            }
-            else if((broadcastPrbStart > freePrbBlock->startPrb) && ((broadcastPrbStart - freePrbBlock->startPrb) >= numPrb))
-            {
-               /* If free PRBs are available below broadcast message then,
-                * endPrb = broadcastPrbStart - 1
-                * startPrb = endPrb - numPrb +1
-                */
-               *startPrb = broadcastPrbStart - numPrb; 
-               break;
+               /* Implmentation is done such that highest-numbered free-RB is allocated first */ 
+               if((freePrbBlock->endPrb > broadcastPrbEnd) && ((freePrbBlock->endPrb - broadcastPrbEnd) >= numPrb))
+               {
+                  /* If sufficient free PRBs are available above bradcast message then,
+                   * endPrb = freePrbBlock->endPrb
+                   * startPrb = endPrb - numPrb +1;
+                   */
+                  *startPrb = freePrbBlock->endPrb - numPrb +1;
+                  break;
+               }
+               else if((broadcastPrbStart > freePrbBlock->startPrb) && ((broadcastPrbStart - freePrbBlock->startPrb) >= numPrb))
+               {
+                  /* If free PRBs are available below broadcast message then,
+                   * endPrb = broadcastPrbStart - 1
+                   * startPrb = endPrb - numPrb +1
+                   */
+                  *startPrb = broadcastPrbStart - numPrb; 
+                  break;
+               }
+               else
+               {
+                  freePrbNode = freePrbNode->next;
+                  continue;
+               }
             }
             else
             {
-               freePrbNode = freePrbNode->next;
-               continue;
+               /* Check if requested number of blocks can be allocated from the current block */ 
+               if (freePrbBlock->numFreePrb < numPrb)
+               {
+                  freePrbNode = freePrbNode->next;
+                  continue;
+               }
+               *startPrb = freePrbBlock->endPrb - numPrb +1;
+               break;  
             }
-         }
-         else
-         {
-            /* Check if requested number of blocks can be allocated from the current block */ 
-            if (freePrbBlock->numFreePrb < numPrb)
-            {
-               freePrbNode = freePrbNode->next;
-               continue;
-            }
-            *startPrb = freePrbBlock->endPrb - numPrb +1;
-            break;  
          }
       }
 
@@ -1423,6 +1512,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
    /* If startPrb is known already, check if requested PRBs are available for allocation */
    else
    {
+	   printf("\nSANGE : else part startPrb, numPrb:%d,%d",*startPrb, numPrb);
       freePrbNode = isPrbAvailable(&prbAlloc->freePrbBlockList, *startPrb, numPrb);
       if(!freePrbNode)
       {
@@ -1440,7 +1530,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
          return RFAILED;
       }
    }
-   
+
    /* Update statistics of PRB usage if stats calculation is enabled */
    if(schCb[cell->instIdx].statistics.activeKpiList.dlTotPrbUseList.count)
       prbAlloc->numPrbAlloc += numPrb;

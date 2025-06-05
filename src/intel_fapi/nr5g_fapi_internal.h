@@ -24,7 +24,12 @@
 #ifndef _NR5G_FAPI_INTELNAL_H_
 #define _NR5G_FAPI_INTELNAL_H_
 
-#include "fapi_interface.h"
+#ifdef OAI_TESTING
+ #include "fapi_interface_oai.h"
+#else
+ #include "fapi_interface.h"
+#endif
+
 #include "nr5g_fapi_common_types.h"
 
 #define  MAX_UL_SLOT_INFO_COUNT                      20 //Maximum no of Slots for which UL_TTI.request info has to

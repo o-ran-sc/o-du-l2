@@ -25,9 +25,15 @@
 #include "rlc_mac_inf.h"
 #include "mac_upr_inf_api.h"
 #include "lwr_mac.h"
+
 #ifdef INTEL_FAPI
-#include "fapi_interface.h"
+#ifdef OAI_TESTING
+ #include "fapi_interface_oai.h"
+#else
+ #include "fapi_interface.h"
 #endif
+#endif
+
 #include "lwr_mac_fsm.h"
 #include "lwr_mac_upr_inf.h"
 #include "mac.h"

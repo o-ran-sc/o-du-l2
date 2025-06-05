@@ -19,6 +19,8 @@
 #ifndef _LWR_MAC_FSM_H_
 #define _LWR_MAC_FSM_H_
 
+#include "fapi_vendor_extension.h"
+
 #define FAPI_UINT_8   1
 #define FAPI_UINT_16  2
 #define FAPI_UINT_32  4
@@ -69,10 +71,14 @@ uint8_t lwr_mac_procConfigRspEvt(void *msg);
 uint8_t lwr_mac_procStartReqEvt(void *msg);
 void sendToLowerMac(uint16_t, uint32_t, void *);
 void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg);
-uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo);
 typedef uint8_t (*lwrMacFsmHdlr)(void *);
 void lwrMacLayerInit(Region region, Pool pool);
-
+uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo,  p_fapi_api_queue_elem_t prevElemt);
+#ifdef OAI_TESTING
+uint16_t reverseBytes16(uint16_t num);
+uint32_t reverseBytes32(uint32_t num);
+uint8_t processTtiReq(SlotTimingInfo currTimingInfo);
+#endif
 #endif
 
 /**********************************************************************

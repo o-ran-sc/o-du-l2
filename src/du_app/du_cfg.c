@@ -1333,7 +1333,11 @@ uint8_t fillDuSrvdCellSysInfo(F1DuSysInfo *sysInfo)
    sysInfo->mibLen = encBufSize;
 
    /* GNB DU System Info SIB1 msg */
+#ifdef OAI_TESTING
+   BuildSib1MsgForF1AP();
+#else
    BuildSib1Msg();
+#endif
    DU_ALLOC(sysInfo->sib1Msg, encBufSize);
    if(!(sysInfo->sib1Msg))
    {
@@ -2349,6 +2353,12 @@ uint8_t parseSib1CellCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Sib1CellCfg
       cur = cur -> next;
    }
 
+#ifdef OAI_TESTING
+   BuildSib1Msg();
+   DU_ALLOC_SHRABL_BUF(sib1CellCfg->sib1Pdu,encBufSize);
+   memcpy(sib1CellCfg->sib1Pdu, encBuf,encBufSize);
+   sib1CellCfg->sib1PduLen = encBufSize;
+#else
    sib1CellCfg->sib1PduLen = duCfgParam.srvdCellLst[0].duSysInfo.sib1Len;
    if(sib1CellCfg->sib1PduLen > 0)
    {
@@ -2360,6 +2370,7 @@ uint8_t parseSib1CellCfg(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur, Sib1CellCfg
       }
       memcpy(sib1CellCfg->sib1Pdu, duCfgParam.srvdCellLst[0].duSysInfo.sib1Msg, sib1CellCfg->sib1PduLen);
    }
+#endif
    return ROK;
 }
 
@@ -5373,7 +5384,11 @@ uint8_t parseDuCfgParams(xmlDocPtr doc, xmlNsPtr ns, xmlNodePtr cur)
 uint8_t duReadCfg()
 {
 #ifdef NR_TDD
+#ifndef OAI_TESTING
    const char *filename = "../build/config/tdd_odu_config.xml";
+#else
+   const char *filename = "../build/config/tdd_odu_config_oai.xml";
+#endif
 #else
    const char *filename = "../build/config/fdd_odu_config.xml";
 #endif
@@ -5559,8 +5574,8 @@ void printDuConfig()
 
    egtp = &duCfgParam.egtpParams;
    DU_LOG("\n ** EGTP PARAMETER ** \n");
-   DU_LOG("DU IP Address %u\n", egtp->localIp.ipV4Addr);
-   DU_LOG("CU IP Address %u\n", egtp->destIp.ipV4Addr);
+   DU_LOG("DU IP Address %d\n", egtp->localIp.ipV4Addr);
+   DU_LOG("CU IP Address %d\n", egtp->destIp.ipV4Addr);
    DU_LOG("EGTP Port at DU %d\n", egtp->localPort);
    DU_LOG("EGTP Port at CU %d\n", egtp->destPort);
    DU_LOG("Minimum Tunnel ID %d\n", egtp->minTunnelId);
@@ -5842,7 +5857,7 @@ void printDuConfig()
    DU_LOG("SSB Subcarrier Offset %d\n", ssbCfg->ssbScOffset);
    for (ssbMaskIdx = 0; ssbMaskIdx < SSB_MASK_SIZE; ssbMaskIdx++)
    {
-      DU_LOG("SSB Mask[%d] :%d\n", ssbMaskIdx, ssbCfg->ssbMask[ssbMaskIdx]);
+      DU_LOG("SSB Mask[%d] :%x\n", ssbMaskIdx, ssbCfg->ssbMask[ssbMaskIdx]);
    }
    DU_LOG("Beam ID %d\n", ssbCfg->beamId[0]);
    DU_LOG("BETA PSS %d\n", ssbCfg->betaPss);

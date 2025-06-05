@@ -21,7 +21,12 @@
 #ifndef _NFAPI_INTERFACE_H
 #define _NFAPI_INTERFACE_H
 
-#include "fapi_interface.h"
+#ifdef OAI_TESTING
+ #include "fapi_interface_oai.h"
+#else
+ #include "fapi_interface.h"
+#endif
+
 /*Table 2-7 Dedicated NFAPI message IDs*/
 
 /*P5 Messages*/
