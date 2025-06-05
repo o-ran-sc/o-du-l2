@@ -106,12 +106,14 @@ uint32_t reverseBits(uint32_t num, uint8_t numBits)
 void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
       uint32_t val, uint8_t valSize)
 {
-   uint8_t temp;
    uint8_t bytePart1;
    uint32_t bytePart2;
    uint8_t bytePart1Size;
    uint8_t bytePart2Size;
 
+
+#ifndef OAI_TESTING
+   uint8_t temp;
    if(*bitPos + valSize <= 8)
    {
       bytePart1 = (uint8_t)val;
@@ -133,6 +135,29 @@ void fillDlDciPayload(uint8_t *buf, uint8_t *bytePos, uint8_t *bitPos,\
       *bitPos = 0;
       fillDlDciPayload(buf, bytePos, bitPos, bytePart2, bytePart2Size);
    }
+#else
+   if(*bitPos + valSize <= 8)
+   {
+      bytePart1 = (uint8_t)val;
+      bytePart1 = ((~((~0) << valSize)) & bytePart1)<< (8 - (*bitPos + valSize));
+      buf[*bytePos] |= bytePart1;
+      *bitPos += valSize;
+   }
+   else if(*bitPos + valSize > 8)
+   {
+      bytePart1Size = 8 - *bitPos;
+      bytePart2Size = valSize - bytePart1Size;
+
+      bytePart1 = val >> bytePart2Size;
+
+      buf[*bytePos] |= bytePart1;
+      (*bytePos)--;
+      *bitPos = 0;
+      fillDlDciPayload(buf, bytePos, bitPos, val, bytePart2Size);
+   }
+   
+#endif
+
 }
 
 /*

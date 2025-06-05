@@ -25,7 +25,12 @@ extern "C" {
 
 #include <stdint.h>
 
-#include "fapi_interface.h"
+#ifdef OAI_TESTING
+ #include "fapi_interface_oai.h"
+#else
+ #include "fapi_interface.h"
+#endif
+
 
 #define FAPI_VENDOR_MESSAGE                                 0x10
 #define FAPI_VENDOR_EXT_SHUTDOWN_REQUEST                    0x11

@@ -60,7 +60,11 @@
 #define MAX_NUM_CELL 2 /* Changed to 2 to support cell Id 2 even if there is only one cell in DU */
 #define MAX_NUM_MU   4
 #define MAX_NUM_UE   3
+#ifdef OAI_TESTING
+#define MAX_NUM_UE_PER_TTI 1
+#else
 #define MAX_NUM_UE_PER_TTI 2
+#endif
 #define MAX_NUM_LC   MAX_DRB_LCID + 1   /*Spec 38.331: Sec 6.4: maxLC-ID Keyword*/
 #define MAX_NUM_SRB  3    /* Max. no of Srbs */
 #define MAX_NUM_DRB  29   /* spec 38.331, maxDRB */
@@ -159,7 +163,8 @@
  * However, aligning to fapi_interface.h, setting this macro to 160.
  * TODO : To support 160, FAPI_MAX_NUM_TLVS_CONFIG in fapi_interface.h
  * of Intel L1 must be incremented to a higher number */
-#define MAX_TDD_PERIODICITY 10 /*As per Spec SCF222v10.02, TDD Table 10ms is the MAX_PERIODICITY in milli-sec*/
+#define MAX_TDD_PERIODICITY_SLOTS 10 
+#define MAX_TDD_PERIODICITY 10 
 #endif
 
 #define GET_UE_ID( _crnti,_ueId)           \

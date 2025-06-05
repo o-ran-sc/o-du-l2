@@ -49,7 +49,7 @@ uint8_t SchProcCrcInd(Pst *pst, CrcIndInfo *crcInd)
    SchUlHqProcCb *hqP = NULLP;
    Inst  schInst = pst->dstInst - SCH_INST_START;
    SchCellCb *cell = schCb[schInst].cells[schInst];
-   
+
    while(crcCnt < crcInd->numCrcInd)
    {
       GET_UE_ID(crcInd->crnti, ueId);
