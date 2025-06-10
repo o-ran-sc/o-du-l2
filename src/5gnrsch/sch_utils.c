@@ -806,6 +806,173 @@ uint8_t minMsg3SchTime[MAX_NUM_MU] = {6, 6, 6, 6};
 uint8_t defaultUlAckTbl[DEFAULT_UL_ACK_LIST_COUNT]= {1, 2, 3 , 4, 5, 6, 7, 8};
 
 uint8_t schCmnDlRvTbl[4] = {0, 2, 3, 1};
+
+/* Following tables are for PDSCH Time Domain Allocation from TS 38.214 subclause 5.1.2.1.1*/
+
+/*Table 5.1.2.1.1-2 for PDSCH time domain Allocation table-type as DefaultA
+ * Cyclic Prefix = Normal and dmrs_TypeA_position = 2*/
+const uint8_t tda_DefaultA_NormalCP_dmrsTypeApos2[16][4]={
+    {1,0,2,12},   // row index 1
+    {1,0,2,10},   // row index 2
+    {1,0,2,9},    // row index 3
+    {1,0,2,7},    // row index 4
+    {1,0,2,5},    // row index 5
+    {0,0,9,4},    // row index 6
+    {0,0,4,4},    // row index 7
+    {0,0,5,7},    // row index 8
+    {0,0,5,2},    // row index 9
+    {0,0,9,2},    // row index 10
+    {0,0,12,2},   // row index 11
+    {1,0,1,13},   // row index 12
+    {1,0,1,6},    // row index 13
+    {1,0,2,4},    // row index 14
+    {0,0,4,7},    // row index 15
+    {0,0,8,4}     // row index 16
+};
+
+/*Table 5.1.2.1.1-2 for PDSCH time domain Allocation table-type as DefaultA,
+ *  Cyclic Prefix = Normal and dmrs_TypeA_position = 3*/
+const uint8_t tda_DefaultA_NormalCP_dmrsTypeApos3[16][4]={
+    {1,0,3,11},   // row index 1
+    {1,0,3,9},    // row index 2
+    {1,0,3,8},    // row index 3
+    {1,0,3,6},    // row index 4
+    {1,0,3,4},    // row index 5
+    {0,0,10,4},   // row index 6
+    {0,0,6,4},    // row index 7
+    {0,0,5,7},    // row index 8
+    {0,0,5,2},    // row index 9
+    {0,0,9,2},    // row index 10
+    {0,0,12,2},   // row index 11
+    {1,0,1,13},   // row index 12
+    {1,0,1,6},    // row index 13
+    {1,0,2,4},    // row index 14
+    {0,0,4,7},    // row index 15
+    {0,0,8,4}     // row index 16
+};
+
+/*Table 5.1.2.1.1-3 for PDSCH time domain Allocation table-type as DefaultA, 
+ * Cyclic Prefix = Extended  and dmrs_TypeA_position = 2*/
+const uint8_t tda_DefaultA_ExtCP_dmrsTypeApos2[16][4]={
+    {1,0,2,6},    // row index 1
+    {1,0,2,10},   // row index 2
+    {1,0,2,9},    // row index 3
+    {1,0,2,7},    // row index 4
+    {1,0,2,5},    // row index 5
+    {0,0,6,4},    // row index 6
+    {0,0,4,4},    // row index 7
+    {0,0,5,6},    // row index 8
+    {0,0,5,2},    // row index 9
+    {0,0,9,2},    // row index 10
+    {0,0,10,2},   // row index 11
+    {1,0,1,11},   // row index 12
+    {1,0,1,6},    // row index 13
+    {1,0,2,4},    // row index 14
+    {0,0,4,6},    // row index 15
+    {0,0,8,4}     // row index 16
+};
+
+/*Table 5.1.2.1.1-3 for PDSCH time domain Allocation table-type as DefaultA, 
+ * Cyclic Prefix = Extended  and dmrs_TypeA_position = 3*/
+const uint8_t tda_DefaultA_ExtCP_dmrsTypeApos3[16][4]={
+    {1,0,3,5},    // row index 1
+    {1,0,3,9},    // row index 2
+    {1,0,3,8},    // row index 3
+    {1,0,3,6},    // row index 4
+    {1,0,3,4},    // row index 5
+    {0,0,8,2},    // row index 6
+    {0,0,6,4},    // row index 7
+    {0,0,5,6},    // row index 8
+    {0,0,5,2},    // row index 9
+    {0,0,9,2},    // row index 10
+    {0,0,10,2},   // row index 11
+    {1,0,1,11},   // row index 12
+    {1,0,1,6},    // row index 13
+    {1,0,2,4},    // row index 14
+    {0,0,4,6},    // row index 15
+    {0,0,8,4}     // row index 16
+};
+
+/*Table 5.1.2.1.1-4 for PDSCH time domain Allocation table-type as DefaultB, dmrs_TypeA_position = 2*/
+const uint8_t tda_DefaultB_dmrsTypeApos2[16][4]={
+    {0,0,2,2},    // row index 1
+    {0,0,4,2},    // row index 2
+    {0,0,6,2},    // row index 3
+    {0,0,8,2},    // row index 4
+    {0,0,10,2},   // row index 5
+    {0,1,2,2},    // row index 6
+    {0,1,4,2},    // row index 7
+    {0,0,2,4},    // row index 8
+    {0,0,4,4},    // row index 9
+    {0,0,6,4},    // row index 10
+    {0,0,8,4},    // row index 11
+    {0,0,10,4},   // row index 12
+    {0,0,2,7},    // row index 13
+    {1,0,2,12},   // row index 14
+    {0,1,2,4},    // row index 15
+    {0,0,0,0}     // row index 16
+};
+
+/*Table 5.1.2.1.1-4 for PDSCH time domain Allocation table-type as DefaultB, dmrs_TypeA_position = 3*/
+const uint8_t tda_DefaultB_dmrsTypeApos3[16][4]={
+    {0,0,2,2},    // row index 1
+    {0,0,4,2},    // row index 2
+    {0,0,6,2},    // row index 3
+    {0,0,8,2},    // row index 4
+    {0,0,10,2},   // row index 5
+    {0,1,2,2},    // row index 6
+    {0,1,4,2},    // row index 7
+    {0,0,2,4},    // row index 8
+    {0,0,4,4},    // row index 9
+    {0,0,6,4},    // row index 10
+    {0,0,8,4},    // row index 11
+    {0,0,10,4},   // row index 12
+    {0,0,2,7},    // row index 13
+    {1,0,3,11},   // row index 14
+    {0,1,2,4},    // row index 15
+    {0,0,0,0}     // row index 16
+};
+
+/*Table 5.1.2.1.1-5 for PDSCH time domain Allocation table-type as DefaultC, dmrs_TypeA_position = 2*/
+const uint8_t tda_DefaultC_dmrsTypeApos2[16][4]={
+    {0,0,2,2},  // row index 1
+    {0,0,4,2},  // row index 2
+    {0,0,6,2},  // row index 3
+    {0,0,8,2},  // row index 4
+    {0,0,10,2}, // row index 5
+    {0,0,0,0},  // row index 6
+    {0,0,0,0},  // row index 7
+    {0,0,2,4},  // row index 8
+    {0,0,4,4},  // row index 9
+    {0,0,6,4},  // row index 10
+    {0,0,8,4},  // row index 11
+    {0,0,10,4}, // row index 12
+    {0,0,2,7},  // row index 13
+    {1,0,2,12},  // row index 14
+    {1,0,0,6},  // row index 15
+    {1,0,2,6}   // row index 16
+};
+
+/*Table 5.1.2.1.1-5 for PDSCH time domain Allocation table-type as DefaultC, dmrs_TypeA_position = 3*/
+const uint8_t tda_DefaultC_dmrsTypeApos3[16][4]={
+    {0,0,2,2},  // row index 1
+    {0,0,4,2},  // row index 2
+    {0,0,6,2},  // row index 3
+    {0,0,8,2},  // row index 4
+    {0,0,10,2}, // row index 5
+    {0,0,0,0},  // row index 6
+    {0,0,0,0},  // row index 7
+    {0,0,2,4},  // row index 8
+    {0,0,4,4},  // row index 9
+    {0,0,6,4},  // row index 10
+    {0,0,8,4},  // row index 11
+    {0,0,10,4}, // row index 12
+    {0,0,2,7},  // row index 13
+    {1,0,3,11},  // row index 14
+    {1,0,0,6},  // row index 15
+    {1,0,2,6}   // row index 16
+};
+
 /**
  * @brief Function to find first DMRS symbol in PDSCH
  *
@@ -2304,6 +2471,119 @@ uint8_t extractNumOfCandForAggLvl(SchSearchSpace *searchSpace, uint8_t aggLvl)
       }
    }
    return numCand;
+}
+
+/*
+ * @brief Function to calculate the PDSCH Time Domain Allocation parameters based on 
+ * Spec 38.214 Section 5.1.2.1.1  
+ *
+ *   Function: getTdaInfo
+ *
+ *   As per Spec 38.214, Sec 5.1.2.1.1 Based on Either a default PDSCH time domain allocation A, B or C
+ *   
+ *
+ * @params[in] : pdschTimeAlloc.rowIndex, tableType[default A(0), B(1), C(2)], dmrsTypeAPos(2/3)
+ *    [return] : uint8_t ROK, RFAILED : Time Domain allocation status
+ *               pdschTimeAlloc.startSymbolIndex and pdschTimeAlloc.numSymbols
+ *
+ * */
+uint8_t getTdaInfo(PdschTimeAlloc *pdschTimeAlloc,uint8_t tableType, uint8_t dmrsTypeAPos, uint8_t cyclicPrefix)
+{
+	uint8_t rowIndex = pdschTimeAlloc->rowIndex -1; 
+   switch(tableType)
+   {
+      case 0: /*Default-A*/
+      {
+	 if(cyclicPrefix == 0)/*Normal-CP*/
+	 {
+	    if(dmrsTypeAPos == 2)
+	    {
+	       pdschTimeAlloc->startSymb = tda_DefaultA_NormalCP_dmrsTypeApos2[rowIndex][2]; 
+	       pdschTimeAlloc->numSymb = tda_DefaultA_NormalCP_dmrsTypeApos2[rowIndex][3];
+	    }
+	    else if(dmrsTypeAPos == 3)
+	    {
+	       pdschTimeAlloc->startSymb = tda_DefaultA_NormalCP_dmrsTypeApos3[rowIndex][2]; 
+	       pdschTimeAlloc->numSymb = tda_DefaultA_NormalCP_dmrsTypeApos3[rowIndex][3];
+	    }
+	    else
+	    {
+	       DU_LOG("\nERROR  --> SCH_UTILS: getTdaInfo: Incorrect dmrsTypeAPos:%d",dmrsTypeAPos);
+	       return RFAILED;
+	    }
+	 }
+	 else if(cyclicPrefix == 1) /*extended-CP*/
+	 {
+	    if(dmrsTypeAPos == 2)
+	    {
+	       pdschTimeAlloc->startSymb = tda_DefaultA_ExtCP_dmrsTypeApos2[rowIndex][2]; 
+	       pdschTimeAlloc->numSymb = tda_DefaultA_ExtCP_dmrsTypeApos2[rowIndex][3];
+	    }
+	    else if(dmrsTypeAPos == 3)
+	    {
+	       pdschTimeAlloc->startSymb = tda_DefaultA_ExtCP_dmrsTypeApos3[rowIndex][2]; 
+	       pdschTimeAlloc->numSymb = tda_DefaultA_ExtCP_dmrsTypeApos3[rowIndex][3];
+	    }
+	    else
+	    {
+	       DU_LOG("\nERROR  --> SCH_UTILS: getTdaInfo: Incorrect dmrsTypeAPos:%d",dmrsTypeAPos);
+	       return RFAILED;
+	    }
+	 }
+	 else
+	 {
+	    DU_LOG("\nERROR  --> SCH: getTdaInfo: Invalid CyclicPrefix:%d",cyclicPrefix);
+	    return RFAILED;
+	 }
+         break;
+      }
+      case 1:/*Default-B*/
+      {
+	    if(dmrsTypeAPos == 2)
+	    {
+	       pdschTimeAlloc->startSymb = tda_DefaultB_dmrsTypeApos2[rowIndex][2]; 
+	       pdschTimeAlloc->numSymb = tda_DefaultB_dmrsTypeApos2[rowIndex][3];
+	    }
+	    else if(dmrsTypeAPos == 3)
+	    {
+	       pdschTimeAlloc->startSymb = tda_DefaultB_dmrsTypeApos3[rowIndex][2]; 
+	       pdschTimeAlloc->numSymb = tda_DefaultB_dmrsTypeApos3[rowIndex][3];
+	    
+	    }
+	    else
+	    {
+	       DU_LOG("\nERROR  --> SCH_UTILS: getTdaInfo: Incorrect dmrsTypeAPos:%d",dmrsTypeAPos);
+	       return RFAILED;
+	    }
+         break;
+      }
+      case 2:/*Default-C*/
+      {
+	    if(dmrsTypeAPos == 2)
+	    {
+	       pdschTimeAlloc->startSymb = tda_DefaultC_dmrsTypeApos2[rowIndex][2]; 
+	       pdschTimeAlloc->numSymb = tda_DefaultC_dmrsTypeApos2[rowIndex][3];
+	    }
+	    else if(dmrsTypeAPos == 3)
+	    {
+	       pdschTimeAlloc->startSymb = tda_DefaultC_dmrsTypeApos3[rowIndex][2]; 
+	       pdschTimeAlloc->numSymb = tda_DefaultC_dmrsTypeApos3[rowIndex][3];
+	    
+	    }
+	    else
+	    {
+	       DU_LOG("\nERROR  --> SCH_UTILS: getTdaInfo: Incorrect dmrsTypeAPos:%d",dmrsTypeAPos);
+	       return RFAILED;
+	    }
+         break;
+      }
+      default:
+      {
+         DU_LOG("\nERROR  --> SCH_UTILS: getTdaInfo: Invalid dmrsTypeAPos:%d",dmrsTypeAPos);
+	 return RFAILED;
+      }
+   }
+   return ROK;
 }
 /**********************************************************************
          End of file
