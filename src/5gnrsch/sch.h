@@ -49,16 +49,16 @@
 #ifdef OAI_TESTING
    #define NUM_PDSCH_SYMBOL 10
 #else
-   #define NUM_PDSCH_SYMBOL 11
+   #define NUM_PDSCH_SYMBOL 13
 #endif
 
 #define PUSCH_START_RB 15
 #define PUCCH_NUM_PRB_FORMAT_0_1_4 1  /* number of PRBs in freq domain, spec 38.213 - 9.2.1 */
 #define SI_RNTI 0xFFFF
 #define P_RNTI  0xFFFE
-#define DMRS_MAP_TYPE_A 1
+#define DMRS_MAP_TYPE_A 0
 #define NUM_DMRS_SYMBOLS 1
-#define DMRS_ADDITIONAL_POS 0
+#define DMRS_ADDITIONAL_POS 2
 #define SCH_DEFAULT_K1 1
 #define SSB_IDX_SUPPORTED 1
 
@@ -867,6 +867,7 @@ uint8_t schCalcAndSendGrpStats(SchStatsGrp *grpInfo);
 uint8_t SchProcStatsDeleteReq(Pst *pst, SchStatsDeleteReq *statsDeleteReq);
 uint8_t SchProcStatsModificationReq(Pst *pst, SchStatsModificationReq *statsModificationReq);
 void deleteStatsGrpInfo(Inst inst, SchStatsGrp *statsGrpInfo);
+uint8_t getTdaInfo(PdschTimeAlloc *pdschTimeAlloc,uint8_t tableType, uint8_t dmrsTypeAPos, uint8_t cyclicPrefix);
 /**********************************************************************
   End of file
  **********************************************************************/

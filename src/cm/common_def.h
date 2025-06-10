@@ -95,7 +95,7 @@
 #define PUCCH_FORMAT_3 3 
 #define PUCCH_FORMAT_4 4
 
-#define DEFAULT_MCS 4
+#define DEFAULT_MCS 9
 
 #define BANDWIDTH_20MHZ 20
 #define BANDWIDTH_100MHZ 100

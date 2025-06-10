@@ -665,29 +665,8 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    slotIndex = (int)((oValue*pow(2, mu)) + floor(ssbIdx*mValue))%numSlots;
    sib1SchCfg->n0 = slotIndex;
 
-#ifndef OAI_TESTING
-   /* fill BWP */
-   switch(bandwidth)
-   {
-      case BANDWIDTH_20MHZ:
-	 {
-            bwp->freqAlloc.numPrb = TOTAL_PRB_20MHZ_MU0;
-	 }
-	 break;
-      case BANDWIDTH_100MHZ:
-	 {
-            bwp->freqAlloc.numPrb = TOTAL_PRB_100MHZ_MU1;
-	 }
-	 break;
-      default:
-	 DU_LOG("\nERROR  -->  SCH : Bandwidth %d not supported", bandwidth);
-
-   }
-   bwp->freqAlloc.startPrb = 0;
-#else
    bwp->freqAlloc.numPrb = numRbs;
    bwp->freqAlloc.startPrb =  ((offsetPointA >> mu) - offset);
-#endif
    bwp->subcarrierSpacing  = mu;         /* 15Khz */
    bwp->cyclicPrefix       = 0;              /* normal */
 
@@ -698,7 +677,7 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    
    /* Fill Bitmap for PRBs in coreset */
 #ifndef OAI_TESTING
-   fillCoresetFeqDomAllocMap(((offsetPointA-offset)/6), (numRbs/6), freqDomainResource);
+   fillCoresetFeqDomAllocMap((((offsetPointA >> mu) - offset)/6), (numRbs/6), freqDomainResource);
 #else
    freqDomainResource[0] = (numRbs < 48) ? 0xf0 : 0xff;
    for(freqIdx = 1; freqIdx < FREQ_DOM_RSRC_SIZE; freqIdx++)
@@ -791,6 +770,7 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    pdsch->dmrs.dlDmrsScramblingId            = pci;
    pdsch->dmrs.scid                          = 0;
    pdsch->dmrs.dmrsPorts                     = 0x0001;
+
    pdsch->dmrs.mappingType                   = DMRS_MAP_TYPE_A; /* Type-A */
    pdsch->dmrs.nrOfDmrsSymbols               = NUM_DMRS_SYMBOLS;
    pdsch->dmrs.dmrsAddPos                    = DMRS_ADDITIONAL_POS;
@@ -798,19 +778,28 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    pdsch->pdschFreqAlloc.resourceAllocType   = 1; /* RAT type-1 RIV format */
    /* the RB numbering starts from coreset0, and PDSCH is always above SSB */
 #ifndef OAI_TESTING
+#ifndef INTEL_XFAPI
    pdsch->pdschFreqAlloc.startPrb  = offsetPointA + SCH_SSB_NUM_PRB;
    pdsch->pdschFreqAlloc.numPrb    = schCalcNumPrb(tbSize, DEFAULT_MCS, NUM_PDSCH_SYMBOL);
 #endif
+#endif
    pdsch->pdschFreqAlloc.vrbPrbMapping       = 0; /* non-interleaved */
-   pdsch->pdschTimeAlloc.rowIndex            = 1;
+   pdsch->pdschTimeAlloc.rowIndex            = 12; /* Index used for 38.214, Table 5.1.2.1.1-2 till Table 5.1.2.1.1-5*/
+   if(getTdaInfo(&pdsch->pdschTimeAlloc, 0, DMRS_ADDITIONAL_POS, bwp->cyclicPrefix) != ROK)
+   {
+      DU_LOG("\nERROR  --> SCH: fillSchSib1Cfg: getTdaInfo for PDSCH failed");
+      return RFAILED;
+   }
    /* This is Intel's requirement. PDSCH should start after PDSCH DRMS symbol */
-   pdsch->pdschTimeAlloc.numSymb   = NUM_PDSCH_SYMBOL;
+   //pdsch->pdschTimeAlloc.numSymb   = NUM_PDSCH_SYMBOL;
+   printf("\n VS: NTUST: numSymb:%d, startSymIdx:%d",pdsch->pdschTimeAlloc.numSymb, pdsch->pdschTimeAlloc.startSymb);
 #ifndef OAI_TESTING
-   pdsch->pdschTimeAlloc.startSymb = 3; /* spec-38.214, Table 5.1.2.1-1 */
+   //pdsch->pdschTimeAlloc.startSymb = 1;
    pdsch->beamPdschInfo.numPrgs              = 1;
    pdsch->beamPdschInfo.prgSize              = 1;
    pdsch->beamPdschInfo.digBfInterfaces      = 0;
 #else
+   pdsch->pdschTimeAlloc.numSymb   = NUM_PDSCH_SYMBOL;
    pdsch->pdschTimeAlloc.startSymb = 2; /* spec-38.214, Table 5.1.2.1-1 */
    pdsch->beamPdschInfo.numPrgs              = 0;
    pdsch->beamPdschInfo.prgSize              = 0;
@@ -1521,7 +1510,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
    }
 
    /* Update bitmap to allocate PRBs */
-   for(symbol=startSymbol; symbol < (startSymbol+symbolLength); symbol++)
+   for(symbol=startSymbol; symbol < symbolLength; symbol++)
    {
       if(fillPrbBitmap(prbAlloc->prbBitMap[symbol], *startPrb, numPrb) != ROK)
       {

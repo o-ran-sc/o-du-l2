@@ -3611,12 +3611,14 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
 
       /* Reversing bits in each DCI field */
 #ifndef OAI_TESTING
+#ifndef INTEL_XFAPI
       freqDomResAssign = reverseBits(freqDomResAssign, freqDomResAssignSize);
       timeDomResAssign = reverseBits(timeDomResAssign, timeDomResAssignSize);
       VRB2PRBMap       = reverseBits(VRB2PRBMap, VRB2PRBMapSize);
       modNCodScheme    = reverseBits(modNCodScheme, modNCodSchemeSize);
       redundancyVer    = reverseBits(redundancyVer, redundancyVerSize);
       sysInfoInd       = reverseBits(sysInfoInd, sysInfoIndSize);
+#endif
 #endif
 
       /* Calulating total number of bytes in buffer */
@@ -3639,7 +3641,11 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
       for(bytePos = 0; bytePos < numBytes; bytePos++)
 	 dlDciPtr[0].payload[bytePos] = 0;
 
+#ifndef INTEL_XFAPI
       bytePos = numBytes - 1;
+#else
+      bytePos = 0;
+#endif
 #ifndef OAI_TESTING
       bitPos = 0;
 #else
@@ -3662,6 +3668,9 @@ void fillSib1DlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *sib1PdcchInfo)
       fillDlDciPayload(dlDciPtr[0].payload, &bytePos, &bitPos,\
 	    reserved, reservedSize);
 
+      printf("\nVS: NTUST: dlDci: [0]:%d, [1]:%d,[2]:%d,[3]:%d,[4]:%d\n",dlDciPtr[0].payload[0],\
+		       dlDciPtr[0].payload[1],dlDciPtr[0].payload[2], dlDciPtr[0].payload[3],\
+		       dlDciPtr[0].payload[4]);
    }
 } /* fillSib1DlDciPdu */
 
@@ -4317,8 +4326,13 @@ uint8_t fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_
       dlTtiReqPdu->pdu.pdcch_pdu.bwpStart =(bwp->freqAlloc.startPrb);
       dlTtiReqPdu->pdu.pdcch_pdu.shiftIndex =  (pdcchInfo->coresetCfg.shiftIndex);
       dlTtiReqPdu->pdu.pdcch_pdu.numDlDci = (pdcchInfo->numDlDci);
+#ifndef INTEL_XFAPI
       convertFreqDomRsrcMapToIAPIFormat(pdcchInfo->coresetCfg.freqDomainResource,\
             dlTtiReqPdu->pdu.pdcch_pdu.freqDomainResource);
+#else
+      memcpy(dlTtiReqPdu->pdu.pdcch_pdu.freqDomainResource, pdcchInfo->coresetCfg.freqDomainResource, \
+		        sizeof(uint8_t)*6);
+#endif
 #endif
       dlTtiReqPdu->pdu.pdcch_pdu.subCarrierSpacing = bwp->subcarrierSpacing; 
       dlTtiReqPdu->pdu.pdcch_pdu.cyclicPrefix = bwp->cyclicPrefix; 
@@ -4345,6 +4359,9 @@ uint8_t fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_
 #endif
    }
 
+    printf("VS: NTUST:  bwpSize:%d,bwpStart: %d,subCSpac:%d,FDRA:[%d,%d,%d,%d,%d,%d]",dlTtiReqPdu->pdu.pdcch_pdu.bwpSize,dlTtiReqPdu->pdu.pdcch_pdu.bwpStart,\
+		   dlTtiReqPdu->pdu.pdcch_pdu.subCarrierSpacing,dlTtiReqPdu->pdu.pdcch_pdu.freqDomainResource[0],\
+		   dlTtiReqPdu->pdu.pdcch_pdu.freqDomainResource[1],dlTtiReqPdu->pdu.pdcch_pdu.freqDomainResource[2],dlTtiReqPdu->pdu.pdcch_pdu.freqDomainResource[3],dlTtiReqPdu->pdu.pdcch_pdu.freqDomainResource[4],dlTtiReqPdu->pdu.pdcch_pdu.freqDomainResource[5]);
    return ROK;
 }
 
@@ -4576,6 +4593,8 @@ void fillPdschPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_pdu
 	      dlTtiVendorPdu->pdu.pdsch_pdu.tx_ru_idx[i] =0;
       }
 #endif
+      printf("\nVS: NTUST:bwpSIze:%d, bwpStart:%d,subCSpac:%d,mcs:%d, TBS Size:%d,NumSymb:%d,RbStart:%d,RbSize:%d,mappingType:%d,dmrsAddPos:%d,startSymIdx:%d",dlTtiReqPdu->pdu.pdsch_pdu.bwpSize, dlTtiReqPdu->pdu.pdsch_pdu.bwpStart,\
+		      dlTtiReqPdu->pdu.pdsch_pdu.subCarrierSpacing,dlTtiReqPdu->pdu.pdsch_pdu.cwInfo[0].mcsIndex,dlTtiReqPdu->pdu.pdsch_pdu.cwInfo[0].tbSize,dlTtiReqPdu->pdu.pdsch_pdu.nrOfSymbols,dlTtiReqPdu->pdu.pdsch_pdu.rbStart,dlTtiReqPdu->pdu.pdsch_pdu.rbSize,dlTtiReqPdu->pdu.pdsch_pdu.mappingType,dlTtiReqPdu->pdu.pdsch_pdu.dmrsAddPos,dlTtiReqPdu->pdu.pdsch_pdu.startSymbIndex );
    }
 }
 
@@ -4737,7 +4756,11 @@ uint8_t fillSib1TxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, MacCel
    payloadElem = (fapi_api_queue_elem_t *)sib1Payload;
    FILL_FAPI_LIST_ELEM(payloadElem, NULLP, FAPI_VENDOR_MSG_PHY_ZBC_BLOCK_REQ, 1, \
       macCellCfg->cellCfg.sib1Cfg.sib1PduLen);
+#ifndef INTEL_XFAPI
    memcpy(sib1Payload + TX_PAYLOAD_HDR_LEN, macCellCfg->cellCfg.sib1Cfg.sib1Pdu, macCellCfg->cellCfg.sib1Cfg.sib1PduLen);
+#else
+   memcpy(sib1Payload, macCellCfg->cellCfg.sib1Cfg.sib1Pdu, macCellCfg->cellCfg.sib1Cfg.sib1PduLen);
+#endif
 
 #ifdef INTEL_WLS_MEM
    mtGetWlsHdl(&wlsHdlr);
