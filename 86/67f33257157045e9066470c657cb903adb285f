@@ -1,0 +1,9 @@
+Verified+1: ORAN Jobbuilder <releng+oran-jobbuilder@linuxfoundation.org>
+Code-Review+2: Ankit Barve <anbarve@radisys.com>
+Verified+1: ORAN Required GHA <releng+oran.required.gha@linuxfoundation.org>
+Verified+1: Ankit Barve <anbarve@radisys.com>
+Submitted-by: Sangeeta Vaidhyanathan <svaidhya@radisys.com>
+Submitted-at: Tue, 10 Jun 2025 06:12:37 +0000
+Reviewed-on: https://gerrit.o-ran-sc.org/r/c/o-du/l2/+/14547
+Project: o-du/l2
+Branch: refs/heads/master
