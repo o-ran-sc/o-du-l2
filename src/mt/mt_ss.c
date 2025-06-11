@@ -952,7 +952,7 @@ static int SOpenWlsIntf()
 #else
 
 #ifdef INTEL_L1_V20_03_ONWARDS
-   hdl = WLS_Open(WLS_DEVICE_NAME, WLS_MASTER_CLIENT, &nWlsMacMemorySize, &nWlsPhyMemorySize);
+   hdl = WLS_Open(WLS_DEVICE_NAME, WLS_MASTER_CLIENT, &nWlsMacMemorySize, &nWlsPhyMemorySize, 0);
    if(hdl == NULL)
    {
       printf("\nERROR: WLS_Open > DEVICE_NAME mismatch. WLS Device Name should be same as 'wls_dev_name' parameter in 'phycfg_xran.xml' file");
