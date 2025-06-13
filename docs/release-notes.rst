@@ -5,7 +5,7 @@
 Release-Notes
 **************
 
-This document provides the release notes for K Release of O-DU-L2.
+This document provides the release notes for L Release of O-DU-L2.
 
 .. contents::
    :depth: 3
@@ -17,6 +17,9 @@ Version history
 
 +--------------------+--------------------+--------------------+--------------------+
 | **Date**           | **Ver.**           | **Author**         | **Comment**        |
+|                    |                    |                    |                    |
++--------------------+--------------------+--------------------+--------------------+
+| 2025-06-25         | 12.0.0             | Radisys            | L release          |
 |                    |                    |                    |                    |
 +--------------------+--------------------+--------------------+--------------------+
 | 2024-12-10         | 11.0.0             | Radisys            | K release          |
@@ -61,6 +64,24 @@ Version history
 
 Summary
 -------
+
+L- release
+^^^^^^^^^^
+This release contains the following:
+
+ - Adapting to New ASN.1 encoder decoder
+
+        - Generated new codec_utils with new ASN.1 encoder and decoder using https://github.com/mouse07410/asn1c tool.
+
+ - End-to-end integration support
+
+        - WLS memory management update aligned with latest odu-low-k-releasev1.0 (FlexRAN 23.07 intel L1)
+
+ - Introduction of new L1 interaction with ODU-High.
+      
+        - OAI L1 communication with ODU-High is now active.
+
+        - OAI-CU can also be executed with ODU-High.
 
 K- release
 ^^^^^^^^^^
@@ -262,6 +283,25 @@ This release contains the following:
 
 Release Data
 ------------
+L release
+^^^^^^^^^^
++--------------------------------------+------------------------------------------+
+| **Project**                          | ODUHIGH                                  |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+| **Repo/commit-ID**                   | o-du/l2/                                 |
+|                                      | I8437a83b5c5dcdd7ff96ef5ebbb85f650db63cde|
++--------------------------------------+------------------------------------------+
+| **Release designation**              | L release                                |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+| **Release date**                     | 2025-06-25                               |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+| **Purpose of the delivery**          | L release                                |
+|                                      |                                          |   
++--------------------------------------+------------------------------------------+
+
 K release
 ^^^^^^^^^^
 +--------------------------------------+------------------------------------------+
@@ -487,6 +527,23 @@ Feature Additions
 ------------------
 
 **JIRA BACK-LOG:**
+
+L-release
+^^^^^^^^^^
+
++-------------------------------------------------------+-----------------------------------------------+
+| **JIRA REFERENCE**                                    | **SLOGAN**                                    |
+|                                                       |                                               |
++-------------------------------------------------------+-----------------------------------------------+
+| https://lf-o-ran-sc.atlassian.net/browse/ODUHIGH-636  | ASN1c update                                  |
+|                                                       |                                               |
++-------------------------------------------------------+-----------------------------------------------+
+| https://lf-o-ran-sc.atlassian.net/browse/ODUHIGH-641  | Master Branch Updation from OAI Branch        |
+|                                                       |                                               |
++-------------------------------------------------------+-----------------------------------------------+
+| https://lf-o-ran-sc.atlassian.net/browse/ODUHIGH-475  | Integration of ODU-High with intel L1         |
+|                                                       |                                               |
++-------------------------------------------------------+-----------------------------------------------+
 
 K-release
 ^^^^^^^^^^
@@ -884,6 +941,8 @@ Known Issues
 - Only mapping type = 1 (i.e. Type A) supported for PDSCH.
 
 - L1 unable to process SIB1 with hardware accelerator enabled.
+
+- ODU-High with OAI-L1 works till MSG2. There are few known issues to be resolved after ODU-High sends MSG2 to OAI-L1. 
 
 **JIRA TICKETS:**
 
