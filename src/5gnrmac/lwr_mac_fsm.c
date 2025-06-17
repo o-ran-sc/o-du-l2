@@ -3925,12 +3925,14 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
       tbScaling        = 0; /* configured to 0 scaling */
       reserved         = 0;
 
+#ifndef OAI_TESTING
       /* Reversing bits in each DCI field */
       freqDomResAssign = reverseBits(freqDomResAssign, freqDomResAssignSize);
       timeDomResAssign = reverseBits(timeDomResAssign, timeDomResAssignSize);
       VRB2PRBMap       = reverseBits(VRB2PRBMap, VRB2PRBMapSize);
       modNCodScheme    = reverseBits(modNCodScheme, modNCodSchemeSize);
       tbScaling        = reverseBits(tbScaling, tbScalingSize); 
+#endif
 
       /* Calulating total number of bytes in buffer */
       dlDciPtr[0].payloadSizeBits = freqDomResAssignSize + timeDomResAssignSize\
@@ -3947,7 +3949,7 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
       }
 
 #ifdef OAI_TESTING 
-      dlDciPtr[0].payloadSizeBits = reverseBytes16(39);
+      dlDciPtr[0].payloadSizeBits = reverseBytes16(dlDciPtr[0].payloadSizeBits);
 #endif
       /* Initialize buffer */
       for(bytePos = 0; bytePos < numBytes; bytePos++)
@@ -3969,7 +3971,6 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
 	    tbScaling, tbScalingSize);
       fillDlDciPayload(dlDciPtr[0].payload, &bytePos, &bitPos,\
 	    reserved, reservedSize);
-      dlDciPtr[0].payload[4] = 0x15;
 
    }
 } /* fillRarDlDciPdu */

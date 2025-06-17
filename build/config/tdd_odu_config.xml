@@ -466,7 +466,7 @@
             <PDCCH_CFG_COMMON>
                <SEARCH_SPACE_CFG>
                   <SEARCHSPACE_1_INDEX>1</SEARCHSPACE_1_INDEX>
-                  <CORESET_0_INDEX>0</CORESET_0_INDEX>
+                  <CORESET_0_INDEX>12</CORESET_0_INDEX>
                   <SS_MONITORING_SLOT_SL1>0</SS_MONITORING_SLOT_SL1>
                   <DURATION>0</DURATION>
                   <SS_MONITORING_SYMBOL>8192</SS_MONITORING_SYMBOL>
