@@ -56,6 +56,7 @@
 #define E_BIT_SIZE 1
 #define T_BIT_SIZE 1
 #define R_BIT_SIZE 1
+#define BI_BIT_SIZE 4
 #define RAPID_SIZE 6
 #define LC_ID_SIZE 6
 #define TIMING_ADVANCE_SIZE 12

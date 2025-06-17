@@ -1940,7 +1940,7 @@ Data  **ptr          /* Reference to pointer for which need to be allocate */
 #endif
      if (idx > 512)
      {
-         DU_LOG("\nERROR  --> CM: cmDynAlloc(): idx value is greater than 512");
+         DU_LOG("\nERROR  --> CM: cmDynAlloc(): idx:%d,size:%d, regCb->bktQnPwr:%d value is greater than 512",idx, *size, regCb->bktQnPwr);
          return RFAILED;
      }
       /* Dequeue the memory block and return it to the user */

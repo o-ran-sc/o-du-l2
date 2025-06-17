@@ -118,6 +118,10 @@ uint8_t createMacRaCb(MacCellCb *cellCb, RachIndInfo *rachIndInfo)
          return RFAILED;
       }
 
+      if(ueIdx >= MAX_NUM_UE)
+      {
+         ueIdx = 1;
+      }
       /* Calculate CRNTI from UE Index */
       GET_CRNTI(crnti, ueIdx+1);
 

@@ -913,6 +913,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    uint8_t  dmrsStartSymbol, startSymbol, numSymbol ;
    uint16_t numRbs = 0;
    uint16_t tbSize = 0;
+   uint16_t offsetToPointA = 0;
    uint8_t freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
    PdschCfg *pdsch;
 
@@ -923,6 +924,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
       DU_LOG("\nERROR  --> SCH : Memory allocation failed in %s",__func__);
       return RFAILED;
    }
+   offsetToPointA = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA;
    PdcchCfg *pdcch = rarAlloc->rarPdcchCfg;
    BwpCfg *bwp = &rarAlloc->bwp;
 
@@ -948,8 +950,8 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    bwp->freqAlloc.startPrb = initialBwp->bwp.freqAlloc.startPrb;
    pdcch->coresetCfg.durationSymbols = numSymbols;
 #else
-   bwp->freqAlloc.numPrb   = 48;
-   bwp->freqAlloc.startPrb = 110;
+   bwp->freqAlloc.numPrb   = numRbs;
+   bwp->freqAlloc.startPrb = ((offsetToPointA >> initialBwp->bwp.scs) - coresetIdxTable[coreset0Idx][3]);
    pdcch->coresetCfg.durationSymbols = 1;
 #endif
    bwp->subcarrierSpacing  = initialBwp->bwp.scs;
@@ -995,17 +997,14 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdsch->numCodewords = 1;
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
    {
-      pdsch->codeword[cwCount].targetCodeRate = 1200;
+      pdsch->codeword[cwCount].targetCodeRate = 1570;
       pdsch->codeword[cwCount].qamModOrder = 2;
-      pdsch->codeword[cwCount].mcsIndex = 0; /* mcs configured to 4 */
+      pdsch->codeword[cwCount].mcsIndex = 1; /* mcs configured to 4 */
       pdsch->codeword[cwCount].mcsTable = 0;   /* notqam256 */
       pdsch->codeword[cwCount].rvIndex = 0;
       /* RAR PDU length and FAPI payload header length */
       tbSize = schCalcTbSize(RAR_PAYLOAD_SIZE + TX_PAYLOAD_HDR_LEN);
       pdsch->codeword[cwCount].tbSize = tbSize;
-#ifdef OAI_TESTING
-      pdsch->codeword[cwCount].tbSize = 28;
-#endif
    }
    pdsch->dataScramblingId = cell->cellCfg.phyCellId;
    pdsch->numLayers = 1;
@@ -1030,14 +1029,10 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
 
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
-   pdsch->pdschFreqAlloc.startPrb = MAX_NUM_RB;
+   pdsch->pdschFreqAlloc.startPrb = 0;
    pdsch->pdschFreqAlloc.numPrb = \
       schCalcNumPrb(tbSize, mcs, initialBwp->pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol);
 
-#ifdef OAI_TESTING
-   pdsch->pdschFreqAlloc.startPrb = 0;
-   pdsch->pdschFreqAlloc.numPrb = 8;
-#endif
    /* Find total symbols occupied including DMRS */
    dmrsStartSymbol = findDmrsStartSymbol(pdsch->dmrs.dlDmrsSymbPos);
    /* If there are no DRMS symbols, findDmrsStartSymbol() returns MAX_SYMB_PER_SLOT, 
@@ -1065,7 +1060,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
 
    pdsch->beamPdschInfo.numPrgs = 0;
    pdsch->beamPdschInfo.prgSize = 0;
-   pdsch->beamPdschInfo.digBfInterfaces = 0;
+   pdsch->beamPdschInfo.digBfInterfaces = 1;
    pdsch->beamPdschInfo.prg[0].pmIdx = 0;
    pdsch->beamPdschInfo.prg[0].beamIdx[0] = 0;
    pdsch->txPdschPower.powerControlOffset = 0;

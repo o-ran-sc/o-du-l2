@@ -44,12 +44,13 @@
  * ****************************************************************/
 void packBytes(uint8_t *buf, uint16_t *bytePos, uint8_t *bitPos, uint32_t val, uint8_t valSize)
 {
-   uint32_t  temp;
    uint8_t   bytePart1;
    uint32_t  bytePart2;
    uint8_t   bytePart1Size;
    uint32_t  bytePart2Size;
 
+#ifndef OAI_TESTING
+   uint32_t  temp;
    if(*bitPos - valSize + 1 >= 0)
    {
       bytePart1 = (uint8_t)val;
@@ -77,6 +78,28 @@ void packBytes(uint8_t *buf, uint16_t *bytePos, uint8_t *bitPos, uint32_t val, u
       *bitPos = 7;
       packBytes(buf, bytePos, bitPos, bytePart2, bytePart2Size);
    }  
+#else
+   if(*bitPos + valSize <= 8)
+   {
+      bytePart1 = (uint8_t)val;
+      bytePart1 = ((~((~0) << valSize)) & bytePart1)<< (8 - (*bitPos + valSize));
+      buf[*bytePos] |= bytePart1;
+      *bitPos += valSize;
+   }
+   else if(*bitPos + valSize > 8)
+   {
+      bytePart1Size = 8 - *bitPos;
+      bytePart2Size = valSize - bytePart1Size;
+
+      bytePart1 = val >> bytePart2Size;
+
+      buf[*bytePos] |= bytePart1;
+      (*bytePos)++;
+      *bitPos = 0;
+      packBytes(buf, bytePos, bitPos, val, bytePart2Size);
+   }
+   
+#endif
 }
 
 /*******************************************************************
@@ -110,6 +133,9 @@ void fillRarPdu(RarInfo *rarInfo)
    uint8_t   RBit = 0;
    uint16_t  msg3FreqResource = 0;
    uint8_t   paddingLcid = 63;
+#ifdef OAI_TESTING
+   uint16_t  BIBit = 0;
+#endif
 
    /* Considering 2 bytes of padding in RAR PDU. 
     * 1st byte is MAC sub-header for padding
@@ -117,10 +143,6 @@ void fillRarPdu(RarInfo *rarInfo)
     */
    uint8_t   paddingSize = 8;
 
-   /* Fill RAR pdu fields */
-   EBit = 0;
-   TBit = 1;
-   RBit = 0;
 
    rarInfo->rarPduLen = RAR_PAYLOAD_SIZE;
 
@@ -129,7 +151,29 @@ void fillRarPdu(RarInfo *rarInfo)
       rarPdu[bytePos] = 0;
 
    bytePos = 0;
+#ifdef OAI_TESTING
+   bitPos = 0;
+#else
    bitPos = 7;
+#endif
+
+#ifdef OAI_TESTING
+   EBit = 1;
+   TBit = 0;
+   RBit = 0;
+   BIBit = 0;
+
+   packBytes(rarPdu, &bytePos, &bitPos, EBit, E_BIT_SIZE); 
+   packBytes(rarPdu, &bytePos, &bitPos, TBit, T_BIT_SIZE);
+   packBytes(rarPdu, &bytePos, &bitPos, RBit, R_BIT_SIZE);
+   packBytes(rarPdu, &bytePos, &bitPos, RBit, R_BIT_SIZE);
+   packBytes(rarPdu, &bytePos, &bitPos, BIBit, BI_BIT_SIZE);
+#endif
+
+   /* Fill RAR pdu fields */
+   EBit = 0;
+   TBit = 1;
+   RBit = 0;
 
    /* Packing fields into RAR PDU */
    packBytes(rarPdu, &bytePos, &bitPos, EBit, E_BIT_SIZE); 
@@ -202,9 +246,15 @@ void fillRarPdu(RarInfo *rarInfo)
    packBytes(rarPdu, &bytePos, &bitPos, rarInfo->tcrnti, T_CRNTI_SIZE);
 
    /* padding of 2 bytes */
+#ifndef OAI_TESTING
    packBytes(rarPdu, &bytePos, &bitPos, RBit, R_BIT_SIZE*2);
    packBytes(rarPdu, &bytePos, &bitPos, paddingLcid, LC_ID_SIZE);
    packBytes(rarPdu, &bytePos, &bitPos, 0, paddingSize);
+#endif
+
+   printf("\n SANG: RAR PDU\n");
+   for(bytePos = 0; bytePos < rarInfo->rarPduLen; bytePos++)
+      printf("[%d]:0x%x\n",bytePos, rarPdu[bytePos]);
 
 }
 

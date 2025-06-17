@@ -3925,12 +3925,14 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
       tbScaling        = 0; /* configured to 0 scaling */
       reserved         = 0;
 
+#ifndef OAI_TESTING
       /* Reversing bits in each DCI field */
       freqDomResAssign = reverseBits(freqDomResAssign, freqDomResAssignSize);
       timeDomResAssign = reverseBits(timeDomResAssign, timeDomResAssignSize);
       VRB2PRBMap       = reverseBits(VRB2PRBMap, VRB2PRBMapSize);
       modNCodScheme    = reverseBits(modNCodScheme, modNCodSchemeSize);
       tbScaling        = reverseBits(tbScaling, tbScalingSize); 
+#endif
 
       /* Calulating total number of bytes in buffer */
       dlDciPtr[0].payloadSizeBits = freqDomResAssignSize + timeDomResAssignSize\
@@ -3947,14 +3949,18 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
       }
 
 #ifdef OAI_TESTING 
-      dlDciPtr[0].payloadSizeBits = reverseBytes16(39);
+      dlDciPtr[0].payloadSizeBits = reverseBytes16(dlDciPtr[0].payloadSizeBits);
 #endif
       /* Initialize buffer */
       for(bytePos = 0; bytePos < numBytes; bytePos++)
 	 dlDciPtr[0].payload[bytePos] = 0;
 
       bytePos = numBytes - 1;
+#ifndef OAI_TESTING
       bitPos = 0;
+#else
+      bitPos = 1;
+#endif
 
       /* Packing DCI format fields */
       fillDlDciPayload(dlDciPtr[0].payload, &bytePos, &bitPos,\
@@ -3969,7 +3975,6 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
 	    tbScaling, tbScalingSize);
       fillDlDciPayload(dlDciPtr[0].payload, &bytePos, &bitPos,\
 	    reserved, reservedSize);
-      dlDciPtr[0].payload[4] = 0x15;
 
    }
 } /* fillRarDlDciPdu */
@@ -4916,6 +4921,11 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
    pduDesc[pduIndex].tlvs[0].length = reverseBytes32(rarInfo->rarPduLen);
 
    memcpy(pduDesc[pduIndex].tlvs[0].value.direct, rarInfo->rarPdu, rarInfo->rarPduLen);
+
+   for(uint8_t bytePos = 0; bytePos < rarInfo->rarPduLen; bytePos++)
+   {
+      printf("[%d]:0x%x\n",bytePos, pduDesc[pduIndex].tlvs[0].value.direct[bytePos]);
+   }
 
 #endif /* FAPI */
    return ROK;
@@ -5936,10 +5946,10 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       ulTtiReqPdu->pdu.pusch_pdu.bwpStart = reverseBytes16(macCellCfg->cellCfg.initialUlBwp.bwp.firstPrb);
       ulTtiReqPdu->pdu.pusch_pdu.targetCodeRate = reverseBytes16(308);
       ulTtiReqPdu->pdu.pusch_pdu.dataScramblingId = reverseBytes16(macCellCfg->cellId);
-      ulTtiReqPdu->pdu.pusch_pdu.ulDmrsSymbPos = reverseBytes16(4);
+      ulTtiReqPdu->pdu.pusch_pdu.ulDmrsSymbPos = reverseBytes16(1024);
       ulTtiReqPdu->pdu.pusch_pdu.ulDmrsScramblingId = reverseBytes16(macCellCfg->cellId);
       ulTtiReqPdu->pdu.pusch_pdu.puschIdentity = reverseBytes16(0);
-      ulTtiReqPdu->pdu.pusch_pdu.dmrsPorts = reverseBytes16(0);
+      ulTtiReqPdu->pdu.pusch_pdu.dmrsPorts = reverseBytes16(1);
       ulTtiReqPdu->pdu.pusch_pdu.rbStart = reverseBytes16(puschInfo->fdAlloc.resAlloc.type1.startPrb);
       ulTtiReqPdu->pdu.pusch_pdu.rbSize = reverseBytes16(puschInfo->fdAlloc.resAlloc.type1.numPrb);
       ulTtiReqPdu->pdu.pusch_pdu.txDirectCurrentLocation = reverseBytes16(0);
@@ -5973,7 +5983,7 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       ulTtiReqPdu->pdu.pusch_pdu.nrOfLayers = 1;
       ulTtiReqPdu->pdu.pusch_pdu.dmrsConfigType = 0;
       ulTtiReqPdu->pdu.pusch_pdu.scid = 0;
-      ulTtiReqPdu->pdu.pusch_pdu.numDmrsCdmGrpsNoData = 1;
+      ulTtiReqPdu->pdu.pusch_pdu.numDmrsCdmGrpsNoData = 2;
       ulTtiReqPdu->pdu.pusch_pdu.resourceAlloc = \
 	 puschInfo->fdAlloc.resAllocType;
       ulTtiReqPdu->pdu.pusch_pdu.vrbToPrbMapping = 0;
@@ -6008,6 +6018,7 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
          puschInfo->dmrsAddPos;
 #endif
       /* UL TTI Vendor PDU */
+#ifndef OAI_TESTING
       ulTtiVendorPdu->pdu_type = FAPI_PUSCH_PDU_TYPE;
       ulTtiVendorPdu->pdu.pusch_pdu.nr_of_antenna_ports=1;
       ulTtiVendorPdu->pdu.pusch_pdu.nr_of_rx_ru=1;
@@ -6015,6 +6026,7 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       {
 	      ulTtiVendorPdu->pdu.pusch_pdu.rx_ru_idx[i]=0;
       }
+#endif
 #endif
    }
 }
@@ -6065,7 +6077,7 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       ulTtiReqPdu->pduSize                    = sizeof(fapi_ul_pucch_pdu_t);
       ulTtiReqPdu->pdu.pucch_pdu.rnti         = pucchInfo->crnti;
       /* TODO : Fill handle in raCb when scheduling pucch and access here */
-      ulTtiReqPdu->pdu.pucch_pdu.handle       = reverseBytes32(100;
+      ulTtiReqPdu->pdu.pucch_pdu.handle       = 100;
       ulTtiReqPdu->pdu.pucch_pdu.bwpSize      = macCellCfg->cellCfg.initialUlBwp.bwp.numPrb;
       ulTtiReqPdu->pdu.pucch_pdu.bwpStart     = macCellCfg->cellCfg.initialUlBwp.bwp.firstPrb;
       ulTtiReqPdu->pdu.pucch_pdu.prbStart     = pucchInfo->fdAlloc.startPrb;
@@ -6103,6 +6115,7 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
 
 
       /* UL TTI Vendor PDU */
+#ifndef OAI_TESTING
       ulTtiVendorPdu->pdu_type = FAPI_PUCCH_PDU_TYPE;
       ulTtiVendorPdu->pdu.pucch_pdu.nr_of_rx_ru=1;
       ulTtiVendorPdu->pdu.pucch_pdu.group_id=0;
@@ -6110,6 +6123,7 @@ void fillPucchPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       {
 	      ulTtiVendorPdu->pdu.pucch_pdu.rx_ru_idx[i]=0;
       }
+#endif
    }
 }
 
@@ -6331,8 +6345,6 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
                   }
                }
             }
-            ulTtiReq->ueGrpInfo[ulTtiReq->nGroup].nUe = MAX_NUM_UE_PER_TTI;
-            ulTtiReq->nGroup++;
          }
 	 uint32_t  bufferLen=0;
 	 uint8_t mBuf[2500];
