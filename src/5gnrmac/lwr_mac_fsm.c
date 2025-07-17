@@ -2180,11 +2180,11 @@ void packDlTtiReq(fapi_dl_tti_req_t *dlTtiReq,uint8_t *out , uint32_t *len)
 					}
 					fapi_precoding_bmform_t *preCodingAndBeamforming= &dlTtiReq->pdus[pduIdx].pdu.pdsch_pdu.preCodingAndBeamforming;
 
-					CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(preCodingAndBeamforming->numPrgs), &mBuf, &totalLen);
-					CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(preCodingAndBeamforming->prgSize), &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->numPrgs, &mBuf, &totalLen);
+					CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->prgSize, &mBuf, &totalLen);
 					CMCHKPKLEN(oduPackPostUInt8, preCodingAndBeamforming->digBfInterfaces, &mBuf, &totalLen);
 
-					for(uint16_t prgIdx = 0; prgIdx < (preCodingAndBeamforming->numPrgs); prgIdx++)
+					for(uint16_t prgIdx = 0; prgIdx < reverseBytes16(preCodingAndBeamforming->numPrgs); prgIdx++)
 					{
 						CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->pmi_bfi[prgIdx].pmIdx, &mBuf, &totalLen);
 						for(uint8_t digBfIdx = 0; digBfIdx < (preCodingAndBeamforming->digBfInterfaces); digBfIdx++)
@@ -2740,7 +2740,7 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
    DU_LOG("\nINFO   --> LWR_MAC: CONFIG_REQ: numberofTDDSlot in MAX_PERIOICITY(10ms) = %d", numSlotsInMaxPeriodicity);
    DU_LOG("\nINFO   --> LWR_MAC: CONFIG_REQ: numberofTDDSlot in CURRENT PERIOICITY(enumVal = %d) = %d\n", macCfgParams.tddCfg.tddPeriod, numSlotsInCurrPeriodicity);
    //configReq->number_of_tlvs = 25 + 1 + MAX_TDD_PERIODICITY_SLOTS * MAX_SYMB_PER_SLOT;
-   totalTlv = 26 + 1+ numSlotsInMaxPeriodicity * MAX_SYMB_PER_SLOT;
+   totalTlv = 26 + 2+ numSlotsInMaxPeriodicity * MAX_SYMB_PER_SLOT;
 #endif
    /* totalCfgReqMsgLen = size of config req's msg header + size of tlv supporting + size of tlv supporting *sizeof(fapi_uint32_tlv_t)   */
    totalCfgReqMsgLen += sizeof(configReq->header) + sizeof( configReq->number_of_tlvs) + totalTlv*sizeof(fapi_uint32_tlv_t);
