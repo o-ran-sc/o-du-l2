@@ -422,7 +422,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
 {
    SchCellCb      *cell          = NULLP;
    SchUlSlotInfo  *schUlSlotInfo = NULLP;
-   uint8_t    mcs       = DEFAULT_MCS;
+   uint8_t    mcs       = 1;
    uint8_t    startSymb = 0, ueId = 0;
    uint8_t    symbLen   = 0; 
    uint16_t   startRb   = 0;
@@ -992,7 +992,8 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    /* fill the PDSCH PDU */
    uint8_t cwCount = 0;
    pdsch->pduBitmap = 0; /* PTRS and CBG params are excluded */
-   pdsch->rnti = cell->raReq[ueId-1]->raRnti; /* RA-RNTI */
+   //pdsch->rnti = cell->raReq[ueId-1]->raRnti; /* RA-RNTI */
+   pdsch->rnti = 267; /* RA-RNTI */
    pdsch->pduIndex = 0;
    pdsch->numCodewords = 1;
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
@@ -1004,7 +1005,8 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
       pdsch->codeword[cwCount].rvIndex = 0;
       /* RAR PDU length and FAPI payload header length */
       tbSize = schCalcTbSize(RAR_PAYLOAD_SIZE + TX_PAYLOAD_HDR_LEN);
-      pdsch->codeword[cwCount].tbSize = tbSize;
+      pdsch->codeword[cwCount].tbSize = tbSize + 1;
+      pdsch->codeword[cwCount].tbSize = 9;
    }
    pdsch->dataScramblingId = cell->cellCfg.phyCellId;
    pdsch->numLayers = 1;
@@ -1049,6 +1051,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
       numSymbol = pdsch->dmrs.nrOfDmrsSymbols + pdsch->pdschTimeAlloc.numSymb;
    }
 
+   pdsch->pdschTimeAlloc.numSymb = 13;
    /* Allocate the number of PRBs required for RAR PDSCH */
    if((allocatePrbDl(cell, rarTime, startSymbol, numSymbol,\
       &pdsch->pdschFreqAlloc.startPrb, pdsch->pdschFreqAlloc.numPrb)) != ROK)
@@ -1058,8 +1061,8 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
       return RFAILED;
    }
 
-   pdsch->beamPdschInfo.numPrgs = 0;
-   pdsch->beamPdschInfo.prgSize = 0;
+   pdsch->beamPdschInfo.numPrgs = 1;
+   pdsch->beamPdschInfo.prgSize = 275;
    pdsch->beamPdschInfo.digBfInterfaces = 1;
    pdsch->beamPdschInfo.prg[0].pmIdx = 0;
    pdsch->beamPdschInfo.prg[0].beamIdx[0] = 0;

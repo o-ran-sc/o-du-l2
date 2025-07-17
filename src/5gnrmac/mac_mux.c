@@ -243,6 +243,8 @@ void fillRarPdu(RarInfo *rarInfo)
    packBytes(rarPdu, &bytePos, &bitPos, rarInfo->ulGrant.tpc, TPC_COMMAND_SIZE);
    packBytes(rarPdu, &bytePos, &bitPos, rarInfo->ulGrant.csiReq, CSI_REQUEST_SIZE);
 
+   bytePos = 7;
+   bitPos = 0;
    packBytes(rarPdu, &bytePos, &bitPos, rarInfo->tcrnti, T_CRNTI_SIZE);
 
    /* padding of 2 bytes */
@@ -252,6 +254,15 @@ void fillRarPdu(RarInfo *rarInfo)
    packBytes(rarPdu, &bytePos, &bitPos, 0, paddingSize);
 #endif
 
+   rarPdu[1] = 0x4e;
+   rarPdu[2] = 0x00;
+   rarPdu[3] = 0x00;
+   rarPdu[4] = 0x77;
+   rarPdu[5] = 0x72;
+   rarPdu[6] = 0x16;
+   rarPdu[7]= 0xad;
+   //rarPdu[7]= 0x2c;
+   rarPdu[8]= 0x5a;
    printf("\n SANG: RAR PDU\n");
    for(bytePos = 0; bytePos < rarInfo->rarPduLen; bytePos++)
       printf("[%d]:0x%x\n",bytePos, rarPdu[bytePos]);

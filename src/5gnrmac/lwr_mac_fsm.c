@@ -2420,6 +2420,7 @@ void packUlTtiReq(fapi_ul_tti_req_t *ulTtiReq,uint8_t *out, uint32_t *len)
 					CMCHKPKLEN(oduPackPostUInt8, ulBmform->trp_scheme, &mBuf, &totalLen);
 					CMCHKPKLEN(oduPackPostUInt16, ulBmform->numPrgs, &mBuf, &totalLen);
 					CMCHKPKLEN(oduPackPostUInt16, ulBmform->prgSize, &mBuf, &totalLen);
+					ulBmform->digBfInterface = 1;
 					CMCHKPKLEN(oduPackPostUInt8, ulBmform->digBfInterface, &mBuf, &totalLen);
 
 					for(uint8_t prgIdx = 0; prgIdx < reverseBytes16(ulBmform->numPrgs); prgIdx++)
@@ -2607,7 +2608,7 @@ void packConfigReq(fapi_config_req_t *configReq,  uint8_t *mBuf, uint32_t *len)
     CMCHKPKLEN(oduPackPostUInt32, configReq->header.length, &out, &msgLen);
 
     totalTlv = configReq->number_of_tlvs;
-    uint8_t randmTlvCnt=  25; //This value is randomly assigned
+    uint8_t randmTlvCnt=  131; //This value is randomly assigned
     CMCHKPKLEN(oduPackPostUInt8, randmTlvCnt, &out, &msgLen);
 
     for(uint16_t idx=0;idx<totalTlv;idx++)
@@ -2786,6 +2787,7 @@ uint8_t buildAndSendOAIConfigReqToL1(void *msg)
          sizeof(uint8_t), macCfgParams.cellCfg.dupType << TLV_ALIGN(8), &msgLen);
 
    /* fill SSB configuration */
+   macCfgParams.ssbCfg.ssbPbchPwr = 4294967271;
    fillTlvs(&configReq->tlvs[index++], FAPI_SS_PBCH_POWER_TAG,             \
          sizeof(uint32_t), macCfgParams.ssbCfg.ssbPbchPwr << TLV_ALIGN(32), &msgLen);
    fillTlvs(&configReq->tlvs[index++], FAPI_BCH_PAYLOAD_TAG,               \
@@ -3873,7 +3875,8 @@ void fillRarDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *rarPdcchInfo)
       uint8_t reservedSize         = 16;
       
 #ifdef OAI_TESTING 
-      dlDciPtr[0].rnti = reverseBytes16(rarPdcchInfo->dci[0].rnti);
+//      dlDciPtr[0].rnti = reverseBytes16(rarPdcchInfo->dci[0].rnti);
+      dlDciPtr[0].rnti = reverseBytes16(267);
       dlDciPtr[0].scramblingId = reverseBytes16(rarPdcchInfo->dci[0].scramblingId);    
       dlDciPtr[0].scramblingRnti = reverseBytes16(rarPdcchInfo->dci[0].scramblingRnti);
       dlDciPtr[0].pc_and_bform.numPrgs = reverseBytes16(rarPdcchInfo->dci[0].beamPdcchInfo.numPrgs);
@@ -4289,7 +4292,9 @@ uint8_t fillPdcchPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_
 
       /* Calculating PDU length. Considering only one dl dci pdu for now */
 #ifdef OAI_TESTING 
-      dlTtiReqPdu->pduSize = reverseBytes16(sizeof(fapi_dl_pdcch_pdu_t));
+      //dlTtiReqPdu->pduSize = reverseBytes16(sizeof(fapi_dl_pdcch_pdu_t));
+      dlTtiReqPdu->pduSize = reverseBytes16(0x31);
+
       dlTtiReqPdu->pduType = reverseBytes16(PDCCH_PDU_TYPE);
       dlTtiReqPdu->pdu.pdcch_pdu.bwpSize = reverseBytes16(bwp->freqAlloc.numPrb);
       dlTtiReqPdu->pdu.pdcch_pdu.bwpStart = reverseBytes16(bwp->freqAlloc.startPrb);
@@ -4477,7 +4482,8 @@ void fillPdschPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_pdu
       memset(&dlTtiReqPdu->pdu.pdsch_pdu, 0, sizeof(fapi_dl_pdsch_pdu_t));
 #ifdef OAI_TESTING 
       dlTtiReqPdu->pduType = reverseBytes16(PDSCH_PDU_TYPE);
-      dlTtiReqPdu->pduSize = reverseBytes16(sizeof(fapi_dl_pdsch_pdu_t));
+      //dlTtiReqPdu->pduSize = reverseBytes16(sizeof(fapi_dl_pdsch_pdu_t));
+      dlTtiReqPdu->pduSize = reverseBytes16(0x65);
       dlTtiReqPdu->pdu.pdsch_pdu.pduBitMap = reverseBytes16(pdschInfo->pduBitmap);
       dlTtiReqPdu->pdu.pdsch_pdu.rnti = reverseBytes16(pdschInfo->rnti);         
       dlTtiReqPdu->pdu.pdsch_pdu.pdu_index = reverseBytes16(pduIndex);
@@ -4534,12 +4540,20 @@ void fillPdschPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_pdu
       dlTtiReqPdu->pdu.pdsch_pdu.nrOfSymbols = pdschInfo->pdschTimeAlloc.numSymb;
       dlTtiReqPdu->pdu.pdsch_pdu.powerControlOffset = pdschInfo->txPdschPower.powerControlOffset;  
       dlTtiReqPdu->pdu.pdsch_pdu.powerControlOffsetSS = pdschInfo->txPdschPower.powerControlOffsetSS;
-#ifdef OAI_TESTING 
+#ifdef OAI_TESTING
+#if 0 
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.digBfInterfaces = 1;
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.numPrgs = reverseBytes16(0);
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.prgSize = reverseBytes16(0);
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].pmIdx = reverseBytes16(pdschInfo->beamPdschInfo.prg[0].pmIdx);
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].beamIdx[0].beamidx = reverseBytes16(pdschInfo->beamPdschInfo.prg[0].beamIdx[0]);
+#endif
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.digBfInterfaces = pdschInfo->beamPdschInfo.digBfInterfaces;
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.numPrgs = reverseBytes16(pdschInfo->beamPdschInfo.numPrgs);
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.prgSize = reverseBytes16(pdschInfo->beamPdschInfo.prgSize);
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].pmIdx = reverseBytes16(pdschInfo->beamPdschInfo.prg[0].pmIdx);
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].beamIdx[0].beamidx = reverseBytes16(pdschInfo->beamPdschInfo.prg[0].beamIdx[0]);
+      
       dlTtiReqPdu->pdu.pdsch_pdu.maintParamV3.ldpcBaseGraph=2;
       dlTtiReqPdu->pdu.pdsch_pdu.maintParamV3.tbSizeLbrmBytes=reverseBytes32(57376);
 #else
@@ -4909,8 +4923,11 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
 
 #else
 
+   rarInfo->rarPduLen = 9;
    uint8_t tlvPaddingLen =get_tlv_padding(rarInfo->rarPduLen);
    uint16_t totalLen= rarInfo->rarPduLen +tlvPaddingLen;
+  
+   totalLen = 21; 
    pduDesc[pduIndex].pdu_length = totalLen;
    pduDesc[pduIndex].pdu_length = reverseBytes32(pduDesc[pduIndex].pdu_length);
 
@@ -4922,8 +4939,10 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
 
    memcpy(pduDesc[pduIndex].tlvs[0].value.direct, rarInfo->rarPdu, rarInfo->rarPduLen);
 
+   pduDesc[pduIndex].tlvs[0].value.direct[2] = 0x02400072;
    for(uint8_t bytePos = 0; bytePos < rarInfo->rarPduLen; bytePos++)
    {
+//      pduDesc[pduIndex].tlvs[0].value.direct[bytePos] = reverseBytes32(pduDesc[pduIndex].tlvs[0].value.direct[bytePos]);
       printf("[%d]:0x%x\n",bytePos, pduDesc[pduIndex].tlvs[0].value.direct[bytePos]);
    }
 
@@ -5340,7 +5359,7 @@ uint16_t fillDlTtiReq(SlotTimingInfo currTimingInfo,  p_fapi_api_queue_elem_t pr
 
       if(nPdus>0)
       {
-         nGroup=1; /*As per 5G FAPI: PHY API spec v 222.10.02, section 3.4.2 DL_TTI.request, For SU-MIMO, one group includes one UE only */
+         nGroup=0; /*As per 5G FAPI: PHY API spec v 222.10.02, section 3.4.2 DL_TTI.request, For SU-MIMO, one group includes one UE only */
       }
       else
       {
@@ -5901,7 +5920,7 @@ void fillPrachPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, MacCellCfg *macCellCfg, Ma
       ulTtiReqPdu->pdu.prach_pdu.numRa = currUlSlot->ulSchInfo.prachSchInfo.numRa;
       ulTtiReqPdu->pdu.prach_pdu.prachStartSymbol = \
 	 currUlSlot->ulSchInfo.prachSchInfo.prachStartSymb;
-      ulTtiReqPdu->pdu.prach_pdu.beamforming.digBfInterface = 0;
+      ulTtiReqPdu->pdu.prach_pdu.beamforming.digBfInterface = 1;
 #ifdef OAI_TESTING
       ulTtiReqPdu->pdu.prach_pdu.beamforming.numPrgs = reverseBytes16(0);
       ulTtiReqPdu->pdu.prach_pdu.beamforming.prgSize = reverseBytes16(0);
@@ -5937,21 +5956,23 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
 //      memset(&ulTtiReqPdu->pdu.pusch_pdu, 0, sizeof(fapi_ul_pusch_pdu_t));
 #ifdef OAI_TESTING
       ulTtiReqPdu->pduType = reverseBytes16(PUSCH_PDU_TYPE);
-      ulTtiReqPdu->pduSize = reverseBytes16(sizeof(fapi_ul_pusch_pdu_t));
+      ulTtiReqPdu->pduSize = reverseBytes16(0x6a);
       ulTtiReqPdu->pdu.pusch_pdu.pduBitMap = reverseBytes16(1);
-      ulTtiReqPdu->pdu.pusch_pdu.rnti = reverseBytes16(puschInfo->crnti);
-      ulTtiReqPdu->pdu.pusch_pdu.handle = reverseBytes32(100);
+      ulTtiReqPdu->pdu.pusch_pdu.rnti = reverseBytes16(44402);
+      ulTtiReqPdu->pdu.pusch_pdu.handle = reverseBytes32(0);
       /* TODO : Fill handle in raCb when scheduling pusch and access here */
       ulTtiReqPdu->pdu.pusch_pdu.bwpSize = reverseBytes16(macCellCfg->cellCfg.initialUlBwp.bwp.numPrb);
       ulTtiReqPdu->pdu.pusch_pdu.bwpStart = reverseBytes16(macCellCfg->cellCfg.initialUlBwp.bwp.firstPrb);
-      ulTtiReqPdu->pdu.pusch_pdu.targetCodeRate = reverseBytes16(308);
-      ulTtiReqPdu->pdu.pusch_pdu.dataScramblingId = reverseBytes16(macCellCfg->cellId);
+      ulTtiReqPdu->pdu.pusch_pdu.targetCodeRate = reverseBytes16(1570);
+      ulTtiReqPdu->pdu.pusch_pdu.dataScramblingId = reverseBytes16(0);
       ulTtiReqPdu->pdu.pusch_pdu.ulDmrsSymbPos = reverseBytes16(1024);
-      ulTtiReqPdu->pdu.pusch_pdu.ulDmrsScramblingId = reverseBytes16(macCellCfg->cellId);
+      ulTtiReqPdu->pdu.pusch_pdu.ulDmrsScramblingId = reverseBytes16(0);
       ulTtiReqPdu->pdu.pusch_pdu.puschIdentity = reverseBytes16(0);
       ulTtiReqPdu->pdu.pusch_pdu.dmrsPorts = reverseBytes16(1);
       ulTtiReqPdu->pdu.pusch_pdu.rbStart = reverseBytes16(puschInfo->fdAlloc.resAlloc.type1.startPrb);
       ulTtiReqPdu->pdu.pusch_pdu.rbSize = reverseBytes16(puschInfo->fdAlloc.resAlloc.type1.numPrb);
+      ulTtiReqPdu->pdu.pusch_pdu.rbStart = reverseBytes16(0);
+      ulTtiReqPdu->pdu.pusch_pdu.rbSize = reverseBytes16(8);
       ulTtiReqPdu->pdu.pusch_pdu.txDirectCurrentLocation = reverseBytes16(0);
 #else
       ulTtiReqPdu->pduType = PUSCH_PDU_TYPE;
@@ -5970,6 +5991,8 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       ulTtiReqPdu->pdu.pusch_pdu.dmrsPorts = 0;
       ulTtiReqPdu->pdu.pusch_pdu.rbStart = puschInfo->fdAlloc.resAlloc.type1.startPrb;
       ulTtiReqPdu->pdu.pusch_pdu.rbSize = puschInfo->fdAlloc.resAlloc.type1.numPrb;
+      ulTtiReqPdu->pdu.pusch_pdu.rbStart = 0;
+      ulTtiReqPdu->pdu.pusch_pdu.rbSize = 8;
       ulTtiReqPdu->pdu.pusch_pdu.txDirectCurrentLocation = 0;
 #endif
       ulTtiReqPdu->pdu.pusch_pdu.subCarrierSpacing = \
@@ -5993,6 +6016,7 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
          puschInfo->tdAlloc.startSymb;
       ulTtiReqPdu->pdu.pusch_pdu.nrOfSymbols = \
          puschInfo->tdAlloc.numSymb;
+       ulTtiReqPdu->pdu.pusch_pdu.nrOfSymbols = 3;
       ulTtiReqPdu->pdu.pusch_pdu.puschData.rvIndex = \
          puschInfo->tbInfo.rv;
       ulTtiReqPdu->pdu.pusch_pdu.puschData.harqProcessId = \
@@ -6001,6 +6025,7 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
          puschInfo->tbInfo.ndi;
 #ifdef OAI_TESTING 
       ulTtiReqPdu->pdu.pusch_pdu.puschData.tbSize = reverseBytes32(puschInfo->tbInfo.tbSize);
+      ulTtiReqPdu->pdu.pusch_pdu.puschData.tbSize = reverseBytes32(7);
       /* numCb is 0 for new transmission */
       ulTtiReqPdu->pdu.pusch_pdu.puschData.numCb = reverseBytes16(0);
 
@@ -6221,8 +6246,8 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
                   }
                }
             }
-            ulTtiReq->ueGrpInfo[ulTtiReq->nGroup].nUe = MAX_NUM_UE_PER_TTI;
-            ulTtiReq->nGroup++;
+            //ulTtiReq->ueGrpInfo[ulTtiReq->nGroup].nUe = MAX_NUM_UE_PER_TTI;
+            //ulTtiReq->nGroup++;
          } 
 	 
 	 uint32_t  bufferLen=0;
@@ -6345,6 +6370,8 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
                   }
                }
             }
+            //ulTtiReq->ueGrpInfo[ulTtiReq->nGroup].nUe = MAX_NUM_UE_PER_TTI;
+            //ulTtiReq->nGroup++;
          }
 	 uint32_t  bufferLen=0;
 	 uint8_t mBuf[2500];

@@ -58,7 +58,7 @@
          <NR_SCS>1</NR_SCS>
          <SSB_POS_INBURST>128</SSB_POS_INBURST>
          <SSB_PERIODICITY>20</SSB_PERIODICITY>
-         <SSB_PBCH_PWR>0</SSB_PBCH_PWR>
+         <SSB_PBCH_PWR>4294967271</SSB_PBCH_PWR>
          <DL_CFG_COMMON>
             <NR_FREQ_BAND>78</NR_FREQ_BAND>
             <OFFSET_TO_POINT_A>252</OFFSET_TO_POINT_A>
@@ -394,10 +394,10 @@
    <MAC_CELL_CFG>
       <CELL_ID>1</CELL_ID>
       <CARRIER_CFG>
-         <DL_BW>273</DL_BW>
-         <NR_DL_ARFCN>623400</NR_DL_ARFCN>
-         <UL_BW>273</UL_BW>
-         <NR_UL_ARFCN>623400</NR_UL_ARFCN>
+         <DL_BW>100</DL_BW>
+         <NR_DL_ARFCN>626772</NR_DL_ARFCN>
+         <UL_BW>100</UL_BW>
+         <NR_UL_ARFCN>626772</NR_UL_ARFCN>
          <NUM_TX_ANT>2</NUM_TX_ANT>
          <NUM_RX_ANT>2</NUM_RX_ANT>
       </CARRIER_CFG>
@@ -535,7 +535,7 @@
          <SSB_PERIOD>2</SSB_PERIOD>
          <SSB_SC_OFFSET>12</SSB_SC_OFFSET>
          <SSB_MASK_LIST>
-            <SSB_MASK>1</SSB_MASK>
+            <SSB_MASK>2147483648</SSB_MASK>
          </SSB_MASK_LIST>
          <BEAM_LIST>
             <BEAM_ID>0</BEAM_ID>
@@ -564,13 +564,13 @@
          <FDM_LIST>
             <FDM_INFO>
                <ROOT_SEQ_IDX>1</ROOT_SEQ_IDX>
-               <NUM_ROOT_SEQ>1</NUM_ROOT_SEQ>
+               <NUM_ROOT_SEQ>13</NUM_ROOT_SEQ>
                <K1>0</K1>
                <ZERO_CORR_ZONE_CFG>12</ZERO_CORR_ZONE_CFG>
             </FDM_INFO>
          </FDM_LIST>
          <PRACH_RESTRICTED_SET_CFG>0</PRACH_RESTRICTED_SET_CFG>
-         <SSB_PER_RACH>1</SSB_PER_RACH>
+         <SSB_PER_RACH>2</SSB_PER_RACH>
          <NUM_RA_PREAMBLE>63</NUM_RA_PREAMBLE>
          <CB_PREAMBLE_PER_SSB>64</CB_PREAMBLE_PER_SSB>
          <MAX_NUM_RB>273</MAX_NUM_RB>
