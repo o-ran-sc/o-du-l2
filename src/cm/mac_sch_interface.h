@@ -101,7 +101,12 @@
 #define MAX_NUM_DL_DATA_TO_UL_ACK 15
 #define QPSK_MODULATION 2
 
+#ifndef OAI_TESTING
 #define RAR_PAYLOAD_SIZE 10             /* As per spec 38.321, sections 6.1.5 and 6.2.3, RAR PDU is 8 bytes long and 2 bytes of padding */
+#else
+#define RAR_PAYLOAD_SIZE 9             /* As per spec 38.321, sections 6.1.5 and 6.2.3, RAR PDU is 9 bytes long */
+#endif
+
 #ifdef OAI_TESTING
 #define TX_PAYLOAD_HDR_LEN 0           /* OAI L1 requires */
 #else
@@ -1291,6 +1296,7 @@ typedef struct tbInfo
    uint8_t      ndi;       /* NDI */
    uint8_t      rv;        /* Redundancy Version */
    uint16_t     tbSize;    /* TB Size */
+   uint16_t     tgtCodeRate; 
    uint8_t      qamOrder;  /* Modulation Order */
    SchMcsTable  mcsTable;  /* MCS Table */
 }TbInfo;

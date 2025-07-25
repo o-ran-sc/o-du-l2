@@ -204,6 +204,7 @@ void fillRarPdu(RarInfo *rarInfo)
                             + (bwpSize - 1 - rbStart);
    }
 
+#ifndef OAI_TESTING
    /* Calculating frequency domain resource allocation field size 
     * and packing frequency domain resource allocation accordingly 
     * Spec 38.213 Sec 8.3 
@@ -236,6 +237,10 @@ void fillRarPdu(RarInfo *rarInfo)
       }
    }
 
+#else
+   packBytes(rarPdu, &bytePos, &bitPos, msg3FreqResource, FREQ_RSRC_ALLOC_SIZE);
+#endif
+
    /* Packing time domain resource allocation for UL grant */
    packBytes(rarPdu, &bytePos, &bitPos, rarInfo->ulGrant.k2Index, TIME_RSRC_ALLOC_SIZE);
 
@@ -251,10 +256,6 @@ void fillRarPdu(RarInfo *rarInfo)
    packBytes(rarPdu, &bytePos, &bitPos, paddingLcid, LC_ID_SIZE);
    packBytes(rarPdu, &bytePos, &bitPos, 0, paddingSize);
 #endif
-
-   printf("\n SANG: RAR PDU\n");
-   for(bytePos = 0; bytePos < rarInfo->rarPduLen; bytePos++)
-      printf("[%d]:0x%x\n",bytePos, rarPdu[bytePos]);
 
 }
 

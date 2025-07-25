@@ -2598,7 +2598,7 @@ void packConfigReq(fapi_config_req_t *configReq,  uint8_t *mBuf, uint32_t *len)
     uint8_t *out = mBuf;
     uint32_t msgLen = 0;
     uint16_t totalTlv = 0;
-    uint16_t tlvSize=10;//uint16_t [5]
+    uint16_t tlvSize=10;
     uint16_t value[5] = {0,273,0,0,0};
 
     CMCHKPKLEN(oduPackPostUInt8, configReq->header.numMsg, &out, &msgLen);
@@ -2607,7 +2607,7 @@ void packConfigReq(fapi_config_req_t *configReq,  uint8_t *mBuf, uint32_t *len)
     CMCHKPKLEN(oduPackPostUInt32, configReq->header.length, &out, &msgLen);
 
     totalTlv = configReq->number_of_tlvs;
-    uint8_t randmTlvCnt=  25; //This value is randomly assigned
+    uint8_t randmTlvCnt=  131; //This value is randomly assigned
     CMCHKPKLEN(oduPackPostUInt8, randmTlvCnt, &out, &msgLen);
 
     for(uint16_t idx=0;idx<totalTlv;idx++)
@@ -4534,12 +4534,13 @@ void fillPdschPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_pdu
       dlTtiReqPdu->pdu.pdsch_pdu.nrOfSymbols = pdschInfo->pdschTimeAlloc.numSymb;
       dlTtiReqPdu->pdu.pdsch_pdu.powerControlOffset = pdschInfo->txPdschPower.powerControlOffset;  
       dlTtiReqPdu->pdu.pdsch_pdu.powerControlOffsetSS = pdschInfo->txPdschPower.powerControlOffsetSS;
-#ifdef OAI_TESTING 
-      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.digBfInterfaces = 1;
-      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.numPrgs = reverseBytes16(0);
-      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.prgSize = reverseBytes16(0);
+#ifdef OAI_TESTING
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.digBfInterfaces = pdschInfo->beamPdschInfo.digBfInterfaces;
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.numPrgs = reverseBytes16(pdschInfo->beamPdschInfo.numPrgs);
+      dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.prgSize = reverseBytes16(pdschInfo->beamPdschInfo.prgSize);
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].pmIdx = reverseBytes16(pdschInfo->beamPdschInfo.prg[0].pmIdx);
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].beamIdx[0].beamidx = reverseBytes16(pdschInfo->beamPdschInfo.prg[0].beamIdx[0]);
+      
       dlTtiReqPdu->pdu.pdsch_pdu.maintParamV3.ldpcBaseGraph=2;
       dlTtiReqPdu->pdu.pdsch_pdu.maintParamV3.tbSizeLbrmBytes=reverseBytes32(57376);
 #else
@@ -4911,6 +4912,7 @@ uint8_t fillRarTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, RarInfo
 
    uint8_t tlvPaddingLen =get_tlv_padding(rarInfo->rarPduLen);
    uint16_t totalLen= rarInfo->rarPduLen +tlvPaddingLen;
+  
    pduDesc[pduIndex].pdu_length = totalLen;
    pduDesc[pduIndex].pdu_length = reverseBytes32(pduDesc[pduIndex].pdu_length);
 
@@ -5934,7 +5936,7 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
 {
    if(ulTtiReqPdu != NULLP)
    {
-//      memset(&ulTtiReqPdu->pdu.pusch_pdu, 0, sizeof(fapi_ul_pusch_pdu_t));
+      memset(&ulTtiReqPdu->pdu.pusch_pdu, 0, sizeof(fapi_ul_pusch_pdu_t));
 #ifdef OAI_TESTING
       ulTtiReqPdu->pduType = reverseBytes16(PUSCH_PDU_TYPE);
       ulTtiReqPdu->pduSize = reverseBytes16(sizeof(fapi_ul_pusch_pdu_t));
@@ -5944,10 +5946,10 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       /* TODO : Fill handle in raCb when scheduling pusch and access here */
       ulTtiReqPdu->pdu.pusch_pdu.bwpSize = reverseBytes16(macCellCfg->cellCfg.initialUlBwp.bwp.numPrb);
       ulTtiReqPdu->pdu.pusch_pdu.bwpStart = reverseBytes16(macCellCfg->cellCfg.initialUlBwp.bwp.firstPrb);
-      ulTtiReqPdu->pdu.pusch_pdu.targetCodeRate = reverseBytes16(308);
-      ulTtiReqPdu->pdu.pusch_pdu.dataScramblingId = reverseBytes16(macCellCfg->cellId);
+      ulTtiReqPdu->pdu.pusch_pdu.targetCodeRate = reverseBytes16(puschInfo->tbInfo.tgtCodeRate);
+      ulTtiReqPdu->pdu.pusch_pdu.dataScramblingId = reverseBytes16(0);
       ulTtiReqPdu->pdu.pusch_pdu.ulDmrsSymbPos = reverseBytes16(1024);
-      ulTtiReqPdu->pdu.pusch_pdu.ulDmrsScramblingId = reverseBytes16(macCellCfg->cellId);
+      ulTtiReqPdu->pdu.pusch_pdu.ulDmrsScramblingId = reverseBytes16(0);
       ulTtiReqPdu->pdu.pusch_pdu.puschIdentity = reverseBytes16(0);
       ulTtiReqPdu->pdu.pusch_pdu.dmrsPorts = reverseBytes16(1);
       ulTtiReqPdu->pdu.pusch_pdu.rbStart = reverseBytes16(puschInfo->fdAlloc.resAlloc.type1.startPrb);
@@ -6003,8 +6005,6 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       ulTtiReqPdu->pdu.pusch_pdu.puschData.tbSize = reverseBytes32(puschInfo->tbInfo.tbSize);
       /* numCb is 0 for new transmission */
       ulTtiReqPdu->pdu.pusch_pdu.puschData.numCb = reverseBytes16(0);
-
-
 #else 
       ulTtiReqPdu->pdu.pusch_pdu.puschData.tbSize = (puschInfo->tbInfo.tbSize);
       /* numCb is 0 for new transmission */
@@ -6018,7 +6018,6 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
          puschInfo->dmrsAddPos;
 #endif
       /* UL TTI Vendor PDU */
-#ifndef OAI_TESTING
       ulTtiVendorPdu->pdu_type = FAPI_PUSCH_PDU_TYPE;
       ulTtiVendorPdu->pdu.pusch_pdu.nr_of_antenna_ports=1;
       ulTtiVendorPdu->pdu.pusch_pdu.nr_of_rx_ru=1;
@@ -6026,7 +6025,6 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       {
 	      ulTtiVendorPdu->pdu.pusch_pdu.rx_ru_idx[i]=0;
       }
-#endif
 #endif
    }
 }
@@ -6345,6 +6343,8 @@ uint16_t fillUlTtiReq(SlotTimingInfo currTimingInfo, p_fapi_api_queue_elem_t pre
                   }
                }
             }
+            ulTtiReq->ueGrpInfo[ulTtiReq->nGroup].nUe = MAX_NUM_UE_PER_TTI;
+            ulTtiReq->nGroup++;
          }
 	 uint32_t  bufferLen=0;
 	 uint8_t mBuf[2500];
