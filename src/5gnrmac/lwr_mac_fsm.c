@@ -6005,6 +6005,8 @@ void fillPuschPdu(fapi_ul_tti_req_pdu_t *ulTtiReqPdu, fapi_vendor_ul_tti_req_pdu
       ulTtiReqPdu->pdu.pusch_pdu.puschData.tbSize = reverseBytes32(puschInfo->tbInfo.tbSize);
       /* numCb is 0 for new transmission */
       ulTtiReqPdu->pdu.pusch_pdu.puschData.numCb = reverseBytes16(0);
+      ulTtiReqPdu->pdu.pusch_pdu.maintParamV3.ldpcBaseGraph = 2;
+      ulTtiReqPdu->pdu.pusch_pdu.maintParamV3.tbSizeLbrmBytes = reverseBytes32(0);
 #else 
       ulTtiReqPdu->pdu.pusch_pdu.puschData.tbSize = (puschInfo->tbInfo.tbSize);
       /* numCb is 0 for new transmission */

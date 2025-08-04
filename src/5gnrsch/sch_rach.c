@@ -428,7 +428,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
    uint16_t   startRb   = 0;
    uint16_t   numRb     = 0;
    uint16_t   tbSize    = 0;
-   uint16_t   msg3PduLen = 8; /* 6 bytes msg3 and 2 bytes header */
+   uint16_t   msg3PduLen = 7; /*RRC Setup Req min size required as per Spec 38.331 RRCSetupReq */
    uint16_t   tgtCodeRate = 0;
    uint8_t    qam       = 0; 
 
@@ -454,7 +454,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
    tbSize = schCalcTbSizeFromNPrb(numRb, mcs, NUM_PDSCH_SYMBOL, NULLP, NULLP);
    tbSize = tbSize / 8 ; /*bits to byte conversion*/
 #else
-   numRb = 1;
+   numRb = 0;
    do
    {
       if(numRb < cell->cellCfg.ulCfgCommon.schInitialUlBwp.bwp.freqAlloc.numPrb)
@@ -470,7 +470,7 @@ SchPuschInfo* schAllocMsg3Pusch(Inst schInst, uint16_t crnti, uint8_t k2Index, S
 	 else
             break;
       }
-      tbSize = (schCalcTbSizeFromNPrb(numRb, mcs, NUM_PDSCH_SYMBOL, &tgtCodeRate, &qam) >> 3);
+      tbSize = (schCalcTbSizeFromNPrb(numRb, mcs, symbLen, 1,  &tgtCodeRate, &qam) >> 3);
    }while(tbSize < msg3PduLen);
 #endif
 
@@ -678,9 +678,9 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
                {
                   k2Index = msg3K2InfoTbl->k2TimingInfo[rarSlot].k2Indexes[k2TblIdx];
                   k2 = cell->cellCfg.ulCfgCommon.schInitialUlBwp.puschCommon.timeDomRsrcAllocList[k2Index].k2;
-
                   /* Delta is added to the slot allocation for msg3 based on 38.214 section 6.1.2.1 */
                   k2 = k2 + msg3Delta;
+
                   if(k2 >= msg3MinSchTime)
                   {
                      ADD_DELTA_TO_TIME(rarTime, msg3Time, k2, cell->numSlots);
@@ -941,7 +941,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    uint8_t  coreset0Idx = 0;
    uint8_t  firstSymbol = 0, numSymbols = 0;
    uint8_t  mcs; 
-   uint8_t  dmrsStartSymbol, startSymbol, numSymbol ;
+   uint8_t  dmrsStartSymbol, numDmrsSymbol = 0, startSymbol, numSymbol ;
    uint16_t numRbs = 0;
    uint16_t tbSize = 0;
    uint16_t offsetToPointA = 0;
@@ -1029,6 +1029,8 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdsch->rnti = cell->raReq[ueId-1]->raRnti; /* RA-RNTI */
    pdsch->pduIndex = 0;
    pdsch->numCodewords = 1;
+   pdsch->dmrs.dlDmrsSymbPos = 2180; 
+   numDmrsSymbol = findNumDmrsSymbol(pdsch->dmrs.dlDmrsSymbPos);
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
    {
       rarPduLen = RAR_PAYLOAD_SIZE + TX_PAYLOAD_HDR_LEN;
@@ -1051,7 +1053,7 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
 	   else
 	      break;
          }
-         tbSize = (schCalcTbSizeFromNPrb(pdsch->pdschFreqAlloc.numPrb, mcs, 13, &targetCodeRate, &qam) >> 3);
+         tbSize = (schCalcTbSizeFromNPrb(pdsch->pdschFreqAlloc.numPrb, mcs, 13, numDmrsSymbol, &targetCodeRate, &qam) >> 3);
       }while(rarPduLen > tbSize);
 
       pdsch->codeword[cwCount].targetCodeRate = targetCodeRate;
@@ -1065,7 +1067,6 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdsch->numLayers = 1;
    pdsch->transmissionScheme = 0;
    pdsch->refPoint = 0;
-   pdsch->dmrs.dlDmrsSymbPos = 2180; 
    pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId = cell->cellCfg.phyCellId;
    pdsch->dmrs.scid = 0;

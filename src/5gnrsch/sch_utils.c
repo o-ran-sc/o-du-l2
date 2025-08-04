@@ -836,6 +836,36 @@ uint8_t findDmrsStartSymbol(uint16_t dlDmrsSymbBitMap)
 }
 
 /**
+ * @brief Function to find number of  DMRS symbol in PDSCH
+ *
+ * @details
+ *
+ *     Function: findNumDmrsSymbol
+ *
+ *     This function finds number of  DMRS symbol using DMRS symbol 
+ *     position bitmap.
+ *
+ *  @param[in]  DMRS symbol position bitmap
+ *  @return     Success : total Number of Symbols
+ *              Failure : 0
+ **/
+uint8_t findNumDmrsSymbol(uint16_t dlDmrsSymbBitMap)
+{
+   uint8_t numDmrsSymb = 0,position = 0;
+   uint16_t mask = 1;
+
+   while(position < MAX_SYMB_PER_SLOT)
+   {
+      if(dlDmrsSymbBitMap & mask)
+      {
+         numDmrsSymb++;
+      }
+      mask = mask << 1;
+      position++;
+   }
+   return numDmrsSymb;   
+}
+/**
  * @brief Function to add a node to a linked list
  *
  * @details
@@ -1102,7 +1132,7 @@ uint16_t schCalcNumPrb(uint16_t tbSize, uint16_t mcs, uint8_t numSymbols)
 *  @param[in]  number of symbols
 *  @return   tbSize
 **/
-uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols, uint16_t *targeCodeRate, uint8_t *qam)
+uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols, uint8_t numDmrsSymbPerPrb, uint16_t *targeCodeRate, uint8_t *qam)
 {   
    uint8_t  qm     = mcsTable[mcs][1];
    uint16_t rValue = mcsTable[mcs][2];
@@ -1116,7 +1146,8 @@ uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols
    uint32_t c = 0;
    const uint8_t  numLayer = 1;
    const uint16_t numRbSc = 12;
-   const uint16_t numDmrsRes = 36;
+   const uint16_t numDmrsRes = 12 * numDmrsSymbPerPrb;
+   uint32_t nTmp = 0;
 //   uint16_t numPrbOvrHead = 0;
    
   /* formula used for calculation of rbSize, 38.214 section 5.1.3.2  *
@@ -1130,7 +1161,8 @@ uint16_t schCalcTbSizeFromNPrb(uint16_t numPrb, uint16_t mcs, uint8_t numSymbols
 
    if(nInfo <= 3824)
    {
-      n = MAX(3, (uint32_t)cmLog2(nInfo) - 6);
+      nTmp = (floor(cmLog2(nInfo)) >= 6) ? floor(cmLog2(nInfo)) - 6 : 0;
+      n = MAX(3, nTmp);
       nInfoDash = MAX(24, (1<<n)*(nInfo/(1<<n)));
       while(nInfoDash > tbSizeTable[tbsIndex])
       {
@@ -1592,7 +1624,7 @@ uint32_t calculateEstimateTBSize(uint32_t reqBO, uint16_t mcsIdx, uint8_t numSym
    /*Loop Exit: Either estPRB reaches the maxRB or TBS is found greater than equal to reqBO*/
    do
    {
-      tbs = schCalcTbSizeFromNPrb(*estPrb, mcsIdx, numSymbols, NULLP, NULLP);
+      tbs = schCalcTbSizeFromNPrb(*estPrb, mcsIdx, numSymbols, 3, NULLP, NULLP);
 
       /*TBS size calculated in above function is in Bits. 
        * So to convert it into Bytes , we right shift by 3. 

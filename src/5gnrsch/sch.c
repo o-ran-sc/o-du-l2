@@ -603,6 +603,7 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    uint8_t qam = 0;
    uint8_t ssbIdx = 0;
    uint8_t freqIdx = 0;
+   uint8_t numDmrsSymbol = 0;
    PdcchCfg *pdcch;
    PdschCfg *pdsch;
    BwpCfg *bwp;
@@ -706,6 +707,8 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    pdsch->pduIndex = 0;
    pdsch->numCodewords = 1;
    pdsch->pdschFreqAlloc.startPrb  = 0;
+   pdsch->dmrs.dlDmrsSymbPos       = DL_DMRS_SYMBOL_POS; 
+   numDmrsSymbol = findNumDmrsSymbol(pdsch->dmrs.dlDmrsSymbPos);
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
    {
       mcs = DEFAULT_MCS;
@@ -727,7 +730,7 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
 	   else
 	      break;
          }
-         tbSize = (schCalcTbSizeFromNPrb(pdsch->pdschFreqAlloc.numPrb, mcs, 10, &targetCodeRate, &qam) >> 3);
+         tbSize = (schCalcTbSizeFromNPrb(pdsch->pdschFreqAlloc.numPrb, mcs, 10, numDmrsSymbol, &targetCodeRate, &qam) >> 3);
       }while(sib1PduLen > tbSize);
 
       pdsch->codeword[cwCount].targetCodeRate = targetCodeRate;
@@ -741,7 +744,6 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    pdsch->numLayers                          = 1;
    pdsch->transmissionScheme                 = 0;
    pdsch->refPoint                           = 1;
-   pdsch->dmrs.dlDmrsSymbPos                 = DL_DMRS_SYMBOL_POS; 
    pdsch->dmrs.dmrsConfigType                = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId            = pci;
    pdsch->dmrs.scid                          = 0;
@@ -1540,10 +1542,9 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
             if((freePrbBlock->endPrb > prachEndPrb) && ((freePrbBlock->endPrb - prachEndPrb) >= numPrb))
             {
                /* If sufficient free PRBs are available above PRACH message then,
-                * endPrb = freePrbBlock->endPrb
-                * startPrb = endPrb - numPrb +1;
+                * startPrb = freeBlock's StartPrb;
                 */
-               *startPrb = freePrbBlock->endPrb - numPrb +1;
+               *startPrb = freePrbBlock->startPrb;
                break;
             }
             else if((prachStartPrb > freePrbBlock->startPrb) && ((prachStartPrb - freePrbBlock->startPrb) >= numPrb))
@@ -1569,7 +1570,7 @@ uint8_t allocatePrbUl(SchCellCb *cell, SlotTimingInfo slotTime, \
                freePrbNode = freePrbNode->next;
                continue;
             }
-            *startPrb = freePrbBlock->endPrb - numPrb +1;
+            *startPrb = freePrbBlock->startPrb;
             break;
          }
       }
