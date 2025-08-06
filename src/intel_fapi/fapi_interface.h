@@ -1486,7 +1486,7 @@ typedef struct {
         uint32_t handle;
         uint16_t rnti;
         uint8_t harqId;
-        uint16_t pdu_length;
+        uint32_t pdu_length;
         uint8_t ul_cqi;
         uint16_t timingAdvance;
         uint16_t rssi;

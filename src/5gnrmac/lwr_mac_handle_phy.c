@@ -384,7 +384,7 @@ uint8_t procRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
 #else
       pdu->handle = reverseBytes32(fapiRxDataInd->pdus[pduIdx].handle);
       pdu->rnti = reverseBytes16(fapiRxDataInd->pdus[pduIdx].rnti);
-      pdu->pduLength = reverseBytes16(fapiRxDataInd->pdus[pduIdx].pdu_length);
+      pdu->pduLength = reverseBytes32(fapiRxDataInd->pdus[pduIdx].pdu_length);
       pdu->timingAdvance = reverseBytes16(fapiRxDataInd->pdus[pduIdx].timingAdvance);
       pdu->rssi = reverseBytes16(fapiRxDataInd->pdus[pduIdx].rssi);
 #endif
@@ -392,10 +392,18 @@ uint8_t procRxDataInd(fapi_rx_data_indication_t  *fapiRxDataInd)
       pdu->ul_cqi = fapiRxDataInd->pdus[pduIdx].ul_cqi;
 
       MAC_ALLOC_SHRABL_BUF(pdu->pduData, pdu->pduLength);
+#ifndef OAI_TESTING
       memcpy(pdu->pduData, fapiRxDataInd->pdus[pduIdx].pduData, pdu->pduLength);
 #ifdef INTEL_WLS_MEM      
       /* Free WLS memory allocated for Rx PDU */
       WLS_MEM_FREE(fapiRxDataInd->pdus[pduIdx].pduData, LWR_MAC_WLS_BUF_SIZE);
+#endif
+#else
+      memcpy(pdu->pduData, &fapiRxDataInd->pdus[pduIdx].pduData, pdu->pduLength);
+      for(int i=0;i<pdu->pduLength;i++)
+      {
+         printf("\n0x%x",(uint8_t *)pdu->pduData[i]);
+      }
 #endif
    }
 
@@ -631,7 +639,7 @@ void procPhyMessages(uint16_t msgType, uint32_t msgSize, void *msg)
 #ifdef CALL_FLOW_DEBUG_LOG 
    callFlowFromPhyToLwrMac(header->msg_id);
 #endif
-   
+
    switch(header->msg_id)
    {
 #ifdef INTEL_TIMER_MODE

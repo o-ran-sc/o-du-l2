@@ -89,6 +89,7 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
       switch(lcId)
       {
          case MAC_LCID_CCCH :
+         case MAC_LCID_CCCH_48BIT :
             {
                pduLen--;
 
@@ -148,35 +149,21 @@ uint8_t unpackRxData(uint16_t cellId, SlotTimingInfo slotInfo, RxDataIndPdu *rxD
 
                break;
             }
+
          case MAC_LCID_RESERVED_MIN ... MAC_LCID_RESERVED_MAX :
-            break;
-
-         case MAC_LCID_CCCH_48BIT :
-            break;
-
          case MAC_LCID_BIT_RATE_QUERY :
-            break;
-
          case MAC_LCID_MULT_PHR_FOUR_OCT :
-            break;
-
          case MAC_LCID_CFG_GRANT_CFM :
-            break;
-
          case MAC_LCID_MULT_PHR_ONE_OCT:
-            break;
-
          case MAC_LCID_SINGLE_PHR :
-            break;
-
          case MAC_LCID_CRNTI :
-            break;
-
          case MAC_LCID_SHORT_TRUNC_BSR :
-            break;
-
          case MAC_LCID_LONG_TRUNC_BSR :
-            break;
+            {
+               DU_LOG("\nERROR  --> MAC_DEMUX: LCID:%d is not supported yet, Please add the handling in code thus exiting", lcId);
+               pduLen = 0;
+               break;
+            }
 
          case MAC_LCID_SHORT_BSR :
             {
