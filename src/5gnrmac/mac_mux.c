@@ -322,7 +322,11 @@ void fillMacCe(MacCeInfo *macCeInfo, uint8_t *msg3Pdu)
 void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t tbSize)
 {
    uint16_t bytePos = 0;
+#ifndef OAI_TESTING
    uint8_t bitPos = 7;
+#else
+   uint8_t bitPos = 0;
+#endif
    uint8_t pduIdx = 0;
    uint8_t macPdu[tbSize];
    memset(macPdu, 0, (tbSize * sizeof(uint8_t)));
@@ -352,9 +356,10 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t
                   /* Packing fields into MAC PDU R/R/LCID */
                   packBytes(macPdu, &bytePos, &bitPos, RBit, (RBitSize * 2));
                   packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
-                  memcpy(&macPdu[bytePos], macCeData->macCe[pduIdx].macCeValue,\
-                        MAX_CRI_SIZE);
-                  bytePos += MAX_CRI_SIZE;
+                  bytePos++;
+		          memcpy(&macPdu[bytePos], macCeData->macCe[pduIdx].macCeValue,\
+                             MAX_CRI_SIZE);
+                  bytePos += (MAX_CRI_SIZE - 1);
                   break;
                }
             default:
@@ -390,8 +395,9 @@ void macMuxPdu(MacDlData *dlData, MacCeInfo *macCeData, uint8_t *txPdu, uint16_t
                packBytes(macPdu, &bytePos, &bitPos, FBit, FBitSize);
                packBytes(macPdu, &bytePos, &bitPos, lcid, lcidSize);
                packBytes(macPdu, &bytePos, &bitPos, lenField, lenFieldSize);
+               bytePos++;
                memcpy(&macPdu[bytePos], dlData->pduInfo[pduIdx].dlPdu, lenField);
-               bytePos += lenField;
+               bytePos += (lenField - 1);
                break;
             }
 

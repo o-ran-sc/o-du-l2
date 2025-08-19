@@ -2095,11 +2095,11 @@ void packDlTtiReq(fapi_dl_tti_req_t *dlTtiReq,uint8_t *out , uint32_t *len)
 
 						fapi_precoding_bmform_t *preCodingAndBeamforming= &dlTtiReq->pdus[pduIdx].pdu.pdcch_pdu.dlDci[dciIndex].pc_and_bform;
 
-						CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(preCodingAndBeamforming->numPrgs), &mBuf, &totalLen);
-						CMCHKPKLEN(oduPackPostUInt16, reverseBytes16(preCodingAndBeamforming->prgSize), &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->numPrgs, &mBuf, &totalLen);
+						CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->prgSize, &mBuf, &totalLen);
 						CMCHKPKLEN(oduPackPostUInt8, preCodingAndBeamforming->digBfInterfaces, &mBuf, &totalLen);
 
-						for(uint16_t prgIdx = 0; prgIdx < preCodingAndBeamforming->numPrgs; prgIdx++)
+						for(uint16_t prgIdx = 0; prgIdx <  reverseBytes16(preCodingAndBeamforming->numPrgs); prgIdx++)
 						{
 							CMCHKPKLEN(oduPackPostUInt16, preCodingAndBeamforming->pmi_bfi[prgIdx].pmIdx, &mBuf, &totalLen);
 							for(uint8_t digBfIdx = 0; digBfIdx < preCodingAndBeamforming->digBfInterfaces; digBfIdx++)
@@ -4083,7 +4083,7 @@ void fillDlMsgDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *pdcchInfo,\
 
          /* Fetching DCI field values */
          dciFormatId      = dlMsgSchInfo->dciFormatId;     /* Always set to 1 for DL */
-         timeDomResAssign = pdcchInfo->dci[dciIndex].pdschCfg.pdschTimeAlloc.rowIndex -1;
+         timeDomResAssign = pdcchInfo->dci[dciIndex].pdschCfg.pdschTimeAlloc.rowIndex;
          VRB2PRBMap       = pdcchInfo->dci[dciIndex].pdschCfg.pdschFreqAlloc.vrbPrbMapping;
          modNCodScheme    = pdcchInfo->dci[dciIndex].pdschCfg.codeword[0].mcsIndex;
          ndi              = dlMsgSchInfo->transportBlock[0].ndi;
@@ -4095,6 +4095,7 @@ void fillDlMsgDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *pdcchInfo,\
          harqFeedbackInd  = dlMsgSchInfo->harqFeedbackInd;
 
          /* Reversing bits in each DCI field */
+#ifndef OAI_TESTING
          dciFormatId      = reverseBits(dciFormatId, dciFormatIdSize);
          freqDomResAssign = reverseBits(freqDomResAssign, freqDomResAssignSize);
          timeDomResAssign = reverseBits(timeDomResAssign, timeDomResAssignSize);
@@ -4107,7 +4108,7 @@ void fillDlMsgDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *pdcchInfo,\
          pucchTpc         = reverseBits(pucchTpc, pucchTpcSize);
          pucchResoInd     = reverseBits(pucchResoInd, pucchResoIndSize);
          harqFeedbackInd  = reverseBits(harqFeedbackInd, harqFeedbackIndSize);
-
+#endif
 
          /* Calulating total number of bytes in buffer */
          dlDciPtr[dciIndex].payloadSizeBits = (dciFormatIdSize + freqDomResAssignSize\
@@ -4134,7 +4135,11 @@ void fillDlMsgDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *pdcchInfo,\
             dlDciPtr[dciIndex].payload[bytePos] = 0;
 
          bytePos = numBytes - 1;
+#ifdef OAI_TESTING 
+         bitPos = 1;
+#else
          bitPos = 0;
+#endif
 
          /* Packing DCI format fields */
          fillDlDciPayload(dlDciPtr[dciIndex].payload, &bytePos, &bitPos,\
@@ -4149,8 +4154,6 @@ void fillDlMsgDlDciPdu(fapi_dl_dci_t *dlDciPtr, PdcchCfg *pdcchInfo,\
                modNCodScheme, modNCodSchemeSize);
          fillDlDciPayload(dlDciPtr[dciIndex].payload, &bytePos, &bitPos,\
                ndi, ndiSize);
-         fillDlDciPayload(dlDciPtr[dciIndex].payload, &bytePos, &bitPos,\
-               redundancyVer, redundancyVerSize);
          fillDlDciPayload(dlDciPtr[dciIndex].payload, &bytePos, &bitPos,\
                redundancyVer, redundancyVerSize);
          fillDlDciPayload(dlDciPtr[dciIndex].payload, &bytePos, &bitPos,\
@@ -4541,8 +4544,8 @@ void fillPdschPdu(fapi_dl_tti_req_pdu_t *dlTtiReqPdu, fapi_vendor_dl_tti_req_pdu
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].pmIdx = reverseBytes16(pdschInfo->beamPdschInfo.prg[0].pmIdx);
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.pmi_bfi[0].beamIdx[0].beamidx = reverseBytes16(pdschInfo->beamPdschInfo.prg[0].beamIdx[0]);
       
-      dlTtiReqPdu->pdu.pdsch_pdu.maintParamV3.ldpcBaseGraph=2;
-      dlTtiReqPdu->pdu.pdsch_pdu.maintParamV3.tbSizeLbrmBytes=reverseBytes32(57376);
+      dlTtiReqPdu->pdu.pdsch_pdu.maintParamV3.ldpcBaseGraph = pdschInfo->maintParamV3.ldpcBaseGraph;
+      dlTtiReqPdu->pdu.pdsch_pdu.maintParamV3.tbSizeLbrmBytes = reverseBytes32(pdschInfo->maintParamV3.tbSizeLbrmBytes);
 #else
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.digBfInterfaces = pdschInfo->beamPdschInfo.digBfInterfaces;
       dlTtiReqPdu->pdu.pdsch_pdu.preCodingAndBeamforming.numPrgs = pdschInfo->beamPdschInfo.numPrgs;
@@ -5003,7 +5006,25 @@ uint8_t fillDlMsgTxDataReq(fapi_tx_pdu_desc_t *pduDesc, uint16_t pduIndex, DlMsg
 #else
    LWR_MAC_FREE(dlMsgPayload, payloadSize);
 #endif
+
+#else
+
+   uint8_t tlvPaddingLen =get_tlv_padding(dlMsgSchInfo->dlMsgPduLen);
+   uint16_t totalLen= dlMsgSchInfo->dlMsgPduLen +tlvPaddingLen;
+  
+   pduDesc[pduIndex].pdu_length = totalLen;
+   pduDesc[pduIndex].pdu_length = reverseBytes32(pduDesc[pduIndex].pdu_length);
+
+   pduDesc[pduIndex].pdu_index = reverseBytes16(pduIndex);
+   pduDesc[pduIndex].num_tlvs = reverseBytes32(1);
+   /* fill the TLV */
+   pduDesc[pduIndex].tlvs[0].tag = reverseBytes16(FAPI_TX_DATA_PAYLOAD);
+   pduDesc[pduIndex].tlvs[0].length = reverseBytes32(dlMsgSchInfo->dlMsgPduLen);
+
+   memcpy(pduDesc[pduIndex].tlvs[0].value.direct, dlMsgSchInfo->dlMsgPdu, dlMsgSchInfo->dlMsgPduLen);
+
 #endif /* FAPI */
+
    return ROK;
 }
 

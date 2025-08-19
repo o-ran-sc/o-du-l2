@@ -159,6 +159,10 @@ uint8_t schBroadcastSib1Alloc(SchCellCb *cell, SlotTimingInfo slotTime, DlBrdcst
       startSymbol = dmrsStartSymbol;
       numSymbol = dmrs.nrOfDmrsSymbols + timeAlloc.numSymb;
    }
+   if((startSymbol + numSymbol) > MAX_SYMB_PER_SLOT)
+   {
+      numSymbol = (MAX_SYMB_PER_SLOT - startSymbol);
+   }
 
    /* Allocate PRB */
    if((allocatePrbDl(cell, slotTime, startSymbol, numSymbol, &freqAlloc.startPrb, freqAlloc.numPrb)) != ROK)
@@ -614,15 +618,20 @@ uint8_t schUlResAlloc(SchCellCb *cell, Inst schInst)
  *
  * ****************************************************************/
 uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueId, DlMsgSchInfo *dlMsgAlloc,\
-                           uint8_t pdschStartSymbol, uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb *hqP)
+                           uint8_t pdschStartSymbol, uint8_t pdschNumSymbols, bool isRetx, SchDlHqProcCb *hqP, uint8_t k0Index)
 {
    uint8_t coreset0Idx = 0;
    uint8_t firstSymbol = 0;
    uint8_t numSymbols = 0;
-   uint8_t mcs = DEFAULT_MCS;                         /* MCS fixed to 4 */
-   uint8_t dmrsStartSymbol = 0, startSymbol = 0, numSymbol = 0;
+   uint8_t mcs = 1;
+   uint8_t dmrsStartSymbol = 0, numDmrsSymbol = 0, startSymbol = 0, numSymbol = 0;
    uint16_t tbSize = 0;
    uint16_t numRbs;
+   uint16_t offsetToPointA = 0;
+   uint8_t freqDomainResource[FREQ_DOM_RSRC_SIZE] = {0};
+   uint16_t targetCodeRate = 0;
+   uint8_t  qam = 0;
+   uint16_t msg4PduLen = 0;
    SchBwpDlCfg *initialBwp = NULLP;
    PdcchCfg *pdcch = NULLP;
    PdschCfg *pdsch = NULLP;
@@ -641,6 +650,7 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
       return RFAILED;
    }
 
+   offsetToPointA = cell->cellCfg.dlCfgCommon.schFreqInfoDlSib.offsetToPointA;
    msg4Alloc = dlMsgAlloc;
    initialBwp   = &cell->cellCfg.dlCfgCommon.schInitialDlBwp;
    SCH_ALLOC(msg4Alloc->dlMsgPdcchCfg, sizeof(PdcchCfg));
@@ -652,12 +662,12 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    }
    pdcch = msg4Alloc->dlMsgPdcchCfg;
    bwp = &msg4Alloc->bwp;
-   coreset0Idx  = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
 
    fillDlMsgInfo(msg4Alloc, cell->raCb[ueId-1].tcrnti, isRetx, hqP);
    msg4Alloc->dlMsgPduLen = cell->raCb[ueId-1].dlMsgPduLen;
 
    /* derive the sib1 coreset0 params from table 13-1 spec 38.213 */
+   coreset0Idx  = initialBwp->pdcchCommon.commonSearchSpace.coresetId;
    numRbs     = coresetIdxTable[coreset0Idx][1];
    numSymbols = coresetIdxTable[coreset0Idx][2];
 
@@ -672,16 +682,26 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    }
 
    /* fill BWP */
+#ifndef OAI_TESTING
    bwp->freqAlloc.numPrb   = initialBwp->bwp.freqAlloc.numPrb;
    bwp->freqAlloc.startPrb = initialBwp->bwp.freqAlloc.startPrb;
+#else
+   bwp->freqAlloc.numPrb   = numRbs;
+   bwp->freqAlloc.startPrb = ((offsetToPointA >> initialBwp->bwp.scs) - coresetIdxTable[coreset0Idx][3]);
+#endif
    bwp->subcarrierSpacing  = initialBwp->bwp.scs;
    bwp->cyclicPrefix       = initialBwp->bwp.cyclicPrefix;
 
    /* fill the PDCCH PDU */
    pdcch->coresetCfg.startSymbolIndex = firstSymbol;
    pdcch->coresetCfg.durationSymbols = numSymbols;
+#ifndef OAI_TESTING
    memcpy(pdcch->coresetCfg.freqDomainResource, \
       cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdcchCommon.commonSearchSpace.freqDomainRsrc, FREQ_DOM_RSRC_SIZE);
+#else
+   freqDomainResource[0]=255;
+   memcpy(pdcch->coresetCfg.freqDomainResource,freqDomainResource, FREQ_DOM_RSRC_SIZE);
+#endif
 
    pdcch->coresetCfg.cceRegMappingType = 1; /* coreset0 is always interleaved */
    pdcch->coresetCfg.regBundleSize = 6;    /* spec-38.211 sec 7.3.2.2 */
@@ -694,15 +714,15 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    pdcch->dci[0].rnti = cell->raCb[ueId-1].tcrnti;
    pdcch->dci[0].scramblingId = cell->cellCfg.phyCellId;
    pdcch->dci[0].scramblingRnti = 0;
-   pdcch->dci[0].cceIndex = 4; /* considering SIB1 is sent at cce 0-1-2-3 */
+   pdcch->dci[0].cceIndex = 0;
    pdcch->dci[0].aggregLevel = 4;
-   pdcch->dci[0].beamPdcchInfo.numPrgs = 1;
-   pdcch->dci[0].beamPdcchInfo.prgSize = 1;
-   pdcch->dci[0].beamPdcchInfo.digBfInterfaces = 0;
+   pdcch->dci[0].beamPdcchInfo.numPrgs = 0;
+   pdcch->dci[0].beamPdcchInfo.prgSize = 0;
+   pdcch->dci[0].beamPdcchInfo.digBfInterfaces = 1;
    pdcch->dci[0].beamPdcchInfo.prg[0].pmIdx = 0;
    pdcch->dci[0].beamPdcchInfo.prg[0].beamIdx[0] = 0;
    pdcch->dci[0].txPdcchPower.beta_pdcch_1_0 = 0;
-   pdcch->dci[0].txPdcchPower.powerControlOffsetSS = 0;
+   pdcch->dci[0].txPdcchPower.powerControlOffsetSS = 1;
    pdsch = &pdcch->dci[0].pdschCfg; 
    
    /* fill the PDSCH PDU */
@@ -711,20 +731,48 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    pdsch->rnti = cell->raCb[ueId-1].tcrnti;
    pdsch->pduIndex = 0;
    pdsch->numCodewords = 1;
+   pdsch->dmrs.dlDmrsSymbPos = 2180; 
+   numDmrsSymbol = findNumDmrsSymbol(pdsch->dmrs.dlDmrsSymbPos);
    for(cwCount = 0; cwCount < pdsch->numCodewords; cwCount++)
    {
-      pdsch->codeword[cwCount].targetCodeRate = 308;
-      pdsch->codeword[cwCount].qamModOrder = 2;
-      pdsch->codeword[cwCount].mcsIndex = mcs; /* mcs configured to 4 */
-      pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
       if(isRetx != TRUE)
       {
-         tbSize = schCalcTbSize(msg4Alloc->dlMsgPduLen + TX_PAYLOAD_HDR_LEN); /* MSG4 size + FAPI header size*/
+         msg4PduLen = msg4Alloc->dlMsgPduLen + TX_PAYLOAD_HDR_LEN;
+         mcs = 1;
+         pdsch->pdschFreqAlloc.numPrb = 0;
+         qam = 0;
+         targetCodeRate = 0;
+         do
+         {
+            if(pdsch->pdschFreqAlloc.numPrb < bwp->freqAlloc.numPrb)
+            {
+               pdsch->pdschFreqAlloc.numPrb++;
+            }
+            else
+            {
+               if(mcs < 10)
+               {
+                  mcs++;
+               }
+	       else
+	         break;
+            }
+            tbSize = (schCalcTbSizeFromNPrb(pdsch->pdschFreqAlloc.numPrb, mcs, 13, numDmrsSymbol, &targetCodeRate, &qam) >> 3);
+         }while(msg4PduLen > tbSize);
+       
          hqP->tbInfo[cwCount].tbSzReq = tbSize;
          pdsch->codeword[cwCount].rvIndex = 0;
+         pdsch->codeword[cwCount].targetCodeRate = targetCodeRate;
+         pdsch->codeword[cwCount].qamModOrder = qam;
+         pdsch->codeword[cwCount].mcsIndex = mcs; /* mcs configured to 4 */
+         pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
       }
       else
       {
+         pdsch->codeword[cwCount].targetCodeRate = 308;
+         pdsch->codeword[cwCount].qamModOrder = 2;
+         pdsch->codeword[cwCount].mcsIndex = DEFAULT_MCS; /* mcs configured to 4 */
+         pdsch->codeword[cwCount].mcsTable = 0; /* notqam256 */
          pdsch->codeword[cwCount].rvIndex = (pdsch->codeword[cwCount].rvIndex +1) & 0x03;
          tbSize = hqP->tbInfo[cwCount].tbSzReq;
       }
@@ -734,12 +782,11 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
    pdsch->numLayers = 1;
    pdsch->transmissionScheme = 0;
    pdsch->refPoint = 0;
-   pdsch->dmrs.dlDmrsSymbPos = DL_DMRS_SYMBOL_POS; 
    pdsch->dmrs.dmrsConfigType = 0; /* type-1 */
    pdsch->dmrs.dlDmrsScramblingId = cell->cellCfg.phyCellId;
    pdsch->dmrs.scid = 0;
-   pdsch->dmrs.numDmrsCdmGrpsNoData = 1;
-   pdsch->dmrs.dmrsPorts = 0;
+   pdsch->dmrs.numDmrsCdmGrpsNoData = 2;
+   pdsch->dmrs.dmrsPorts = 1;
    pdsch->dmrs.mappingType      = DMRS_MAP_TYPE_A; /* Setting to Type-A */
    pdsch->dmrs.nrOfDmrsSymbols  = NUM_DMRS_SYMBOLS;
    pdsch->dmrs.dmrsAddPos       = DMRS_ADDITIONAL_POS;
@@ -749,8 +796,8 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
 
    pdsch->pdschFreqAlloc.resourceAllocType = 1; /* RAT type-1 RIV format */
    pdsch->pdschFreqAlloc.startPrb = MAX_NUM_RB;
-   pdsch->pdschFreqAlloc.numPrb = schCalcNumPrb(tbSize, mcs, pdschNumSymbols);
    pdsch->pdschFreqAlloc.vrbPrbMapping = 0; /* non-interleaved */
+   pdsch->pdschTimeAlloc.rowIndex = k0Index;
 
    /* Find total symbols occupied including DMRS */
    dmrsStartSymbol = findDmrsStartSymbol(pdsch->dmrs.dlDmrsSymbPos);
@@ -767,6 +814,10 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
       startSymbol = dmrsStartSymbol;
       numSymbol = pdsch->dmrs.nrOfDmrsSymbols + pdsch->pdschTimeAlloc.numSymb;
    }
+   if((startSymbol + numSymbol) > MAX_SYMB_PER_SLOT)
+   {
+      numSymbol = (MAX_SYMB_PER_SLOT - startSymbol);
+   }
 
    /* Allocate the number of PRBs required for RAR PDSCH */
    if((allocatePrbDl(cell, msg4Time, startSymbol, numSymbol,\
@@ -777,13 +828,15 @@ uint8_t schDlRsrcAllocMsg4(SchCellCb *cell, SlotTimingInfo msg4Time, uint8_t ueI
       return RFAILED;
    }
 
-   pdsch->beamPdschInfo.numPrgs = 1;
-   pdsch->beamPdschInfo.prgSize = 1;
+   pdsch->beamPdschInfo.numPrgs = 0;
+   pdsch->beamPdschInfo.prgSize = 48;
    pdsch->beamPdschInfo.digBfInterfaces = 0;
    pdsch->beamPdschInfo.prg[0].pmIdx = 0;
    pdsch->beamPdschInfo.prg[0].beamIdx[0] = 0;
    pdsch->txPdschPower.powerControlOffset = 0;
    pdsch->txPdschPower.powerControlOffsetSS = 0;
+   pdsch->maintParamV3.ldpcBaseGraph         = 2;
+   pdsch->maintParamV3.tbSizeLbrmBytes       = 237776; 
 
    return ROK;
 }
@@ -1018,6 +1071,10 @@ uint8_t schDlRsrcAllocDlMsg(SchCellCb *cell, SlotTimingInfo slotTime, uint16_t c
    {
       startSymbol = dmrsStartSymbol;
       numSymbol = pdsch->dmrs.nrOfDmrsSymbols + pdsch->pdschTimeAlloc.numSymb;
+   }
+   if((startSymbol + numSymbol) > MAX_SYMB_PER_SLOT)
+   {
+      numSymbol = (MAX_SYMB_PER_SLOT - startSymbol);
    }
 
    /* Allocate the number of PRBs required for DL PDSCH */
@@ -1812,7 +1869,7 @@ void fillDlMsgInfo(DlMsgSchInfo *dlMsgSchInfo, uint16_t crnti, bool isRetx, SchD
    dlMsgSchInfo->dlAssignIdx = 0;
    dlMsgSchInfo->pucchTpc = 0;
    dlMsgSchInfo->pucchResInd = PUCCH_RES_IND;
-   dlMsgSchInfo->harqFeedbackInd = hqP->k1;
+   dlMsgSchInfo->harqFeedbackInd  = 7;
    dlMsgSchInfo->dciFormatId = 1;
 }
 
@@ -1839,7 +1896,7 @@ void fillDlMsgInfo(DlMsgSchInfo *dlMsgSchInfo, uint16_t crnti, bool isRetx, SchD
 
 uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool isRetxMsg4, SchDlHqProcCb **msg4HqProc)
 {
-   uint8_t pdschStartSymbol = 0, pdschNumSymbols = 0;
+   uint8_t pdschStartSymbol = 0, pdschNumSymbols = 0, k0Index = 0;
    SlotTimingInfo pdcchTime, pdschTime, pucchTime;
    DlMsgSchInfo *dciSlotAlloc = NULLP;    /* Stores info for transmission of PDCCH for Msg4 */
    DlMsgSchInfo *msg4SlotAlloc = NULLP;   /* Stores info for transmission of PDSCH for Msg4 */
@@ -1860,7 +1917,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    }
 
    if(findValidK0K1Value(cell, currTime, ueId, false, &pdschStartSymbol, &pdschNumSymbols, &pdcchTime, &pdschTime,\
-            &pucchTime, isRetxMsg4, *msg4HqProc, NULLP) != true )
+            &pucchTime, isRetxMsg4, *msg4HqProc, NULLP, &k0Index) != true )
    {
       DU_LOG("\nERROR  -->  SCH: schProcessMsg4Req() : k0 k1 not found");
       return RFAILED;
@@ -1881,7 +1938,7 @@ uint8_t schProcessMsg4Req(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
       dciSlotAlloc = cell->schDlSlotInfo[pdcchTime.slot]->dlMsgAlloc[ueId-1];
 
    /* Fill PDCCH and PDSCH scheduling information for Msg4 */
-   if((schDlRsrcAllocMsg4(cell, pdschTime, ueId, dciSlotAlloc, pdschStartSymbol, pdschNumSymbols, isRetxMsg4, *msg4HqProc)) != ROK)
+   if((schDlRsrcAllocMsg4(cell, pdschTime, ueId, dciSlotAlloc, pdschStartSymbol, pdschNumSymbols, isRetxMsg4, *msg4HqProc, k0Index)) != ROK)
    {
       DU_LOG("\nERROR  -->  SCH: Scheduling of Msg4 failed in slot [%d]", pdschTime.slot);
       if(!dciSlotAlloc->dlMsgPdschCfg)
@@ -2078,7 +2135,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
    /* Calculating time frame to send DCI for SR */
    ADD_DELTA_TO_TIME(currTime, dciTime, gConfigInfo.gPhyDeltaDl + SCHED_DELTA, cell->numSlots);
 #ifdef NR_TDD
-   if(schGetSlotSymbFrmt(dciTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
+   if(schGetSlotSymbFrmt((dciTime.slot % cell->numSlotsInPeriodicity), cell->slotFrmtBitMap) == DL_SLOT)
 #endif
    {     
       if(ueCb->k2TblPrsnt)
@@ -2106,7 +2163,7 @@ bool schProcessSrOrBsrReq(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId
          /* Calculating time frame to send PUSCH for SR */
          ADD_DELTA_TO_TIME(dciTime, puschTime, k2Val, cell->numSlots);
 #ifdef NR_TDD
-         if(schGetSlotSymbFrmt(puschTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
+         if(schGetSlotSymbFrmt((puschTime.slot % cell->numSlotsInPeriodicity), cell->slotFrmtBitMap) == DL_SLOT)
             continue;
 #endif
          if((cell->schUlSlotInfo[puschTime.slot]->schPuschInfo[ueId - 1] != NULLP) 
@@ -2223,6 +2280,10 @@ uint8_t schFillPagePdschCfg(SchCellCb *cell, PageDlSch *pageDlSch, SlotTimingInf
       startSymbol = dmrsStartSymbol;
       numSymbol = pageDlSch->dmrs.nrOfDmrsSymbols + pageDlSch->timeAlloc.numSymb;
    }
+   if((startSymbol + numSymbol) > MAX_SYMB_PER_SLOT)
+   {
+      numSymbol = (MAX_SYMB_PER_SLOT - startSymbol);
+   }
 
    /* Allocate the number of PRBs required for DL PDSCH */
    if((allocatePrbDl(cell, slotTime, startSymbol, numSymbol,\
@@ -2263,7 +2324,7 @@ uint8_t schMsg3RetxSchedulingForUe(SchRaCb *raCb)
    ADD_DELTA_TO_TIME(currTime, dciTime, gConfigInfo.gPhyDeltaDl + SCHED_DELTA, cell->numSlots);
 #ifdef NR_TDD
    /* Consider this slot for sending DCI, only if it is a DL slot */
-   if(schGetSlotSymbFrmt(dciSlot, raCb->cell->slotFrmtBitMap) == DL_SLOT)
+   if(schGetSlotSymbFrmt((dciSlot % cell->numSlotsInPeriodicity), raCb->cell->slotFrmtBitMap) == DL_SLOT)
 #endif
    {
       /* If PDCCH is already scheduled on this slot, cannot schedule PDSCH for another UE here. */

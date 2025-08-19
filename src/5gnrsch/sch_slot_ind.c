@@ -92,7 +92,7 @@ uint8_t sendDlAllocToMac(DlSchedInfo *dlSchedInfo, Inst inst)
  * ****************************************************************/
 bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool isRetx, SchDlHqProcCb **hqP)
 {
-   uint8_t pdschNumSymbols = 0, pdschStartSymbol = 0;
+   uint8_t pdschNumSymbols = 0, pdschStartSymbol = 0, k0Index = 0;
    uint8_t lcIdx = 0;
    uint16_t startPrb = 0;
    uint16_t crnti = 0;
@@ -116,7 +116,7 @@ bool schFillBoGrantDlSchedInfo(SchCellCb *cell, SlotTimingInfo currTime, uint8_t
    memset(&pdcchAllocInfo,0,sizeof(SchPdcchAllocInfo));
    if(findValidK0K1Value(cell, currTime, ueId, ueCb->k0K1TblPrsnt,\
             &pdschStartSymbol, &pdschNumSymbols, &pdcchTime, &pdschTime, \
-            &pucchTime, isRetx, *hqP, &pdcchAllocInfo) != true )
+            &pucchTime, isRetx, *hqP, &pdcchAllocInfo, &k0Index) != true )
    {
       /* If a valid combination of slots to scheduled PDCCH, PDSCH and PUCCH is
        * not found, do not perform resource allocation. Return from here. */
@@ -414,9 +414,9 @@ PduTxOccsaion schCheckSib1Occ(SchCellCb *cell, SlotTimingInfo slotTime)
 bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, bool dedMsg,
                         uint8_t *pdschStartSymbol, uint8_t *pdschSymblLen, SlotTimingInfo *pdcchTime,
                         SlotTimingInfo *pdschTime, SlotTimingInfo *pucchTime, bool isRetx, SchDlHqProcCb *hqP,
-                        SchPdcchAllocInfo *pdcchAllocInfo)
+                        SchPdcchAllocInfo *pdcchAllocInfo, uint8_t *k0Index)
 {
-   uint8_t numK0 = 0, k0TblIdx = 0, k0Val = 0, k0Index =0 ;
+   uint8_t numK0 = 0, k0TblIdx = 0, k0Val = 0;
    uint8_t k1TblIdx = 0, k1Index = 0, k1Val = 0, numK1 = 0;
    uint8_t ret = RFAILED;
    uint16_t  crnti = 0;
@@ -425,13 +425,14 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
 
    ADD_DELTA_TO_TIME(currTime, (*pdcchTime), gConfigInfo.gPhyDeltaDl + SCHED_DELTA, cell->numSlots);
 #ifdef NR_TDD
-   if(schGetSlotSymbFrmt(pdcchTime->slot, cell->slotFrmtBitMap) != DL_SLOT)
+   if(schGetSlotSymbFrmt((pdcchTime->slot % cell->numSlotsInPeriodicity) , cell->slotFrmtBitMap) != DL_SLOT)
    {
       /* If it is not a DL slot, cannot schedule PDCCH. Return from here. */
       return false;
    }
 #endif
 
+   *k0Index = 0;
    ueCb = &cell->ueCb[ueId-1];
    GET_CRNTI(crnti, ueId);
    if(dedMsg == true)
@@ -451,32 +452,32 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
    numK0 = k0K1InfoTbl->k0k1TimingInfo[pdcchTime->slot].numK0;
    for(k0TblIdx = 0; k0TblIdx < numK0; k0TblIdx++)
    {
-      k0Index = k0K1InfoTbl->k0k1TimingInfo[pdcchTime->slot].k0Indexes[k0TblIdx].k0Index;
+      *k0Index = k0K1InfoTbl->k0k1TimingInfo[pdcchTime->slot].k0Indexes[k0TblIdx].k0Index;
       if(dedMsg != true)
       {
-         k0Val = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].k0;
-         *pdschStartSymbol = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].startSymbol;
-         *pdschSymblLen = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol;
+         k0Val = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[*k0Index].k0;
+         *pdschStartSymbol = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[*k0Index].startSymbol;
+         *pdschSymblLen = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[*k0Index].lengthSymbol;
       }
       else
       {
-         if(ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].k0 != NULLP)
+         if(ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[*k0Index].k0 != NULLP)
          {
-            k0Val = *(ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].k0);
-            *pdschStartSymbol = ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].startSymbol;
-            *pdschSymblLen = ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[k0Index].symbolLength;
+            k0Val = *(ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[*k0Index].k0);
+            *pdschStartSymbol = ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[*k0Index].startSymbol;
+            *pdschSymblLen = ueCb->ueCfg.spCellCfg.servCellRecfg.initDlBwp.pdschCfg.timeDomRsrcAllociList[*k0Index].symbolLength;
          }
          else
          {
-            k0Val = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].k0;
-            *pdschStartSymbol = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].startSymbol;
-            *pdschSymblLen = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[k0Index].lengthSymbol;
+            k0Val = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[*k0Index].k0;
+            *pdschStartSymbol = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[*k0Index].startSymbol;
+            *pdschSymblLen = cell->cellCfg.dlCfgCommon.schInitialDlBwp.pdschCommon.timeDomRsrcAllocList[*k0Index].lengthSymbol;
          }
       }
 
       ADD_DELTA_TO_TIME((*pdcchTime), (*pdschTime), k0Val, cell->numSlots);
 #ifdef NR_TDD
-      if(schGetSlotSymbFrmt(pdschTime->slot, cell->slotFrmtBitMap) != DL_SLOT)
+      if(schGetSlotSymbFrmt((pdschTime->slot % cell->numSlotsInPeriodicity), cell->slotFrmtBitMap) != DL_SLOT)
       {
          continue;
       }
@@ -503,7 +504,7 @@ bool findValidK0K1Value(SchCellCb *cell, SlotTimingInfo currTime, uint8_t ueId, 
          }
          ADD_DELTA_TO_TIME((*pdschTime),(*pucchTime), k1Val, cell->numSlots);
 #ifdef NR_TDD
-         if(schGetSlotSymbFrmt(pucchTime->slot, cell->slotFrmtBitMap) == DL_SLOT)
+         if(schGetSlotSymbFrmt((pucchTime->slot % cell->numSlotsInPeriodicity), cell->slotFrmtBitMap) == DL_SLOT)
          {
             continue;
          }

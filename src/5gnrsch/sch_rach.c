@@ -615,7 +615,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
    dciSlot = dciTime.slot;
 #ifdef NR_TDD
    /* Consider this slot for sending DCI, only if it is a DL slot */
-   if(schGetSlotSymbFrmt(dciSlot, cell->slotFrmtBitMap) == DL_SLOT)
+   if(schGetSlotSymbFrmt((dciSlot % cell->numSlotsInPeriodicity), cell->slotFrmtBitMap) == DL_SLOT)
 #endif
    {
       /* If PDCCH is already scheduled on this slot, cannot schedule PDSCH for another UE here. */
@@ -659,7 +659,7 @@ bool schProcessRaReq(Inst schInst, SchCellCb *cell, SlotTimingInfo currTime, uin
 
                   ADD_DELTA_TO_TIME(rarTime, pucchTime, k1, cell->numSlots);
 #ifdef NR_TDD
-                  if(schGetSlotSymbFrmt(pucchTime.slot, cell->slotFrmtBitMap) == DL_SLOT)
+                  if(schGetSlotSymbFrmt((pucchTime.slot % cell->numSlotsInPeriodicity), cell->slotFrmtBitMap) == DL_SLOT)
                      continue;
 #endif
                   /*In this pucchTime, this particular UE/CRNTI is already scheduled thus checking 
@@ -1098,10 +1098,10 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    {
       startSymbol = dmrsStartSymbol;
       numSymbol = pdsch->dmrs.nrOfDmrsSymbols + pdsch->pdschTimeAlloc.numSymb;
-      if(numSymbol >= MAX_SYMB_PER_SLOT)
-      {
-         numSymbol = (MAX_SYMB_PER_SLOT - 1);
-      }
+   }
+   if((startSymbol + numSymbol) > MAX_SYMB_PER_SLOT)
+   {
+      numSymbol = (MAX_SYMB_PER_SLOT - startSymbol);
    }
 
    /* Allocate the number of PRBs required for RAR PDSCH */
@@ -1120,6 +1120,8 @@ uint8_t schFillRar(SchCellCb *cell, SlotTimingInfo rarTime, uint16_t ueId, RarAl
    pdsch->beamPdschInfo.prg[0].beamIdx[0] = 0;
    pdsch->txPdschPower.powerControlOffset = 0;
    pdsch->txPdschPower.powerControlOffsetSS = 0;
+   pdsch->maintParamV3.ldpcBaseGraph         = 2;
+   pdsch->maintParamV3.tbSizeLbrmBytes       = 237776; 
 
    return ROK;
 }

@@ -574,6 +574,12 @@ typedef struct txPowerPdschInfo
    uint8_t powerControlOffsetSS;
 } TxPowerPdschInfo;
 
+typedef struct pdschMaintParamV3
+{
+   uint8_t ldpcBaseGraph;
+   uint32_t tbSizeLbrmBytes;
+}PdschMaintParamV3;
+
 /* Reference -> O-RAN.WG8.AAD.0-v07.00, Table 9-43 PDSCH Configuration */
 typedef struct pdschCfg
 {
@@ -591,6 +597,7 @@ typedef struct pdschCfg
    PdschTimeAlloc   pdschTimeAlloc;
    BeamformingInfo  beamPdschInfo;
    TxPowerPdschInfo txPdschPower;
+   PdschMaintParamV3 maintParamV3;   
 } PdschCfg;
 /* SIB1 PDSCH structures end */
 

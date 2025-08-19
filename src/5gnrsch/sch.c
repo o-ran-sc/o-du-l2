@@ -767,7 +767,8 @@ uint8_t fillSchSib1Cfg(uint8_t mu, uint8_t bandwidth, uint8_t numSlots,SchPdcchC
    pdsch->beamPdschInfo.prg[0].beamIdx[0]    = 0;
    pdsch->txPdschPower.powerControlOffset    = 0;
    pdsch->txPdschPower.powerControlOffsetSS  = 0;
-
+   pdsch->maintParamV3.ldpcBaseGraph         = 2;
+   pdsch->maintParamV3.tbSizeLbrmBytes       = 57376;
    return ROK;
 }
 
@@ -1366,7 +1367,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
 	    {
 	       if (freePrbBlock->numFreePrb >= numPrb)
 	       {
-	          *startPrb = freePrbBlock->endPrb - numPrb +1;
+	          *startPrb = freePrbBlock->startPrb;
 	       }
         	break;  
 	    }
@@ -1406,7 +1407,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
                    * endPrb = freePrbBlock->endPrb
                    * startPrb = endPrb - numPrb +1;
                    */
-                  *startPrb = freePrbBlock->endPrb - numPrb +1;
+                  *startPrb = freePrbBlock->startPrb;
                   break;
                }
                else if((broadcastPrbStart > freePrbBlock->startPrb) && ((broadcastPrbStart - freePrbBlock->startPrb) >= numPrb))
@@ -1432,7 +1433,7 @@ uint8_t allocatePrbDl(SchCellCb *cell, SlotTimingInfo slotTime, \
                   freePrbNode = freePrbNode->next;
                   continue;
                }
-               *startPrb = freePrbBlock->endPrb - numPrb +1;
+               *startPrb = freePrbBlock->startPrb;
                break;  
             }
          }
